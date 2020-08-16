@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Header() {
     return (
@@ -30,7 +31,7 @@ function Header() {
                                                 <li><a className="dropdown-item" href="index-modern.html">Home - modern</a></li>
                                                 <li><a className="dropdown-item" href="index-minimal.html">Home - minimal</a></li>
                                                 <li><span className="megamenu-title">Shop</span></li>
-                                                <li><a className="dropdown-item" href="listing-sidebar.html">Listing - sidebar</a></li>
+                                                <li><Link className="dropdown-item" to="/listing">Listing - sidebar</Link></li>
                                                 <li><a className="dropdown-item" href="listing-full.html">Listing - full width</a></li>
                                                 <li><a className="dropdown-item" href="listing-masonry.html">Listing - masonry</a></li>
                                                 <li><a className="dropdown-item" href="listing-modern.html">Listing - modern</a></li>
