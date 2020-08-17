@@ -1,5 +1,7 @@
 import React from 'react';
 import BreadcrumbsLight from '../../theme-components/BreadcrumbsLight';
+import ProductMainSection from './ProductMainSection';
+import ProductExtraInfo from './ProductExtraInfo';
 
 
 
@@ -17,6 +19,8 @@ class Product extends React.Component {
         return (
             <>
                 <BreadcrumbsLight />
+                <ProductMainSection />
+                <ProductExtraInfo />
             </>
         );
     }

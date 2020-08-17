@@ -7,11 +7,11 @@ function BreadcrumbsLight() {
 
     return (
         <section className="breadcrumbs bg-light">
-            <div classNameName="container">
-                <div classNameName="row">
-                    <div classNameName="col">
+            <div className="container">
+                <div className="row">
+                    <div className="col">
                         <nav aria-label="breadcrumb">
-                            <ol classNameName="breadcrumb">
+                            <ol className="breadcrumb">
                                 <li className="breadcrumb-item"><Link to="/">Home</Link></li>
                                 <li className="breadcrumb-item"><Link to="listing">Listing</Link></li>
                                 <li className="breadcrumb-item active" aria-current="page">Product</li>
