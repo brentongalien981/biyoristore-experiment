@@ -89,7 +89,11 @@ class Listing extends React.Component {
     render() {
 
         const products = this.state.products.map((p, i) => {
-            return (<Product product={p} key={i} />);
+            return (
+                <div className="col-6 col-md-4">
+                    <Product product={p} key={i} />
+                </div>
+            );
         });
 
         return (
