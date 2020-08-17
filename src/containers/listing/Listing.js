@@ -19,15 +19,15 @@ class Listing extends React.Component {
                     title: "Fawn Wool / Natural Mammoth Chair",
                     price: "2268",
                     imageUrls: [
-                        "assets/images/demo/product-1.jpg",
-                        "assets/images/demo/product-1-2.jpg"
+                        "assets/images/iphone11.jpg",
+                        "assets/images/iphone11b.jpg"
                     ]
                 },
                 {
                     title: "Dark Stained NY11 Dining Chair",
                     price: "504",
                     imageUrls: [
-                        "assets/images/demo/product-2.jpg",
+                        "assets/images/imacpro",
                         "assets/images/demo/product-2-2.jpg",
                         "assets/images/demo/product-2-3.jpg"
                     ]
@@ -36,7 +36,7 @@ class Listing extends React.Component {
                     title: "Black IC Pendant Light",
                     price: "410",
                     imageUrls: [
-                        "assets/images/demo/product-3.jpg",
+                        "assets/images/ps5.png",
                         "assets/images/demo/product-3-2.jpg"
                     ]
                 },
