@@ -3,6 +3,8 @@ import BreadcrumbsLight from '../../theme-components/BreadcrumbsLight';
 import ProductMainSection from './ProductMainSection';
 import ProductExtraInfo from './ProductExtraInfo';
 import SuggestedProducts from './SuggestedProducts';
+import ProductReviews from './ProductReviews';
+import CreateReview from './CreateReview';
 
 
 
@@ -10,6 +12,8 @@ class Product extends React.Component {
 
     constructor(props) {
         super(props);
+
+        const defaultProductReviewMsg = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 
         this.state = {
             products: [
@@ -78,6 +82,14 @@ class Product extends React.Component {
                         "assets/images/demo/product-6-2.jpg"
                     ]
                 }
+            ],
+            reviews: [
+                {id: 1, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019"},
+                {id: 2, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019"},
+                {id: 3, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019"},
+                {id: 4, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019"},
+                {id: 5, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019"},
+                {id: 6, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019"}
             ]
         };
     }
@@ -91,6 +103,8 @@ class Product extends React.Component {
                 <ProductMainSection />
                 <ProductExtraInfo />
                 <SuggestedProducts products={this.state.products} />
+                <ProductReviews reviews={this.state.reviews} />
+                <CreateReview />
             </>
         );
     }

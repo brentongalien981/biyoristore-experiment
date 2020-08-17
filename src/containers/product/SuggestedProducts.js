@@ -9,6 +9,7 @@ function SuggestedProducts(props) {
         return (<Product product={p} key={i} />);
     });
 
+    
     return (
         <section className="no-overflow">
             <div className="container">
