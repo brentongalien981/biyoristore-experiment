@@ -21,11 +21,13 @@ class Home extends React.Component {
 
     componentDidMount() {
         BsCore.ajaxCrud({
-            url: '/test',
+            url: '/products/featured',
             params: {},
             callBackFunc: (requestData, json) => {
                 Bs.log("#####################");
                 Bs.log("json.objs ==> " + json.objs);
+                Bs.log("json.isResultOk ==> " + json.isResultOk);
+                Bs.log("products ==> " + json.objs);
             }
         });
     }

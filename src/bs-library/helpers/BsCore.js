@@ -8,7 +8,6 @@ class BsCore {
     static appUrl = "";
     static appBackendUrl = "http://biyoristoreexperiment.test:8000";
     static appApiUrl = "http://biyoristoreexperiment.test:8000/api";
-    // static appApiUrl = "http://myg.test:8000/api";
 
     static ajaxCrud(data = {}) {
 
