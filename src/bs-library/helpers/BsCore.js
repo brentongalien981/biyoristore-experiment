@@ -8,6 +8,7 @@ class BsCore {
     static appUrl = "";
     static appBackendUrl = "http://biyoristoreexperiment.test:8000";
     static appApiUrl = "http://biyoristoreexperiment.test:8000/api";
+    static pubPhotoUrl = "https://s3.us-east-2.amazonaws.com/bs.s3.public/photos/";
 
     static ajaxCrud(data = {}) {
 
