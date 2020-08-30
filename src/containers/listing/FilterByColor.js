@@ -12,7 +12,7 @@ function FilterByColor() {
                 <div className="widget-content">
                     <div className="btn-group-toggle btn-group-square btn-group-colors" data-toggle="buttons">
                         <label className="btn active text-red">
-                            <input type="checkbox" name="options" id="option1-2" checked />
+                            <input type="checkbox" name="options" id="option1-2" />
                         </label>
                         <label className="btn text-blue">
                             <input type="checkbox" name="options" id="option2-2" />

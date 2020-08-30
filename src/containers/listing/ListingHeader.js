@@ -9,8 +9,8 @@ function ListingHeader() {
             <div className="col-lg-9">
                 <div className="row gutter-2 align-items-end">
                     <div className="col-md-6">
-                        <h1 className="mb-0">Furniture</h1>
-                        <span className="eyebrow">20 products</span>
+                        <h1 className="mb-0">{"{TODO-Categories}"}</h1>
+                        {/* <span className="eyebrow">20 products</span> */}
                     </div>
                     <div className="col-md-6 text-md-right">
                         <div className="dropdown">

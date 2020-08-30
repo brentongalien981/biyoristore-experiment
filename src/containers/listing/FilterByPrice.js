@@ -10,7 +10,7 @@ function FilterByPrice() {
             <div className="d-lg-block collapse" id="collapse-5">
                 <span className="widget-title">Price</span>
                 <div className="widget-content">
-                    <input type="text" className="rangeslider" name="Range Slider" value="" />
+                    <input type="text" className="rangeslider" name="Range Slider" />
                 </div>
             </div>
         </div>

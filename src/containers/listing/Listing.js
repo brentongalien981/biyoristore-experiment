@@ -8,99 +8,40 @@ import FilterByPrice from './FilterByPrice';
 import ListingHeader from './ListingHeader';
 import Product from './Product';
 import Pagination from './Pagination';
+import './Listing.css';
+import { connect } from 'react-redux';
+import Bs from '../../bs-library/helpers/Bs';
+
+
 
 class Listing extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            products: [
-                {
-                    title: "Fawn Wool / Natural Mammoth Chair",
-                    price: "2268",
-                    imageUrls: [
-                        "assets/images/iphone11.jpg",
-                        "assets/images/iphone11b.jpg"
-                    ]
-                },
-                {
-                    title: "Dark Stained NY11 Dining Chair",
-                    price: "504",
-                    imageUrls: [
-                        "assets/images/imacpro",
-                        "assets/images/demo/product-2-2.jpg",
-                        "assets/images/demo/product-2-3.jpg"
-                    ]
-                },
-                {
-                    title: "Black IC Pendant Light",
-                    price: "410",
-                    imageUrls: [
-                        "assets/images/ps5.png",
-                        "assets/images/demo/product-3-2.jpg"
-                    ]
-                },
-                {
-                    title: "Black Closca Helmet",
-                    price: "132",
-                    imageUrls: [
-                        "assets/images/demo/product-24.jpg",
-                        "assets/images/demo/product-24-2.jpg"
-                    ]
-                },
-                {
-                    title: "Gravel Black Sigg Water Bottle",
-                    price: "23",
-                    imageUrls: [
-                        "assets/images/demo/product-25.jpg",
-                        "assets/images/demo/product-25-2.jpg"
-                    ]
-                },
-                {
-                    title: "Red Analog Magazine Rack",
-                    price: "120",
-                    imageUrls: [
-                        "assets/images/demo/product-4.jpg",
-                        "assets/images/demo/product-4-2.jpg"
-                    ]
-                },
-                {
-                    title: "Black Piani Table Lamp",
-                    price: "290",
-                    imageUrls: [
-                        "assets/images/demo/product-5.jpg",
-                        "assets/images/demo/product-5-2.jpg"
-                    ]
-                },
-                {
-                    title: "Grey Pendant Bell Lamp",
-                    price: "258",
-                    imageUrls: [
-                        "assets/images/demo/product-6.jpg",
-                        "assets/images/demo/product-6-2.jpg"
-                    ]
-                }
-            ]
-        };
+    componentDidMount() {
+        Bs.log("####################");
+        Bs.log("this.props.message ==> " + this.props.message);
+
+        // TODO: Learn redux action creators.
+
+        // TODO: Learn invoking functions with delay (callbacks) using redux.
+
+        // TODO: Read products.
     }
 
 
 
     render() {
 
-        const products = this.state.products.map((p, i) => {
+        const products = this.props.products.map((p, i) => {
             return (
-                <div className="col-6 col-md-4">
-                    <Product product={p} key={i} />
+                <div className="col-6 col-md-4" key={i}>
+                    <Product product={p} />
                 </div>
             );
         });
 
         return (
             <>
-                <Breadcrumbs />
-
-                <section className="pt-6">
+                <section className="Listing">
                     <div className="container">
 
                         <ListingHeader />
@@ -111,7 +52,6 @@ class Listing extends React.Component {
                             <aside className="col-lg-3 sidebar">
                                 <FilterByCategories />
                                 <FilterByBrand />
-                                <FilterBySize />
                                 <FilterByColor />
                                 <FilterByPrice />
                             </aside>
@@ -132,4 +72,13 @@ class Listing extends React.Component {
 
 
 
-export default Listing;
+const mapStateToProps = (state) => {
+    return {
+        message: state.products.message,
+        products: state.products.products
+    };
+};
+
+
+
+export default connect(mapStateToProps, null)(Listing);

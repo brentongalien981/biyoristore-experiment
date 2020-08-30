@@ -19,7 +19,9 @@ function HeaderLight() {
 
                         <div className="collapse navbar-collapse order-3 order-lg-1" id="navbarMenu">
                             <ul className="navbar-nav mr-auto">
-                                <li className="nav-item"><a className="nav-link" href="index.html">Home</a></li>
+                                <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
+                                <li className="nav-item"><Link className="nav-link" to="/products">Products</Link></li>
+
                                 <li className="nav-item dropdown megamenu">
                                     <a className="nav-link dropdown-toggle" href="#!" id="navbarDropdown-4" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
                                     <div className="dropdown-menu" aria-labelledby="navbarDropdown-4">
