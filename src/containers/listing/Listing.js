@@ -11,20 +11,16 @@ import Pagination from './Pagination';
 import './Listing.css';
 import { connect } from 'react-redux';
 import Bs from '../../bs-library/helpers/Bs';
+import * as productsActions from '../../actions/products';
 
 
 
 class Listing extends React.Component {
 
     componentDidMount() {
-        Bs.log("####################");
-        Bs.log("this.props.message ==> " + this.props.message);
-
-        // TODO: Learn redux action creators.
-
-        // TODO: Learn invoking functions with delay (callbacks) using redux.
-
-        // TODO: Read products.
+        Bs.log("\n####################");
+        Bs.log("CLASS:: Listing, METHOD:: componentDidMount()");
+        this.props.readProducts();
     }
 
 
@@ -65,6 +61,7 @@ class Listing extends React.Component {
                         </div>
                     </div>
                 </section>
+                <h4 style={{ color: "red" }}>COMMENT ==> {this.props.message}</h4>
             </>
         );
     }
@@ -81,4 +78,12 @@ const mapStateToProps = (state) => {
 
 
 
-export default connect(mapStateToProps, null)(Listing);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        readProducts: () => dispatch(productsActions.readProducts())
+    };
+};
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Listing);

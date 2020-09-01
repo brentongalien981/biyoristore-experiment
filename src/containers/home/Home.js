@@ -42,7 +42,7 @@ class Home extends React.Component {
                 Bs.log("json.isResultOk ==> " + json.isResultOk);
                 Bs.log("products ==> " + json.objs);
                 this.setState({
-                    categories: [...json.objs, ...json.objs]
+                    categories: [...json.objs]
                 });
             }
         });

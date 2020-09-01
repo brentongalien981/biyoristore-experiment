@@ -1,10 +1,12 @@
 import React from 'react';
+import BsCore from '../../bs-library/helpers/BsCore';
 
 
 
 function Product(props) {
 
-    const productImages = props.product.imageUrls.map((url, i) => {
+    const productImages = props.product.productPhotoUrls.map((productPhotoUrl, i) => {
+        const url = BsCore.pubPhotoUrl + productPhotoUrl.url;
         return (<img src={url} key={i} alt="Image" />);
     });
 
@@ -14,7 +16,7 @@ function Product(props) {
                 <a href="#!">{productImages}</a>
             </figure>
             <div className="product-meta">
-                <h3 className="product-title"><a href="#!">{props.product.title}</a></h3>
+                <h3 className="product-title"><a href="#!">{props.product.name}</a></h3>
                 <div className="product-price">
                     <span>{"$" + props.product.price}</span>
                     <span className="product-action">
