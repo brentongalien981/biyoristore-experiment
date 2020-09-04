@@ -12,6 +12,7 @@ import './Listing.css';
 import { connect } from 'react-redux';
 import Bs from '../../bs-library/helpers/Bs';
 import * as productsActions from '../../actions/products';
+import { withRouter } from 'react-router-dom';
 
 
 
@@ -20,7 +21,18 @@ class Listing extends React.Component {
     componentDidMount() {
         Bs.log("\n####################");
         Bs.log("CLASS:: Listing, METHOD:: componentDidMount()");
-        this.props.readProducts();
+
+        // TODO: Parse the URL for query params.
+        Bs.log("this.props ==> ...");
+        Bs.log(this.props);
+
+        const acceptedParams = ["page", "search"];
+        const parsedQueryParams = Bs.getParsedQueryParams(this.props.location.search, acceptedParams);
+
+        Bs.log("\n###################");
+        Bs.log("parsedQueryParams ==> ...");
+        Bs.log(parsedQueryParams);
+        this.props.readProducts(parsedQueryParams);
     }
 
 
@@ -55,13 +67,13 @@ class Listing extends React.Component {
                             {/* content */}
                             <div className="col-lg-9">
                                 <div className="row gutter-2 gutter-lg-3">{products}</div>
-                                <Pagination />
+                                <Pagination {...this.props.paginationData} />
                             </div>
 
                         </div>
                     </div>
                 </section>
-                <h4 style={{ color: "red" }}>COMMENT ==> {this.props.message}</h4>
+                <h4 style={{ color: "red" }}>COMMENT ==&gt; {this.props.message}</h4>
             </>
         );
     }
@@ -72,7 +84,8 @@ class Listing extends React.Component {
 const mapStateToProps = (state) => {
     return {
         message: state.products.message,
-        products: state.products.products
+        products: state.products.products,
+        paginationData: state.products.paginationData
     };
 };
 
@@ -80,10 +93,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        readProducts: () => dispatch(productsActions.readProducts())
+        readProducts: (params) => dispatch(productsActions.readProducts(params))
     };
 };
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Listing);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Listing));

@@ -4,24 +4,16 @@ import * as productsActions from '../actions/products';
 
 const initialState = {
     message: "This is the initial state of products-store.",
+    paginationData: {},
     products: [
-        {
-            name: "Fawn Wool / Natural Mammoth Chair",
-            price: "2268",
-            productPhotoUrls: [
-                {url: "assets/images/iphone11.jpg"},
-                {url: "assets/images/iphone11b.jpg"},
-            ]
-        },
-        {
-            name: "Dark Stained NY11 Dining Chair",
-            price: "504",
-            productPhotoUrls: [
-                {url: "assets/images/imacpro"},
-                {url: "assets/images/demo/product-2-2.jpg"},
-                {url: "assets/images/demo/product-2-3.jpg"},
-            ]
-        }
+        // {
+        //     name: "Fawn Wool / Natural Mammoth Chair",
+        //     price: "2268",
+        //     productPhotoUrls: [
+        //         {url: "assets/images/iphone11.jpg"},
+        //         {url: "assets/images/iphone11b.jpg"},
+        //     ]
+        // }
     ]
 };
 
@@ -51,6 +43,7 @@ const ajaxReadProducts = (state, action) => {
     return {
         ...state,
         products: action.objs,
+        paginationData: action.paginationData,
         message: "Just executed METHOD: ajaxReadProducts() from REDUCER: products"
     };
 };

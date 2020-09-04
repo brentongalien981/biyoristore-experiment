@@ -6,24 +6,29 @@ export const AJAX_READ_PRODUCTS = "AJAX_READ_PRODUCTS";
 
 
 
-export const ajaxReadProducts = (objs) => ({
+export const ajaxReadProducts = (objs, paginationData) => ({
     type: AJAX_READ_PRODUCTS,
-    objs: objs
+    objs: objs,
+    paginationData: paginationData
 });
 
 
 
-export const readProducts = () => {
+export const readProducts = (params) => {
     return (dispatch) => {
 
         BsCore.ajaxCrud({
             url: '/products',
-            params: {},
+            neededResponseParams: ["paginationData"],
+            params: {...params},
             callBackFunc: (requestData, json) => {
                 Bs.log("\n#####################");
                 Bs.log("FILE: actions/products.js, METHOD: readProducts() => ajaxCrud() => callBackFunc()");
+                Bs.log("\nJSON.ERRORS ==> ...");
+                Bs.log(json.errors);
+                Bs.log(json.objs);
 
-                dispatch(ajaxReadProducts(json.objs));
+                dispatch(ajaxReadProducts(json.objs, json.paginationData));
             }
         });
     };

@@ -63,7 +63,7 @@ class BsCore {
 
             })
             .catch(function (error) {
-                Bs.log("\CATCH clause ==> ...");
+                Bs.log("\nCATCH clause ==> ...");
                 BsCore.displayErrors(error);
                 json.errors = BsCore.tryGetErrors(error);
 
