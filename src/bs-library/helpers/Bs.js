@@ -14,15 +14,18 @@ class Bs {
 
         let parsedParams = [];
 
-        keyValuePairs.forEach(pair => {
-            const splitPair = pair.split('=');
-            const key = splitPair[0].trim();
-            const value = splitPair[1].trim();
+        if (q) {
+            keyValuePairs.forEach(pair => {
+                const splitPair = pair.split('=');
+                const key = splitPair[0].trim();
+                const value = splitPair[1].trim();
+    
+                if (acceptedParams.includes(key)) {
+                    parsedParams[key] = value;
+                }
+            });
+        }
 
-            if (acceptedParams.includes(key)) {
-                parsedParams[key] = value;
-            }
-        });
 
         return parsedParams;
     }

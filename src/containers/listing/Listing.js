@@ -37,6 +37,43 @@ class Listing extends React.Component {
 
 
 
+    componentDidUpdate() {
+        Bs.log("\n####################");
+        Bs.log("CLASS:: Listing, METHOD:: componentDidUpdate()");
+
+        Bs.log("\n####################");
+        Bs.log("this.props ==> ...");
+        Bs.log(this.props);
+
+        this.checkHasPageNumberChanged();
+
+
+    }
+
+
+
+    checkHasPageNumberChanged() {
+        Bs.log("\n####################");
+        Bs.log("CLASS:: Listing, METHOD:: checkHasPageNumberChanged()");
+
+        const previousPageNum = this.props.paginationData.currentPageNum;
+
+        const acceptedParams = ["page", "search"];
+        const urlQuery = this.props.location.search;
+        const parsedQueryParams = Bs.getParsedQueryParams(urlQuery, acceptedParams);
+        const newPageNum = parsedQueryParams["page"];
+
+        Bs.log("\n####################");
+        Bs.log("previousPageNum ==> " + previousPageNum);
+        Bs.log("newPageNum ==> " + newPageNum);
+
+        if (previousPageNum != newPageNum) {
+            this.props.readProducts(parsedQueryParams);
+        }
+    }
+
+
+
     render() {
 
         const products = this.props.products.map((p, i) => {
