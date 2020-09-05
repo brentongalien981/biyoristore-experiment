@@ -2,7 +2,19 @@ import React from 'react';
 
 
 
-function FilterByBrand() {
+function FilterByBrand(props) {
+
+    const brandFilters = props.brands.map((b) => {
+
+        const inputId = "customCheck" + b.id;
+
+        return (
+            <div key={b.id} className="custom-control custom-checkbox">
+                <input type="checkbox" className="custom-control-input" id={inputId} />
+                <label className="custom-control-label" htmlFor={inputId}>{b.name}</label>
+            </div>
+        );
+    });
 
     return (
         <div className="widget">
@@ -10,22 +22,13 @@ function FilterByBrand() {
             <div className="d-lg-block collapse" id="collapse-2">
                 <span className="widget-title">Brands</span>
                 <div className="widget-content">
-                    <div className="custom-control custom-checkbox">
+
+                    {/* <div className="custom-control custom-checkbox">
                         <input type="checkbox" className="custom-control-input" id="customCheck1" />
                         <label className="custom-control-label" htmlFor="customCheck1">Calvin Klein</label>
-                    </div>
-                    <div className="custom-control custom-checkbox">
-                        <input type="checkbox" className="custom-control-input" id="customCheck2" />
-                        <label className="custom-control-label" htmlFor="customCheck2">Ralph Lauren</label>
-                    </div>
-                    <div className="custom-control custom-checkbox">
-                        <input type="checkbox" className="custom-control-input" id="customCheck3" />
-                        <label className="custom-control-label" htmlFor="customCheck3">Michael Kors</label>
-                    </div>
-                    <div className="custom-control custom-checkbox">
-                        <input type="checkbox" className="custom-control-input" id="customCheck4" />
-                        <label className="custom-control-label" htmlFor="customCheck4">Balenciaga</label>
-                    </div>
+                    </div> */}
+                    {brandFilters}
+
                 </div>
             </div>
         </div>

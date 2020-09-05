@@ -22,9 +22,7 @@ class Listing extends React.Component {
         Bs.log("\n####################");
         Bs.log("CLASS:: Listing, METHOD:: componentDidMount()");
 
-        // TODO: Parse the URL for query params.
-        Bs.log("this.props ==> ...");
-        Bs.log(this.props);
+        this.props.readBrands();
 
         const acceptedParams = ["page", "search"];
         const parsedQueryParams = Bs.getParsedQueryParams(this.props.location.search, acceptedParams);
@@ -96,7 +94,7 @@ class Listing extends React.Component {
                             {/* sidebar */}
                             <aside className="col-lg-3 sidebar">
                                 <FilterByCategories />
-                                <FilterByBrand />
+                                <FilterByBrand brands={this.props.brands} />
                                 <FilterByColor />
                                 <FilterByPrice />
                             </aside>
@@ -121,6 +119,7 @@ class Listing extends React.Component {
 const mapStateToProps = (state) => {
     return {
         message: state.products.message,
+        brands: state.products.brands,
         products: state.products.products,
         paginationData: state.products.paginationData
     };
@@ -130,7 +129,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        readProducts: (params) => dispatch(productsActions.readProducts(params))
+        readProducts: (params) => dispatch(productsActions.readProducts(params)),
+        readBrands: () => dispatch(productsActions.readBrands())
     };
 };
 
