@@ -4,13 +4,15 @@ import React from 'react';
 
 function FilterByBrand(props) {
 
-    const brandFilters = props.brands.map((b) => {
+    const brandFilters = props.brands.map((b, i) => {
 
         const inputId = "customCheck" + b.id;
+        const checkedAttrib = b.isSelected ? { checked: true } : {};
+        const brandFilterEventData = { brandFilterIndex: i, brandId: b.id };
 
         return (
             <div key={b.id} className="custom-control custom-checkbox">
-                <input type="checkbox" className="custom-control-input" id={inputId} />
+                <input type="checkbox" className="custom-control-input" id={inputId} onChange={(e) => props.onBrandFilterChanged(brandFilterEventData)} />
                 <label className="custom-control-label" htmlFor={inputId}>{b.name}</label>
             </div>
         );
@@ -24,7 +26,7 @@ function FilterByBrand(props) {
                 <div className="widget-content">
 
                     {/* <div className="custom-control custom-checkbox">
-                        <input type="checkbox" className="custom-control-input" id="customCheck1" />
+                        <input type="checkbox" className="custom-control-input" id="customCheck1" checked />
                         <label className="custom-control-label" htmlFor="customCheck1">Calvin Klein</label>
                     </div> */}
                     {brandFilters}

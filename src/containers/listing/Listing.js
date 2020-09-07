@@ -39,13 +39,38 @@ class Listing extends React.Component {
         Bs.log("\n####################");
         Bs.log("CLASS:: Listing, METHOD:: componentDidUpdate()");
 
-        Bs.log("\n####################");
         Bs.log("this.props ==> ...");
         Bs.log(this.props);
 
         this.checkHasPageNumberChanged();
 
+        if (this.props.shouldRefreshProducts) {
+            this.refreshProducts();
+        }
+    }
 
+
+
+    refreshProducts() {
+        const urlParams = this.props.location.search;
+        const acceptedParams = ["page", "search"];
+        const parsedUrlParams = Bs.getParsedQueryParams(urlParams, acceptedParams);
+
+        const selectedBrandIds = this.getSelectedBrandIds();
+        const readParams = { ...parsedUrlParams, selectedBrandIds: selectedBrandIds };
+        this.props.readProducts(readParams);
+    }
+
+
+
+    getSelectedBrandIds() {
+        let selectedBrandIds = [];
+
+        this.props.brands.forEach(b => {
+            if (b.isSelected) { selectedBrandIds.push(b.id); }
+        });
+
+        return selectedBrandIds;
     }
 
 
@@ -59,9 +84,9 @@ class Listing extends React.Component {
         const acceptedParams = ["page", "search"];
         const urlQuery = this.props.location.search;
         const parsedQueryParams = Bs.getParsedQueryParams(urlQuery, acceptedParams);
-        const newPageNum = parsedQueryParams["page"];
+        const newPageNum = parsedQueryParams["page"] ? parsedQueryParams["page"] : 1;
 
-        Bs.log("\n####################");
+        Bs.log("####################");
         Bs.log("previousPageNum ==> " + previousPageNum);
         Bs.log("newPageNum ==> " + newPageNum);
 
@@ -94,7 +119,7 @@ class Listing extends React.Component {
                             {/* sidebar */}
                             <aside className="col-lg-3 sidebar">
                                 <FilterByCategories />
-                                <FilterByBrand brands={this.props.brands} />
+                                <FilterByBrand brands={this.props.brands} onBrandFilterChanged={this.props.onBrandFilterChanged} />
                                 <FilterByColor />
                                 <FilterByPrice />
                             </aside>
@@ -119,6 +144,7 @@ class Listing extends React.Component {
 const mapStateToProps = (state) => {
     return {
         message: state.products.message,
+        shouldRefreshProducts: state.products.shouldRefreshProducts,
         brands: state.products.brands,
         products: state.products.products,
         paginationData: state.products.paginationData
@@ -130,7 +156,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         readProducts: (params) => dispatch(productsActions.readProducts(params)),
-        readBrands: () => dispatch(productsActions.readBrands())
+        readBrands: () => dispatch(productsActions.readBrands()),
+        onBrandFilterChanged: (brandFilterEventData) => dispatch(productsActions.onBrandFilterChanged(brandFilterEventData))
     };
 };
 
