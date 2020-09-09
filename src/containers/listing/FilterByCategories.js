@@ -2,7 +2,15 @@ import React from 'react';
 
 
 
-function FilterByCategories() {
+function FilterByCategories(props) {
+
+    const categories = props.categories.map((c, i) => {
+        return (
+            <li key={i} className="nav-item">
+                <a className="nav-link" href="#!">{c.name}</a>
+            </li>
+        );
+    });
 
     return (
         <div className="widget">
@@ -14,30 +22,15 @@ function FilterByCategories() {
                     <ul id="page-nav" className="nav flex-column nav-category">
 
                         <li className="nav-item">
-                            <a className="nav-link" data-toggle="collapse" href="#menu-2" role="button" aria-expanded="false" aria-controls="menu-2">Women</a>
-                            <div className="collapse" id="menu-2" data-parent="#page-nav">
+                            {/* <a className="nav-link" data-toggle="collapse" href="#menu-2" role="button" aria-expanded="false" aria-controls="menu-2">Women</a> */}
+
+                            {/* <div className="collapse" id="menu-2" data-parent="#page-nav"> */}
+                            <div className="" id="menu-2" data-parent="#page-nav">
+
                                 <div>
-                                    <ul className="nav flex-column">
-                                        <li className="nav-item">
-                                            <a className="nav-link" href="#!">New In</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link" href="#!">Clothing</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link" href="#!">Shoes</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link" href="#!">Accessories</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link" href="#!">Face + Body</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link" href="#!">Outlet</a>
-                                        </li>
-                                    </ul>
+                                    <ul className="nav flex-column">{categories}</ul>
                                 </div>
+
                             </div>
                         </li>
 

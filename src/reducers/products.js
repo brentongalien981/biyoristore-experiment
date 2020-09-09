@@ -8,6 +8,7 @@ const initialState = {
     paginationData: { currentPageNum: 1 },
     shouldRefreshProducts: false,
     brands: [{ id: 1, name: "Nike" }, { id: 2, name: "Adidas", isSelected: false }, { id: 3, name: "Toyota", isSelected: true }],
+    categories: [{ id: 1, name: "laptop" }, { id: 2, name: "phone" }, { id: 3, name: "tablet" }],
     products: [
         // {
         //     name: "Fawn Wool / Natural Mammoth Chair",
@@ -29,11 +30,24 @@ const products = (state = initialState, action) => {
         case productsActions.AJAX_READ_PRODUCTS: return ajaxReadProducts(state, action);
         case productsActions.AJAX_READ_BRANDS: return ajaxReadBrands(state, action);
         case productsActions.ON_BRAND_FILTER_CHANGED: return onBrandFilterChanged(state, action);
+        case productsActions.DISPLAY_CATEGORIES: return displayCategories(state, action);
         default: return state;
     }
 }
 
 
+
+/* NORMAL */
+const displayCategories = (state, action) => {
+    Bs.log("\n###############");
+    Bs.log("In REDUCER: products, METHOD: displayCategories()");
+
+    return {
+        ...state,
+        categories: action.objs,
+        message: "Just executed METHOD:: displayCategories() from REDUCER:: products"
+    };
+};
 
 const onBrandFilterChanged = (state, action) => {
     Bs.log("\n###############");

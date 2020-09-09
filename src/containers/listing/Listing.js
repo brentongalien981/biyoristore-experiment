@@ -23,6 +23,7 @@ class Listing extends React.Component {
         Bs.log("CLASS:: Listing, METHOD:: componentDidMount()");
 
         this.props.readBrands();
+        this.props.readCategories();
 
         const acceptedParams = ["page", "search"];
         const parsedQueryParams = Bs.getParsedQueryParams(this.props.location.search, acceptedParams);
@@ -91,7 +92,8 @@ class Listing extends React.Component {
         Bs.log("newPageNum ==> " + newPageNum);
 
         if (previousPageNum != newPageNum) {
-            this.props.readProducts(parsedQueryParams);
+            // this.props.readProducts(parsedQueryParams);
+            this.refreshProducts();
         }
     }
 
@@ -118,7 +120,7 @@ class Listing extends React.Component {
 
                             {/* sidebar */}
                             <aside className="col-lg-3 sidebar">
-                                <FilterByCategories />
+                                <FilterByCategories categories={this.props.categories} />
                                 <FilterByBrand brands={this.props.brands} onBrandFilterChanged={this.props.onBrandFilterChanged} />
                                 <FilterByColor />
                                 <FilterByPrice />
@@ -146,6 +148,7 @@ const mapStateToProps = (state) => {
         message: state.products.message,
         shouldRefreshProducts: state.products.shouldRefreshProducts,
         brands: state.products.brands,
+        categories: state.products.categories,
         products: state.products.products,
         paginationData: state.products.paginationData
     };
@@ -157,6 +160,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         readProducts: (params) => dispatch(productsActions.readProducts(params)),
         readBrands: () => dispatch(productsActions.readBrands()),
+        readCategories: () => dispatch(productsActions.readCategories()),
         onBrandFilterChanged: (brandFilterEventData) => dispatch(productsActions.onBrandFilterChanged(brandFilterEventData))
     };
 };
