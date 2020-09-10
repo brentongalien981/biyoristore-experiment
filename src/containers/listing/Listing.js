@@ -58,7 +58,7 @@ class Listing extends React.Component {
         const parsedUrlParams = Bs.getParsedQueryParams(urlParams, acceptedParams);
 
         const selectedBrandIds = this.getSelectedBrandIds();
-        const readParams = { ...parsedUrlParams, selectedBrandIds: selectedBrandIds };
+        const readParams = { ...parsedUrlParams, selectedBrandIds: selectedBrandIds, selectedCategoryId: this.props.selectedCategory.id };
         this.props.readProducts(readParams);
     }
 
@@ -114,13 +114,13 @@ class Listing extends React.Component {
                 <section className="Listing">
                     <div className="container">
 
-                        <ListingHeader />
+                        <ListingHeader category={this.props.selectedCategory} />
 
                         <div className="row gutter-4">
 
                             {/* sidebar */}
                             <aside className="col-lg-3 sidebar">
-                                <FilterByCategories categories={this.props.categories} />
+                                <FilterByCategories categories={this.props.categories} onCategoryClicked={this.props.onCategoryClicked} />
                                 <FilterByBrand brands={this.props.brands} onBrandFilterChanged={this.props.onBrandFilterChanged} />
                                 <FilterByColor />
                                 <FilterByPrice />
@@ -148,6 +148,7 @@ const mapStateToProps = (state) => {
         message: state.products.message,
         shouldRefreshProducts: state.products.shouldRefreshProducts,
         brands: state.products.brands,
+        selectedCategory: state.products.selectedCategory,
         categories: state.products.categories,
         products: state.products.products,
         paginationData: state.products.paginationData
@@ -161,7 +162,8 @@ const mapDispatchToProps = (dispatch) => {
         readProducts: (params) => dispatch(productsActions.readProducts(params)),
         readBrands: () => dispatch(productsActions.readBrands()),
         readCategories: () => dispatch(productsActions.readCategories()),
-        onBrandFilterChanged: (brandFilterEventData) => dispatch(productsActions.onBrandFilterChanged(brandFilterEventData))
+        onBrandFilterChanged: (brandFilterEventData) => dispatch(productsActions.onBrandFilterChanged(brandFilterEventData)),
+        onCategoryClicked: (categoryFilterEventData) => dispatch(productsActions.onCategoryFilterChanged(categoryFilterEventData))
     };
 };
 

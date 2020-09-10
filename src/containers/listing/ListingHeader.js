@@ -2,14 +2,16 @@ import React from 'react';
 
 
 
-function ListingHeader() {
+function ListingHeader(props) {
+
+    const categoryName = props.category ? props.category.name : "All Products";
 
     return (
         <div className="row justify-content-end">
             <div className="col-lg-9">
                 <div className="row gutter-2 align-items-end">
                     <div className="col-md-6">
-                        <h1 className="mb-0">{"{TODO-Categories}"}</h1>
+                        <h1 className="mb-0">{categoryName}</h1>
                         {/* <span className="eyebrow">20 products</span> */}
                     </div>
                     <div className="col-md-6 text-md-right">

@@ -5,9 +5,12 @@ import React from 'react';
 function FilterByCategories(props) {
 
     const categories = props.categories.map((c, i) => {
+
+        const categoryFilterEventData = { categoryFilterIndex: i, categoryId: c.id };
+
         return (
             <li key={i} className="nav-item">
-                <a className="nav-link" href="#!">{c.name}</a>
+                <a className="nav-link" href="#" onClick={(e) => props.onCategoryClicked(categoryFilterEventData)}>{c.name}</a>
             </li>
         );
     });
