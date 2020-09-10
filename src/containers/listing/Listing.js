@@ -58,7 +58,7 @@ class Listing extends React.Component {
         const parsedUrlParams = Bs.getParsedQueryParams(urlParams, acceptedParams);
 
         const selectedBrandIds = this.getSelectedBrandIds();
-        const readParams = { ...parsedUrlParams, selectedBrandIds: selectedBrandIds, selectedCategoryId: this.props.selectedCategory.id };
+        const readParams = { ...parsedUrlParams, selectedBrandIds: selectedBrandIds, selectedCategoryId: this.props.selectedCategory?.id };
         this.props.readProducts(readParams);
     }
 
@@ -104,7 +104,7 @@ class Listing extends React.Component {
         const products = this.props.products.map((p, i) => {
             return (
                 <div className="col-6 col-md-4" key={i}>
-                    <Product product={p} />
+                    <Product product={p} onProductClicked={this.onProductClicked} />
                 </div>
             );
         });
@@ -139,6 +139,16 @@ class Listing extends React.Component {
             </>
         );
     }
+
+
+
+    onProductClicked = (productId) => {
+        Bs.log("\n###############");
+        Bs.log("In METHOD: onProductClicked()");
+        Bs.log("productId ==> " + productId);
+
+        this.props.history.push("/products/" + productId);
+    };
 }
 
 
@@ -163,7 +173,8 @@ const mapDispatchToProps = (dispatch) => {
         readBrands: () => dispatch(productsActions.readBrands()),
         readCategories: () => dispatch(productsActions.readCategories()),
         onBrandFilterChanged: (brandFilterEventData) => dispatch(productsActions.onBrandFilterChanged(brandFilterEventData)),
-        onCategoryClicked: (categoryFilterEventData) => dispatch(productsActions.onCategoryFilterChanged(categoryFilterEventData))
+        onCategoryClicked: (categoryFilterEventData) => dispatch(productsActions.onCategoryFilterChanged(categoryFilterEventData)),
+        onProductClicked: (productId) => dispatch(productsActions.onProductClicked(productId))
     };
 };
 

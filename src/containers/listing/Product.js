@@ -11,7 +11,7 @@ function Product(props) {
     });
 
     return (
-        <div className="product">
+        <div className="product" onClick={() => props.onProductClicked(props.product.id)}>
             <figure className="product-image">
                 <a href="#!">{productImages}</a>
             </figure>

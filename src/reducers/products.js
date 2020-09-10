@@ -32,6 +32,7 @@ const products = (state = initialState, action) => {
         case productsActions.AJAX_READ_BRANDS: return ajaxReadBrands(state, action);
         case productsActions.ON_BRAND_FILTER_CHANGED: return onBrandFilterChanged(state, action);
         case productsActions.ON_CATEGORY_FILTER_CHANGED: return onCategoryFilterChanged(state, action);
+        case productsActions.ON_PRODUCT_CLICKED: return onProductClicked(state, action);
         case productsActions.DISPLAY_CATEGORIES: return displayCategories(state, action);
         default: return state;
     }
@@ -48,6 +49,17 @@ const displayCategories = (state, action) => {
         ...state,
         categories: action.objs,
         message: "Just executed METHOD:: displayCategories() from REDUCER:: products"
+    };
+};
+
+const onProductClicked = (state, action) => {
+    Bs.log("\n###############");
+    Bs.log("In REDUCER: products, METHOD: onProductClicked()");
+    Bs.log("action.productId ==> " + action.productId);
+
+    return {
+        ...state,
+        message: "Just executed METHOD:: onProductClicked() from REDUCER:: products"
     };
 };
 
