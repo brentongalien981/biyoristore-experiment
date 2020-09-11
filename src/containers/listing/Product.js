@@ -11,7 +11,7 @@ function Product(props) {
     });
 
     return (
-        <div className="product" onClick={() => props.onProductClicked(props.product.id)}>
+        <div className="product" onClick={(e) => props.onProductClicked(e, props.product.id)}>
             <figure className="product-image">
                 <a href="#!">{productImages}</a>
             </figure>
@@ -20,7 +20,7 @@ function Product(props) {
                 <div className="product-price">
                     <span>{"$" + props.product.price}</span>
                     <span className="product-action">
-                        <a href="#!">Add to cart</a>
+                        <a href="#!" onClick={(e) => props.onAddToCartClicked(e, props.product.id)}>Add to cart</a>
                     </span>
                 </div>
                 <a href="#!" className="product-like"></a>

@@ -104,7 +104,7 @@ class Listing extends React.Component {
         const products = this.props.products.map((p, i) => {
             return (
                 <div className="col-6 col-md-4" key={i}>
-                    <Product product={p} onProductClicked={this.onProductClicked} />
+                    <Product product={p} onProductClicked={this.onProductClicked} onAddToCartClicked={this.onAddToCartClicked} />
                 </div>
             );
         });
@@ -142,7 +142,18 @@ class Listing extends React.Component {
 
 
 
-    onProductClicked = (productId) => {
+    onAddToCartClicked = (e, productId) => {
+        e.preventDefault();
+        e.stopPropagation();
+        Bs.log("\n###############");
+        Bs.log("In METHOD: onAddToCartClicked()");
+        Bs.log("productId ==> " + productId);
+        alert("TODO: CLASS: Listing, METHOD: onAddToCartClicked()");
+    };
+
+    onProductClicked = (e, productId) => {
+        e.preventDefault();
+        e.stopPropagation();
         Bs.log("\n###############");
         Bs.log("In METHOD: onProductClicked()");
         Bs.log("productId ==> " + productId);
