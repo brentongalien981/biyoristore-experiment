@@ -16,7 +16,7 @@ function Product(props) {
                 <a href="#!">{productImages}</a>
             </figure>
             <div className="product-meta">
-                <h3 className="product-title"><a href="#!">{props.product.name}</a></h3>
+                <h3 className="product-title"><a href="#!" title={props.product.name}>{props.product.name}</a></h3>
                 <div className="product-price">
                     <span>{"$" + props.product.price}</span>
                     <span className="product-action">
