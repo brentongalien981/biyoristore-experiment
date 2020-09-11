@@ -1,16 +1,17 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Header from './theme-components/Header';
 import Footer from './theme-components/Footer';
 import Search from './theme-components/Search';
 import Cart from './theme-components/Cart';
 import Home from './containers/home/Home';
 // import Listing from './containers/listing/Listing';
-import Product from './containers/product/Product';
+// import ProductInDetails from './containers/product/ProductInDetails';
 
 
 
 const Listing = React.lazy(() => import('./containers/listing/Listing'));
+const ProductInDetails = React.lazy(() => import('./containers/product/ProductInDetails'));
 
 
 
@@ -20,11 +21,11 @@ function App() {
 		<BrowserRouter>
 			<Header />
 
-			<Route path="/" exact component={Home} />
-			{/* <Route path="/products" exact component={Listing} /> */}
-			<Route path="/products/:id" exact render={() => <div style={{ color: "white" }}>Show Product</div>} />
-			<Route path="/products" exact render={() => <Suspense fallback={<div>loading...</div>}><Listing /></Suspense>} />
-			<Route path="/product" exact component={Product} />
+			<Switch>
+				<Route path="/" exact component={Home} />
+				<Route path="/products" exact render={() => <Suspense fallback={<div>loading...</div>}><Listing /></Suspense>} />
+				<Route path="/product" exact render={() => <Suspense fallback={<div>loading...</div>}><ProductInDetails /></Suspense>} />
+			</Switch>
 			<Footer />
 
 			<Search />

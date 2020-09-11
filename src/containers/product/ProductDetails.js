@@ -24,7 +24,7 @@ function ProductDetails() {
                 </div>
             </div>
 
-            <ProductColorFilter />
+            {/* <ProductColorFilter /> */}
             <ProductActions />
         </div>
     );

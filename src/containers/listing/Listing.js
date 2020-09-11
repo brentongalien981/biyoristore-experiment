@@ -158,7 +158,7 @@ class Listing extends React.Component {
         Bs.log("In METHOD: onProductClicked()");
         Bs.log("productId ==> " + productId);
 
-        this.props.history.push("/products/" + productId);
+        this.props.history.push("/product?productId=" + productId);
     };
 }
 
