@@ -25,6 +25,7 @@ function App() {
 				<Route path="/" exact component={Home} />
 				<Route path="/products" exact render={() => <Suspense fallback={<div>loading...</div>}><Listing /></Suspense>} />
 				<Route path="/product" exact render={() => <Suspense fallback={<div>loading...</div>}><ProductInDetails /></Suspense>} />
+				{/* <Route path="/product" exact component={ProductInDetails} /> */}
 			</Switch>
 			<Footer />
 

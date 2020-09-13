@@ -5,6 +5,8 @@ import React from 'react';
 function Footer() {
     return (
         <footer className="bg-dark text-white py-0">
+            {/* <input id="shouldRelaunchVendorScript" type="hidden" value="0" /> */}
+            <button id="shouldRelaunchVendorScript" style={{ display: "none" }}>0</button>
             <div className="container">
                 <div className="row separated">
                     <div className="col-lg-6 py-10">

@@ -8,6 +8,7 @@ import CreateReview from './CreateReview';
 import { withRouter } from 'react-router-dom';
 import Bs from '../../bs-library/helpers/Bs';
 import { connect } from 'react-redux';
+import * as actions from '../../actions/productInDetails';
 
 
 
@@ -27,6 +28,25 @@ class ProductInDetails extends React.Component {
         Bs.log("this.props ==> ...");
         Bs.log(this.props);
         Bs.log("this.props.message ==> " + this.props.message);
+
+        const urlParams = this.props.location.search;
+        const acceptedParams = ["productId"];
+        const parsedUrlParams = Bs.getParsedQueryParams(urlParams, acceptedParams);
+        this.props.readProduct(parsedUrlParams['productId']);
+    }
+
+
+
+    componentDidUpdate() {
+        Bs.log("\n####################");
+        Bs.log("In CLASS: ProductInDetails, METHOD: componentDidUpdate()");
+
+        Bs.log("this.props ==> ...");
+        Bs.log(this.props);
+
+        if (this.props.shouldRelaunchVendorScript) {
+            this.props.relaunchVendorScript();
+        }
     }
 
 
@@ -35,9 +55,11 @@ class ProductInDetails extends React.Component {
         return (
             <>
                 <BreadcrumbsLight />
-                <ProductMainSection />
+                <ProductMainSection product={this.props.product} />
                 <ProductExtraInfo />
                 <SuggestedProducts products={this.props.relatedProducts} />
+
+                {/* TODO */}
                 <ProductReviews reviews={this.props.reviews} />
                 <CreateReview />
             </>
@@ -49,6 +71,8 @@ class ProductInDetails extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+        product: state.productInDetails.product,
+        shouldRelaunchVendorScript: state.productInDetails.shouldRelaunchVendorScript,
         message: state.productInDetails.message,
         relatedProducts: state.productInDetails.relatedProducts,
         reviews: state.productInDetails.reviews,
@@ -57,4 +81,13 @@ const mapStateToProps = (state) => {
 
 
 
-export default connect(mapStateToProps, null)(withRouter(ProductInDetails));
+const mapDispatchToProps = (dispatch) => {
+    return {
+        readProduct: (productId) => dispatch(actions.readProduct(productId)),
+        relaunchVendorScript: () => dispatch(actions.relaunchVendorScript())
+    };
+};
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProductInDetails));

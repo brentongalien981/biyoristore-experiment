@@ -1,4 +1,4 @@
-(function ($) {
+function biyoristoreVendorLaunch() {
   "use strict";
 
   var fn = {
@@ -15,18 +15,18 @@
 
 
     // header
-    Header: function (){
+    Header: function () {
       $(document.body).headroom({
-        tolerance : 10
+        tolerance: 10
       });
     },
 
     // owlcarousel
-    OwlCarousel: function() {
+    OwlCarousel: function () {
 
-      $('.owl-carousel').each(function() {
+      $('.owl-carousel').each(function () {
         var a = $(this),
-          items = a.data('items') || [1,1,1,1],
+          items = a.data('items') || [1, 1, 1, 1],
           margin = a.data('margin'),
           loop = a.data('loop'),
           nav = a.data('nav'),
@@ -60,7 +60,7 @@
             0: { items: items[3] || 1 },
             992: { items: items[2] || 1 },
             1200: { items: items[1] || 1 },
-            1600: { items: items[0] || 1}
+            1600: { items: items[0] || 1 }
           }
         };
 
@@ -70,7 +70,7 @@
 
 
     // image view
-    ImageView: function() {
+    ImageView: function () {
       $('.lightbox').magnificPopup({
         type: 'image',
         closeOnContentClick: true,
@@ -82,23 +82,23 @@
         }
       });
 
-      $('.gallery').each(function() { // the containers for all your galleries
-          $(this).magnificPopup({
-              delegate: 'figure > a', // the selector for gallery item
-              type: 'image',
-              mainClass: 'mfp-no-margins mfp-with-zoom', // class to remove default margin from left and right side
-              gallery: {
-                enabled:true
-              }
-          });
+      $('.gallery').each(function () { // the containers for all your galleries
+        $(this).magnificPopup({
+          delegate: 'figure > a', // the selector for gallery item
+          type: 'image',
+          mainClass: 'mfp-no-margins mfp-with-zoom', // class to remove default margin from left and right side
+          gallery: {
+            enabled: true
+          }
+        });
       });
     },
 
 
     // swiper
-    Swiper: function() {
+    Swiper: function () {
 
-      $('.swiper-container').each(function(index, element){
+      $('.swiper-container').each(function (index, element) {
         var $this = $(this)
 
         $this.find(".swiper-pagination").addClass("swiper-pagination-" + index);
@@ -135,12 +135,12 @@
           options.slideToClickedSlide = true;
         }
 
-        new Swiper ( slider, options );
+        new Swiper(slider, options);
       });
 
 
 
-      if ( $( ".gallery-container" ).length ) {
+      if ($(".gallery-container").length) {
         var galleryTop = new Swiper('.gallery-container', {
           effect: 'fade',
           speed: 1500,
@@ -166,37 +166,37 @@
 
 
     // masonry
-    Masonry: function() {
+    Masonry: function () {
       var $grid = $('.masonry').masonry({
         itemSelector: '.masonry > *',
       });
 
-      $grid.imagesLoaded().progress( function() {
+      $grid.imagesLoaded().progress(function () {
         $grid.masonry('layout');
       });
     },
 
 
     // sidebar
-    Sidebar: function() {
+    Sidebar: function () {
       var sidebar_open = $(".sidebar-open");
       var sidebar = $(".sidebar")
       var sidebar_close = $(".sidebar-close");
-      sidebar_open.click( function () {
-          if( $(this).hasClass("open") ) {
-             $(this).removeClass("open");
-          } 
-          else {
-              speaker.removeClass("open");
-              $(this).addClass("open");
-          }
+      sidebar_open.click(function () {
+        if ($(this).hasClass("open")) {
+          $(this).removeClass("open");
+        }
+        else {
+          speaker.removeClass("open");
+          $(this).addClass("open");
+        }
       });
     },
 
 
     // apps
     Apps: function () {
-      
+
       // lavalamp
       $('.lavalamp').lavalamp({
         setOnClick: true,
@@ -208,17 +208,17 @@
 
 
       // steps
-      $('.next-step').click(function(){
+      $('.next-step').click(function () {
         $('.nav-steps > .active').next('.nav-link').trigger('click');
       });
 
-      $('.prev-step').click(function(){
+      $('.prev-step').click(function () {
         $('.nav-steps > .active').prev('.nav-link').trigger('click');
       });
 
 
       // range slider
-      $('.rangeslider').each(function() {
+      $('.rangeslider').each(function () {
         var a = $(this),
           min = a.data('min'),
           max = a.data('max'),
@@ -238,39 +238,39 @@
       });
 
       // counter
-      $(document).ready(function(){
+      $(document).ready(function () {
 
-          $('.counter-plus').click(function(){
+        $('.counter-plus').click(function () {
 
-              var fieldID = $(this).attr('field'),
-                  fieldVal = parseInt($('input[name='+fieldID+']').val());
+          var fieldID = $(this).attr('field'),
+            fieldVal = parseInt($('input[name=' + fieldID + ']').val());
 
-              if (!isNaN(fieldVal)) {
-                  $('input[name='+fieldID+']').val(fieldVal + 1);
-              } else {
-                  $('input[name='+fieldID+']').val(0);
-              }
-          });
+          if (!isNaN(fieldVal)) {
+            $('input[name=' + fieldID + ']').val(fieldVal + 1);
+          } else {
+            $('input[name=' + fieldID + ']').val(0);
+          }
+        });
 
-          $(".counter-minus").click(function() {
+        $(".counter-minus").click(function () {
 
-              var fieldID = $(this).attr('field'),
-                  fieldVal = parseInt($('input[name='+fieldID+']').val());
+          var fieldID = $(this).attr('field'),
+            fieldVal = parseInt($('input[name=' + fieldID + ']').val());
 
-              if (!isNaN(fieldVal) && fieldVal > 0) {
-                  $('input[name='+fieldID+']').val(fieldVal - 1);
-              } else {
-                  $('input[name='+fieldID+']').val(0);
-              }
-          });
+          if (!isNaN(fieldVal) && fieldVal > 0) {
+            $('input[name=' + fieldID + ']').val(fieldVal - 1);
+          } else {
+            $('input[name=' + fieldID + ']').val(0);
+          }
+        });
       });
 
 
 
 
       //  accordion with radio buttons
-      $(".accordion-radio").on('click', function(){
-          $(this).next('input').prop("checked", true);
+      $(".accordion-radio").on('click', function () {
+        $(this).next('input').prop("checked", true);
       });
 
       // accordion active class
@@ -285,11 +285,11 @@
 
       // skrollr
       skrollr.init({
-          forceHeight: false,        
-          mobileCheck: function() {
-              //hack - forces mobile version to be off
-              return false;
-          }
+        forceHeight: false,
+        mobileCheck: function () {
+          //hack - forces mobile version to be off
+          return false;
+        }
       });
 
 
@@ -299,12 +299,12 @@
 
 
       // timer
-      $('#timer').countdown('2020/01/01', function(event) {
-          var $this = $(this).html(event.strftime(''
-              + '<div>%D <span>days</span></div> '
-              + '<div>%H <span>hours</span></div> '
-              + '<div>%M <span>min</span></div> '
-              + '<div>%S <span>sec</span></div>'));
+      $('#timer').countdown('2020/01/01', function (event) {
+        var $this = $(this).html(event.strftime(''
+          + '<div>%D <span>days</span></div> '
+          + '<div>%H <span>hours</span></div> '
+          + '<div>%M <span>min</span></div> '
+          + '<div>%S <span>sec</span></div>'));
       });
 
 
@@ -315,8 +315,8 @@
 
 
       // mobile menu open state
-      $(document).ready(function(){
-        $('.navbar-toggler').click(function(){
+      $(document).ready(function () {
+        $('.navbar-toggler').click(function () {
           $('body').toggleClass('overlay-active');
         });
       });
@@ -328,7 +328,7 @@
 
 
       // sub menu
-      $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
+      $('.dropdown-menu a.dropdown-toggle').on('click', function (e) {
         if (!$(this).next().hasClass('show')) {
           $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
         }
@@ -336,7 +336,7 @@
         $subMenu.toggleClass('show');
 
 
-        $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
+        $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function (e) {
           $('.dropdown-submenu .show').removeClass("show");
         });
 
@@ -349,6 +349,19 @@
 
   $(document).ready(function () {
     fn.Launch();
-  });
 
-})(jQuery);
+    $("#shouldRelaunchVendorScript").click(function () {
+      console.log("\n####################");
+      console.log("In EVENT: click, ELEMENT: #shouldRelaunchVendorScript");
+
+      fn.Launch();
+      console.log("func:: biyoristoreVendorLaunch() executed...");
+    });
+  });
+  
+
+}
+
+
+
+biyoristoreVendorLaunch();
