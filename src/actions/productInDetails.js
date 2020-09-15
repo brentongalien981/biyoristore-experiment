@@ -4,7 +4,7 @@ import Bs from "../bs-library/helpers/Bs";
 
 
 /* NAMES */
-export const ON_PRODUCT_CLICKED = "ON_PRODUCT_CLICKED";
+export const RESET_PRODUCT = "RESET_PRODUCT";
 export const SHOW_RELATED_PRODUCTS = "SHOW_RELATED_PRODUCTS";
 export const RELAUNCH_VENDOR_SCRIPT = "RELAUNCH_VENDOR_SCRIPT";
 export const SHOW_PRODUCT = "SHOW_PRODUCT";
@@ -12,9 +12,7 @@ export const SHOW_PRODUCT = "SHOW_PRODUCT";
 
 
 /* FUNCS */
-export const onProductClicked = (props, product) => {
-    return { type: ON_PRODUCT_CLICKED, props: props, product: product };
-};
+export const resetProduct = () => ({ type: RESET_PRODUCT });
 
 export const showRelatedProducts = (objs) => ({
     type: SHOW_RELATED_PRODUCTS,

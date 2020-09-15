@@ -8,16 +8,16 @@ import $ from 'jquery';
 /** */
 const defaultProductReviewMsg = "lorem ipsum";
 const defaultProduct = {
-    id: 1,
-    name: "test",
+    id: 0,
+    name: "",
     productPhotoUrls: [
-        { id: 1, url: "asus1.jpg" }
+        { id: 1, url: "default-product1.jpg" }
     ]
 };
 
 const initialState = {
     message: "This is the initial state of STORE: productInDetails.",
-    shouldResetGallery: false,
+    shouldResetProduct: false,
     shouldRelaunchVendorScript: false,
     product: defaultProduct,
     relatedProducts: [],
@@ -36,11 +36,10 @@ const initialState = {
 /* REDUCER */
 const productInDetails = (state = initialState, action) => {
     switch (action.type) {
-        case actions.ON_PRODUCT_CLICKED: return onProductClicked(state, action);
         case actions.SHOW_RELATED_PRODUCTS: return showRelatedProducts(state, action);
         case actions.SHOW_PRODUCT: return showProduct(state, action);
         case actions.RELAUNCH_VENDOR_SCRIPT: return relaunchVendorScript(state, action);
-        case "TEST_DELETE_PRODUCT": return testDeleteProduct(state, action);
+        case actions.RESET_PRODUCT: return resetProduct(state, action);
         default: return state;
     }
 }
@@ -48,27 +47,11 @@ const productInDetails = (state = initialState, action) => {
 
 
 /* NORMAL */
-const testDeleteProduct = (state, action) => {
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: productInDetails, METHOD: testDeleteProduct()");
-
-
+const resetProduct = (state, action) => {
     return {
         ...state,
-        // shouldResetGallery: true,
-        shouldRelaunchVendorScript: true,
+        shouldResetProduct: true,
         product: defaultProduct
-    };
-};
-
-const onProductClicked = (state, action) => {
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: productInDetails, METHOD: onProductClicked()");
-
-
-    return {
-        ...state,
-        shouldRefreshProduct: true
     };
 };
 
@@ -90,7 +73,6 @@ const relaunchVendorScript = (state, action) => {
 
     $("#shouldRelaunchVendorScript").trigger("click");
 
-
     return {
         ...state,
         shouldRelaunchVendorScript: false
@@ -105,7 +87,7 @@ const showProduct = (state, action) => {
         ...state,
         product: action.obj.product,
         relatedProducts: action.obj.relatedProducts,
-        // shouldRefreshProduct: false,
+        shouldResetProduct: false,
         shouldRelaunchVendorScript: true,
         message: "Just executed METHOD:: showProduct() from REDUCER:: productInDetails"
     };

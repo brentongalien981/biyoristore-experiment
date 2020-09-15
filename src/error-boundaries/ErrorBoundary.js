@@ -1,7 +1,7 @@
 import React from 'react';
 import Bs from '../bs-library/helpers/Bs';
 import ProductGalleryBackup from '../containers/product/ProductGalleryBackup';
-// import ProductGallery from '../containers/product/ProductGallery';
+import ProductGallery from '../containers/product/ProductGallery';
 
 
 
@@ -39,7 +39,8 @@ class ErrorBoundary extends React.Component {
             Bs.log(this.props.productPhotoUrls);
             Bs.log("END OF CLASS: ErrorBoundary");
             Bs.log("####################\n");
-            return <ProductGalleryBackup productPhotoUrls={this.props.productPhotoUrls} />
+            // alert("HAS ERROR");
+            return <ProductGallery productPhotoUrls={this.props.productPhotoUrls} />
         }
 
         return this.props.children;

@@ -5,8 +5,9 @@ import BsCore from '../../bs-library/helpers/BsCore';
 
 function ProductGalleryBackup(props) {
 
-    const galleryItems = getGalleryItems(props.productPhotoUrls);
-    const thumbNails = getThumbNails(props.productPhotoUrls);
+    const hasError = props.hasError;
+    const galleryItems = getGalleryItems(props.productPhotoUrls, hasError);
+    const thumbNails = getThumbNails(props.productPhotoUrls, hasError);
 
     return (
 
@@ -32,9 +33,9 @@ function ProductGalleryBackup(props) {
 
 
 
-function getThumbNails(urls) {
+function getThumbNails(urls, hasError) {
 
-    urls = [{ id: 1, url: "asus1.jpg" }, { id: 2, url: "asus2.jpg" }];
+    if (hasError) { urls = [{ id: 1, url: "default-product1.jpg" }, { id: 2, url: "default-product2.jpg" }]; }
 
     const thumbNails = urls?.map((u, i) => {
 
@@ -50,10 +51,9 @@ function getThumbNails(urls) {
 
 
 
-function getGalleryItems(urls) {
+function getGalleryItems(urls, hasError) {
 
-    // urls = urls ? urls : [{ id: 1, url: "asus1.jpg" }, { id: 2, url: "asus2.jpg" }];
-    urls = [{ id: 1, url: "asus1.jpg" }, { id: 2, url: "asus2.jpg" }];
+    if (hasError) { urls = [{ id: 1, url: "default-product1.jpg" }, { id: 2, url: "default-product2.jpg" }]; }
 
     const galleryItems = urls?.map((u, i) => {
 

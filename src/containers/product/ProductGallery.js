@@ -6,11 +6,10 @@ import ErrorBoundary from '../../error-boundaries/ErrorBoundary';
 
 function ProductGallery(props) {
 
-    // const galleryItems = props.shouldResetGallery ? null : getGalleryItems(props.productPhotoUrls);
-    // const thumbNails = props.shouldResetGallery ? null : getThumbNails(props.productPhotoUrls);
-
     const galleryItems = getGalleryItems(props.productPhotoUrls);
     const thumbNails = getThumbNails(props.productPhotoUrls);
+
+    // const errorComponent = hasError ? <h4>Has Error</h4> : null;
 
     return (
 
@@ -38,6 +37,9 @@ function ProductGallery(props) {
 
 
 function getThumbNails(urls) {
+
+    // if (hasError) { urls = [{ id: 1, url: "default-product1.jpg" }, { id: 2, url: "default-product2.jpg" }]; }
+
     const thumbNails = urls?.map((u, i) => {
 
         const completeUrl = BsCore.pubPhotoUrl + u.url;
