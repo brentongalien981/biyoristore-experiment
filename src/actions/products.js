@@ -5,13 +5,23 @@ export const READ_PRODUCTS = "READ_PRODUCTS";
 export const READ_BRANDS = "READ_BRANDS";
 export const ON_BRAND_FILTER_CHANGED = "ON_BRAND_FILTER_CHANGED";
 export const ON_CATEGORY_FILTER_CHANGED = "ON_CATEGORY_FILTER_CHANGED";
-export const ON_PRODUCT_CLICKED = "ON_PRODUCT_CLICKED";
+export const ON_PRODUCT_CLICKED_VIA_LISTING_REDUCER = "ON_PRODUCT_CLICKED_VIA_LISTING_REDUCER";
+export const ON_PRODUCT_LIKED = "ON_PRODUCT_LIKED";
 
 export const DISPLAY_CATEGORIES = "DISPLAY_CATEGORIES";
 export const AJAX_READ_BRANDS = "AJAX_READ_BRANDS";
 export const AJAX_READ_PRODUCTS = "AJAX_READ_PRODUCTS";
 
 
+
+export const onProductClickedViaListingReducer = (e, props, product) => {
+    return { type: ON_PRODUCT_CLICKED_VIA_LISTING_REDUCER, e: e, props: props, product: product };
+};
+
+export const onProductLiked = (event) => ({
+    type: ON_PRODUCT_LIKED,
+    event: event
+});
 
 export const displayCategories = (objs) => ({
     type: DISPLAY_CATEGORIES,
@@ -44,10 +54,6 @@ export const readCategories = () => {
             }
         });
     };
-};
-
-export const onProductClicked = (productId) => {
-    return { type: ON_PRODUCT_CLICKED, productId: productId };
 };
 
 export const onCategoryFilterChanged = (categoryFilterEventData) => {

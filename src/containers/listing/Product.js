@@ -1,5 +1,10 @@
 import React from 'react';
 import BsCore from '../../bs-library/helpers/BsCore';
+import { connect } from 'react-redux';
+import Bs from '../../bs-library/helpers/Bs';
+import { onProductLiked, onProductClicked } from '../../actions/products';
+import { onAddToCart } from '../../actions/cart';
+import { withRouter } from 'react-router-dom';
 
 
 
@@ -11,7 +16,7 @@ function Product(props) {
     });
 
     return (
-        <div className="product" onClick={(e) => props.onProductClicked(e, props.product.id)}>
+        <div className="product" onClick={(e) => props.onProductClicked(e, props, props.product)}>
             <figure className="product-image">
                 <a href="#!">{productImages}</a>
             </figure>
@@ -20,10 +25,10 @@ function Product(props) {
                 <div className="product-price">
                     <span>{"$" + props.product.price}</span>
                     <span className="product-action">
-                        <a href="#!" onClick={(e) => props.onAddToCartClicked(e, props.product.id)}>Add to cart</a>
+                        <a href="#!" onClick={(e) => props.onAddToCart(e, props.product.id)}>Add to cart</a>
                     </span>
                 </div>
-                <a href="#!" className="product-like"></a>
+                <a href="#!" className="product-like" onClick={(e) => props.onProductLiked(e)}></a>
             </div>
         </div>
     );
@@ -31,4 +36,13 @@ function Product(props) {
 
 
 
-export default Product;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onProductLiked: (e) => dispatch(onProductLiked(e)),
+        onAddToCart: (e, productId) => dispatch(onAddToCart(e, productId))
+    };
+};
+
+
+
+export default connect(null, mapDispatchToProps)(withRouter(Product));

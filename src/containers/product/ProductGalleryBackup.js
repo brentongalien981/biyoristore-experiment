@@ -1,21 +1,17 @@
 import React from 'react';
 import BsCore from '../../bs-library/helpers/BsCore';
-import ErrorBoundary from '../../error-boundaries/ErrorBoundary';
 
 
 
-function ProductGallery(props) {
-
-    // const galleryItems = props.shouldResetGallery ? null : getGalleryItems(props.productPhotoUrls);
-    // const thumbNails = props.shouldResetGallery ? null : getThumbNails(props.productPhotoUrls);
+function ProductGalleryBackup(props) {
 
     const galleryItems = getGalleryItems(props.productPhotoUrls);
     const thumbNails = getThumbNails(props.productPhotoUrls);
 
     return (
 
-        <ErrorBoundary productPhotoUrls={props.productPhotoUrls}>
             <div className="col-lg-7">
+                {/* <h5>ProductGalleryBackup</h5> */}
                 <div className="row gutter-1 justify-content-between">
                     <div className="col-lg-10 order-lg-2">
                         <div className="owl-carousel gallery" data-slider-id="1" data-thumbs="true" data-nav="true">
@@ -31,13 +27,15 @@ function ProductGallery(props) {
 
                 </div>
             </div>
-        </ErrorBoundary>
     );
 }
 
 
 
 function getThumbNails(urls) {
+
+    urls = [{ id: 1, url: "asus1.jpg" }, { id: 2, url: "asus2.jpg" }];
+
     const thumbNails = urls?.map((u, i) => {
 
         const completeUrl = BsCore.pubPhotoUrl + u.url;
@@ -53,6 +51,10 @@ function getThumbNails(urls) {
 
 
 function getGalleryItems(urls) {
+
+    // urls = urls ? urls : [{ id: 1, url: "asus1.jpg" }, { id: 2, url: "asus2.jpg" }];
+    urls = [{ id: 1, url: "asus1.jpg" }, { id: 2, url: "asus2.jpg" }];
+
     const galleryItems = urls?.map((u, i) => {
 
         const completeUrl = BsCore.pubPhotoUrl + u.url;
@@ -70,4 +72,4 @@ function getGalleryItems(urls) {
 
 
 
-export default ProductGallery;
+export default ProductGalleryBackup;

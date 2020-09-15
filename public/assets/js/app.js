@@ -1,5 +1,5 @@
 function biyoristoreVendorLaunch() {
-  "use strict";
+  // "use strict";
 
   var fn = {
 

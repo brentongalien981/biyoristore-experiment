@@ -5,8 +5,8 @@ import Product from '../listing/Product';
 
 function SuggestedProducts(props) {
 
-    const products = props.products.map((p, i) => {
-        return (<Product product={p} key={i} />);
+    const relatedProducts = props.relatedProducts.map((p, i) => {
+        return (<Product product={p} key={i} onProductClicked={props.onProductClicked} />);
     });
 
     
@@ -31,7 +31,7 @@ function SuggestedProducts(props) {
 
                             <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <div className="owl-carousel owl-carousel-arrows visible" data-items="[4,4,2,1]" data-margin="10" data-loop="true" data-dots="true" data-nav="true">
-                                    {products}
+                                    {relatedProducts}
 
                                 </div>
                             </div>

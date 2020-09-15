@@ -32,7 +32,8 @@ const products = (state = initialState, action) => {
         case productsActions.AJAX_READ_BRANDS: return ajaxReadBrands(state, action);
         case productsActions.ON_BRAND_FILTER_CHANGED: return onBrandFilterChanged(state, action);
         case productsActions.ON_CATEGORY_FILTER_CHANGED: return onCategoryFilterChanged(state, action);
-        case productsActions.ON_PRODUCT_CLICKED: return onProductClicked(state, action);
+        case productsActions.ON_PRODUCT_CLICKED_VIA_LISTING_REDUCER: return onProductClickedViaListingReducer(state, action);
+        case productsActions.ON_PRODUCT_LIKED: return onProductLiked(state, action);
         case productsActions.DISPLAY_CATEGORIES: return displayCategories(state, action);
         default: return state;
     }
@@ -41,6 +42,17 @@ const products = (state = initialState, action) => {
 
 
 /* NORMAL */
+const onProductLiked = (state, action) => {
+    action.event.stopPropagation();
+
+    Bs.log("\n###############");
+    Bs.log("In REDUCER: products, METHOD: onProductLiked()");
+
+    return {
+        ...state
+    };
+};
+
 const displayCategories = (state, action) => {
     Bs.log("\n###############");
     Bs.log("In REDUCER: products, METHOD: displayCategories()");
@@ -52,14 +64,21 @@ const displayCategories = (state, action) => {
     };
 };
 
-const onProductClicked = (state, action) => {
+const onProductClickedViaListingReducer = (state, action) => {
     Bs.log("\n###############");
-    Bs.log("In REDUCER: products, METHOD: onProductClicked()");
-    Bs.log("action.productId ==> " + action.productId);
+    Bs.log("In REDUCER: products, METHOD: onProductClickedViaListingReducer()");
+    Bs.log("action.props ==> ...");
+    Bs.log(action.props);
+    Bs.log("action.product ==> ...");
+    Bs.log(action.product);
+
+    action.e.preventDefault();
+    action.e.stopPropagation();
+
+    action.props.history.push("/product?productId=" + action.product.id);
 
     return {
         ...state,
-        message: "Just executed METHOD:: onProductClicked() from REDUCER:: products"
     };
 };
 

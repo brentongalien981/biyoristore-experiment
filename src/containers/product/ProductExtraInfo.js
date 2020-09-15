@@ -1,8 +1,17 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 
 
-function ProductExtraInfo() {
+function ProductExtraInfo(props) {
+    const p = props.product;
+
+    const categories = p?.categories?.map((c, i) => {
+        return (
+            <a key={i} href="#" className="underline text-dark" onClick={() => alert("TODO")}>{c.name}, </a>
+        );
+    });
+
     return (
         <section className="separator-bottom">
             <div className="container">
@@ -14,18 +23,18 @@ function ProductExtraInfo() {
                         </div>
                     </div>
                     <div className="col-md-8 col-lg-6">
-                        <p>This minimalist backpack is suitable for any occasion. Whether on the road by bike, shopping or in the nightlife. The roll-top closes with velcro and allows a practical filling of the Hajo backpack.</p>
+                        <p>{p?.description}</p>
                     </div>
                     <div className="col-lg-4">
                         <ul className="list-group list-group-line">
                             <li className="list-group-item d-flex justify-content-between align-items-center">
-                                SKU<span className="text-dark">1421354</span>
+                                SKU<span className="text-dark">{"BS-" + p?.id}</span>
                             </li>
+
+                            <li className="list-group-item d-flex justify-content-between align-items-center">Category<span className="text-dark">{categories}</span></li>
+
                             <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Category<span className="text-dark"><a href="" className="underline text-dark">Bags</a>, <a href="" className="underline text-dark">Backpack</a></span>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Tags<span className="text-dark"><a href="" className="underline text-dark">backpack</a>, <a href="" className="underline text-dark">minimal</a></span>
+                                Tags<span className="text-dark"><a href="#" className="underline text-dark">gadget</a>, <a href="#" className="underline text-dark">tech</a></span>
                             </li>
                         </ul>
                     </div>

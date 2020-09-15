@@ -104,7 +104,7 @@ class Listing extends React.Component {
         const products = this.props.products.map((p, i) => {
             return (
                 <div className="col-6 col-md-4" key={i}>
-                    <Product product={p} onProductClicked={this.onProductClicked} onAddToCartClicked={this.onAddToCartClicked} />
+                    <Product product={p} onProductClicked={this.props.onProductClickedViaListingReducer} />
                 </div>
             );
         });
@@ -135,31 +135,9 @@ class Listing extends React.Component {
                         </div>
                     </div>
                 </section>
-                <h4 style={{ color: "red" }}>COMMENT ==&gt; {this.props.message}</h4>
             </>
         );
     }
-
-
-
-    onAddToCartClicked = (e, productId) => {
-        e.preventDefault();
-        e.stopPropagation();
-        Bs.log("\n###############");
-        Bs.log("In METHOD: onAddToCartClicked()");
-        Bs.log("productId ==> " + productId);
-        alert("TODO: CLASS: Listing, METHOD: onAddToCartClicked()");
-    };
-
-    onProductClicked = (e, productId) => {
-        e.preventDefault();
-        e.stopPropagation();
-        Bs.log("\n###############");
-        Bs.log("In METHOD: onProductClicked()");
-        Bs.log("productId ==> " + productId);
-
-        this.props.history.push("/product?productId=" + productId);
-    };
 }
 
 
@@ -185,7 +163,7 @@ const mapDispatchToProps = (dispatch) => {
         readCategories: () => dispatch(productsActions.readCategories()),
         onBrandFilterChanged: (brandFilterEventData) => dispatch(productsActions.onBrandFilterChanged(brandFilterEventData)),
         onCategoryClicked: (categoryFilterEventData) => dispatch(productsActions.onCategoryFilterChanged(categoryFilterEventData)),
-        onProductClicked: (productId) => dispatch(productsActions.onProductClicked(productId))
+        onProductClickedViaListingReducer: (e, props, product) => dispatch(productsActions.onProductClickedViaListingReducer(e, props, product))
     };
 };
 
