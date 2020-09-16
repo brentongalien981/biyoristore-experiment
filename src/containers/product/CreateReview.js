@@ -48,7 +48,7 @@ function CreateReview() {
                         <div className="container-fluid">
                             <div className="row gutter-0">
                                 <div className="col">
-                                    <a href="#!" className="btn btn-lg btn-block btn-primary" data-dismiss="modal">Publish Review</a>
+                                    <a href="#!" className="btn btn-lg btn-block btn-primary" data-dismiss="modal" onClick={() => alert("TODO")}>Publish Review</a>
                                 </div>
                             </div>
                         </div>
