@@ -57,7 +57,7 @@ class ProductInDetails extends React.Component {
     render() {
         return (
             <>
-                <BreadcrumbsLight breadCrumbLinks={this.getBreadCrumbLinks()} />
+                <BreadcrumbsLight breadCrumbLinks={this.props.breadCrumbLinks} />
                 {/* <button onClick={this.testDeleteProduct}>TEST</button>
                 <button onClick={this.testReadNewProduct}>TEST READ NEW PRODUCT</button> */}
                 <ProductMainSection product={this.props.product} />
@@ -69,16 +69,6 @@ class ProductInDetails extends React.Component {
                 <CreateReview />
             </>
         );
-    }
-
-
-
-    getBreadCrumbLinks() {
-        return [
-            { name: "Home", url: "/" },
-            { name: "Listing", url: "/products" },
-            { name: "Product", url: "" }
-        ];
     }
 
 
@@ -101,6 +91,7 @@ class ProductInDetails extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+        breadCrumbLinks: state.productInDetails.breadCrumbLinks,
         product: state.productInDetails.product,
         shouldResetProduct: state.productInDetails.shouldResetProduct,
         shouldRelaunchVendorScript: state.productInDetails.shouldRelaunchVendorScript,

@@ -12,6 +12,7 @@ import Home from './containers/home/Home';
 
 const Listing = React.lazy(() => import('./containers/listing/Listing'));
 const ProductInDetails = React.lazy(() => import('./containers/product/ProductInDetails'));
+const Join = React.lazy(() => import('./containers/join/Join'));
 
 
 
@@ -25,6 +26,7 @@ function App() {
 				<Route path="/" exact component={Home} />
 				<Route path="/products" exact render={() => <Suspense fallback={<div>loading...</div>}><Listing /></Suspense>} />
 				<Route path="/product" exact render={() => <Suspense fallback={<div>loading...</div>}><ProductInDetails /></Suspense>} />
+				<Route path="/join" exact render={() => <Suspense fallback={<div>loading...</div>}><Join /></Suspense>} />
 				{/* <Route path="/product" exact component={ProductInDetails} /> */}
 			</Switch>
 			<Footer />

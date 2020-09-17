@@ -16,6 +16,11 @@ const defaultProduct = {
 };
 
 const initialState = {
+    breadCrumbLinks: [
+        { name: "Home", url: "/" },
+        { name: "Listing", url: "/products" },
+        { name: "Product", url: "" }
+    ],
     message: "This is the initial state of STORE: productInDetails.",
     shouldResetProduct: false,
     shouldRelaunchVendorScript: false,

@@ -91,7 +91,7 @@ function HeaderDark() {
                         <div className="collapse navbar-collapse order-4 order-lg-3" id="navbarMenu2">
                             <ul className="navbar-nav ml-auto">
                                 <li className="nav-item">
-                                    <a className="nav-link" href="portal.html">Log In</a>
+                                    <Link className="nav-link" to="/join">Log In</Link>
                                 </li>
                                 <li className="nav-item">
                                     <a data-toggle="modal" data-target="#search" className="nav-link"><i className="icon-search"></i></a>

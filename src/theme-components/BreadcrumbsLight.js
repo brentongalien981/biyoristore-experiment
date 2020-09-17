@@ -8,8 +8,8 @@ function BreadcrumbsLight(props) {
     const numOfLinks = props.breadCrumbLinks.length;
     
     const links = props.breadCrumbLinks.map((l, i) => {
-        if (i == numOfLinks - 1) { return (<li className="breadcrumb-item active" aria-current="page">{l.name}</li>); }
-        else return <li className="breadcrumb-item"><Link to={l.url}>{l.name}</Link></li>;
+        if (i == numOfLinks - 1) { return (<li key={i} className="breadcrumb-item active" aria-current="page">{l.name}</li>); }
+        else return <li key={i} className="breadcrumb-item"><Link to={l.url}>{l.name}</Link></li>;
     });
 
     return (
