@@ -2,7 +2,7 @@ import React from 'react';
 
 
 
-function CreateAccount() {
+function CreateAccount(props) {
     return (
         <div className="card">
             <div className="card-header" id="headingTwo">
@@ -15,7 +15,7 @@ function CreateAccount() {
                     <div className="row mt-2">
                         <div className="form-group col-12">
                             <label htmlFor="exampleInputEmail2">Email address</label>
-                            <input type="email" className="form-control" id="exampleInputEmail2" />
+                            <input type="email" className="form-control" id="exampleInputEmail2" onChange={props.onEmailChanged} />
                         </div>
                         <div className="form-group col-12 mt-1">
                             <label htmlFor="exampleInputPassword3">Password</label>
@@ -26,7 +26,7 @@ function CreateAccount() {
                             <input type="password" className="form-control" id="exampleInputPassword4" />
                         </div>
                         <div className="col-12 mt-2">
-                            <a href="#!" className="btn btn-block btn-primary">Register</a>
+                            <a href="#!" className="btn btn-block btn-primary" onClick={props.onRegister}>Register</a>
                         </div>
                     </div>
                 </div>

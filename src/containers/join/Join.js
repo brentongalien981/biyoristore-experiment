@@ -2,6 +2,8 @@ import React from 'react';
 import SignIn from './SignIn';
 import CreateAccount from './CreateAccount';
 import BsCore from '../../bs-library/helpers/BsCore';
+import { connect } from 'react-redux';
+import * as actions from '../../actions/join';
 
 
 
@@ -28,7 +30,9 @@ class Join extends React.Component {
                         <div className="col-md-10 col-lg-5">
                             <div className="accordion accordion-portal" id="accordionExample">
                                 <SignIn />
-                                <CreateAccount />
+                                <CreateAccount 
+                                    onEmailChanged={this.props.onEmailChangedForCreateAccount}
+                                    onRegister={this.props.onRegister} />
                             </div>
                         </div>
                     </div>
@@ -41,4 +45,13 @@ class Join extends React.Component {
 
 
 
-export default Join;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onRegister: () => dispatch(actions.onRegister()),
+        onEmailChangedForCreateAccount: () => dispatch(actions.onEmailChangedForCreateAccount()),
+    };
+};
+
+
+
+export default connect(null, mapDispatchToProps)(Join);
