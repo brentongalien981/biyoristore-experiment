@@ -4,6 +4,8 @@ import CreateAccount from './CreateAccount';
 import BsCore from '../../bs-library/helpers/BsCore';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/join';
+import BsAppSession from '../../bs-library/helpers/BsAppSession';
+import Bs from '../../bs-library/helpers/Bs';
 
 
 
@@ -12,9 +14,48 @@ class Join extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            backgroundImageUrl: BsCore.pubPhotoUrl + "background-8.jpg"
+            backgroundImageUrl: BsCore.pubPhotoUrl + "background-8.jpg",
+            email: BsAppSession.get("email"), passwordForCreateAccount: "", repeatedPassword: ""
         };
     }
+
+
+
+    onRegister = (e) => {
+        e.preventDefault();
+        
+        // Check passwords.
+        if (this.state.passwordForCreateAccount !== this.state.repeatedPassword) {
+            alert("Passwords don't match...");
+            return;
+        }
+
+
+        const credentials = {
+            email: this.state.email,
+            password: this.state.passwordForCreateAccount
+        };
+
+        this.props.saveUser(credentials);
+    };
+
+
+
+    onCredentialChanged = (e) => {
+        const target = e.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        if (name === "email") {
+            BsAppSession.set("email", value);
+        }
+
+        this.setState({
+            [name]: value
+        });
+    }
+
+
 
     render() {
 
@@ -30,9 +71,9 @@ class Join extends React.Component {
                         <div className="col-md-10 col-lg-5">
                             <div className="accordion accordion-portal" id="accordionExample">
                                 <SignIn />
-                                <CreateAccount 
-                                    onEmailChanged={this.props.onEmailChangedForCreateAccount}
-                                    onRegister={this.props.onRegister} />
+                                <CreateAccount email={this.state.email}
+                                    onCredentialChanged={this.onCredentialChanged}
+                                    onRegister={this.onRegister} />
                             </div>
                         </div>
                     </div>
@@ -47,8 +88,7 @@ class Join extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onRegister: () => dispatch(actions.onRegister()),
-        onEmailChangedForCreateAccount: () => dispatch(actions.onEmailChangedForCreateAccount()),
+        saveUser: (credentials) => dispatch(actions.saveUser(credentials))
     };
 };
 

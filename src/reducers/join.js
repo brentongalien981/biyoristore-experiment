@@ -1,12 +1,13 @@
 import * as actions from '../actions/join';
 import Bs from '../bs-library/helpers/Bs';
+import BsAppSession from '../bs-library/helpers/BsAppSession';
 
 /** */
 const initialState = {
     message: "This is the initial state of STORE: join.",
     credentials: {
-        signIn: { email: "", password: "" },
-        createAccount: { email: "", password: "", repeatedPassword: "" },
+        signIn: { email: BsAppSession.get("email"), password: "" },
+        createAccount: { email: BsAppSession.get("email"), password: "", repeatedPassword: "" },
     }
 };
 
@@ -15,8 +16,8 @@ const initialState = {
 /* REDUCER */
 const join = (state = initialState, action) => {
     switch (action.type) {
-        case actions.ON_REGISTER: return onRegister(state, action);
-        case actions.ON_EMAIL_CHANGED_FOR_CREATE_ACCOUNT: return onEmailChangedForCreateAccount(state, action);
+        case actions.ON_CREATE_ACCOUNT_SUCCESS: return onCreateAccountSuccess(state, action);
+        case actions.ON_CREATE_ACCOUNT_FAIL: return onCreateAccountFail(state, action);
         default: return state;
     }
 }
@@ -24,24 +25,27 @@ const join = (state = initialState, action) => {
 
 
 /* NORMAL */
-const onEmailChangedForCreateAccount = (state, action) => {
+const onCreateAccountFail = (state, action) => {
 
     Bs.log("\n###############");
-    Bs.log("In REDUCER: join, METHOD: onEmailChangedForCreateAccount()");
+    Bs.log("In REDUCER: join, METHOD: onCreateAccountFail()");
 
-    return {
-        ...state
-    };
-};
-
-const onRegister = (state, action) => {
-
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: join, METHOD: onRegister()");
+    alert("onCreateAccountFail");
 
     return {
         ...state,
-        message: "Just executed METHOD: onRegister() from REDUCER: join"
+        message: "Just executed METHOD: onCreateAccountFail() from REDUCER: join"
+    };
+};
+
+const onCreateAccountSuccess = (state, action) => {
+
+    Bs.log("\n###############");
+    Bs.log("In REDUCER: join, METHOD: onCreateAccountSuccess()");
+
+    return {
+        ...state,
+        message: "Just executed METHOD: onCreateAccountSuccess() from REDUCER: join"
     };
 };
 
