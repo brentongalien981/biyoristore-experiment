@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions/join';
 import BsAppSession from '../../bs-library/helpers/BsAppSession';
 import Bs from '../../bs-library/helpers/Bs';
+import { withRouter } from 'react-router-dom';
 
 
 
@@ -17,6 +18,20 @@ class Join extends React.Component {
             backgroundImageUrl: BsCore.pubPhotoUrl + "background-8.jpg",
             email: BsAppSession.get("email"), passwordForCreateAccount: "", repeatedPassword: ""
         };
+    }
+
+
+
+    componentDidUpdate() {
+        if (this.props.isThereJoinError) { 
+            alert(this.props.errorMsg); 
+            this.props.resetErrors();
+        }
+
+        if (this.props.shouldRedirectHome) {
+            Bs.log("shouldRedirectHome");
+            this.props.history.push("/");
+        }
     }
 
 
@@ -86,12 +101,24 @@ class Join extends React.Component {
 
 
 
-const mapDispatchToProps = (dispatch) => {
+
+const mapStateToProps = (state) => {
     return {
-        saveUser: (credentials) => dispatch(actions.saveUser(credentials))
+        isThereJoinError: state.join.isThereJoinError,
+        errorMsg: state.join.errorMsg,
+        shouldRedirectHome: state.join.shouldRedirectHome
     };
 };
 
 
 
-export default connect(null, mapDispatchToProps)(Join);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        saveUser: (credentials) => dispatch(actions.saveUser(credentials)),
+        resetErrors: () => dispatch(actions.resetErrors())
+    };
+};
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Join));

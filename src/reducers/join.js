@@ -8,7 +8,10 @@ const initialState = {
     credentials: {
         signIn: { email: BsAppSession.get("email"), password: "" },
         createAccount: { email: BsAppSession.get("email"), password: "", repeatedPassword: "" },
-    }
+    },
+    isThereJoinError: false,
+    errorMsg: "",
+    shouldRedirectHome: false
 };
 
 
@@ -16,6 +19,7 @@ const initialState = {
 /* REDUCER */
 const join = (state = initialState, action) => {
     switch (action.type) {
+        case actions.RESET_ERRORS: return resetErrors(state, action);
         case actions.ON_CREATE_ACCOUNT_SUCCESS: return onCreateAccountSuccess(state, action);
         case actions.ON_CREATE_ACCOUNT_FAIL: return onCreateAccountFail(state, action);
         default: return state;
@@ -25,15 +29,38 @@ const join = (state = initialState, action) => {
 
 
 /* NORMAL */
+const resetErrors = (state, action) => {
+
+    return {
+        ...state,
+        isThereJoinError: false
+    };
+};
+
 const onCreateAccountFail = (state, action) => {
 
     Bs.log("\n###############");
     Bs.log("In REDUCER: join, METHOD: onCreateAccountFail()");
+    Bs.log("action.errors ==> ...");
+    Bs.log(action.errors);
 
-    alert("onCreateAccountFail");
+    let errorMsg = "";
+
+    for (const field in action.errors) {
+        if (action.errors.hasOwnProperty(field)) {
+            const fieldErrors = action.errors[field];
+
+            errorMsg += fieldErrors[0] + "\n";
+            
+        }
+    }
+
+    // alert(errorMsg);
 
     return {
         ...state,
+        isThereJoinError: true,
+        errorMsg: errorMsg,
         message: "Just executed METHOD: onCreateAccountFail() from REDUCER: join"
     };
 };
@@ -43,8 +70,14 @@ const onCreateAccountSuccess = (state, action) => {
     Bs.log("\n###############");
     Bs.log("In REDUCER: join, METHOD: onCreateAccountSuccess()");
 
+
+    BsAppSession.set("email", action.email);
+    BsAppSession.set("apiToken", action.apiToken);
+
     return {
         ...state,
+        isThereJoinError: false,
+        shouldRedirectHome: true,
         message: "Just executed METHOD: onCreateAccountSuccess() from REDUCER: join"
     };
 };

@@ -4,6 +4,7 @@ import Bs from "../bs-library/helpers/Bs";
 
 
 /* NAMES */
+export const RESET_ERRORS = "RESET_ERRORS";
 export const SAVE_USER = "SAVE_USER";
 export const ON_CREATE_ACCOUNT_SUCCESS = "ON_CREATE_ACCOUNT_SUCCESS";
 export const ON_CREATE_ACCOUNT_FAIL = "ON_CREATE_ACCOUNT_FAIL";
@@ -11,8 +12,13 @@ export const ON_CREATE_ACCOUNT_FAIL = "ON_CREATE_ACCOUNT_FAIL";
 
 
 /* FUNCS */
-export const onCreateAccountSuccess = () => ({ type: ON_CREATE_ACCOUNT_SUCCESS });
-export const onCreateAccountFail = (errors) => ({ type: ON_CREATE_ACCOUNT_FAIL });
+export const resetErrors = () => ({ type: RESET_ERRORS });
+export const onCreateAccountSuccess = (email, apiToken) => ({ 
+    type: ON_CREATE_ACCOUNT_SUCCESS,
+    email: email,
+    apiToken: apiToken
+});
+export const onCreateAccountFail = (errors) => ({ type: ON_CREATE_ACCOUNT_FAIL, errors: errors });
 
 
 
@@ -28,18 +34,18 @@ export const saveUser = (credentials) => {
     return (dispatch) => {
 
         BsCore.ajaxCrud({
-            url: '/products/relatedProducts',
-            // params: { errors: productId },
-            neededResponseParams: ["errors"],
+            url: '/join/save',
+            method: "post",
+            params: { email: credentials.email, password: credentials.password },
+            neededResponseParams: ["errors", "email", "apiToken"],
             callBackFunc: (requestData, json) => {
                 Bs.log("\n#####################");
-                Bs.log("FILE: actions/productInDetails.js, METHOD: readRelatedProducts() => ajaxCrud() => callBackFunc()");
+                Bs.log("FILE: actions/join.js, METHOD: saveUser() => ajaxCrud() => callBackFunc()");
 
-                // if no error
-                // dispatch(onCreateAccountSuccess());
-                // else
                 if (json.errors) {
                     dispatch(onCreateAccountFail(json.errors));
+                } else { 
+                    dispatch(onCreateAccountSuccess(json.email, json.apiToken));
                 }
             }
         });
