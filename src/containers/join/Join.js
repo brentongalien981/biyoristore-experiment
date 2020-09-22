@@ -16,15 +16,17 @@ class Join extends React.Component {
         super(props);
         this.state = {
             backgroundImageUrl: BsCore.pubPhotoUrl + "background-8.jpg",
-            email: BsAppSession.get("email"), passwordForCreateAccount: "", repeatedPassword: ""
+            email: BsAppSession.get("email"), passwordForCreateAccount: "", repeatedPassword: "", passwordForSignIn: ""
         };
+
+        if (BsAppSession.get("isLoggedIn") == 1) { this.props.history.push("/"); }
     }
 
 
 
     componentDidUpdate() {
-        if (this.props.isThereJoinError) { 
-            alert(this.props.errorMsg); 
+        if (this.props.isThereJoinError) {
+            alert(this.props.errorMsg);
             this.props.resetErrors();
         }
 
@@ -38,7 +40,7 @@ class Join extends React.Component {
 
     onRegister = (e) => {
         e.preventDefault();
-        
+
         // Check passwords.
         if (this.state.passwordForCreateAccount !== this.state.repeatedPassword) {
             alert("Passwords don't match...");
@@ -52,6 +54,19 @@ class Join extends React.Component {
         };
 
         this.props.saveUser(credentials);
+    };
+
+
+
+    onLogin = (e) => {
+        e.preventDefault();
+
+        const credentials = {
+            email: this.state.email,
+            password: this.state.passwordForSignIn
+        };
+
+        this.props.login(credentials);
     };
 
 
@@ -85,7 +100,9 @@ class Join extends React.Component {
                     <div className="row justify-content-center align-items-center vh-md-100">
                         <div className="col-md-10 col-lg-5">
                             <div className="accordion accordion-portal" id="accordionExample">
-                                <SignIn />
+                                <SignIn email={this.state.email}
+                                    onCredentialChanged={this.onCredentialChanged}
+                                    onLogin={this.onLogin} />
                                 <CreateAccount email={this.state.email}
                                     onCredentialChanged={this.onCredentialChanged}
                                     onRegister={this.onRegister} />
@@ -115,6 +132,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         saveUser: (credentials) => dispatch(actions.saveUser(credentials)),
+        login: (credentials) => dispatch(actions.login(credentials)),
         resetErrors: () => dispatch(actions.resetErrors())
     };
 };

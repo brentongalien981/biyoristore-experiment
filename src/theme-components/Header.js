@@ -18,7 +18,8 @@ class Header extends React.Component {
 
 
 
-    onLogout = () => {
+    onLogout = (e) => {
+        e.preventDefault();
         BsAppSession.set("isLoggedIn", 0);
         this.props.history.push("/");
     };

@@ -132,7 +132,7 @@ function getProfileLinks(props) {
                     <li><Link className="dropdown-item" to="/orders">Orders</Link></li>
                     <li><Link className="dropdown-item" to="/addresses">Addresses</Link></li>
                     <li><Link className="dropdown-item" to="/payments">Payments</Link></li>
-                    <li><Link className="dropdown-item" onClick={props.onLogout}>Log out</Link></li>
+                    <li><a className="dropdown-item" href="#" onClick={(e) => props.onLogout(e)}>Log out</a></li>
                 </ul>
 
             </li>

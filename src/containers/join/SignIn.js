@@ -2,7 +2,7 @@ import React from 'react';
 
 
 
-function SignIn() {
+function SignIn(props) {
     return (
         <div className="card active">
 
@@ -17,11 +17,11 @@ function SignIn() {
                     <div className="row mt-2">
                         <div className="form-group col-12">
                             <label htmlFor="exampleInputEmail1">Email address</label>
-                            <input type="email" className="form-control" id="exampleInputEmail1" />
+                            <input type="email" className="form-control" id="exampleInputEmail1" name="email" value={props.email} onChange={(e) => props.onCredentialChanged(e)} />
                         </div>
                         <div className="form-group col-12 mt-1">
                             <label htmlFor="exampleInputPassword1">Password</label>
-                            <input type="password" className="form-control" id="exampleInputPassword1" />
+                            <input type="password" className="form-control" id="exampleInputPassword1" name="passwordForSignIn" onChange={(e) => props.onCredentialChanged(e)} />
                         </div>
 
                         {/* <div className="col-12 mt-1">
@@ -32,7 +32,7 @@ function SignIn() {
                         </div> */}
 
                         <div className="col-12 mt-2">
-                            <a href="#!" className="btn btn-block btn-primary">Log In</a>
+                            <a href="#!" className="btn btn-block btn-primary" onClick={(e) => props.onLogin(e)}>Log In</a>
                         </div>
                     </div>
                 </div>
