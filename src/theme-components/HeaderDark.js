@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import BsAppSession from '../bs-library/helpers/BsAppSession';
 
-function HeaderDark() {
+function HeaderDark(props) {
     return (
         <header className="header header-dark bg-dark header-sticky">
             <div className="container">
@@ -91,7 +91,7 @@ function HeaderDark() {
 
                         <div className="collapse navbar-collapse order-4 order-lg-3" id="navbarMenu2">
                             <ul className="navbar-nav ml-auto">
-                                {getProfileLinks()}
+                                {getProfileLinks(props)}
                                 <li className="nav-item">
                                     <a data-toggle="modal" data-target="#search" className="nav-link"><i className="icon-search"></i></a>
                                 </li>
@@ -109,7 +109,7 @@ function HeaderDark() {
 
 
 
-function getProfileLinks() {
+function getProfileLinks(props) {
     const isLoggedIn = BsAppSession.get("isLoggedIn");
 
     if (isLoggedIn == 1) {
@@ -121,6 +121,7 @@ function getProfileLinks() {
                     <li><Link className="dropdown-item" to="/orders">Orders</Link></li>
                     <li><Link className="dropdown-item" to="/addresses">Addresses</Link></li>
                     <li><Link className="dropdown-item" to="/payments">Payments</Link></li>
+                    <li><Link className="dropdown-item" onClick={props.onLogout}>Log out</Link></li>
                 </ul>
 
             </li>

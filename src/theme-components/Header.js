@@ -3,15 +3,25 @@ import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import HeaderLight from './HeaderLight';
 import HeaderDark from './HeaderDark';
+import BsAppSession from '../bs-library/helpers/BsAppSession';
 
-function Header(props) {
 
+
+class Header extends React.Component {
+    render() {    
+        if (this.props.location.pathname === "/") {
+            return (<HeaderLight onLogout={this.onLogout} />);
+        }
     
-    if (props.location.pathname === "/") {
-        return (<HeaderLight />);
+        return (<HeaderDark onLogout={this.onLogout} />);
     }
 
-    return (<HeaderDark />);
+
+
+    onLogout = () => {
+        BsAppSession.set("isLoggedIn", 0);
+        this.props.history.push("/");
+    };
 }
 
 
