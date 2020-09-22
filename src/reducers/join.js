@@ -71,8 +71,9 @@ const onCreateAccountSuccess = (state, action) => {
     Bs.log("In REDUCER: join, METHOD: onCreateAccountSuccess()");
 
 
-    BsAppSession.set("email", action.email);
-    BsAppSession.set("apiToken", action.apiToken);
+    BsAppSession.set("userId", action.json.userId);
+    BsAppSession.set("email", action.json.email);
+    BsAppSession.set("apiToken", action.json.apiToken);
     BsAppSession.set("isLoggedIn", 1);
 
     return {

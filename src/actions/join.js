@@ -13,10 +13,9 @@ export const ON_CREATE_ACCOUNT_FAIL = "ON_CREATE_ACCOUNT_FAIL";
 
 /* FUNCS */
 export const resetErrors = () => ({ type: RESET_ERRORS });
-export const onCreateAccountSuccess = (email, apiToken) => ({
+export const onCreateAccountSuccess = (json) => ({
     type: ON_CREATE_ACCOUNT_SUCCESS,
-    email: email,
-    apiToken: apiToken
+    json: json
 });
 export const onCreateAccountFail = (errors) => ({ type: ON_CREATE_ACCOUNT_FAIL, errors: errors });
 
@@ -35,7 +34,7 @@ export const login = (credentials) => {
             url: '/join/login',
             method: "post",
             params: { email: credentials.email, password: credentials.password },
-            neededResponseParams: ["errors", "email", "apiToken", "doesPasswordMatch"],
+            neededResponseParams: ["errors", "userId", "email", "apiToken", "doesPasswordMatch"],
             callBackFunc: (requestData, json) => {
                 Bs.log("\n#####################");
                 Bs.log("FILE: actions/join.js, METHOD: login() => ajaxCrud() => callBackFunc()");
@@ -48,7 +47,7 @@ export const login = (credentials) => {
                     dispatch(onCreateAccountFail(errors));
                 }
                 else {
-                    dispatch(onCreateAccountSuccess(json.email, json.apiToken));
+                    dispatch(onCreateAccountSuccess(json));
                 }
             }
         });
@@ -69,7 +68,7 @@ export const saveUser = (credentials) => {
             url: '/join/save',
             method: "post",
             params: { email: credentials.email, password: credentials.password },
-            neededResponseParams: ["errors", "email", "apiToken"],
+            neededResponseParams: ["errors", "userId", "email", "apiToken"],
             callBackFunc: (requestData, json) => {
                 Bs.log("\n#####################");
                 Bs.log("FILE: actions/join.js, METHOD: saveUser() => ajaxCrud() => callBackFunc()");
@@ -77,7 +76,7 @@ export const saveUser = (credentials) => {
                 if (json.errors) {
                     dispatch(onCreateAccountFail(json.errors));
                 } else {
-                    dispatch(onCreateAccountSuccess(json.email, json.apiToken));
+                    dispatch(onCreateAccountSuccess(json));
                 }
             }
         });

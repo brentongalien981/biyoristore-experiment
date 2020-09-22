@@ -4,11 +4,13 @@ import products from './products';
 import productInDetails from './productInDetails';
 import cart from './cart';
 import join from './join';
+import profile from './profile';
 
 export default combineReducers({
     video,
     products,
     productInDetails,
     cart,
-    join
+    join,
+    profile
 });
