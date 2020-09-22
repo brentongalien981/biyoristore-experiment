@@ -73,6 +73,7 @@ const onCreateAccountSuccess = (state, action) => {
 
     BsAppSession.set("email", action.email);
     BsAppSession.set("apiToken", action.apiToken);
+    BsAppSession.set("isLoggedIn", 1);
 
     return {
         ...state,

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import BsAppSession from '../bs-library/helpers/BsAppSession';
 
 function HeaderLight() {
 
@@ -39,7 +40,7 @@ function HeaderLight() {
                                                 <li><a className="dropdown-item" href="listing-masonry.html">Listing - masonry</a></li>
                                                 <li><a className="dropdown-item" href="listing-modern.html">Listing - modern</a></li>
                                             </ul>
-                                            
+
                                             <ul className="col-6 col-md-3 col-lg-2">
                                                 <li><span className="megamenu-title">Product</span></li>
                                                 <li><Link className="dropdown-item" to="/product">Product - classic</Link></li>
@@ -53,7 +54,7 @@ function HeaderLight() {
                                                 <li><a className="dropdown-item" href="cart-full.html">Cart - full width</a></li>
                                                 <li><a className="dropdown-item" href="checkout.html">Checkout</a></li>
                                             </ul>
-                                            
+
                                             <ul className="col-6 col-md-3 col-lg-2">
                                                 <li><span className="megamenu-title">Account</span></li>
                                                 <li><a className="dropdown-item" href="portal.html">Log In</a></li>
@@ -67,7 +68,7 @@ function HeaderLight() {
                                                 <li><a className="dropdown-item" href="blog-posts.html">Blog - posts</a></li>
                                                 <li><a className="dropdown-item" href="post.html">Post</a></li>
                                             </ul>
-                                            
+
                                             <ul className="col-6 col-md-3 col-lg-2">
                                                 <li><span className="megamenu-title">Pages</span></li>
                                                 <li><a className="dropdown-item" href="about.html">About</a></li>
@@ -99,9 +100,7 @@ function HeaderLight() {
 
                         <div className="collapse navbar-collapse order-4 order-lg-3" id="navbarMenu2">
                             <ul className="navbar-nav ml-auto">
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/join">Log In</Link>
-                                </li>
+                                {getProfileLinks()}
                                 <li className="nav-item">
                                     <a data-toggle="modal" data-target="#search" className="nav-link"><i className="icon-search"></i></a>
                                 </li>
@@ -111,10 +110,38 @@ function HeaderLight() {
                             </ul>
                         </div>
 
+
                     </nav>
                 </div>
             </div>
         </header>
+    );
+}
+
+
+
+function getProfileLinks() {
+    const isLoggedIn = BsAppSession.get("isLoggedIn");
+
+    if (isLoggedIn == 1) {
+        return (
+            <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle" href="#!" id="navbarDropdown-10" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{BsAppSession.get("email")}</a>
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdown-10">
+                    <li><Link className="dropdown-item" to="/profile">Profile</Link></li>
+                    <li><Link className="dropdown-item" to="/orders">Orders</Link></li>
+                    <li><Link className="dropdown-item" to="/addresses">Addresses</Link></li>
+                    <li><Link className="dropdown-item" to="/payments">Payments</Link></li>
+                </ul>
+
+            </li>
+        );
+    }
+
+    return (
+        <li className="nav-item">
+            <Link className="nav-link" to="/join">Log In</Link>
+        </li>
     );
 }
 

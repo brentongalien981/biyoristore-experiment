@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import BsAppSession from '../bs-library/helpers/BsAppSession';
 
 function HeaderDark() {
     return (
@@ -14,7 +15,7 @@ function HeaderDark() {
 
                         <div className="collapse navbar-collapse order-3 order-lg-1" id="navbarMenu">
                             <ul className="navbar-nav mr-auto">
-                            <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
+                                <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
                                 <li className="nav-item"><Link className="nav-link" to="/products">Products</Link></li>
 
                                 <li className="nav-item dropdown megamenu">
@@ -90,9 +91,7 @@ function HeaderDark() {
 
                         <div className="collapse navbar-collapse order-4 order-lg-3" id="navbarMenu2">
                             <ul className="navbar-nav ml-auto">
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/join">Log In</Link>
-                                </li>
+                                {getProfileLinks()}
                                 <li className="nav-item">
                                     <a data-toggle="modal" data-target="#search" className="nav-link"><i className="icon-search"></i></a>
                                 </li>
@@ -105,6 +104,33 @@ function HeaderDark() {
                 </div>
             </div>
         </header>
+    );
+}
+
+
+
+function getProfileLinks() {
+    const isLoggedIn = BsAppSession.get("isLoggedIn");
+
+    if (isLoggedIn == 1) {
+        return (
+            <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle" href="#!" id="navbarDropdown-10" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{BsAppSession.get("email")}</a>
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdown-10">
+                    <li><Link className="dropdown-item" to="/profile">Profile</Link></li>
+                    <li><Link className="dropdown-item" to="/orders">Orders</Link></li>
+                    <li><Link className="dropdown-item" to="/addresses">Addresses</Link></li>
+                    <li><Link className="dropdown-item" to="/payments">Payments</Link></li>
+                </ul>
+
+            </li>
+        );
+    }
+
+    return (
+        <li className="nav-item">
+            <Link className="nav-link" to="/join">Log In</Link>
+        </li>
     );
 }
 
