@@ -6,6 +6,7 @@ import BsAppSession from '../../bs-library/helpers/BsAppSession';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/profile';
+import Bs from '../../bs-library/helpers/Bs';
 
 
 class Profile extends React.Component {
@@ -13,6 +14,7 @@ class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            profile: {}
         };
 
         if (BsAppSession.get("isLoggedIn") == 0) { this.props.history.push("/"); }
@@ -26,10 +28,42 @@ class Profile extends React.Component {
 
 
 
+    componentDidUpdate() {
+        if (this.props.shouldDisplayProfile) { 
+            this.setState({
+                profile: this.props.profile
+            });
+
+            this.props.onProfileDisplayedSuccess();
+        }
+    }
+
+
+
+    onPersonalDataChanged = (e) => {
+        const target = e.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        let updatedProfile = this.state.profile;
+        updatedProfile[name] = value;
+
+        this.setState({ profile: updatedProfile });
+    }
+
+
+
+    saveProfile = (e) => {
+        e.preventDefault();
+        this.props.saveProfile(this.state.profile);
+    };
+
+
+
     render() {
         return (
             <>
-                <ProfileBanner profile={this.props.profile} />
+                <ProfileBanner profile={this.state.profile} />
 
                 <section className="pt-5">
                     <div className="container">
@@ -41,7 +75,7 @@ class Profile extends React.Component {
                                 <div className="row">
                                     <div className="col">
                                         <div className="tab-content" id="myTabContent">
-                                            <PersonalData profile={this.props.profile} />
+                                            <PersonalData profile={this.state.profile} onPersonalDataChanged={this.onPersonalDataChanged} saveProfile={this.saveProfile} />
 
                                         </div>
                                     </div>
@@ -61,6 +95,7 @@ class Profile extends React.Component {
 const mapStateToProps = (state) => {
     return {
         profile: state.profile.profile,
+        shouldDisplayProfile: state.profile.shouldDisplayProfile,
     };
 };
 
@@ -68,7 +103,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        readProfile: (userId) => dispatch(actions.readProfile(userId))
+        readProfile: (userId) => dispatch(actions.readProfile(userId)),
+        onProfileDisplayedSuccess: () => dispatch(actions.onProfileDisplayedSuccess()),
+        saveProfile: (profile) => dispatch(actions.saveProfile(profile)),
     };
 };
 

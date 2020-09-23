@@ -3,6 +3,12 @@ import React from 'react';
 
 
 function PersonalData(props) {
+
+    const firstName = props.profile.firstName ? props.profile.firstName : "";
+    const lastName = props.profile.lastName ? props.profile.lastName : "";
+    const email = props.profile.email ? props.profile.email : "";
+    const phone = props.profile.phone ? props.profile.phone : "";
+
     return (
         <div className="tab-pane fade show active" id="sidebar-1-1" role="tabpanel" aria-labelledby="sidebar-1-1">
             <div className="row mb-2">
@@ -14,26 +20,26 @@ function PersonalData(props) {
                 <div className="col-md-6">
                     <div className="form-group">
                         <label htmlFor="exampleInput1">First Name</label>
-                        <input id="exampleInput1" type="text" className="form-control" placeholder="First name" value={props.profile?.firstName} />
+                        <input id="exampleInput1" type="text" className="form-control" placeholder="First name" name="firstName" value={firstName} onChange={props.onPersonalDataChanged} />
                     </div>
                 </div>
                 <div className="col-md-6">
                     <div className="form-group">
                         <label htmlFor="exampleInput2">Last Name</label>
-                        <input id="exampleInput2" type="text" className="form-control" placeholder="Last name" value={props.profile?.lastName} />
+                        <input id="exampleInput2" type="text" className="form-control" placeholder="Last name" name="lastName" value={lastName} onChange={props.onPersonalDataChanged} />
                     </div>
                 </div>
 
                 <div className="col-md-6">
                     <div className="form-group">
                         <label htmlFor="exampleInput6">Telephone</label>
-                        <input id="exampleInput6" type="text" className="form-control" placeholder="Telephone" value={props.profile?.phone} />
+                        <input id="exampleInput6" type="text" className="form-control" placeholder="Telephone" name="phone" value={phone} onChange={props.onPersonalDataChanged} />
                     </div>
                 </div>
                 <div className="col-md-6">
                     <div className="form-group">
                         <label htmlFor="exampleInput7">Email</label>
-                        <input id="exampleInput7" type="text" className="form-control" placeholder="Email" value={props.profile?.email} />
+                        <input id="exampleInput7" type="text" className="form-control" placeholder="Email" name="email" value={email} onChange={props.onPersonalDataChanged} />
                     </div>
                 </div>
             </div>
@@ -41,7 +47,7 @@ function PersonalData(props) {
 
             <div className="row">
                 <div className="col">
-                    <a href="#!" className="btn btn-primary">Save Changes</a>
+                    <a href="#!" className="btn btn-primary" onClick={props.saveProfile}>Save Changes</a>
                 </div>
             </div>
         </div>
