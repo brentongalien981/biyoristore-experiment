@@ -34,14 +34,12 @@ export const saveProfile = (profile) => {
                 Bs.log("\n#####################");
                 Bs.log("FILE: actions/join.js, METHOD: saveProfile() => ajaxCrud() => callBackFunc()");
 
-                if (json.errors) {
-                    dispatch(onSaveProfileFail(json.errors));
-                } else {
+                if (!json.errors) {
                     dispatch(onSaveProfileSuccess(json.profile));
                 }
             },
-            errorCallBackFunc: () => {
-                alert("Oops, there's an error on our end. Please try again.");
+            errorCallBackFunc: (errors) => {
+                dispatch(onSaveProfileFail(errors));
             }
         });
     };

@@ -26,12 +26,30 @@ const profile = (state = initialState, action) => {
 
 /* NORMAL */
 const onSaveProfileFail = (state, action) => {
+    let errorMsg = "";
+
+    for (const field in action.errors) {
+        if (action.errors.hasOwnProperty(field)) {
+            const fieldErrors = action.errors[field];
+
+            errorMsg += fieldErrors[0] + "\n";
+            
+        }
+    }
+
+    if (errorMsg.length > 0) { alert(errorMsg); }
+    else { alert("Oops, there's an error on our end. Please try again."); }
+
     return {
         ...state,
     };
 };
 
 const onSaveProfileSuccess = (state, action) => {
+
+    BsAppSession.set("email", action.profile.email);
+    alert("Profile saved...");
+
     return {
         ...state,
     };
