@@ -20,14 +20,14 @@ function PersonalData(props) {
                 <div className="col-md-6">
                     <div className="form-group">
                         <label htmlFor="exampleInput2">Last Name</label>
-                        <input id="exampleInput2" type="text" className="form-control" placeholder="Last name" />
+                        <input id="exampleInput2" type="text" className="form-control" placeholder="Last name" value={props.profile?.lastName} />
                     </div>
                 </div>
 
                 <div className="col-md-6">
                     <div className="form-group">
                         <label htmlFor="exampleInput6">Telephone</label>
-                        <input id="exampleInput6" type="text" className="form-control" placeholder="Telephone" />
+                        <input id="exampleInput6" type="text" className="form-control" placeholder="Telephone" value={props.profile?.phone} />
                     </div>
                 </div>
                 <div className="col-md-6">
