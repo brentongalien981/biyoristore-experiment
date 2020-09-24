@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/profile';
 import Bs from '../../bs-library/helpers/Bs';
+import Payments from './Payments';
 
 
 class Profile extends React.Component {
@@ -77,6 +78,7 @@ class Profile extends React.Component {
                                         <div className="tab-content" id="myTabContent">
                                             <PersonalData profile={this.state.profile} onPersonalDataChanged={this.onPersonalDataChanged} saveProfile={this.saveProfile} />
 
+                                            <Payments paymentInfos={this.props.paymentInfos} />
                                         </div>
                                     </div>
                                 </div>
@@ -96,6 +98,7 @@ const mapStateToProps = (state) => {
     return {
         profile: state.profile.profile,
         shouldDisplayProfile: state.profile.shouldDisplayProfile,
+        paymentInfos: state.profile.paymentInfos,
     };
 };
 

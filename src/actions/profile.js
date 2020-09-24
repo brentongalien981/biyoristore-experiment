@@ -16,7 +16,7 @@ export const SET_PROFILE = "SET_PROFILE";
 export const onSaveProfileFail = (errors) => ({ type: ON_SAVE_PROFILE_FAIL, errors: errors });
 export const onSaveProfileSuccess = (profile) => ({ type: ON_SAVE_PROFILE_SUCCESS, profile: profile });
 export const onProfileDisplayedSuccess = () => ({ type: ON_PROFILE_DISPLAYED_SUCCESS });
-export const setProfile = (profile) => ({ type: SET_PROFILE, profile: profile });
+export const setProfile = (profile, paymentInfos) => ({ type: SET_PROFILE, profile: profile, paymentInfos: paymentInfos });
 
 
 
@@ -58,12 +58,12 @@ export const readProfile = (userId) => {
         BsCore.ajaxCrud({
             url: '/profile/show',
             params: { userId: userId, api_token: BsAppSession.get("apiToken") },
-            neededResponseParams: ["profile"],
+            neededResponseParams: ["profile", "paymentInfos"],
             callBackFunc: (requestData, json) => {
                 Bs.log("\n#####################");
                 Bs.log("FILE: actions/join.js, METHOD: readProfile() => ajaxCrud() => callBackFunc()");
 
-                dispatch(setProfile(json.profile));
+                dispatch(setProfile(json.profile, json.paymentInfos));
                 
             }
         });

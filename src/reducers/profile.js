@@ -6,6 +6,10 @@ import BsAppSession from '../bs-library/helpers/BsAppSession';
 const initialState = {
     profile: {
     },
+    paymentInfos: [
+        { id: 1, type: "Visa", cardNumber: "1234123412341234", expirationMonth: "08", expirationYear: "2024" },
+        { id: 2, type: "Mastercard", cardNumber: "0987098709870987", expirationMonth: "01", expirationYear: "2022" },
+    ],
     shouldDisplayProfile: false
 };
 
@@ -33,7 +37,7 @@ const onSaveProfileFail = (state, action) => {
             const fieldErrors = action.errors[field];
 
             errorMsg += fieldErrors[0] + "\n";
-            
+
         }
     }
 
@@ -66,6 +70,7 @@ const setProfile = (state, action) => {
     return {
         ...state,
         profile: action.profile,
+        paymentInfos: action.paymentInfos,
         shouldDisplayProfile: true
     };
 };
