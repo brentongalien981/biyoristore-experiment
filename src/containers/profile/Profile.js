@@ -10,12 +10,14 @@ import Bs from '../../bs-library/helpers/Bs';
 import Payments from './Payments';
 
 
+
 class Profile extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            profile: {}
+            profile: {},
+            newPayment: { cardNumber: "", nameOnCard: "", expirationMonth: "11", expirationYear: "2020" }
         };
 
         if (BsAppSession.get("isLoggedIn") == 0) { this.props.history.push("/"); }
@@ -30,12 +32,18 @@ class Profile extends React.Component {
 
 
     componentDidUpdate() {
-        if (this.props.shouldDisplayProfile) { 
+        if (this.props.shouldDisplayProfile) {
             this.setState({
                 profile: this.props.profile
             });
 
             this.props.onProfileDisplayedSuccess();
+        }
+
+        if (this.props.shouldResetPaymentForm) {
+            this.setState({ newPayment: { cardNumber: "", nameOnCard: "", expirationMonth: "11", expirationYear: "2020" }});
+
+            this.props.onPaymentFormResetSuccess();
         }
     }
 
@@ -61,6 +69,29 @@ class Profile extends React.Component {
 
 
 
+    savePayment = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.props.savePayment(this.state.newPayment);
+    };
+
+
+
+    onPaymentFormInputChanged = (e) => {
+        Bs.log("\n####################");
+        Bs.log("In METHOD: onPaymentFormInputChanged()");
+
+        const target = e.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        let updatedNewPayment = this.state.newPayment;
+        updatedNewPayment[name] = value;
+        this.setState({ newPayment: updatedNewPayment });
+    };
+
+
+
     render() {
         return (
             <>
@@ -78,7 +109,10 @@ class Profile extends React.Component {
                                         <div className="tab-content" id="myTabContent">
                                             <PersonalData profile={this.state.profile} onPersonalDataChanged={this.onPersonalDataChanged} saveProfile={this.saveProfile} />
 
-                                            <Payments paymentInfos={this.props.paymentInfos} />
+                                            <Payments paymentInfos={this.props.paymentInfos}
+                                                newPayment={this.state.newPayment}
+                                                onPaymentFormInputChanged={this.onPaymentFormInputChanged}
+                                                savePayment={this.savePayment} />
                                         </div>
                                     </div>
                                 </div>
@@ -99,6 +133,7 @@ const mapStateToProps = (state) => {
         profile: state.profile.profile,
         shouldDisplayProfile: state.profile.shouldDisplayProfile,
         paymentInfos: state.profile.paymentInfos,
+        shouldResetPaymentForm: state.profile.shouldResetPaymentForm,
     };
 };
 
@@ -109,6 +144,8 @@ const mapDispatchToProps = (dispatch) => {
         readProfile: (userId) => dispatch(actions.readProfile(userId)),
         onProfileDisplayedSuccess: () => dispatch(actions.onProfileDisplayedSuccess()),
         saveProfile: (profile) => dispatch(actions.saveProfile(profile)),
+        savePayment: (newPayment) => dispatch(actions.savePayment(newPayment)),
+        onPaymentFormResetSuccess: () => dispatch(actions.onPaymentFormResetSuccess()),
     };
 };
 

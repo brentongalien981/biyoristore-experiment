@@ -21,7 +21,7 @@ function Payments(props) {
                 {showPaymentDetails(props.paymentInfos)}
             </div>
 
-            <PaymentForm />
+            <PaymentForm newPayment={props.newPayment} onPaymentFormInputChanged={props.onPaymentFormInputChanged} savePayment={props.savePayment} />
         </div>
     );
 }
@@ -34,7 +34,10 @@ function showPaymentDetails(paymentInfos) {
     const randomLastPaymentDetals = [
         { amount: "7.00", date: "04/14/2019" },
         { amount: "19.00", date: "05/15/2019" },
-        { amount: "250.00", date: "09/14/2020" }
+        { amount: "250.00", date: "09/14/2020" },
+        { amount: "350.00", date: "09/14/2021" },
+        { amount: "450.00", date: "09/14/2022" },
+        { amount: "550.00", date: "09/14/2023" },
     ];
 
     const paymentDetails = paymentInfos.map((p, i) => {
