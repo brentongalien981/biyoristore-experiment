@@ -44,16 +44,41 @@ const onPaymentFormResetSuccess = (state, action) => {
 
 const onSavePaymentSuccess = (state, action) => {
 
-    alert("New Payment saved...");
+    //
+    document.querySelector("#closePaymentFormBtn").click();
+
+    alert("Payment saved...");
+    
 
     let updatedPaymentInfos = state.paymentInfos;
 
+    if (action.paymentForCrudMethod == "create") {
+        return {
+            ...state,
+            paymentInfos: [...updatedPaymentInfos, action.newPayment],
+            shouldResetPaymentForm: true
+        };
+    } 
+    else {
 
-    return {
-        ...state,
-        paymentInfos: [...updatedPaymentInfos, action.newPayment],
-        shouldResetPaymentForm: true
-    };
+        let i = 0;
+        for (; i < updatedPaymentInfos.length; i++) {
+            const p = updatedPaymentInfos[i];
+            
+            if (p.id == action.newPayment.id) { break; }
+
+        }
+
+        updatedPaymentInfos[i] = action.newPayment;
+
+        return {
+            ...state,
+            paymentInfos: [...updatedPaymentInfos],
+            shouldResetPaymentForm: true
+        };
+    }
+
+
 };
 
 const onSavePaymentFail = (state, action) => {

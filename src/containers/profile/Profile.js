@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions/profile';
 import Bs from '../../bs-library/helpers/Bs';
 import Payments from './Payments';
+import PaymentModal from './PaymentModal';
+import PaymentForm from './PaymentForm';
 
 
 
@@ -17,7 +19,8 @@ class Profile extends React.Component {
         super(props);
         this.state = {
             profile: {},
-            newPayment: { cardNumber: "", nameOnCard: "", expirationMonth: "11", expirationYear: "2020" }
+            newPayment: { cardNumber: "", nameOnCard: "", expirationMonth: "11", expirationYear: "2020" },
+            paymentFormCrudMethod: "create"
         };
 
         if (BsAppSession.get("isLoggedIn") == 0) { this.props.history.push("/"); }
@@ -72,7 +75,12 @@ class Profile extends React.Component {
     savePayment = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        this.props.savePayment(this.state.newPayment);
+
+        let newPayment = this.state.newPayment;
+        newPayment.expirationMonth = parseInt(newPayment.expirationMonth);
+        newPayment.expirationYear = parseInt(newPayment.expirationYear);
+        this.setState({newPayment: newPayment});
+        this.props.savePayment(this.state.newPayment, this.state.paymentFormCrudMethod);
     };
 
 
@@ -88,6 +96,29 @@ class Profile extends React.Component {
         let updatedNewPayment = this.state.newPayment;
         updatedNewPayment[name] = value;
         this.setState({ newPayment: updatedNewPayment });
+    };
+
+
+
+    onPaymenFormShown = (e, payment) => {
+        e.preventDefault();
+        Bs.log("payment ==> ...");
+        Bs.log(payment);
+
+        if (payment) {
+            // edit payment
+            this.setState({ 
+                newPayment: payment,
+                paymentFormCrudMethod: "edit"
+            });
+        } else {
+            // create payment
+            this.setState({
+                newPayment: { cardNumber: "", nameOnCard: "", expirationMonth: "11", expirationYear: "2020" },
+                paymentFormCrudMethod: "create"
+            });
+        }
+        // ish
     };
 
 
@@ -110,9 +141,9 @@ class Profile extends React.Component {
                                             <PersonalData profile={this.state.profile} onPersonalDataChanged={this.onPersonalDataChanged} saveProfile={this.saveProfile} />
 
                                             <Payments paymentInfos={this.props.paymentInfos}
-                                                newPayment={this.state.newPayment}
-                                                onPaymentFormInputChanged={this.onPaymentFormInputChanged}
-                                                savePayment={this.savePayment} />
+                                                // newPayment={this.state.newPayment}
+                                                // onPaymentFormInputChanged={this.onPaymentFormInputChanged}
+                                                onPaymenFormShown={this.onPaymenFormShown} />
                                         </div>
                                     </div>
                                 </div>
@@ -121,6 +152,8 @@ class Profile extends React.Component {
                         </div>
                     </div>
                 </section>
+
+                <PaymentForm paymentFormCrudMethod={this.state.paymentFormCrudMethod} newPayment={this.state.newPayment} onPaymentFormInputChanged={this.onPaymentFormInputChanged} savePayment={this.savePayment} />
             </>
         );
     }
@@ -144,7 +177,7 @@ const mapDispatchToProps = (dispatch) => {
         readProfile: (userId) => dispatch(actions.readProfile(userId)),
         onProfileDisplayedSuccess: () => dispatch(actions.onProfileDisplayedSuccess()),
         saveProfile: (profile) => dispatch(actions.saveProfile(profile)),
-        savePayment: (newPayment) => dispatch(actions.savePayment(newPayment)),
+        savePayment: (newPayment, paymentForCrudMethod) => dispatch(actions.savePayment(newPayment, paymentForCrudMethod)),
         onPaymentFormResetSuccess: () => dispatch(actions.onPaymentFormResetSuccess()),
     };
 };

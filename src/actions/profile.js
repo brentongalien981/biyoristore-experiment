@@ -18,7 +18,7 @@ export const SET_PROFILE = "SET_PROFILE";
 /* FUNCS */
 export const onPaymentFormResetSuccess = () => ({ type: ON_PAYMENT_FORM_RESET_SUCCESS });
 export const onSavePaymentFail = (errors) => ({ type: ON_SAVE_PAYMENT_FAIL, errors: errors });
-export const onSavePaymentSuccess = (newPayment) => ({ type: ON_SAVE_PAYMENT_SUCCESS, newPayment: newPayment });
+export const onSavePaymentSuccess = (newPayment, paymentForCrudMethod) => ({ type: ON_SAVE_PAYMENT_SUCCESS, newPayment: newPayment, paymentForCrudMethod: paymentForCrudMethod });
 export const onSaveProfileFail = (errors) => ({ type: ON_SAVE_PROFILE_FAIL, errors: errors });
 export const onSaveProfileSuccess = (profile) => ({ type: ON_SAVE_PROFILE_SUCCESS, profile: profile });
 export const onProfileDisplayedSuccess = () => ({ type: ON_PROFILE_DISPLAYED_SUCCESS });
@@ -27,7 +27,7 @@ export const setProfile = (profile, paymentInfos) => ({ type: SET_PROFILE, profi
 
 
 /* AJAX FUNCS */
-export const savePayment = (newPayment) => {
+export const savePayment = (newPayment, paymentForCrudMethod) => {
 
     return (dispatch) => {
 
@@ -41,7 +41,7 @@ export const savePayment = (newPayment) => {
                 Bs.log("FILE: actions/join.js, METHOD: savePayment() => ajaxCrud() => callBackFunc()");
 
                 if (json.isResultOk) {
-                    dispatch(onSavePaymentSuccess(json.newPayment));
+                    dispatch(onSavePaymentSuccess(json.newPayment, paymentForCrudMethod));
                 }
             },
             errorCallBackFunc: (errors) => {

@@ -12,23 +12,23 @@ function Payments(props) {
             <div className="row">
                 <div className="col">
                     <h3 className="mb-0">Payments</h3>
-                    <span className="eyebrow">{props.paymentInfos.length} Entry</span>
+                    {/* <span className="eyebrow">{props.paymentInfos.length} Entry</span><br /> */}
+                    <button type="button" className="btn btn-primary btn-with-ico" data-toggle="modal" data-target="#exampleModal-1" onClick={props.onPaymenFormShown}><i className="icon-plus"></i> Add New Payment</button>
                 </div>
             </div>
 
             {/* payment-details */}
             <div className="row gutter-2 mb-6">
-                {showPaymentDetails(props.paymentInfos)}
+                {showPaymentDetails(props.paymentInfos, props.onPaymenFormShown)}
             </div>
 
-            <PaymentForm newPayment={props.newPayment} onPaymentFormInputChanged={props.onPaymentFormInputChanged} savePayment={props.savePayment} />
         </div>
     );
 }
 
 
 
-function showPaymentDetails(paymentInfos) {
+function showPaymentDetails(paymentInfos, onPaymenFormShown) {
 
     // TODO: 
     const randomLastPaymentDetals = [
@@ -54,7 +54,7 @@ function showPaymentDetails(paymentInfos) {
                                     <button id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button" className="btn btn-lg btn-secondary btn-ico"><i className="icon-more-vertical"></i></button>
                                     <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
                                         <li>
-                                            <a className="dropdown-item" href="#!">Edit</a>
+                                            <a className="dropdown-item" href="#!" data-toggle="modal" data-target="#exampleModal-1" onClick={(e) => onPaymenFormShown(e, p)}>Edit</a>
                                         </li>
                                         <li>
                                             <a className="dropdown-item" href="#!">Delete</a>
