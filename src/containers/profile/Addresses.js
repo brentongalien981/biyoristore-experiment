@@ -9,13 +9,13 @@ function Addresses(props) {
             <div className="row">
                 <div className="col">
                     <h3 className="mb-0">Addresses</h3>
-                    <button type="button" className="btn btn-primary btn-with-ico" data-toggle="modal" data-target="#AddressForm"><i className="icon-plus"></i> Add New Address</button>
+                    <button type="button" className="btn btn-primary btn-with-ico" data-toggle="modal" data-target="#AddressForm" onClick={props.onAddressFormShown}><i className="icon-plus"></i> Add New Address</button>
                     {/* <span className="eyebrow">2 Entry</span> */}
                 </div>
             </div>
 
             <div className="row gutter-2">
-                {showAddresses(props.addresses)}
+                {showAddresses(props.addresses, props.onAddressFormShown)}
             </div>
 
         </div>
@@ -24,7 +24,7 @@ function Addresses(props) {
 
 
 
-function showAddresses(addresses) {
+function showAddresses(addresses, onAddressFormShown) {
     const addressComponents = addresses.map((a, i) => {
         return (
             <div key={i} className="col-md-6">
@@ -39,7 +39,7 @@ function showAddresses(addresses) {
                                     <button id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button" className="btn btn-lg btn-secondary btn-ico"><i className="icon-more-vertical"></i></button>
                                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <li>
-                                            <a className="dropdown-item" href="#!">Edit</a>
+                                            <a className="dropdown-item" href="#!" data-toggle="modal" data-target="#AddressForm" onClick={(e) => onAddressFormShown(e, a)}>Edit</a>
                                         </li>
                                         <li>
                                             <a className="dropdown-item" href="#!">Delete</a>

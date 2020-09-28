@@ -58,7 +58,6 @@ class Profile extends React.Component {
 
             this.props.onAddressFormResetSuccess();
         }
-        //ish
     }
 
 
@@ -132,6 +131,27 @@ class Profile extends React.Component {
 
 
 
+    onAddressFormShown = (e, address) => {
+        e.preventDefault();
+
+        if (address) {
+            // edit address
+            this.setState({
+                editedAddress: address,
+                addressFormCrudMethod: "edit"
+            });
+        } else {
+            // create address
+            this.setState({
+                editedAddress: { street: "", city: "", province: "ON", country: "Canada", postalCode: "" },
+                addressFormCrudMethod: "create"
+            });
+        }
+        //ish
+    };
+
+
+
     onPaymenFormShown = (e, payment) => {
         e.preventDefault();
         Bs.log("payment ==> ...");
@@ -150,7 +170,7 @@ class Profile extends React.Component {
                 paymentFormCrudMethod: "create"
             });
         }
-        // ish
+
     };
 
 
@@ -171,7 +191,7 @@ class Profile extends React.Component {
                                     <div className="col">
                                         <div className="tab-content" id="myTabContent">
                                             <PersonalData profile={this.state.profile} onPersonalDataChanged={this.onPersonalDataChanged} saveProfile={this.saveProfile} />
-                                            <Addresses addresses={this.props.addresses} />
+                                            <Addresses addresses={this.props.addresses} onAddressFormShown={this.onAddressFormShown} />
                                             <Payments paymentInfos={this.props.paymentInfos} onPaymenFormShown={this.onPaymenFormShown} />
                                         </div>
                                     </div>
