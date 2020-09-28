@@ -10,6 +10,9 @@ const initialState = {
         { id: 1, type: "Visa", cardNumber: "1234123412341234", expirationMonth: "08", expirationYear: "2024" },
         { id: 2, type: "Mastercard", cardNumber: "0987098709870987", expirationMonth: "01", expirationYear: "2022" },
     ],
+    addresses: [
+        { id: 1, street: "78 Monkhouse Rd", city: "Markham", province: "ON", country: "Canada", postalCode: "L6E 1V5" },
+    ],
     shouldDisplayProfile: false,
     shouldResetPaymentForm: false,
 };
@@ -143,6 +146,7 @@ const setProfile = (state, action) => {
         ...state,
         profile: action.profile,
         paymentInfos: action.paymentInfos,
+        addresses: action.addresses,
         shouldDisplayProfile: true
     };
 };

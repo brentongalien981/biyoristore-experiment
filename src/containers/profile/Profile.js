@@ -10,6 +10,7 @@ import Bs from '../../bs-library/helpers/Bs';
 import Payments from './Payments';
 import PaymentModal from './PaymentModal';
 import PaymentForm from './PaymentForm';
+import Addresses from './Addresses';
 
 
 
@@ -139,11 +140,8 @@ class Profile extends React.Component {
                                     <div className="col">
                                         <div className="tab-content" id="myTabContent">
                                             <PersonalData profile={this.state.profile} onPersonalDataChanged={this.onPersonalDataChanged} saveProfile={this.saveProfile} />
-
-                                            <Payments paymentInfos={this.props.paymentInfos}
-                                                // newPayment={this.state.newPayment}
-                                                // onPaymentFormInputChanged={this.onPaymentFormInputChanged}
-                                                onPaymenFormShown={this.onPaymenFormShown} />
+                                            <Addresses addresses={this.props.addresses} />
+                                            <Payments paymentInfos={this.props.paymentInfos} onPaymenFormShown={this.onPaymenFormShown} />
                                         </div>
                                     </div>
                                 </div>
@@ -167,6 +165,7 @@ const mapStateToProps = (state) => {
         shouldDisplayProfile: state.profile.shouldDisplayProfile,
         paymentInfos: state.profile.paymentInfos,
         shouldResetPaymentForm: state.profile.shouldResetPaymentForm,
+        addresses: state.profile.addresses,
     };
 };
 
