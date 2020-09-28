@@ -22,6 +22,9 @@ const initialState = {
 /* REDUCER */
 const profile = (state = initialState, action) => {
     switch (action.type) {
+        case actions.ON_ADDRESS_FORM_RESET_SUCCESS: return onAddressFormResetSuccess(state, action);
+        case actions.ON_SAVE_ADDRESS_FAIL: return onSaveAddressFail(state, action);
+        case actions.ON_SAVE_ADDRESS_SUCCESS: return onSaveAddressSuccess(state, action);
         case actions.ON_PAYMENT_FORM_RESET_SUCCESS: return onPaymentFormResetSuccess(state, action);
         case actions.ON_SAVE_PAYMENT_SUCCESS: return onSavePaymentSuccess(state, action);
         case actions.ON_SAVE_PAYMENT_FAIL: return onSavePaymentFail(state, action);
@@ -36,6 +39,68 @@ const profile = (state = initialState, action) => {
 
 
 /* NORMAL */
+const onAddressFormResetSuccess = (state, action) => {
+    return {
+        ...state,
+        shouldResetAddressForm: false
+    };
+};
+
+const onSaveAddressFail = (state, action) => {
+    let errorMsg = "";
+
+    for (const field in action.errors) {
+        if (action.errors.hasOwnProperty(field)) {
+            const fieldErrors = action.errors[field];
+
+            errorMsg += fieldErrors[0] + "\n";
+
+        }
+    }
+
+    if (errorMsg.length > 0) { alert(errorMsg); }
+    else { alert("Oops, there's an error on our end. Please try again."); }
+
+    return {
+        ...state,
+    };
+};
+
+const onSaveAddressSuccess = (state, action) => {
+
+    document.querySelector("#closeAddressFormBtn").click();
+    alert("Address saved...");
+    
+
+    let updatedAddresses = state.addresses;
+
+    if (action.addressFormCrudMethod == "create") {
+        return {
+            ...state,
+            addresses: [...updatedAddresses, action.address],
+            shouldResetAddressForm: true
+        };
+    } 
+    else {
+
+        let i = 0;
+        for (; i < updatedAddresses.length; i++) {
+            const a = updatedAddresses[i];
+            
+            if (a.id == action.address.id) { break; }
+
+        }
+
+        updatedAddresses[i] = action.address;
+
+        return {
+            ...state,
+            addresses: [...updatedAddresses],
+            shouldResetAddressForm: true
+        };
+    }
+};
+
 const onPaymentFormResetSuccess = (state, action) => {
     return {
         ...state,
