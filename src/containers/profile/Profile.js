@@ -147,7 +147,14 @@ class Profile extends React.Component {
                 addressFormCrudMethod: "create"
             });
         }
+    };
+
+
+
+    onAddressDelete = (e, addressId) => {
         //ish
+        e.preventDefault();
+        this.props.onAddressDelete(addressId);
     };
 
 
@@ -191,7 +198,7 @@ class Profile extends React.Component {
                                     <div className="col">
                                         <div className="tab-content" id="myTabContent">
                                             <PersonalData profile={this.state.profile} onPersonalDataChanged={this.onPersonalDataChanged} saveProfile={this.saveProfile} />
-                                            <Addresses addresses={this.props.addresses} onAddressFormShown={this.onAddressFormShown} />
+                                            <Addresses addresses={this.props.addresses} onAddressFormShown={this.onAddressFormShown} onDelete={this.onAddressDelete} />
                                             <Payments paymentInfos={this.props.paymentInfos} onPaymenFormShown={this.onPaymenFormShown} />
                                         </div>
                                     </div>
@@ -240,6 +247,7 @@ const mapDispatchToProps = (dispatch) => {
         onPaymentFormResetSuccess: () => dispatch(actions.onPaymentFormResetSuccess()),
         saveAddress: (address, addressFormCrudMethod) => dispatch(actions.saveAddress(address, addressFormCrudMethod)),
         onAddressFormResetSuccess: () => dispatch(actions.onAddressFormResetSuccess()),
+        onAddressDelete: (addressId) => dispatch(actions.onAddressDelete(addressId)),
     };
 };
 

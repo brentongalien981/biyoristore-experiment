@@ -5,6 +5,8 @@ import BsAppSession from "../bs-library/helpers/BsAppSession";
 
 
 /* NAMES */
+export const ON_ADDRESS_DELETE_FAIL = "ON_ADDRESS_DELETE_FAIL";
+export const ON_ADDRESS_DELETE_SUCCESS = "ON_ADDRESS_DELETE_SUCCESS";
 export const ON_ADDRESS_FORM_RESET_SUCCESS = "ON_ADDRESS_FORM_RESET_SUCCESS";
 export const ON_SAVE_ADDRESS_FAIL = "ON_SAVE_ADDRESS_FAIL";
 export const ON_SAVE_ADDRESS_SUCCESS = "ON_SAVE_ADDRESS_SUCCESS";
@@ -19,6 +21,8 @@ export const SET_PROFILE = "SET_PROFILE";
 
 
 /* FUNCS */
+export const onAddressDeleteFail = () => ({ type: ON_ADDRESS_DELETE_FAIL });
+export const onAddressDeleteSuccess = (addressId) => ({ type: ON_ADDRESS_DELETE_SUCCESS, addressId: addressId });
 export const onAddressFormResetSuccess = () => ({ type: ON_ADDRESS_FORM_RESET_SUCCESS });
 export const onSaveAddressFail = (errors) => ({ type: ON_SAVE_ADDRESS_FAIL, errors: errors });
 export const onSaveAddressSuccess = (address, addressFormCrudMethod) => ({ type: ON_SAVE_ADDRESS_SUCCESS, address: address, addressFormCrudMethod: addressFormCrudMethod });
@@ -33,6 +37,30 @@ export const setProfile = (profile, paymentInfos, addresses) => ({ type: SET_PRO
 
 
 /* AJAX FUNCS */
+export const onAddressDelete = (addressId) => {
+
+    return (dispatch) => {
+
+        BsCore.ajaxCrud({
+            url: '/address/destroy',
+            method: "post",
+            params: { api_token: BsAppSession.get("apiToken"), addressId: addressId },
+            // neededResponseParams: ["address"],
+            callBackFunc: (requestData, json) => {
+                Bs.log("\n#####################");
+                Bs.log("FILE: actions/join.js, METHOD: onAddressDelete() => ajaxCrud() => callBackFunc()");
+
+                if (json.isResultOk) {
+                    dispatch(onAddressDeleteSuccess(addressId));
+                }
+            },
+            errorCallBackFunc: (errors) => {
+                dispatch(onAddressDeleteFail(errors));
+            }
+        });
+    };
+};
+
 export const saveAddress = (address, addressFormCrudMethod) => {
 
     return (dispatch) => {

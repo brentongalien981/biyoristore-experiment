@@ -22,6 +22,8 @@ const initialState = {
 /* REDUCER */
 const profile = (state = initialState, action) => {
     switch (action.type) {
+        case actions.ON_ADDRESS_DELETE_FAIL: return onAddressDeleteFail(state, action);
+        case actions.ON_ADDRESS_DELETE_SUCCESS: return onAddressDeleteSuccess(state, action);
         case actions.ON_ADDRESS_FORM_RESET_SUCCESS: return onAddressFormResetSuccess(state, action);
         case actions.ON_SAVE_ADDRESS_FAIL: return onSaveAddressFail(state, action);
         case actions.ON_SAVE_ADDRESS_SUCCESS: return onSaveAddressSuccess(state, action);
@@ -39,6 +41,49 @@ const profile = (state = initialState, action) => {
 
 
 /* NORMAL */
+const onAddressDeleteFail = (state, action) => {
+    let errorMsg = "";
+
+    for (const field in action.errors) {
+        if (action.errors.hasOwnProperty(field)) {
+            const fieldErrors = action.errors[field];
+
+            errorMsg += fieldErrors[0] + "\n";
+
+        }
+    }
+
+    if (errorMsg.length > 0) { alert(errorMsg); }
+    else { alert("Oops, there's an error on our end. Please try again."); }
+
+    return {
+        ...state,
+    };
+};
+
+const onAddressDeleteSuccess = (state, action) => {
+    alert("Address deleted");
+
+    let updatedAddresses = state.addresses;
+
+    let i = 0;
+    for (; i < updatedAddresses.length; i++) {
+        const a = updatedAddresses[i];
+        
+        if (a.id == action.addressId) { 
+            break; 
+        }
+
+    }
+
+    updatedAddresses.splice(i, 1);
+
+    return {
+        ...state,
+        addresses: [...updatedAddresses]
+    };
+};
+
 const onAddressFormResetSuccess = (state, action) => {
     return {
         ...state,

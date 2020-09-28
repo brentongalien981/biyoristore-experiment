@@ -15,7 +15,7 @@ function Addresses(props) {
             </div>
 
             <div className="row gutter-2">
-                {showAddresses(props.addresses, props.onAddressFormShown)}
+                {showAddresses(props.addresses, props.onAddressFormShown, props.onDelete)}
             </div>
 
         </div>
@@ -24,7 +24,7 @@ function Addresses(props) {
 
 
 
-function showAddresses(addresses, onAddressFormShown) {
+function showAddresses(addresses, onAddressFormShown, onDelete) {
     const addressComponents = addresses.map((a, i) => {
         return (
             <div key={i} className="col-md-6">
@@ -42,7 +42,7 @@ function showAddresses(addresses, onAddressFormShown) {
                                             <a className="dropdown-item" href="#!" data-toggle="modal" data-target="#AddressForm" onClick={(e) => onAddressFormShown(e, a)}>Edit</a>
                                         </li>
                                         <li>
-                                            <a className="dropdown-item" href="#!">Delete</a>
+                                            <a className="dropdown-item" href="#!" onClick={(e) => onDelete(e, a.id)}>Delete</a>
                                         </li>
                                     </ul>
                                 </div>
