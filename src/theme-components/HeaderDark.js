@@ -118,9 +118,6 @@ function getProfileLinks(props) {
                 <a className="nav-link dropdown-toggle" href="#!" id="navbarDropdown-10" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{BsAppSession.get("email")}</a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown-10">
                     <li><Link className="dropdown-item" to="/profile">Profile</Link></li>
-                    <li><Link className="dropdown-item" to="/orders">Orders</Link></li>
-                    <li><Link className="dropdown-item" to="/addresses">Addresses</Link></li>
-                    <li><Link className="dropdown-item" to="/payments">Payments</Link></li>
                     <li><a className="dropdown-item" href="#" onClick={(e) => props.onLogout(e)}>Log out</a></li>
                 </ul>
 
