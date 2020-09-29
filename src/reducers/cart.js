@@ -5,6 +5,10 @@ import Bs from '../bs-library/helpers/Bs';
 
 const initialState = {
     message: "This is the initial state of STORE: cart.",
+    items: [
+        { id: 1, name: "Default Product 1", price: 39.99, quantity: 1 },
+        { id: 2, name: "Default Product 2", price: 49.99, quantity: 3 }
+    ]
 };
 
 
@@ -22,7 +26,7 @@ const cart = (state = initialState, action) => {
 /* NORMAL */
 const onAddToCart = (state, action) => {
     action.event.stopPropagation();
-    
+
     Bs.log("\n###############");
     Bs.log("In REDUCER: cart, METHOD: onAddToCart()");
 

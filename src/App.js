@@ -15,6 +15,8 @@ const ProductInDetails = React.lazy(() => import('./containers/product/ProductIn
 const Join = React.lazy(() => import('./containers/join/Join'));
 const Profile = React.lazy(() => import('./containers/profile/Profile'));
 
+const CartWidget = React.lazy(() => import('./components/cart/CartWidget'));
+
 
 
 function App() {
@@ -34,7 +36,7 @@ function App() {
 			<Footer />
 
 			<Search />
-			<Cart />
+			<Suspense fallback={<div>loading...</div>}><CartWidget /></Suspense>
 		</BrowserRouter>
 
 	);
