@@ -1,15 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import CartItem from './CartItem';
+import * as actions from '../../actions/cart';
 
 
 
 class CartWidget extends React.Component {
 
+    componentDidMount() {
+        this.props.showCart();
+    }
+
+
+
     render() {
 
         const cartItems = this.props.items.map((item, i) => {
-            return <CartItem key={i} />;
+            return <CartItem item={item} key={i} />;
         });
 
         return (
@@ -56,9 +63,16 @@ class CartWidget extends React.Component {
 const mapStateToProps = (state) => {
     return {
         items: state.cart.items,
+        cart: state.cart.cart,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        showCart: () => dispatch(actions.showCart())
     };
 };
 
 
 
-export default connect(mapStateToProps, null)(CartWidget);
+export default connect(mapStateToProps, mapDispatchToProps)(CartWidget);

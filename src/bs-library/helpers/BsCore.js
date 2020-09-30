@@ -53,6 +53,7 @@ class BsCore {
                 json.originalResultData = jsonData;
                 json.isResultOk = jsonData["isResultOk"];
                 json.objs = jsonData["objs"];
+                json.obj = jsonData["obj"];
                 json.isViewingOwnAccount = jsonData["isViewingOwnAccount"];
 
 
