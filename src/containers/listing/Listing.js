@@ -13,6 +13,8 @@ import { connect } from 'react-redux';
 import Bs from '../../bs-library/helpers/Bs';
 import * as productsActions from '../../actions/products';
 import { withRouter } from 'react-router-dom';
+import BsAppSession from '../../bs-library/helpers/BsAppSession';
+import { onAddToCart } from '../../actions/cart';
 
 
 
@@ -99,12 +101,32 @@ class Listing extends React.Component {
 
 
 
+    onAddToCart = (e, productId) => {
+        //ish
+        e.stopPropagation();
+        Bs.log("\n####################");
+        Bs.log("CLASS:: Listing, METHOD:: onAddToCart()");
+
+        if (BsAppSession.get("isLoggedIn") == 0) {
+            alert("Please log-in first.");
+            return;
+        }
+
+        this.props.onAddToCart(productId);
+
+    };
+
+
+
     render() {
 
         const products = this.props.products.map((p, i) => {
             return (
                 <div className="col-6 col-md-4" key={i}>
-                    <Product product={p} onProductClicked={this.props.onProductClickedViaListingReducer} />
+                    <Product
+                        product={p}
+                        onAddToCart={this.onAddToCart}
+                        onProductClicked={this.props.onProductClickedViaListingReducer} />
                 </div>
             );
         });
@@ -158,6 +180,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        onAddToCart: (productId) => dispatch(onAddToCart(productId)),
         readProducts: (params) => dispatch(productsActions.readProducts(params)),
         readBrands: () => dispatch(productsActions.readBrands()),
         readCategories: () => dispatch(productsActions.readCategories()),

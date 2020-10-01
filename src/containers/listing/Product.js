@@ -39,7 +39,7 @@ function Product(props) {
 const mapDispatchToProps = (dispatch) => {
     return {
         onProductLiked: (e) => dispatch(onProductLiked(e)),
-        onAddToCart: (e, productId) => dispatch(onAddToCart(e, productId))
+        // onAddToCart: (e, productId) => dispatch(onAddToCart(e, productId))
     };
 };
 

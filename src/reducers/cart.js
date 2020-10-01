@@ -1,5 +1,7 @@
 import * as actions from '../actions/cart';
 import Bs from '../bs-library/helpers/Bs';
+import BsAppSession from '../bs-library/helpers/BsAppSession';
+import BsCore from '../bs-library/helpers/BsCore';
 
 
 
@@ -17,6 +19,8 @@ const initialState = {
 /* REDUCER */
 const cart = (state = initialState, action) => {
     switch (action.type) {
+        case actions.ON_ADD_TO_CART_FAIL: return onAddToCartFail(state, action);
+        case actions.ON_ADD_TO_CART_SUCCESS: return onAddToCartSuccess(state, action);
         case actions.SET_CART: return setCart(state, action);
         case actions.ON_ADD_TO_CART: return onAddToCart(state, action);
         default: return state;
@@ -26,6 +30,21 @@ const cart = (state = initialState, action) => {
 
 
 /* NORMAL */
+const onAddToCartFail = (state, action) => {
+
+    BsCore.alertForGeneralErrors(action.errors);
+
+    return {
+        ...state
+    };
+};
+
+const onAddToCartSuccess = (state, action) => {
+    return {
+        ...state
+    };
+};
+
 const setCart = (state, action) => {
     Bs.log("\n###############");
     Bs.log("In REDUCER: cart, METHOD: setCart()");
