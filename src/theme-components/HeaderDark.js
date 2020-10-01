@@ -96,7 +96,7 @@ function HeaderDark(props) {
                                     <a data-toggle="modal" data-target="#search" className="nav-link"><i className="icon-search"></i></a>
                                 </li>
                                 <li className="nav-item cart">
-                                    <a data-toggle="modal" data-target="#cart" className="nav-link"><span>Cart</span><span>2</span></a>
+                                    <a data-toggle="modal" data-target="#cart" className="nav-link"><span>Cart</span><span>{props.cartItemsCount}</span></a>
                                 </li>
                             </ul>
                         </div>

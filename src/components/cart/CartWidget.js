@@ -15,7 +15,7 @@ class CartWidget extends React.Component {
 
     render() {
 
-        const cartItems = this.props.items.map((item, i) => {
+        const cartItems = this.props.cart?.cartItems?.map((item, i) => {
             return <CartItem item={item} key={i} />;
         });
 

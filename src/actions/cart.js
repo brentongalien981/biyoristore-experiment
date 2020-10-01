@@ -37,7 +37,7 @@ export const showCart = () => {
                 Bs.log("\n#####################");
                 Bs.log("FILE: actions/cart.js, METHOD: showCart() => ajaxCrud() => callBackFunc()");
 
-                dispatch(setCart(json.objs));
+                dispatch(setCart(json.obj));
             }
         });
     };

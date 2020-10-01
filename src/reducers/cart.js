@@ -31,7 +31,8 @@ const setCart = (state, action) => {
     Bs.log("In REDUCER: cart, METHOD: setCart()");
 
     return {
-        ...state
+        ...state,
+        cart: action.obj
     };
 };
 
@@ -42,7 +43,7 @@ const onAddToCart = (state, action) => {
     Bs.log("In REDUCER: cart, METHOD: onAddToCart()");
 
     return {
-        ...state
+        ...state,
     };
 };
 
