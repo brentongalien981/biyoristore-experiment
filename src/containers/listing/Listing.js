@@ -102,8 +102,7 @@ class Listing extends React.Component {
 
 
     onAddToCart = (e, productId) => {
-        //ish
-        e.stopPropagation();
+
         Bs.log("\n####################");
         Bs.log("CLASS:: Listing, METHOD:: onAddToCart()");
 

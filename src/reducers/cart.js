@@ -40,8 +40,11 @@ const onAddToCartFail = (state, action) => {
 };
 
 const onAddToCartSuccess = (state, action) => {
+    alert ("Item added to cart.");
+    
     return {
-        ...state
+        ...state,
+        cart: action.obj
     };
 };
 

@@ -18,8 +18,9 @@ export const onAddToCartFail = (errors) => ({
     errors: errors
 });
 
-export const onAddToCartSuccess = () => ({
+export const onAddToCartSuccess = (obj) => ({
     type: ON_ADD_TO_CART_SUCCESS,
+    obj: obj
 });
 
 export const setCart = (obj) => ({ type: SET_CART, obj: obj });
@@ -43,7 +44,7 @@ export const onAddToCart = (productId) => {
                 Bs.log("\n#####################");
                 Bs.log("FILE: actions/cart.js, METHOD: onAddToCart() => ajaxCrud() => callBackFunc()");
 
-                dispatch(onAddToCartSuccess());
+                dispatch(onAddToCartSuccess(json.obj));
             },
             errorCallBackFunc: (errors) => {
                 dispatch(onAddToCartFail(errors));

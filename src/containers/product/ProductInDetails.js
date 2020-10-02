@@ -9,10 +9,16 @@ import { withRouter } from 'react-router-dom';
 import Bs from '../../bs-library/helpers/Bs';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/productInDetails';
+import ProductInDetailsContext from '../../contexts/product/ProductInDetailsContext';
+import { onAddToCart } from '../../actions/cart';
 
 
 
 class ProductInDetails extends React.Component {
+
+    // React's context.
+    static contextType = ProductInDetailsContext;
+
 
     componentDidMount() {
         Bs.log("\n####################");
@@ -22,7 +28,17 @@ class ProductInDetails extends React.Component {
         Bs.log(this.props);
         Bs.log("this.props.message ==> " + this.props.message);
 
+        // Initialize contexts.
+        this.setMyContext();
+
+
         this.refreshProduct();
+    }
+
+
+
+    setMyContext() {
+        this.context.onAddToCart = this.onAddToCart;
     }
 
 
@@ -85,6 +101,21 @@ class ProductInDetails extends React.Component {
         this.props.resetProduct();
 
     };
+
+
+
+    onAddToCart = (e, productId) => {
+
+        Bs.log("\n####################");
+        Bs.log("Using React's Context!");
+        Bs.log("In CLASS: ProductInDetails, METHOD: onAddToCart()");
+
+        //ish
+        e.preventDefault();
+        Bs.log("productId ==> " + productId);
+
+        this.props.onAddToCart(productId);
+    };
 }
 
 
@@ -105,6 +136,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        onAddToCart: (productId) => dispatch(onAddToCart(productId)),
         readProduct: (productId) => dispatch(actions.readProduct(productId)),
         readRelatedProducts: (productId) => dispatch(actions.readRelatedProducts(productId)),
         relaunchVendorScript: () => dispatch(actions.relaunchVendorScript()),
