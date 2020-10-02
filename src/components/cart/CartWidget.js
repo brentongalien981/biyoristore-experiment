@@ -2,11 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import CartItem from './CartItem';
 import * as actions from '../../actions/cart';
+import Bs from '../../bs-library/helpers/Bs';
 
 
 
 class CartWidget extends React.Component {
 
+    /* HELPER FUNCS */
+
+
+    /* MAIN FUNCS */
     componentDidMount() {
         this.props.showCart();
     }
@@ -16,7 +21,7 @@ class CartWidget extends React.Component {
     render() {
 
         const cartItems = this.props.cart?.cartItems?.map((item, i) => {
-            return <CartItem item={item} key={i} />;
+            return <CartItem item={item} key={i} index={i} onRemoveCartItem={this.onRemoveCartItem} />;
         });
 
         return (
@@ -56,6 +61,19 @@ class CartWidget extends React.Component {
         );
     }
 
+
+
+    /* EVENT FUNCS */
+    onRemoveCartItem = (e, cartItemId, cartItemIndex) => {
+        Bs.log("\n####################");
+        Bs.log("In METHOD: onRemoveCartItem()");
+        e.preventDefault();
+        Bs.log("cartItemId ==> " + cartItemId);
+        Bs.log("index ==> " + cartItemIndex);
+
+        this.props.deleteCartItem(cartItemId, cartItemIndex);
+    };
+
 }
 
 
@@ -69,6 +87,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        deleteCartItem: (cartItemId, cartItemIndex) => dispatch(actions.deleteCartItem(cartItemId, cartItemIndex)),
         showCart: () => dispatch(actions.showCart())
     };
 };

@@ -5,6 +5,8 @@ import BsAppSession from "../bs-library/helpers/BsAppSession";
 
 
 /* NAMES */
+export const ON_DELETE_CART_ITEM_FAIL = "ON_DELETE_CART_ITEM_FAIL";
+export const ON_DELETE_CART_ITEM_SUCCESS = "ON_DELETE_CART_ITEM_SUCCESS";
 export const ON_ADD_TO_CART_FAIL = "ON_ADD_TO_CART_FAIL";
 export const ON_ADD_TO_CART_SUCCESS = "ON_ADD_TO_CART_SUCCESS";
 export const SET_CART = "SET_CART";
@@ -13,6 +15,9 @@ export const ON_ADD_TO_CART = "ON_ADD_TO_CART";
 
 
 /* FUNCS */
+export const onDeleteCartItemFail = (errors) => ({ type: ON_DELETE_CART_ITEM_FAIL, errors: errors });
+export const onDeleteCartItemSuccess = (cartItemIndex) => ({ type: ON_DELETE_CART_ITEM_SUCCESS, cartItemIndex: cartItemIndex });
+
 export const onAddToCartFail = (errors) => ({
     type: ON_ADD_TO_CART_FAIL,
     errors: errors
@@ -28,6 +33,31 @@ export const setCart = (obj) => ({ type: SET_CART, obj: obj });
 
 
 /* AJAX FUNCS */
+export const deleteCartItem = (cartItemId, cartItemIndex) => {
+
+    Bs.log("\n###############");
+    Bs.log("In REDUCER: cart, METHOD: deleteCartItem()");
+
+
+    return (dispatch) => {
+
+        BsCore.ajaxCrud({
+            url: '/cartItem/delete',
+            method: "post",
+            params: { api_token: BsAppSession.get("apiToken"), cartItemId: cartItemId },
+            callBackFunc: (requestData, json) => {
+                Bs.log("\n#####################");
+                Bs.log("FILE: actions/cart.js, METHOD: deleteCartItem() => ajaxCrud() => callBackFunc()");
+
+                dispatch(onDeleteCartItemSuccess(cartItemIndex));
+            },
+            errorCallBackFunc: (errors) => {
+                dispatch(onDeleteCartItemFail(errors));
+            }
+        });
+    };
+};
+
 export const onAddToCart = (productId) => {
 
     Bs.log("\n###############");

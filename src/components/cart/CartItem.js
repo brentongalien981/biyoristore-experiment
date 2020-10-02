@@ -23,7 +23,7 @@ function CartItem(props) {
                     <div className="col-lg-3 text-center text-lg-right">
                         <span className="cart-item-price">${props.item.product.price}</span>
                     </div>
-                    <a href="#!" className="cart-item-close"><i className="icon-x"></i></a>
+                    <a href="#" className="cart-item-close" onClick={(e) => props.onRemoveCartItem(e, props.item.id, props.index)}><i className="icon-x"></i></a>
                 </div>
             </div>
         </div>

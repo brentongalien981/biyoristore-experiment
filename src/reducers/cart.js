@@ -19,6 +19,8 @@ const initialState = {
 /* REDUCER */
 const cart = (state = initialState, action) => {
     switch (action.type) {
+        case actions.ON_DELETE_CART_ITEM_FAIL: return onDeleteCartItemFail(state, action);
+        case actions.ON_DELETE_CART_ITEM_SUCCESS: return onDeleteCartItemSuccess(state, action);
         case actions.ON_ADD_TO_CART_FAIL: return onAddToCartFail(state, action);
         case actions.ON_ADD_TO_CART_SUCCESS: return onAddToCartSuccess(state, action);
         case actions.SET_CART: return setCart(state, action);
@@ -30,6 +32,45 @@ const cart = (state = initialState, action) => {
 
 
 /* NORMAL */
+const onDeleteCartItemFail = (state, action) => {
+
+    BsCore.alertForGeneralErrors(action.errors);
+
+    return {
+        ...state
+    };
+};
+
+const onDeleteCartItemSuccess = (state, action) => {
+
+    Bs.log("action.cartItemIndex ==> " + action.cartItemIndex);
+
+    let updatedCartItems = state.cart.cartItems;
+    Bs.log("updatedCartItems ==> ...");
+    Bs.log(updatedCartItems);
+
+    updatedCartItems.splice(action.cartItemIndex, 1);
+    Bs.log("updatedCartItems ==> ...");
+    Bs.log(updatedCartItems);
+
+    let updatedCart = state.cart;
+    Bs.log("updatedCart ==> ...");
+    Bs.log(updatedCart);
+
+    updatedCart.cartItems = updatedCartItems;
+    Bs.log("updatedCart ==> ...");
+    Bs.log(updatedCart);
+    
+
+    
+    
+
+    return {
+        ...state,
+        cart: {...updatedCart}
+    };
+};
+
 const onAddToCartFail = (state, action) => {
 
     BsCore.alertForGeneralErrors(action.errors);
@@ -41,7 +82,7 @@ const onAddToCartFail = (state, action) => {
 
 const onAddToCartSuccess = (state, action) => {
     alert ("Item added to cart.");
-    
+
     return {
         ...state,
         cart: action.obj

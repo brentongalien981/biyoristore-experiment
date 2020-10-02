@@ -14,16 +14,16 @@ class BsCore {
 
     static alertForGeneralErrors(errors) {
         let errorMsg = "";
-        
+
         for (const field in errors) {
             if (errors.hasOwnProperty(field)) {
                 const fieldErrors = errors[field];
-    
+
                 errorMsg += fieldErrors[0] + "\n";
-    
+
             }
         }
-    
+
         if (errorMsg.length > 0) { alert(errorMsg); }
         else { alert("Oops, there's an error on our end. Please try again."); }
     }
