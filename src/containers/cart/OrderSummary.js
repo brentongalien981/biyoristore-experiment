@@ -46,7 +46,7 @@ function OrderSummary(props) {
 
             </div>
 
-            <a href="checkout.html" className="btn btn-lg btn-primary btn-block mt-1">Checkout</a>
+            <a href="#" className="btn btn-lg btn-primary btn-block mt-1" onClick={props.onCheckout}>Checkout</a>
         </div>
     );
 }

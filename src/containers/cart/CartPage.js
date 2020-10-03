@@ -4,6 +4,7 @@ import CartPageItem from './CartPageItem';
 import OrderSummary from './OrderSummary';
 import * as actions from '../../actions/cart';
 import Bs from '../../bs-library/helpers/Bs';
+import { withRouter } from 'react-router-dom';
 
 
 
@@ -61,7 +62,7 @@ class CartPage extends React.Component {
                             </div>
 
                             {/* order summary */}
-                            <OrderSummary items={this.props.cart.cartItems} />
+                            <OrderSummary items={this.props.cart.cartItems} onCheckout={this.onCheckout} />
                         </div>
 
                     </div>
@@ -74,6 +75,13 @@ class CartPage extends React.Component {
 
 
     /* EVENT FUNCS */
+    onCheckout = (e) => {
+        e.preventDefault();
+        this.props.history.push("/checkout");
+    };
+
+
+
     onRemoveCartItem = (e, cartItemId, cartItemIndex) => {
         Bs.log("\n####################");
         Bs.log("In METHOD: onRemoveCartItem()");
@@ -104,4 +112,4 @@ const mapDispatchToProps = (dispatch) => {
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(CartPage);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CartPage));
