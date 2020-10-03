@@ -12,7 +12,7 @@ class CartPage extends React.Component {
     /* HELPER FUNCS */
     getCartPageItems = (items) => {
         const itemComponents = items?.map((item, i) => {
-            return <CartPageItem item={item} key={i} />
+            return <CartPageItem item={item} key={i} index={i} onRemoveCartItem={this.onRemoveCartItem}  />
         });
 
         return itemComponents;
@@ -74,6 +74,15 @@ class CartPage extends React.Component {
 
 
     /* EVENT FUNCS */
+    onRemoveCartItem = (e, cartItemId, cartItemIndex) => {
+        Bs.log("\n####################");
+        Bs.log("In METHOD: onRemoveCartItem()");
+        e.preventDefault();
+        Bs.log("cartItemId ==> " + cartItemId);
+        Bs.log("index ==> " + cartItemIndex);
+
+        this.props.deleteCartItem(cartItemId, cartItemIndex);
+    };
 }
 
 
@@ -89,6 +98,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         showCart: () => dispatch(actions.showCart()),
+        deleteCartItem: (cartItemId, cartItemIndex) => dispatch(actions.deleteCartItem(cartItemId, cartItemIndex)),
     };
 };
 
