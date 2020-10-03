@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Header from './theme-components/Header';
 import Footer from './theme-components/Footer';
 import Search from './theme-components/Search';
-import Cart from './theme-components/Cart';
+// import Cart from './theme-components/Cart';
 import Home from './containers/home/Home';
 // import Listing from './containers/listing/Listing';
 // import ProductInDetails from './containers/product/ProductInDetails';
@@ -14,6 +14,7 @@ const Listing = React.lazy(() => import('./containers/listing/Listing'));
 const ProductInDetails = React.lazy(() => import('./containers/product/ProductInDetails'));
 const Join = React.lazy(() => import('./containers/join/Join'));
 const Profile = React.lazy(() => import('./containers/profile/Profile'));
+const Cart = React.lazy(() => import('./containers/cart/Cart'));
 
 const CartWidget = React.lazy(() => import('./components/cart/CartWidget'));
 
@@ -31,6 +32,7 @@ function App() {
 				<Route path="/product" exact render={() => <Suspense fallback={<div>loading...</div>}><ProductInDetails /></Suspense>} />
 				<Route path="/join" exact render={() => <Suspense fallback={<div>loading...</div>}><Join /></Suspense>} />
 				<Route path="/profile" exact render={() => <Suspense fallback={<div>loading...</div>}><Profile /></Suspense>} />
+				<Route path="/cart" exact render={() => <Suspense fallback={<div>loading...</div>}><Cart /></Suspense>} />
 				{/* <Route path="/product" exact component={ProductInDetails} /> */}
 			</Switch>
 			<Footer />

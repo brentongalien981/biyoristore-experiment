@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import CartItem from './CartItem';
 import * as actions from '../../actions/cart';
 import Bs from '../../bs-library/helpers/Bs';
+import { withRouter } from 'react-router-dom';
 
 
 
@@ -31,7 +32,7 @@ class CartWidget extends React.Component {
 
                         <div className="modal-header">
                             <h5 className="modal-title" id="cartLabel">Cart</h5>
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                            <button id="closeCartWidgetBtn" type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -46,7 +47,7 @@ class CartWidget extends React.Component {
                             <div className="container-fluid">
                                 <div className="row gutter-0">
                                     <div className="col d-none d-md-block">
-                                        <a href="cart.html" className="btn btn-lg btn-block btn-secondary">View Cart</a>
+                                        <a href="cart.html" className="btn btn-lg btn-block btn-secondary" onClick={this.onViewCartPage}>View Cart</a>
                                     </div>
                                     <div className="col">
                                         <a href="checkout.html" className="btn btn-lg btn-block btn-primary">Checkout</a>
@@ -64,6 +65,14 @@ class CartWidget extends React.Component {
 
 
     /* EVENT FUNCS */
+    onViewCartPage = (e) => {
+        e.preventDefault();
+        document.querySelector("#closeCartWidgetBtn").click();
+        this.props.history.push("/cart");
+    };
+
+
+
     onRemoveCartItem = (e, cartItemId, cartItemIndex) => {
         Bs.log("\n####################");
         Bs.log("In METHOD: onRemoveCartItem()");
@@ -94,4 +103,4 @@ const mapDispatchToProps = (dispatch) => {
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(CartWidget);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CartWidget));
