@@ -13,7 +13,10 @@ class CartPage extends React.Component {
     /* HELPER FUNCS */
     getCartPageItems = (items) => {
         const itemComponents = items?.map((item, i) => {
-            return <CartPageItem item={item} key={i} index={i} onRemoveCartItem={this.onRemoveCartItem} onSetCartItemCount={this.onSetCartItemCount} />
+            return (
+                <CartPageItem item={item} key={i} index={i} onRemoveCartItem={this.onRemoveCartItem}
+                    onSetCartItemCount={this.onSetCartItemCount} />
+            );
         });
 
         return itemComponents;
@@ -22,6 +25,22 @@ class CartPage extends React.Component {
 
 
     /* MAIN FUNCS */
+    constructor(props) {
+        super(props);
+        this.state = { isSettingCartItemCount: false };
+    }
+
+
+
+    componentDidUpdate() {
+        if (this.props.shouldResetSettingCartItemCountFlag) {
+            this.setState({ isSettingCartItemCount: false });
+            this.props.onShouldResetSettingCartItemCountFlagSuccess();
+        }
+    }
+
+
+
     render() {
         return (
             <>
@@ -76,11 +95,16 @@ class CartPage extends React.Component {
 
     /* EVENT FUNCS */
     onSetCartItemCount = (cartItemId, quantity, index) => {
+        if (this.state.isSettingCartItemCount) { alert("Oops, we're processing your previous input. Please try again shortly."); return; }
+        this.setState({ isSettingCartItemCount: true });
+
         Bs.log("\n####################");
         Bs.log("cartItemId ==> " + cartItemId);
-        
+
         this.props.updateCartItemCount(cartItemId, quantity, index)
     };
+
+
 
     onCheckout = (e) => {
         e.preventDefault();
@@ -104,6 +128,7 @@ class CartPage extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+        shouldResetSettingCartItemCountFlag: state.cart.shouldResetSettingCartItemCountFlag,
         cart: state.cart.cart,
     };
 };
@@ -112,6 +137,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        onShouldResetSettingCartItemCountFlagSuccess: () => dispatch(actions.onShouldResetSettingCartItemCountFlagSuccess()),
         updateCartItemCount: (cartItemId, quantity, index) => dispatch(actions.updateCartItemCount(cartItemId, quantity, index)),
         showCart: () => dispatch(actions.showCart()),
         deleteCartItem: (cartItemId, cartItemIndex) => dispatch(actions.deleteCartItem(cartItemId, cartItemIndex)),

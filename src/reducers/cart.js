@@ -7,6 +7,7 @@ import BsCore from '../bs-library/helpers/BsCore';
 
 const initialState = {
     message: "This is the initial state of STORE: cart.",
+    shouldResetSettingCartItemCountFlag: false,
     cart: {},
     items: [
         { id: 1, name: "Default Product 1", price: 39.99, quantity: 1 },
@@ -19,6 +20,7 @@ const initialState = {
 /* REDUCER */
 const cart = (state = initialState, action) => {
     switch (action.type) {
+        case actions.ON_SHOULD_RESET_SETTING_CART_ITEM_COUNT_FLAG_SUCCESS: return onShouldResetSettingCartItemCountFlagSuccess(state, action);
         case actions.ON_UPDATE_CART_ITEM_COUNT_FAIL: return onUpdateCartItemCountFail(state, action);
         case actions.ON_UPDATE_CART_ITEM_COUNT_SUCCESS: return onUpdateCartItemCountSuccess(state, action);
         case actions.ON_DELETE_CART_ITEM_FAIL: return onDeleteCartItemFail(state, action);
@@ -34,12 +36,22 @@ const cart = (state = initialState, action) => {
 
 
 /* NORMAL */
+const onShouldResetSettingCartItemCountFlagSuccess = (state, action) => {
+    return {
+        ...state,
+        shouldResetSettingCartItemCountFlag: false
+    };
+};
+
+
+
 const onUpdateCartItemCountFail = (state, action) => {
 
     BsCore.alertForGeneralErrors(action.errors);
 
     return {
-        ...state
+        ...state,
+        shouldResetSettingCartItemCountFlag: true
     };
 };
 
@@ -65,7 +77,8 @@ const onUpdateCartItemCountSuccess = (state, action) => {
 
     return {
         ...state,
-        cart: {...updatedCart}
+        cart: {...updatedCart},
+        shouldResetSettingCartItemCountFlag: true
     };
 };
 
