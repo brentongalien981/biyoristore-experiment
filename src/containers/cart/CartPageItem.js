@@ -7,6 +7,7 @@ function CartPageItem(props) {
 
     const productPhotoUrl = BsCore.pubPhotoUrl + props.item.product.productPhotoUrls[0].url;
     const itemTotalPrice = parseFloat(props.item.product.price) * parseInt(props.item.quantity);
+    const quantity = parseInt(props.item.quantity);
 
     return (
         <div className="cart-item">
@@ -25,9 +26,9 @@ function CartPageItem(props) {
                 </div>
                 <div className="col-4 col-lg-2 text-center">
                     <div className="counter">
-                        <span className="counter-minus icon-minus" field='qty-1'></span>
-                        <input type='text' name='qty-1' className="counter-value" value={props.item.quantity} min="1" max="100" />
-                        <span className="counter-plus icon-plus" field='qty-1' onClick={() => props.onIncrementCartItemCount(props.item.id, props.item.quantity, props.index)}></span>
+                        <span className="counter-minus icon-minus" field='qty-1' onClick={() => props.onSetCartItemCount(props.item.id, quantity-1, props.index)}></span>
+                        <input type='text' name='qty-1' className="counter-value" value={quantity} min="1" max="100" />
+                        <span className="counter-plus icon-plus" field='qty-1' onClick={() => props.onSetCartItemCount(props.item.id, quantity+1, props.index)}></span>
                     </div>
                 </div>
                 <div className="col-4 col-lg-2 text-center">

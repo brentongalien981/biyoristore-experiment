@@ -13,7 +13,7 @@ class CartPage extends React.Component {
     /* HELPER FUNCS */
     getCartPageItems = (items) => {
         const itemComponents = items?.map((item, i) => {
-            return <CartPageItem item={item} key={i} index={i} onRemoveCartItem={this.onRemoveCartItem} onIncrementCartItemCount={this.onIncrementCartItemCount} />
+            return <CartPageItem item={item} key={i} index={i} onRemoveCartItem={this.onRemoveCartItem} onSetCartItemCount={this.onSetCartItemCount} />
         });
 
         return itemComponents;
@@ -75,14 +75,9 @@ class CartPage extends React.Component {
 
 
     /* EVENT FUNCS */
-    onIncrementCartItemCount = (cartItemId, quantity, index) => {
+    onSetCartItemCount = (cartItemId, quantity, index) => {
         Bs.log("\n####################");
         Bs.log("cartItemId ==> " + cartItemId);
-        // ish
-
-        Bs.log("old quantity ==> " + quantity);
-        quantity = parseInt(quantity) + 1;
-        Bs.log("new quantity ==> " + quantity);
         
         this.props.updateCartItemCount(cartItemId, quantity, index)
     };
