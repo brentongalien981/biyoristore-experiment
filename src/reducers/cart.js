@@ -19,6 +19,8 @@ const initialState = {
 /* REDUCER */
 const cart = (state = initialState, action) => {
     switch (action.type) {
+        case actions.ON_UPDATE_CART_ITEM_COUNT_FAIL: return onUpdateCartItemCountFail(state, action);
+        case actions.ON_UPDATE_CART_ITEM_COUNT_SUCCESS: return onUpdateCartItemCountSuccess(state, action);
         case actions.ON_DELETE_CART_ITEM_FAIL: return onDeleteCartItemFail(state, action);
         case actions.ON_DELETE_CART_ITEM_SUCCESS: return onDeleteCartItemSuccess(state, action);
         case actions.ON_ADD_TO_CART_FAIL: return onAddToCartFail(state, action);
@@ -32,6 +34,43 @@ const cart = (state = initialState, action) => {
 
 
 /* NORMAL */
+const onUpdateCartItemCountFail = (state, action) => {
+
+    BsCore.alertForGeneralErrors(action.errors);
+
+    return {
+        ...state
+    };
+};
+
+
+
+const onUpdateCartItemCountSuccess = (state, action) => {
+
+    Bs.log("action.cartItemIndex ==> " + action.cartItemIndex);
+
+    let updatedCartItems = state.cart.cartItems;
+    Bs.log("updatedCartItems ==> ...");
+    Bs.log(updatedCartItems);
+
+    updatedCartItems[action.index].quantity = action.quantity;
+
+    let updatedCart = state.cart;
+    Bs.log("updatedCart ==> ...");
+    Bs.log(updatedCart);
+
+    updatedCart.cartItems = updatedCartItems;
+    Bs.log("updatedCart ==> ...");
+    Bs.log(updatedCart);
+
+    return {
+        ...state,
+        cart: {...updatedCart}
+    };
+};
+
+
+
 const onDeleteCartItemFail = (state, action) => {
 
     BsCore.alertForGeneralErrors(action.errors);
@@ -40,6 +79,8 @@ const onDeleteCartItemFail = (state, action) => {
         ...state
     };
 };
+
+
 
 const onDeleteCartItemSuccess = (state, action) => {
 
@@ -60,16 +101,14 @@ const onDeleteCartItemSuccess = (state, action) => {
     updatedCart.cartItems = updatedCartItems;
     Bs.log("updatedCart ==> ...");
     Bs.log(updatedCart);
-    
-
-    
-    
 
     return {
         ...state,
         cart: {...updatedCart}
     };
 };
+
+
 
 const onAddToCartFail = (state, action) => {
 

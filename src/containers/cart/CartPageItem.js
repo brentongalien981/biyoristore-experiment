@@ -27,7 +27,7 @@ function CartPageItem(props) {
                     <div className="counter">
                         <span className="counter-minus icon-minus" field='qty-1'></span>
                         <input type='text' name='qty-1' className="counter-value" value={props.item.quantity} min="1" max="100" />
-                        <span className="counter-plus icon-plus" field='qty-1'></span>
+                        <span className="counter-plus icon-plus" field='qty-1' onClick={() => props.onIncrementCartItemCount(props.item.id, props.item.quantity, props.index)}></span>
                     </div>
                 </div>
                 <div className="col-4 col-lg-2 text-center">
