@@ -125,18 +125,26 @@ export const showCart = () => {
     Bs.log("\n###############");
     Bs.log("In REDUCER: cart, METHOD: showCart()");
 
+    //
+    if (BsAppSession.get("isLoggedIn") == 1) {
+        Bs.log("this has been executed");
+        return (dispatch) => {
 
-    return (dispatch) => {
+            BsCore.ajaxCrud({
+                url: '/cart/show',
+                params: { api_token: BsAppSession.get("apiToken") },
+                callBackFunc: (requestData, json) => {
+                    Bs.log("\n#####################");
+                    Bs.log("FILE: actions/cart.js, METHOD: showCart() => ajaxCrud() => callBackFunc()");
+    
+                    dispatch(setCart(json.obj));
+                }
+            });
+        };
+    }
 
-        BsCore.ajaxCrud({
-            url: '/cart/show',
-            params: { api_token: BsAppSession.get("apiToken") },
-            callBackFunc: (requestData, json) => {
-                Bs.log("\n#####################");
-                Bs.log("FILE: actions/cart.js, METHOD: showCart() => ajaxCrud() => callBackFunc()");
 
-                dispatch(setCart(json.obj));
-            }
-        });
-    };
+    //
+    const cart = JSON.parse(BsAppSession.get("cart"));
+    return (dispatch) => { dispatch(setCart(cart))};
 };

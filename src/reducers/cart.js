@@ -8,7 +8,26 @@ import BsCore from '../bs-library/helpers/BsCore';
 const initialState = {
     message: "This is the initial state of STORE: cart.",
     shouldResetSettingCartItemCountFlag: false,
-    cart: {},
+    cart: {
+        id: 0,
+        cartItems: [
+            {
+                id: 0,
+                quantity: 1,
+                product: {
+                    id: 0,
+                    name: "DefaultProductName",
+                    price: 1.00,
+                    brand: { id: 0, name: "DefaultBrandName" },
+                    productPhotoUrls: [
+                        { id: 0, url: "default-product1.jpg" }
+                    ]
+
+                }
+
+            }
+        ]
+    },
     items: [
         { id: 1, name: "Default Product 1", price: 39.99, quantity: 1 },
         { id: 2, name: "Default Product 2", price: 49.99, quantity: 3 }
@@ -77,7 +96,7 @@ const onUpdateCartItemCountSuccess = (state, action) => {
 
     return {
         ...state,
-        cart: {...updatedCart},
+        cart: { ...updatedCart },
         shouldResetSettingCartItemCountFlag: true
     };
 };
@@ -117,7 +136,7 @@ const onDeleteCartItemSuccess = (state, action) => {
 
     return {
         ...state,
-        cart: {...updatedCart}
+        cart: { ...updatedCart }
     };
 };
 
@@ -133,7 +152,7 @@ const onAddToCartFail = (state, action) => {
 };
 
 const onAddToCartSuccess = (state, action) => {
-    alert ("Item added to cart.");
+    alert("Item added to cart.");
 
     return {
         ...state,
