@@ -101,19 +101,14 @@ class Listing extends React.Component {
 
 
 
-    onAddToCart = (e, productId) => {
+    onAddToCart = (e, product) => {
         e.preventDefault();
         e.stopPropagation();
 
         Bs.log("\n####################");
         Bs.log("CLASS:: Listing, METHOD:: onAddToCart()");
 
-        if (BsAppSession.get("isLoggedIn") == 0) {
-            alert("Please log-in first.");
-            return;
-        }
-
-        this.props.onAddToCart(productId);
+        this.props.onAddToCart(product);
 
     };
 
@@ -181,7 +176,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onAddToCart: (productId) => dispatch(onAddToCart(productId)),
+        onAddToCart: (product) => dispatch(onAddToCart(product)),
         readProducts: (params) => dispatch(productsActions.readProducts(params)),
         readBrands: () => dispatch(productsActions.readBrands()),
         readCategories: () => dispatch(productsActions.readCategories()),

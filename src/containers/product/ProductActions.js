@@ -11,7 +11,7 @@ function ProductActions(props) {
     return (
         <div className="row">
             <div className="col-md-8">
-                <a href="#!" className="btn btn-block btn-lg btn-primary" onClick={(e) => context.onAddToCart(e, props.productId)}>Add to Cart</a>
+                <a href="#!" className="btn btn-block btn-lg btn-primary" onClick={(e) => context.onAddToCart(e, props.product)}>Add to Cart</a>
             </div>
             <div className="col-12 mt-1">
                 <ul className="nav nav-actions">

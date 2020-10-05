@@ -5,33 +5,30 @@ import BsCore from '../bs-library/helpers/BsCore';
 
 
 
+/* STATE */
 const initialState = {
     message: "This is the initial state of STORE: cart.",
     shouldResetSettingCartItemCountFlag: false,
     cart: {
         id: 0,
         cartItems: [
-            {
-                id: 0,
-                quantity: 1,
-                product: {
-                    id: 0,
-                    name: "DefaultProductName",
-                    price: 1.00,
-                    brand: { id: 0, name: "DefaultBrandName" },
-                    productPhotoUrls: [
-                        { id: 0, url: "default-product1.jpg" }
-                    ]
+            // {
+            //     id: 0,
+            //     quantity: 1,
+            //     product: {
+            //         id: 0,
+            //         name: "DefaultProductName",
+            //         price: 1.00,
+            //         brand: { id: 0, name: "DefaultBrandName" },
+            //         productPhotoUrls: [
+            //             { id: 0, url: "default-product1.jpg" }
+            //         ]
 
-                }
+            //     }
 
-            }
+            // }
         ]
-    },
-    items: [
-        { id: 1, name: "Default Product 1", price: 39.99, quantity: 1 },
-        { id: 2, name: "Default Product 2", price: 49.99, quantity: 3 }
-    ]
+    }
 };
 
 
@@ -54,7 +51,7 @@ const cart = (state = initialState, action) => {
 
 
 
-/* NORMAL */
+/* NORMAL FUNCS */
 const onShouldResetSettingCartItemCountFlagSuccess = (state, action) => {
     return {
         ...state,
@@ -152,23 +149,38 @@ const onAddToCartFail = (state, action) => {
 };
 
 const onAddToCartSuccess = (state, action) => {
+    //ish
     alert("Item added to cart.");
+
+    let updatedCart = state.cart;
+    const product = action.obj;
+
+    if (!isAlreadyInCart(product, updatedCart)) { addProductToCart(product, updatedCart); }
 
     return {
         ...state,
-        cart: action.obj
+        cart: { ...updatedCart }
     };
 };
+
+
 
 const setCart = (state, action) => {
     Bs.log("\n###############");
     Bs.log("In REDUCER: cart, METHOD: setCart()");
 
+    let cart = action.obj;
+    if (cart == null) { cart = state.cart; }
+
+    BsAppSession.set("cart", JSON.stringify(cart));
+
     return {
         ...state,
-        cart: action.obj
+        cart: {...cart}
     };
 };
+
+
 
 const onAddToCart = (state, action) => {
     action.event.stopPropagation();
@@ -179,6 +191,34 @@ const onAddToCart = (state, action) => {
     return {
         ...state,
     };
+};
+
+
+
+/* HELPER FUNCS */
+const addProductToCart = (product, cart) => {
+    //ish
+    const cartItem = { id: null, quantity: 1, product: product };
+    cart.cartItems.push(cartItem);
+
+    BsAppSession.set("cart", JSON.stringify(cart));
+
+};
+
+
+
+const isAlreadyInCart = (product, cart) => {
+
+    for (const cartItem of cart.cartItems) {
+        if (cartItem.product.id == product.id) { 
+            Bs.log("\n####################");
+            Bs.log("product is already in cart");
+            return true; 
+        }
+    }
+
+
+    return false;
 };
 
 

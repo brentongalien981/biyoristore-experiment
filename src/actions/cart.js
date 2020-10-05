@@ -93,29 +93,33 @@ export const deleteCartItem = (cartItemId, cartItemIndex) => {
 
 
 
-export const onAddToCart = (productId) => {
+export const onAddToCart = (product) => {
 
     Bs.log("\n###############");
     Bs.log("In REDUCER: cart, METHOD: onAddToCart()");
 
+    //
+    return (dispatch) => { dispatch(onAddToCartSuccess(product)) };
 
-    return (dispatch) => {
 
-        BsCore.ajaxCrud({
-            url: '/cartItem/save',
-            method: "post",
-            params: { productId: productId, api_token: BsAppSession.get("apiToken") },
-            callBackFunc: (requestData, json) => {
-                Bs.log("\n#####################");
-                Bs.log("FILE: actions/cart.js, METHOD: onAddToCart() => ajaxCrud() => callBackFunc()");
+    // //
+    // return (dispatch) => {
 
-                dispatch(onAddToCartSuccess(json.obj));
-            },
-            errorCallBackFunc: (errors) => {
-                dispatch(onAddToCartFail(errors));
-            }
-        });
-    };
+    //     BsCore.ajaxCrud({
+    //         url: '/cartItem/save',
+    //         method: "post",
+    //         params: { productId: productId, api_token: BsAppSession.get("apiToken") },
+    //         callBackFunc: (requestData, json) => {
+    //             Bs.log("\n#####################");
+    //             Bs.log("FILE: actions/cart.js, METHOD: onAddToCart() => ajaxCrud() => callBackFunc()");
+
+    //             dispatch(onAddToCartSuccess(json.obj));
+    //         },
+    //         errorCallBackFunc: (errors) => {
+    //             dispatch(onAddToCartFail(errors));
+    //         }
+    //     });
+    // };
 };
 
 
@@ -126,25 +130,25 @@ export const showCart = () => {
     Bs.log("In REDUCER: cart, METHOD: showCart()");
 
     //
-    if (BsAppSession.get("isLoggedIn") == 1) {
-        Bs.log("this has been executed");
-        return (dispatch) => {
-
-            BsCore.ajaxCrud({
-                url: '/cart/show',
-                params: { api_token: BsAppSession.get("apiToken") },
-                callBackFunc: (requestData, json) => {
-                    Bs.log("\n#####################");
-                    Bs.log("FILE: actions/cart.js, METHOD: showCart() => ajaxCrud() => callBackFunc()");
-    
-                    dispatch(setCart(json.obj));
-                }
-            });
-        };
+    if (BsAppSession.get("isLoggedIn") == 0) {
+        //
+        const cart = JSON.parse(BsAppSession.get("cart"));
+        return (dispatch) => { dispatch(setCart(cart)) };
     }
 
 
     //
-    const cart = JSON.parse(BsAppSession.get("cart"));
-    return (dispatch) => { dispatch(setCart(cart))};
+    return (dispatch) => {
+
+        BsCore.ajaxCrud({
+            url: '/cart/show',
+            params: { api_token: BsAppSession.get("apiToken") },
+            callBackFunc: (requestData, json) => {
+                Bs.log("\n#####################");
+                Bs.log("FILE: actions/cart.js, METHOD: showCart() => ajaxCrud() => callBackFunc()");
+
+                dispatch(setCart(json.obj));
+            }
+        });
+    };
 };

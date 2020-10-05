@@ -25,7 +25,7 @@ function Product(props) {
                 <div className="product-price">
                     <span>{"$" + props.product.price}</span>
                     <span className="product-action">
-                        <a href="#!" onClick={(e) => props.onAddToCart(e, props.product.id)}>Add to cart</a>
+                        <a href="#!" onClick={(e) => props.onAddToCart(e, props.product)}>Add to cart</a>
                     </span>
                 </div>
                 <a href="#!" className="product-like" onClick={(e) => props.onProductLiked(e)}></a>

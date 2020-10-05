@@ -29,7 +29,7 @@ function ProductDetails(props) {
             </div>
 
             {/* <ProductColorFilter /> */}
-            <ProductActions productId={p?.id} />
+            <ProductActions product={p} />
         </div>
     );
 }

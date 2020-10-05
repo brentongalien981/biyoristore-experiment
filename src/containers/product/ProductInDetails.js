@@ -104,7 +104,7 @@ class ProductInDetails extends React.Component {
 
 
 
-    onAddToCart = (e, productId) => {
+    onAddToCart = (e, product) => {
 
         Bs.log("\n####################");
         Bs.log("Using React's Context!");
@@ -112,9 +112,9 @@ class ProductInDetails extends React.Component {
 
         //ish
         e.preventDefault();
-        Bs.log("productId ==> " + productId);
+        Bs.log("product ==> " + product);
 
-        this.props.onAddToCart(productId);
+        this.props.onAddToCart(product);
     };
 }
 
@@ -136,7 +136,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onAddToCart: (productId) => dispatch(onAddToCart(productId)),
+        onAddToCart: (product) => dispatch(onAddToCart(product)),
         readProduct: (productId) => dispatch(actions.readProduct(productId)),
         readRelatedProducts: (productId) => dispatch(actions.readRelatedProducts(productId)),
         relaunchVendorScript: () => dispatch(actions.relaunchVendorScript()),
