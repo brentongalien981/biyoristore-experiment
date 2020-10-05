@@ -112,6 +112,7 @@ const onDeleteCartItemFail = (state, action) => {
 
 
 const onDeleteCartItemSuccess = (state, action) => {
+    //ish
 
     Bs.log("action.cartItemIndex ==> " + action.cartItemIndex);
 
@@ -131,6 +132,8 @@ const onDeleteCartItemSuccess = (state, action) => {
     Bs.log("updatedCart ==> ...");
     Bs.log(updatedCart);
 
+    BsAppSession.set("cart", JSON.stringify(updatedCart));
+
     return {
         ...state,
         cart: { ...updatedCart }
@@ -149,7 +152,6 @@ const onAddToCartFail = (state, action) => {
 };
 
 const onAddToCartSuccess = (state, action) => {
-    //ish
     alert("Item added to cart.");
 
     let updatedCart = state.cart;
@@ -197,7 +199,6 @@ const onAddToCart = (state, action) => {
 
 /* HELPER FUNCS */
 const addProductToCart = (product, cart) => {
-    //ish
     const cartItem = { id: null, quantity: 1, product: product };
     cart.cartItems.push(cartItem);
 

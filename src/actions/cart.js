@@ -71,24 +71,27 @@ export const deleteCartItem = (cartItemId, cartItemIndex) => {
     Bs.log("\n###############");
     Bs.log("In REDUCER: cart, METHOD: deleteCartItem()");
 
+    //ish
+    return (dispatch) => { dispatch(onDeleteCartItemSuccess(cartItemIndex)); };
 
-    return (dispatch) => {
 
-        BsCore.ajaxCrud({
-            url: '/cartItem/delete',
-            method: "post",
-            params: { api_token: BsAppSession.get("apiToken"), cartItemId: cartItemId },
-            callBackFunc: (requestData, json) => {
-                Bs.log("\n#####################");
-                Bs.log("FILE: actions/cart.js, METHOD: deleteCartItem() => ajaxCrud() => callBackFunc()");
+    // return (dispatch) => {
 
-                dispatch(onDeleteCartItemSuccess(cartItemIndex));
-            },
-            errorCallBackFunc: (errors) => {
-                dispatch(onDeleteCartItemFail(errors));
-            }
-        });
-    };
+    //     BsCore.ajaxCrud({
+    //         url: '/cartItem/delete',
+    //         method: "post",
+    //         params: { api_token: BsAppSession.get("apiToken"), cartItemId: cartItemId },
+    //         callBackFunc: (requestData, json) => {
+    //             Bs.log("\n#####################");
+    //             Bs.log("FILE: actions/cart.js, METHOD: deleteCartItem() => ajaxCrud() => callBackFunc()");
+
+    //             dispatch(onDeleteCartItemSuccess(cartItemIndex));
+    //         },
+    //         errorCallBackFunc: (errors) => {
+    //             dispatch(onDeleteCartItemFail(errors));
+    //         }
+    //     });
+    // };
 };
 
 
@@ -99,7 +102,7 @@ export const onAddToCart = (product) => {
     Bs.log("In REDUCER: cart, METHOD: onAddToCart()");
 
     //
-    return (dispatch) => { dispatch(onAddToCartSuccess(product)) };
+    return (dispatch) => { dispatch(onAddToCartSuccess(product)); };
 
 
     // //
@@ -133,7 +136,7 @@ export const showCart = () => {
     if (BsAppSession.get("isLoggedIn") == 0) {
         //
         const cart = JSON.parse(BsAppSession.get("cart"));
-        return (dispatch) => { dispatch(setCart(cart)) };
+        return (dispatch) => { dispatch(setCart(cart)); };
     }
 
 
