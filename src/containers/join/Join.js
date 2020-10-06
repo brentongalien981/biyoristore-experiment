@@ -7,6 +7,7 @@ import * as actions from '../../actions/join';
 import BsAppSession from '../../bs-library/helpers/BsAppSession';
 import Bs from '../../bs-library/helpers/Bs';
 import { withRouter } from 'react-router-dom';
+import { showCart } from '../../actions/cart';
 
 
 
@@ -31,7 +32,13 @@ class Join extends React.Component {
         }
 
         if (this.props.shouldRedirectHome) {
+
+            // This means the user successfully signed-up.
             Bs.log("shouldRedirectHome");
+
+            // Refresh the cart.
+            this.props.showCart();
+            
             this.props.history.push("/");
         }
     }
@@ -131,6 +138,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        showCart: () => dispatch(showCart()),
         saveUser: (credentials) => dispatch(actions.saveUser(credentials)),
         login: (credentials) => dispatch(actions.login(credentials)),
         resetErrors: () => dispatch(actions.resetErrors())
