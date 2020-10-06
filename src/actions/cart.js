@@ -44,26 +44,29 @@ export const updateCartItemCount = (cartItemId, quantity, index) => {
     Bs.log("\n###############");
     Bs.log("In REDUCER: cart, METHOD: updateCartItemCount()");
 
+    //ish
+    return (dispatch) => { dispatch(onUpdateCartItemCountSuccess(quantity, index)); };
 
-    return (dispatch) => {
 
-        BsCore.ajaxCrud({
-            url: '/cartItem/update',
-            method: "post",
-            params: { api_token: BsAppSession.get("apiToken"), cartItemId: cartItemId, quantity: quantity },
-            callBackFunc: (requestData, json) => {
-                Bs.log("\n#####################");
-                Bs.log("FILE: actions/cart.js, METHOD: updateCartItemCount() => ajaxCrud() => callBackFunc()");
+    // return (dispatch) => {
 
-                if (json.isResultOk) {
-                    dispatch(onUpdateCartItemCountSuccess(quantity, index));
-                }
-            },
-            errorCallBackFunc: (errors) => {
-                dispatch(onUpdateCartItemCountFail(errors));
-            }
-        });
-    };
+    //     BsCore.ajaxCrud({
+    //         url: '/cartItem/update',
+    //         method: "post",
+    //         params: { api_token: BsAppSession.get("apiToken"), cartItemId: cartItemId, quantity: quantity },
+    //         callBackFunc: (requestData, json) => {
+    //             Bs.log("\n#####################");
+    //             Bs.log("FILE: actions/cart.js, METHOD: updateCartItemCount() => ajaxCrud() => callBackFunc()");
+
+    //             if (json.isResultOk) {
+    //                 dispatch(onUpdateCartItemCountSuccess(quantity, index));
+    //             }
+    //         },
+    //         errorCallBackFunc: (errors) => {
+    //             dispatch(onUpdateCartItemCountFail(errors));
+    //         }
+    //     });
+    // };
 };
 
 export const deleteCartItem = (cartItemId, cartItemIndex) => {
@@ -71,7 +74,7 @@ export const deleteCartItem = (cartItemId, cartItemIndex) => {
     Bs.log("\n###############");
     Bs.log("In REDUCER: cart, METHOD: deleteCartItem()");
 
-    //ish
+    //
     return (dispatch) => { dispatch(onDeleteCartItemSuccess(cartItemIndex)); };
 
 
