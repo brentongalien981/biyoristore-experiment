@@ -36,6 +36,7 @@ const initialState = {
 /* REDUCER */
 const cart = (state = initialState, action) => {
     switch (action.type) {
+        case actions.RESET_CART: return resetCart(state, action);
         case actions.ON_SHOULD_RESET_SETTING_CART_ITEM_COUNT_FLAG_SUCCESS: return onShouldResetSettingCartItemCountFlagSuccess(state, action);
         case actions.ON_UPDATE_CART_ITEM_COUNT_FAIL: return onUpdateCartItemCountFail(state, action);
         case actions.ON_UPDATE_CART_ITEM_COUNT_SUCCESS: return onUpdateCartItemCountSuccess(state, action);
@@ -75,7 +76,6 @@ const onUpdateCartItemCountFail = (state, action) => {
 
 const onUpdateCartItemCountSuccess = (state, action) => {
 
-    //ish
     Bs.log("action.cartItemIndex ==> " + action.cartItemIndex);
 
     let updatedCartItems = state.cart.cartItems;
@@ -169,7 +169,24 @@ const onAddToCartSuccess = (state, action) => {
 
 
 
+const resetCart = (state, action) => {
+    //ish
+    Bs.log("\n###############");
+    Bs.log("In REDUCER: cart, METHOD: resetCart()");
+
+    const cart = { id: 0, cartItems: [] };
+    BsAppSession.set("cart", JSON.stringify(cart));
+
+    return {
+        ...state,
+        cart: { ...cart }
+    };
+};
+
+
+
 const setCart = (state, action) => {
+    //ish
     Bs.log("\n###############");
     Bs.log("In REDUCER: cart, METHOD: setCart()");
 
@@ -180,7 +197,7 @@ const setCart = (state, action) => {
 
     return {
         ...state,
-        cart: {...cart}
+        cart: { ...cart }
     };
 };
 
@@ -213,10 +230,10 @@ const addProductToCart = (product, cart) => {
 const isAlreadyInCart = (product, cart) => {
 
     for (const cartItem of cart.cartItems) {
-        if (cartItem.product.id == product.id) { 
+        if (cartItem.product.id == product.id) {
             Bs.log("\n####################");
             Bs.log("product is already in cart");
-            return true; 
+            return true;
         }
     }
 

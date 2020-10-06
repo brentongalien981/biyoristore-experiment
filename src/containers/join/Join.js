@@ -38,7 +38,10 @@ class Join extends React.Component {
 
             // Refresh the cart.
             this.props.showCart();
-            
+
+            //ish
+            this.props.onRedirectHomeSuccess();
+
             this.props.history.push("/");
         }
     }
@@ -138,6 +141,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        onRedirectHomeSuccess: () => dispatch(actions.onRedirectHomeSuccess()),
         showCart: () => dispatch(showCart()),
         saveUser: (credentials) => dispatch(actions.saveUser(credentials)),
         login: (credentials) => dispatch(actions.login(credentials)),

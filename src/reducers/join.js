@@ -19,6 +19,7 @@ const initialState = {
 /* REDUCER */
 const join = (state = initialState, action) => {
     switch (action.type) {
+        case actions.ON_REDIRECT_HOME_SUCCESS: return onRedirectHomeSuccess(state, action);
         case actions.RESET_ERRORS: return resetErrors(state, action);
         case actions.ON_CREATE_ACCOUNT_SUCCESS: return onCreateAccountSuccess(state, action);
         case actions.ON_CREATE_ACCOUNT_FAIL: return onCreateAccountFail(state, action);
@@ -29,6 +30,16 @@ const join = (state = initialState, action) => {
 
 
 /* NORMAL */
+const onRedirectHomeSuccess = (state, action) => {
+
+    return {
+        ...state,
+        shouldRedirectHome: false
+    };
+};
+
+
+
 const resetErrors = (state, action) => {
 
     return {

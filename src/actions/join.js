@@ -4,6 +4,7 @@ import Bs from "../bs-library/helpers/Bs";
 
 
 /* NAMES */
+export const ON_REDIRECT_HOME_SUCCESS = "ON_REDIRECT_HOME_SUCCESS";
 export const RESET_ERRORS = "RESET_ERRORS";
 export const SAVE_USER = "SAVE_USER";
 export const ON_CREATE_ACCOUNT_SUCCESS = "ON_CREATE_ACCOUNT_SUCCESS";
@@ -12,6 +13,7 @@ export const ON_CREATE_ACCOUNT_FAIL = "ON_CREATE_ACCOUNT_FAIL";
 
 
 /* FUNCS */
+export const onRedirectHomeSuccess = () => ({ type: ON_REDIRECT_HOME_SUCCESS });
 export const resetErrors = () => ({ type: RESET_ERRORS });
 export const onCreateAccountSuccess = (json) => ({
     type: ON_CREATE_ACCOUNT_SUCCESS,

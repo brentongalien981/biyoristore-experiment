@@ -5,6 +5,7 @@ import HeaderLight from './HeaderLight';
 import HeaderDark from './HeaderDark';
 import BsAppSession from '../bs-library/helpers/BsAppSession';
 import { connect } from 'react-redux';
+import { resetCart } from '../actions/cart';
 
 
 
@@ -25,7 +26,11 @@ class Header extends React.Component {
 
     onLogout = (e) => {
         e.preventDefault();
+        const userEmail = BsAppSession.get("email");
+        BsAppSession.clear();
+        BsAppSession.set("email", userEmail);
         BsAppSession.set("isLoggedIn", 0);
+        this.props.resetCart();
         this.props.history.push("/");
     };
 }
@@ -39,4 +44,12 @@ const mapStateToProps = (state) => {
 };
 
 
-export default connect(mapStateToProps, null)(withRouter(Header));
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        resetCart: () => dispatch(resetCart())
+    };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header));
