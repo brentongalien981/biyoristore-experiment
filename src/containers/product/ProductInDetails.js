@@ -16,7 +16,7 @@ import { onAddToCart } from '../../actions/cart';
 
 class ProductInDetails extends React.Component {
 
-    // React's context.
+    // REQUIRED: React's context.
     static contextType = ProductInDetailsContext;
 
 
@@ -28,7 +28,7 @@ class ProductInDetails extends React.Component {
         Bs.log(this.props);
         Bs.log("this.props.message ==> " + this.props.message);
 
-        // Initialize contexts.
+        // REQUIRED: Initialize contexts.
         this.setMyContext();
 
 
@@ -78,7 +78,7 @@ class ProductInDetails extends React.Component {
                 <button onClick={this.testReadNewProduct}>TEST READ NEW PRODUCT</button> */}
                 <ProductMainSection product={this.props.product} />
                 <ProductExtraInfo product={this.props.product} />
-                <SuggestedProducts relatedProducts={this.props.relatedProducts} onProductClicked={this.onProductClicked} />
+                <SuggestedProducts relatedProducts={this.props.relatedProducts} onProductClicked={this.onProductClicked} onAddToCart={this.onAddToCart} />
 
                 {/* TODO */}
                 <ProductReviews reviews={this.props.reviews} />
@@ -112,6 +112,7 @@ class ProductInDetails extends React.Component {
 
         //ish
         e.preventDefault();
+        e.stopPropagation();
         Bs.log("product ==> " + product);
 
         this.props.onAddToCart(product);

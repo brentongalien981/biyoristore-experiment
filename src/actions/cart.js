@@ -138,25 +138,22 @@ export const showCart = () => {
     Bs.log("In REDUCER: cart, METHOD: showCart()");
 
     //
-    if (BsAppSession.get("isLoggedIn") == 0) {
-        //
-        const cart = JSON.parse(BsAppSession.get("cart"));
-        return (dispatch) => { dispatch(setCart(cart)); };
-    }
+    const cart = JSON.parse(BsAppSession.get("cart"));
+    return (dispatch) => { dispatch(setCart(cart)); };
 
 
-    //
-    return (dispatch) => {
+    // //
+    // return (dispatch) => {
 
-        BsCore.ajaxCrud({
-            url: '/cart/show',
-            params: { api_token: BsAppSession.get("apiToken") },
-            callBackFunc: (requestData, json) => {
-                Bs.log("\n#####################");
-                Bs.log("FILE: actions/cart.js, METHOD: showCart() => ajaxCrud() => callBackFunc()");
+    //     BsCore.ajaxCrud({
+    //         url: '/cart/show',
+    //         params: { api_token: BsAppSession.get("apiToken") },
+    //         callBackFunc: (requestData, json) => {
+    //             Bs.log("\n#####################");
+    //             Bs.log("FILE: actions/cart.js, METHOD: showCart() => ajaxCrud() => callBackFunc()");
 
-                dispatch(setCart(json.obj));
-            }
-        });
-    };
+    //             dispatch(setCart(json.obj));
+    //         }
+    //     });
+    // };
 };

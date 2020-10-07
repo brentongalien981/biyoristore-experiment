@@ -6,7 +6,7 @@ import Product from '../listing/Product';
 function SuggestedProducts(props) {
 
     const relatedProducts = props.relatedProducts.map((p, i) => {
-        return (<Product product={p} key={i} onProductClicked={props.onProductClicked} />);
+        return (<Product product={p} key={i} onProductClicked={props.onProductClicked} onAddToCart={props.onAddToCart} />);
     });
 
     
