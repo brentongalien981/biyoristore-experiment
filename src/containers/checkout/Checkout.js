@@ -33,7 +33,7 @@ class Checkout extends React.Component {
         //     method: "post",
         //     params: {},
         //     neededResponseParams: ["clientSecret"],
-        //     callBackFunc: (requestData, json) => {
+        //     callBackFunc: (requestData, json) => { 
         //         Bs.log("\n#####################");
         //         Bs.log("FILE: Checkout.js, METHOD: componentDidMount() => ajaxCrud() => callBackFunc()");
 
