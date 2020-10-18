@@ -9,7 +9,7 @@ import BsCore from "../../bs-library/helpers/BsCore";
 
 
 
-export default function CheckoutForm() {
+export default function PaymentForm() {
     const [succeeded, setSucceeded] = useState(false);
     const [error, setError] = useState(null);
     const [processing, setProcessing] = useState('');
@@ -88,11 +88,12 @@ export default function CheckoutForm() {
 
 
     return (
-        <form id="payment-form" onSubmit={handleSubmit}>
+        <form id="payment-form" className="payment-form" onSubmit={handleSubmit}>
 
             <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
 
             <button
+                className="payment-button"
                 disabled={processing || disabled || succeeded}
                 id="submit">
 

@@ -16,6 +16,7 @@ const Join = React.lazy(() => import('./containers/join/Join'));
 const Profile = React.lazy(() => import('./containers/profile/Profile'));
 const CartPage = React.lazy(() => import('./containers/cart/CartPage'));
 const Checkout = React.lazy(() => import('./containers/checkout/Checkout'));
+const Payment = React.lazy(() => import('./containers/checkout/Payment'));
 
 const CartWidget = React.lazy(() => import('./components/cart/CartWidget'));
 
@@ -35,9 +36,14 @@ function App() {
 				<Route path="/profile" exact render={() => <Suspense fallback={<div>loading...</div>}><Profile /></Suspense>} />
 				<Route path="/cart" exact render={() => <Suspense fallback={<div>loading...</div>}><CartPage /></Suspense>} />
 				<Route path="/checkout" exact render={() => <Suspense fallback={<div>loading...</div>}><Checkout /></Suspense>} />
+				<Route path="/payment" exact render={() => <Suspense fallback={<div>loading...</div>}><Payment /></Suspense>} />
 				{/* <Route path="/product" exact component={ProductInDetails} /> */}
 			</Switch>
-			<Footer />
+
+			<Switch>
+				<Route path="/payment" exact component={null} />
+				<Route path="/" component={Footer} />
+			</Switch>
 
 			<Search />
 			<Suspense fallback={<div>loading...</div>}><CartWidget /></Suspense>
