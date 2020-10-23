@@ -13,6 +13,10 @@ class BsAppSession {
     static get(key) {
         return localStorage.getItem(key);
     }
+
+    static isLoggedIn() {
+        return BsAppSession.get("isLoggedIn") == 1;
+    }
 }
 
 
