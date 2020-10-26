@@ -154,15 +154,6 @@ class BsCore2 {
         Bs.displaySeparator();
     }
 
-    static displaySeparator(numOfLineBreaks = 0) {
-        for (let i = 0; i < numOfLineBreaks; i++) {
-            Bs.log("\n");
-            
-        }
-        Bs.log("###################################");
-    }
-
-
 
 
     static displayErrors(error) {

@@ -21,6 +21,21 @@ class Join extends React.Component {
         };
 
         if (BsAppSession.get("isLoggedIn") == 1) { this.props.history.push("/"); }
+
+        Bs.displaySeparator(3);
+        Bs.log("this.props ==> ...");
+        Bs.log(this.props);
+    }
+
+
+
+    getRedirectToUrl() {
+        const acceptedUrlParams = ["redirectTo"];
+        const urlQuery = this.props.location.search;
+        const parsedQueryParams = Bs.getParsedQueryParams(urlQuery, acceptedUrlParams);
+        let redirectToUrl = "/";
+        redirectToUrl += parsedQueryParams["redirectTo"] ? parsedQueryParams["redirectTo"] : "";
+        return redirectToUrl;
     }
 
 
@@ -39,10 +54,11 @@ class Join extends React.Component {
             // Refresh the cart.
             this.props.showCart();
 
-            //ish
             this.props.onRedirectHomeSuccess();
 
-            this.props.history.push("/");
+            // 
+            const redirectTo = this.getRedirectToUrl();
+            this.props.history.push(redirectTo);
         }
     }
 

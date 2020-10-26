@@ -6,6 +6,16 @@ class Bs {
 
 
 
+    static displaySeparator(numOfLineBreaks = 0) {
+        for (let i = 0; i < numOfLineBreaks; i++) {
+            Bs.log("\n");
+            
+        }
+        Bs.log("###################################");
+    }
+
+
+
     static getParsedQueryParams(q, acceptedParams) {
 
         //
