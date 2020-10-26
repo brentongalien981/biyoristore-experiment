@@ -5,7 +5,7 @@ import BsAppSession from '../../bs-library/helpers/BsAppSession';
 
 export default function CheckoutAsWhoModal(props) {
 
-    if (BsAppSession.get("hasChosenToCheckoutAsWho") == 1) { return null; }
+    if (BsAppSession.get("hasChosenToCheckoutAsWho") == 1 || BsAppSession.isLoggedIn()) { return null; }
 
     return (
         <>

@@ -22,44 +22,44 @@ export default function AddressFormGroup(props) {
                 {getAddressFormSwitch(props.addressType)}
 
                 <div className="form-group col-md-6">
-                    <label for="firstName">First Name</label>
-                    <input type="text" className="form-control" id="firstName" placeholder="" />
+                    <label htmlFor="firstName">First Name</label>
+                    <input type="text" className="form-control" placeholder="" />
                 </div>
                 <div className="form-group col-md-6">
-                    <label for="lastName">Last Name</label>
-                    <input type="text" className="form-control" id="lastName" placeholder="" />
+                    <label htmlFor="lastName">Last Name</label>
+                    <input type="text" className="form-control" placeholder="" />
                 </div>
 
                 <div className="form-group col-md-8">
-                    <label for="address">Address</label>
-                    <input type="text" className="form-control" id="address" placeholder="" />
+                    <label htmlFor="address">Address</label>
+                    <input type="text" className="form-control" placeholder="" />
                 </div>
                 <div className="form-group col-md-4">
-                    <label for="city">City</label>
-                    <input type="text" className="form-control" id="city" placeholder="" />
-                </div>
-
-                <div className="form-group col-md-4">
-                    <label for="province">Province</label>
-                    <input type="text" className="form-control" id="province" placeholder="" />
-                </div>
-                <div className="form-group col-md-4">
-                    <label for="country">Country</label>
-                    <input type="text" className="form-control" id="country" placeholder="" />
+                    <label htmlFor="city">City</label>
+                    <input type="text" className="form-control" placeholder="" />
                 </div>
 
                 <div className="form-group col-md-4">
-                    <label for="postcode">Postal Code</label>
-                    <input type="text" className="form-control" id="postcode" placeholder="" />
+                    <label htmlFor="province">Province</label>
+                    <input type="text" className="form-control" placeholder="" />
+                </div>
+                <div className="form-group col-md-4">
+                    <label htmlFor="country">Country</label>
+                    <input type="text" className="form-control" placeholder="" />
+                </div>
+
+                <div className="form-group col-md-4">
+                    <label htmlFor="postcode">Postal Code</label>
+                    <input type="text" className="form-control" placeholder="" />
                 </div>
 
                 <div className="form-group col-md-6">
-                    <label for="email">Email</label>
-                    <input type="email" className="form-control" id="email" placeholder="" />
+                    <label htmlFor="email">Email</label>
+                    <input type="email" className="form-control" placeholder="" />
                 </div>
                 <div className="form-group col-md-6">
-                    <label for="phone">Phone Number</label>
-                    <input type="phone" className="form-control" id="phone" placeholder="" />
+                    <label htmlFor="phone">Phone Number</label>
+                    <input type="phone" className="form-control" placeholder="" />
                 </div>
 
             </div>
@@ -89,7 +89,7 @@ function getAddressFormSwitch(addressType) {
             <div className="col-12">
                 <div className="custom-control custom-switch mb-2">
                     <input type="checkbox" className="custom-control-input" id="billingSameAsDeliverySwitch" />
-                    <label className="custom-control-label text-muted" for="billingSameAsDeliverySwitch">Billing address same as delivery address.</label>
+                    <label className="custom-control-label text-muted" htmlFor="billingSameAsDeliverySwitch">Billing address same as delivery address.</label>
                 </div>
             </div>
         );
