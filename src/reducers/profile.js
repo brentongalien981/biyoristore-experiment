@@ -69,9 +69,9 @@ const onAddressDeleteSuccess = (state, action) => {
     let i = 0;
     for (; i < updatedAddresses.length; i++) {
         const a = updatedAddresses[i];
-        
-        if (a.id == action.addressId) { 
-            break; 
+
+        if (a.id == action.addressId) {
+            break;
         }
 
     }
@@ -115,7 +115,7 @@ const onSaveAddressSuccess = (state, action) => {
 
     document.querySelector("#closeAddressFormBtn").click();
     alert("Address saved...");
-    
+
 
     let updatedAddresses = state.addresses;
 
@@ -125,13 +125,13 @@ const onSaveAddressSuccess = (state, action) => {
             addresses: [...updatedAddresses, action.address],
             shouldResetAddressForm: true
         };
-    } 
+    }
     else {
 
         let i = 0;
         for (; i < updatedAddresses.length; i++) {
             const a = updatedAddresses[i];
-            
+
             if (a.id == action.address.id) { break; }
 
         }
@@ -157,39 +157,42 @@ const onPaymentFormResetSuccess = (state, action) => {
 
 const onSavePaymentSuccess = (state, action) => {
 
-    //
     document.querySelector("#closePaymentFormBtn").click();
 
-    alert("Payment saved...");
-    
+    alert("TODO: Payment saved... Re-implement this.");
 
-    let updatedPaymentInfos = state.paymentInfos;
+    // TODO: Delete this.
+    return { ...state, shouldResetPaymentForm: true };
 
-    if (action.paymentForCrudMethod == "create") {
-        return {
-            ...state,
-            paymentInfos: [...updatedPaymentInfos, action.newPayment],
-            shouldResetPaymentForm: true
-        };
-    } 
-    else {
 
-        let i = 0;
-        for (; i < updatedPaymentInfos.length; i++) {
-            const p = updatedPaymentInfos[i];
-            
-            if (p.id == action.newPayment.id) { break; }
+    // TODO: Re-implement this.
+    // let updatedPaymentInfos = state.paymentInfos;
 
-        }
+    // if (action.paymentForCrudMethod == "create") {
+    //     return {
+    //         ...state,
+    //         paymentInfos: [...updatedPaymentInfos, action.newPayment],
+    //         shouldResetPaymentForm: true
+    //     };
+    // } 
+    // else {
 
-        updatedPaymentInfos[i] = action.newPayment;
+    //     let i = 0;
+    //     for (; i < updatedPaymentInfos.length; i++) {
+    //         const p = updatedPaymentInfos[i];
 
-        return {
-            ...state,
-            paymentInfos: [...updatedPaymentInfos],
-            shouldResetPaymentForm: true
-        };
-    }
+    //         if (p.id == action.newPayment.id) { break; }
+
+    //     }
+
+    //     updatedPaymentInfos[i] = action.newPayment;
+
+    //     return {
+    //         ...state,
+    //         paymentInfos: [...updatedPaymentInfos],
+    //         shouldResetPaymentForm: true
+    //     };
+    // }
 
 
 };

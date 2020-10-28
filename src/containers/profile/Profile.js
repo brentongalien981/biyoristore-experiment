@@ -21,7 +21,8 @@ class Profile extends React.Component {
         super(props);
         this.state = {
             profile: {},
-            newPayment: { cardNumber: "", nameOnCard: "", expirationMonth: "11", expirationYear: "2020" },
+            //ish
+            newPayment: { cardNumber: "", expirationMonth: "01", expirationYear: "2022", cvc: "", postalCode: "" },
             paymentFormCrudMethod: "create",
             editedAddress: { street: "", city: "", province: "ON", country: "Canada", postalCode: "" },
             addressFormCrudMethod: "create"
@@ -48,7 +49,7 @@ class Profile extends React.Component {
         }
 
         if (this.props.shouldResetPaymentForm) {
-            this.setState({ newPayment: { cardNumber: "", nameOnCard: "", expirationMonth: "11", expirationYear: "2020" } });
+            this.setState({ newPayment: { cardNumber: "", expirationMonth: "01", expirationYear: "2022", cvc: "", postalCode: "" } });
 
             this.props.onPaymentFormResetSuccess();
         }
@@ -82,6 +83,7 @@ class Profile extends React.Component {
 
 
 
+    //ish
     savePayment = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -89,6 +91,7 @@ class Profile extends React.Component {
         let newPayment = this.state.newPayment;
         newPayment.expirationMonth = parseInt(newPayment.expirationMonth);
         newPayment.expirationYear = parseInt(newPayment.expirationYear);
+        newPayment.cvc = parseInt(newPayment.cvc);
         this.setState({ newPayment: newPayment });
         this.props.savePayment(this.state.newPayment, this.state.paymentFormCrudMethod);
     };
@@ -116,6 +119,7 @@ class Profile extends React.Component {
 
 
 
+    //ish
     onPaymentFormInputChanged = (e) => {
         Bs.log("\n####################");
         Bs.log("In METHOD: onPaymentFormInputChanged()");
@@ -152,13 +156,13 @@ class Profile extends React.Component {
 
 
     onAddressDelete = (e, addressId) => {
-        //ish
         e.preventDefault();
         this.props.onAddressDelete(addressId);
     };
 
 
 
+    //ish
     onPaymenFormShown = (e, payment) => {
         e.preventDefault();
         Bs.log("payment ==> ...");
@@ -173,7 +177,7 @@ class Profile extends React.Component {
         } else {
             // create payment
             this.setState({
-                newPayment: { cardNumber: "", nameOnCard: "", expirationMonth: "11", expirationYear: "2020" },
+                newPayment: { cardNumber: "", expirationMonth: "01", expirationYear: "2022", cvc: "", postalCode: "" },
                 paymentFormCrudMethod: "create"
             });
         }
@@ -214,6 +218,7 @@ class Profile extends React.Component {
                     onAddressFormInputChanged={this.onAddressFormInputChanged}
                     saveAddress={this.saveAddress} />
 
+                {/* ish */}
                 <PaymentForm paymentFormCrudMethod={this.state.paymentFormCrudMethod}
                     newPayment={this.state.newPayment}
                     onPaymentFormInputChanged={this.onPaymentFormInputChanged}
@@ -243,6 +248,7 @@ const mapDispatchToProps = (dispatch) => {
         readProfile: (userId) => dispatch(actions.readProfile(userId)),
         onProfileDisplayedSuccess: () => dispatch(actions.onProfileDisplayedSuccess()),
         saveProfile: (profile) => dispatch(actions.saveProfile(profile)),
+        //ish
         savePayment: (newPayment, paymentForCrudMethod) => dispatch(actions.savePayment(newPayment, paymentForCrudMethod)),
         onPaymentFormResetSuccess: () => dispatch(actions.onPaymentFormResetSuccess()),
         saveAddress: (address, addressFormCrudMethod) => dispatch(actions.saveAddress(address, addressFormCrudMethod)),

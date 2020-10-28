@@ -31,16 +31,16 @@ function PaymentForm(props) {
                                 </div>
                             </div>
 
-                            <div className="col-12">
+                            {/* <div className="col-12">
                                 <div className="form-group">
                                     <label htmlFor="cardNumber">Name on Card</label>
                                     <input type="text" className="form-control" placeholder="" name="nameOnCard" onChange={props.onPaymentFormInputChanged} />
                                 </div>
-                            </div>
+                            </div> */}
 
                             <div className="col-6">
                                 <div className="form-group">
-                                    <label htmlFor="cardNumber">Expiration Month</label>
+                                    <label htmlFor="expirationMonth">Expiration Month</label>
                                     <select name="expirationMonth" className="custom-select" value={p.expirationMonth} onChange={props.onPaymentFormInputChanged}>
                                         {getExpirationMonthOptions()}
                                     </select>
@@ -49,10 +49,25 @@ function PaymentForm(props) {
 
                             <div className="col-6">
                                 <div className="form-group">
-                                    <label htmlFor="cardNumber">Expiration Year</label>
+                                    <label htmlFor="expirationYear">Expiration Year</label>
                                     <select name="expirationYear" className="custom-select" value={p.expirationYear} onChange={props.onPaymentFormInputChanged}>
                                         {getExpirationYearOptions()}
                                     </select>
+                                </div>
+                            </div>
+
+                            <div className="col-6">
+                                <div className="form-group">
+                                    <label htmlFor="cvc">CVC</label>
+                                    <input type="text" className="form-control" placeholder="" name="cvc" value={p.cvc} onChange={props.onPaymentFormInputChanged} />
+                                </div>
+                            </div>
+
+
+                            <div className="col-6">
+                                <div className="form-group">
+                                    <label htmlFor="postalCode">Postal Code</label>
+                                    <input type="text" className="form-control" placeholder="" name="postalCode" value={p.postalCode} onChange={props.onPaymentFormInputChanged} />
                                 </div>
                             </div>
 

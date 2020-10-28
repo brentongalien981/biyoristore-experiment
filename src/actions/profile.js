@@ -90,7 +90,7 @@ export const savePayment = (newPayment, paymentForCrudMethod) => {
     return (dispatch) => {
 
         BsCore.ajaxCrud({
-            url: '/paymentInfo/save',
+            url: '/stripePaymentMethod/save',
             method: "post",
             params: { ...newPayment, api_token: BsAppSession.get("apiToken") },
             neededResponseParams: ["newPayment"],
