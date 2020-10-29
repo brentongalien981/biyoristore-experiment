@@ -13,6 +13,9 @@ export const ON_SAVE_ADDRESS_SUCCESS = "ON_SAVE_ADDRESS_SUCCESS";
 export const ON_PAYMENT_FORM_RESET_SUCCESS = "ON_PAYMENT_FORM_RESET_SUCCESS";
 export const ON_SAVE_PAYMENT_FAIL = "ON_SAVE_PAYMENT_FAIL";
 export const ON_SAVE_PAYMENT_SUCCESS = "ON_SAVE_PAYMENT_SUCCESS";
+
+export const DO_PRE_SAVE_PAYMENT = "DO_PRE_SAVE_PAYMENT";
+
 export const ON_SAVE_PROFILE_FAIL = "ON_SAVE_PROFILE_FAIL";
 export const ON_SAVE_PROFILE_SUCCESS = "ON_SAVE_PROFILE_SUCCESS";
 export const ON_PROFILE_DISPLAYED_SUCCESS = "ON_PROFILE_DISPLAYED_SUCCESS";
@@ -28,7 +31,10 @@ export const onSaveAddressFail = (errors) => ({ type: ON_SAVE_ADDRESS_FAIL, erro
 export const onSaveAddressSuccess = (address, addressFormCrudMethod) => ({ type: ON_SAVE_ADDRESS_SUCCESS, address: address, addressFormCrudMethod: addressFormCrudMethod });
 export const onPaymentFormResetSuccess = () => ({ type: ON_PAYMENT_FORM_RESET_SUCCESS });
 export const onSavePaymentFail = (errors) => ({ type: ON_SAVE_PAYMENT_FAIL, errors: errors });
-export const onSavePaymentSuccess = (newPayment, paymentForCrudMethod) => ({ type: ON_SAVE_PAYMENT_SUCCESS, newPayment: newPayment, paymentForCrudMethod: paymentForCrudMethod });
+export const onSavePaymentSuccess = (newPayment, paymentFormCrudMethod) => ({ type: ON_SAVE_PAYMENT_SUCCESS, newPayment: newPayment, paymentFormCrudMethod: paymentFormCrudMethod });
+
+export const doPreSavePayment = () => ({ type: DO_PRE_SAVE_PAYMENT });
+
 export const onSaveProfileFail = (errors) => ({ type: ON_SAVE_PROFILE_FAIL, errors: errors });
 export const onSaveProfileSuccess = (profile) => ({ type: ON_SAVE_PROFILE_SUCCESS, profile: profile });
 export const onProfileDisplayedSuccess = () => ({ type: ON_PROFILE_DISPLAYED_SUCCESS });
@@ -85,7 +91,7 @@ export const saveAddress = (address, addressFormCrudMethod) => {
     };
 };
 
-export const savePayment = (newPayment, paymentForCrudMethod) => {
+export const doSavePayment = (newPayment, paymentFormCrudMethod) => {
 
     return (dispatch) => {
 
@@ -99,7 +105,7 @@ export const savePayment = (newPayment, paymentForCrudMethod) => {
                 Bs.log("FILE: actions/join.js, METHOD: savePayment() => ajaxCrud() => callBackFunc()");
 
                 if (json.isResultOk) {
-                    dispatch(onSavePaymentSuccess(json.newPayment, paymentForCrudMethod));
+                    dispatch(onSavePaymentSuccess(json.newPayment, paymentFormCrudMethod));
                 }
             },
             errorCallBackFunc: (errors) => {

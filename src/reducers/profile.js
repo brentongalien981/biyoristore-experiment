@@ -6,6 +6,11 @@ import BsAppSession from '../bs-library/helpers/BsAppSession';
 const initialState = {
     profile: {
     },
+    isPaymentFormCruding: false,
+    shouldDoSavePayment: false,
+    shouldDoPostSavePayment: false,
+    wasPaymentFormCrudOk: false,
+
     paymentInfos: [
         { id: 1, type: "Visa", cardNumber: "1234123412341234", expirationMonth: "08", expirationYear: "2024" },
         { id: 2, type: "Mastercard", cardNumber: "0987098709870987", expirationMonth: "01", expirationYear: "2022" },
@@ -30,6 +35,9 @@ const profile = (state = initialState, action) => {
         case actions.ON_PAYMENT_FORM_RESET_SUCCESS: return onPaymentFormResetSuccess(state, action);
         case actions.ON_SAVE_PAYMENT_SUCCESS: return onSavePaymentSuccess(state, action);
         case actions.ON_SAVE_PAYMENT_FAIL: return onSavePaymentFail(state, action);
+
+        case actions.DO_PRE_SAVE_PAYMENT: return doPreSavePayment(state, action);
+
         case actions.ON_SAVE_PROFILE_FAIL: return onSaveProfileFail(state, action);
         case actions.ON_SAVE_PROFILE_SUCCESS: return onSaveProfileSuccess(state, action);
         case actions.ON_PROFILE_DISPLAYED_SUCCESS: return onProfileDisplayedSuccess(state, action);
@@ -162,6 +170,7 @@ const onSavePaymentSuccess = (state, action) => {
     alert("TODO: Payment saved... Re-implement this.");
 
     // TODO: Delete this.
+    //ish
     return { ...state, shouldResetPaymentForm: true };
 
 
@@ -212,10 +221,26 @@ const onSavePaymentFail = (state, action) => {
     if (errorMsg.length > 0) { alert(errorMsg); }
     else { alert("Oops, there's an error on our end. Please try again."); }
 
+    //ish
     return {
         ...state,
+        shouldDoSavePayment: false,
+        shouldDoPostSavePayment: true,
+        wasPaymentFormCrudOk: false
     };
 };
+
+
+
+//ish
+// const doPreSavePayment = (state, action) => ({ ...state, shouldDoSavePayment: true, isPaymentFormCruding: true });
+const doPreSavePayment = (state, action) => {
+    Bs.displaySeparator(2);
+    Bs.log("In REDUCER 'profile', METHOD 'doPreSavePayment()'")
+    return { ...state, shouldDoSavePayment: true, isPaymentFormCruding: true };
+};
+
+
 
 const onSaveProfileFail = (state, action) => {
     let errorMsg = "";

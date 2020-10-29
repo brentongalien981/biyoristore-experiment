@@ -4,9 +4,8 @@ import React from 'react';
 
 function PaymentForm(props) {
 
-    const p = props.newPayment;
     const methodTitle = (props.paymentFormCrudMethod == "create" ? "New Payment Method" : "Edit Payment Method");
-    const submitBtnText = (props.paymentFormCrudMethod == "create" ? "Add" : "Update");
+
 
     return (
         <div className="modal fade" id="exampleModal-1" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -21,66 +20,83 @@ function PaymentForm(props) {
                     </div>
 
                     <div className="modal-body">
-
-                        <div className="row gutter-1">
-
-                            <div className="col-12">
-                                <div className="form-group">
-                                    <label htmlFor="cardNumber">Card Number</label>
-                                    <input type="text" className="form-control" placeholder="" name="cardNumber" value={p.cardNumber} onChange={props.onPaymentFormInputChanged} />
-                                </div>
-                            </div>
-
-                            {/* <div className="col-12">
-                                <div className="form-group">
-                                    <label htmlFor="cardNumber">Name on Card</label>
-                                    <input type="text" className="form-control" placeholder="" name="nameOnCard" onChange={props.onPaymentFormInputChanged} />
-                                </div>
-                            </div> */}
-
-                            <div className="col-6">
-                                <div className="form-group">
-                                    <label htmlFor="expirationMonth">Expiration Month</label>
-                                    <select name="expirationMonth" className="custom-select" value={p.expirationMonth} onChange={props.onPaymentFormInputChanged}>
-                                        {getExpirationMonthOptions()}
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div className="col-6">
-                                <div className="form-group">
-                                    <label htmlFor="expirationYear">Expiration Year</label>
-                                    <select name="expirationYear" className="custom-select" value={p.expirationYear} onChange={props.onPaymentFormInputChanged}>
-                                        {getExpirationYearOptions()}
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div className="col-6">
-                                <div className="form-group">
-                                    <label htmlFor="cvc">CVC</label>
-                                    <input type="text" className="form-control" placeholder="" name="cvc" value={p.cvc} onChange={props.onPaymentFormInputChanged} />
-                                </div>
-                            </div>
-
-
-                            <div className="col-6">
-                                <div className="form-group">
-                                    <label htmlFor="postalCode">Postal Code</label>
-                                    <input type="text" className="form-control" placeholder="" name="postalCode" value={p.postalCode} onChange={props.onPaymentFormInputChanged} />
-                                </div>
-                            </div>
-
-                            <div className="col-12">
-                                <a href="#!" className="btn btn-primary" onClick={props.savePayment}>{submitBtnText}</a>
-                            </div>
-                        </div>
-
+                        {getFormContent(props)}
                     </div>
 
                 </div>
             </div>
         </div>
+    );
+}
+
+
+
+function getFormContent(props) {
+
+    const p = props.newPayment;
+    const submitBtnText = (props.paymentFormCrudMethod == "create" ? "Add" : "Update");
+
+    if (props.isPaymentFormCruding) {
+        return (
+            <h3>Saving payment...</h3>
+        );
+    }
+
+    return (
+        <div className="row gutter-1">
+
+            <div className="col-12">
+                <div className="form-group">
+                    <label htmlFor="cardNumber">Card Number</label>
+                    <input type="text" className="form-control" placeholder="" name="cardNumber" value={p.cardNumber} onChange={props.onPaymentFormInputChanged} />
+                </div>
+            </div>
+
+            {/* <div className="col-12">
+            <div className="form-group">
+                <label htmlFor="cardNumber">Name on Card</label>
+                <input type="text" className="form-control" placeholder="" name="nameOnCard" onChange={props.onPaymentFormInputChanged} />
+            </div>
+        </div> */}
+
+            <div className="col-6">
+                <div className="form-group">
+                    <label htmlFor="expirationMonth">Expiration Month</label>
+                    <select name="expirationMonth" className="custom-select" value={p.expirationMonth} onChange={props.onPaymentFormInputChanged}>
+                        {getExpirationMonthOptions()}
+                    </select>
+                </div>
+            </div>
+
+            <div className="col-6">
+                <div className="form-group">
+                    <label htmlFor="expirationYear">Expiration Year</label>
+                    <select name="expirationYear" className="custom-select" value={p.expirationYear} onChange={props.onPaymentFormInputChanged}>
+                        {getExpirationYearOptions()}
+                    </select>
+                </div>
+            </div>
+
+            <div className="col-6">
+                <div className="form-group">
+                    <label htmlFor="cvc">CVC</label>
+                    <input type="text" className="form-control" placeholder="" name="cvc" value={p.cvc} onChange={props.onPaymentFormInputChanged} />
+                </div>
+            </div>
+
+
+            <div className="col-6">
+                <div className="form-group">
+                    <label htmlFor="postalCode">Postal Code</label>
+                    <input type="text" className="form-control" placeholder="" name="postalCode" value={p.postalCode} onChange={props.onPaymentFormInputChanged} />
+                </div>
+            </div>
+
+            <div className="col-12">
+                <a href="#!" className="btn btn-primary" onClick={props.savePayment}>{submitBtnText}</a>
+            </div>
+        </div>
+
     );
 }
 

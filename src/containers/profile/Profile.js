@@ -23,6 +23,7 @@ class Profile extends React.Component {
             profile: {},
             //ish
             newPayment: { cardNumber: "", expirationMonth: "01", expirationYear: "2022", cvc: "", postalCode: "" },
+            isSavingPayment: false,
             paymentFormCrudMethod: "create",
             editedAddress: { street: "", city: "", province: "ON", country: "Canada", postalCode: "" },
             addressFormCrudMethod: "create"
@@ -54,6 +55,28 @@ class Profile extends React.Component {
             this.props.onPaymentFormResetSuccess();
         }
 
+
+        //ish
+        if (this.props.shouldDoSavePayment) {
+
+            // let newPayment = this.state.newPayment;
+            // newPayment.expirationMonth = parseInt(newPayment.expirationMonth);
+            // newPayment.expirationYear = parseInt(newPayment.expirationYear);
+            // newPayment.cvc = parseInt(newPayment.cvc);
+            // this.setState({ newPayment: newPayment });
+
+            this.props.doSavePayment(this.state.newPayment, this.state.paymentFormCrudMethod);
+
+        }
+
+        if (this.props.shouldDoPostSavePayment) {
+            if (this.props.wasPaymentFormCrudOk) { this.setState({ newPayment: { cardNumber: "", expirationMonth: "01", expirationYear: "2022", cvc: "", postalCode: "" } }); }
+
+
+        }
+
+
+
         if (this.props.shouldResetAddressForm) {
             this.setState({ editedAddress: { street: "", city: "", province: "ON", country: "Canada", postalCode: "" } });
 
@@ -83,17 +106,13 @@ class Profile extends React.Component {
 
 
 
-    //ish
+    //ish1
     savePayment = (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        let newPayment = this.state.newPayment;
-        newPayment.expirationMonth = parseInt(newPayment.expirationMonth);
-        newPayment.expirationYear = parseInt(newPayment.expirationYear);
-        newPayment.cvc = parseInt(newPayment.cvc);
-        this.setState({ newPayment: newPayment });
-        this.props.savePayment(this.state.newPayment, this.state.paymentFormCrudMethod);
+        if (this.props.isPaymentFormCruding) { return; }
+        this.props.doPreSavePayment();
     };
 
 
@@ -119,7 +138,6 @@ class Profile extends React.Component {
 
 
 
-    //ish
     onPaymentFormInputChanged = (e) => {
         Bs.log("\n####################");
         Bs.log("In METHOD: onPaymentFormInputChanged()");
@@ -162,7 +180,6 @@ class Profile extends React.Component {
 
 
 
-    //ish
     onPaymenFormShown = (e, payment) => {
         e.preventDefault();
         Bs.log("payment ==> ...");
@@ -221,6 +238,7 @@ class Profile extends React.Component {
                 {/* ish */}
                 <PaymentForm paymentFormCrudMethod={this.state.paymentFormCrudMethod}
                     newPayment={this.state.newPayment}
+                    isPaymentFormCruding={this.props.isPaymentFormCruding}
                     onPaymentFormInputChanged={this.onPaymentFormInputChanged}
                     savePayment={this.savePayment} />
             </>
@@ -234,6 +252,11 @@ const mapStateToProps = (state) => {
     return {
         profile: state.profile.profile,
         shouldDisplayProfile: state.profile.shouldDisplayProfile,
+
+        isPaymentFormCruding: state.profile.isPaymentFormCruding,
+        shouldDoSavePayment: state.profile.shouldDoSavePayment,
+        shouldDoPostSavePayment: state.profile.shouldDoPostSavePayment,
+
         paymentInfos: state.profile.paymentInfos,
         shouldResetPaymentForm: state.profile.shouldResetPaymentForm,
         addresses: state.profile.addresses,
@@ -249,7 +272,9 @@ const mapDispatchToProps = (dispatch) => {
         onProfileDisplayedSuccess: () => dispatch(actions.onProfileDisplayedSuccess()),
         saveProfile: (profile) => dispatch(actions.saveProfile(profile)),
         //ish
-        savePayment: (newPayment, paymentForCrudMethod) => dispatch(actions.savePayment(newPayment, paymentForCrudMethod)),
+        doPreSavePayment: () => dispatch(actions.doPreSavePayment()),
+        doSavePayment: (newPayment, paymentFormCrudMethod) => dispatch(actions.savePayment(newPayment, paymentFormCrudMethod)),
+
         onPaymentFormResetSuccess: () => dispatch(actions.onPaymentFormResetSuccess()),
         saveAddress: (address, addressFormCrudMethod) => dispatch(actions.saveAddress(address, addressFormCrudMethod)),
         onAddressFormResetSuccess: () => dispatch(actions.onAddressFormResetSuccess()),
