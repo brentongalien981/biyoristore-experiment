@@ -38,7 +38,7 @@ function getFormContent(props) {
 
     if (props.isPaymentFormCruding) {
         return (
-            <h3>Saving payment...</h3>
+            <h5>Saving payment...</h5>
         );
     }
 

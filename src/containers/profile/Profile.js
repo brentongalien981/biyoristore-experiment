@@ -23,7 +23,8 @@ class Profile extends React.Component {
             profile: {},
             //ish
             newPayment: { cardNumber: "", expirationMonth: "01", expirationYear: "2022", cvc: "", postalCode: "" },
-            isSavingPayment: false,
+            isPaymentFormCruding: false,
+
             paymentFormCrudMethod: "create",
             editedAddress: { street: "", city: "", province: "ON", country: "Canada", postalCode: "" },
             addressFormCrudMethod: "create"
@@ -49,31 +50,9 @@ class Profile extends React.Component {
             this.props.onProfileDisplayedSuccess();
         }
 
-        if (this.props.shouldResetPaymentForm) {
-            this.setState({ newPayment: { cardNumber: "", expirationMonth: "01", expirationYear: "2022", cvc: "", postalCode: "" } });
-
-            this.props.onPaymentFormResetSuccess();
-        }
-
 
         //ish
-        if (this.props.shouldDoSavePayment) {
-
-            // let newPayment = this.state.newPayment;
-            // newPayment.expirationMonth = parseInt(newPayment.expirationMonth);
-            // newPayment.expirationYear = parseInt(newPayment.expirationYear);
-            // newPayment.cvc = parseInt(newPayment.cvc);
-            // this.setState({ newPayment: newPayment });
-
-            this.props.doSavePayment(this.state.newPayment, this.state.paymentFormCrudMethod);
-
-        }
-
-        if (this.props.shouldDoPostSavePayment) {
-            if (this.props.wasPaymentFormCrudOk) { this.setState({ newPayment: { cardNumber: "", expirationMonth: "01", expirationYear: "2022", cvc: "", postalCode: "" } }); }
-
-
-        }
+        if (this.props.shouldDoPostSavePayment) { this.doPostSavePayment(); }
 
 
 
@@ -106,14 +85,56 @@ class Profile extends React.Component {
 
 
 
-    //ish1
+    //ish
     savePayment = (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        if (this.props.isPaymentFormCruding) { return; }
-        this.props.doPreSavePayment();
+        if (this.doPreSavePayment()) { this.doSavePayment(); }
     };
+
+
+
+    doPreSavePayment = () => {
+        if (this.state.isPaymentFormCruding) { Bs.log("We're still processing..."); return false; }
+
+        this.setState({ isPaymentFormCruding: true });
+        return true;
+    };
+
+
+
+    doSavePayment = () => {
+        let newPayment = this.state.newPayment;
+        newPayment.expirationMonth = parseInt(newPayment.expirationMonth);
+        newPayment.expirationYear = parseInt(newPayment.expirationYear);
+        // newPayment.cvc = parseInt(newPayment.cvc);
+
+        this.setState({ newPayment: newPayment });
+
+        this.props.doSavePayment(this.state.newPayment, this.state.paymentFormCrudMethod);
+    };
+
+
+
+    doPostSavePayment = () => {
+        //ish
+        if (this.props.wasPaymentFormCrudOk) {
+            this.setState({
+                newPayment: { cardNumber: "", expirationMonth: "01", expirationYear: "2022", cvc: "", postalCode: "" },
+                isPaymentFormCruding: false
+            });
+        }
+        else {
+            this.setState({ isPaymentFormCruding: false });
+        }
+
+        this.props.doPostSavePaymentFinalization();
+    };
+
+
+
+
 
 
 
@@ -238,7 +259,7 @@ class Profile extends React.Component {
                 {/* ish */}
                 <PaymentForm paymentFormCrudMethod={this.state.paymentFormCrudMethod}
                     newPayment={this.state.newPayment}
-                    isPaymentFormCruding={this.props.isPaymentFormCruding}
+                    isPaymentFormCruding={this.state.isPaymentFormCruding}
                     onPaymentFormInputChanged={this.onPaymentFormInputChanged}
                     savePayment={this.savePayment} />
             </>
@@ -253,12 +274,11 @@ const mapStateToProps = (state) => {
         profile: state.profile.profile,
         shouldDisplayProfile: state.profile.shouldDisplayProfile,
 
-        isPaymentFormCruding: state.profile.isPaymentFormCruding,
-        shouldDoSavePayment: state.profile.shouldDoSavePayment,
         shouldDoPostSavePayment: state.profile.shouldDoPostSavePayment,
+        wasPaymentFormCrudOk: state.profile.wasPaymentFormCrudOk,
 
         paymentInfos: state.profile.paymentInfos,
-        shouldResetPaymentForm: state.profile.shouldResetPaymentForm,
+        // shouldResetPaymentForm: state.profile.shouldResetPaymentForm,
         addresses: state.profile.addresses,
         shouldResetAddressForm: state.profile.shouldResetAddressForm,
     };
@@ -272,10 +292,10 @@ const mapDispatchToProps = (dispatch) => {
         onProfileDisplayedSuccess: () => dispatch(actions.onProfileDisplayedSuccess()),
         saveProfile: (profile) => dispatch(actions.saveProfile(profile)),
         //ish
-        doPreSavePayment: () => dispatch(actions.doPreSavePayment()),
         doSavePayment: (newPayment, paymentFormCrudMethod) => dispatch(actions.savePayment(newPayment, paymentFormCrudMethod)),
+        doPostSavePaymentFinalization: () => dispatch(actions.doPostSavePaymentFinalization()),
 
-        onPaymentFormResetSuccess: () => dispatch(actions.onPaymentFormResetSuccess()),
+        // onPaymentFormResetSuccess: () => dispatch(actions.onPaymentFormResetSuccess()),
         saveAddress: (address, addressFormCrudMethod) => dispatch(actions.saveAddress(address, addressFormCrudMethod)),
         onAddressFormResetSuccess: () => dispatch(actions.onAddressFormResetSuccess()),
         onAddressDelete: (addressId) => dispatch(actions.onAddressDelete(addressId)),

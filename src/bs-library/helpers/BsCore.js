@@ -49,7 +49,8 @@ class BsCore {
             isResultOk: false,
             objs: [],
             // isViewingOwnAccount: false,
-            errors: {}
+            errors: {},
+            customErrors: null
         };
 
 
@@ -75,6 +76,7 @@ class BsCore {
                 json.objs = jsonData["objs"];
                 json.obj = jsonData["obj"];
                 json.isViewingOwnAccount = jsonData["isViewingOwnAccount"];
+                json.customErrors = jsonData["customErrors"];
 
 
                 const neededResponseParams = defaultCrudData.neededResponseParams;

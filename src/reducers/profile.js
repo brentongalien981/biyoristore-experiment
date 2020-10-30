@@ -6,8 +6,7 @@ import BsAppSession from '../bs-library/helpers/BsAppSession';
 const initialState = {
     profile: {
     },
-    isPaymentFormCruding: false,
-    shouldDoSavePayment: false,
+    //ish
     shouldDoPostSavePayment: false,
     wasPaymentFormCrudOk: false,
 
@@ -19,7 +18,7 @@ const initialState = {
         { id: 1, street: "78 Monkhouse Rd", city: "Markham", province: "ON", country: "Canada", postalCode: "L6E 1V5" },
     ],
     shouldDisplayProfile: false,
-    shouldResetPaymentForm: false,
+    // shouldResetPaymentForm: false,
 };
 
 
@@ -32,11 +31,11 @@ const profile = (state = initialState, action) => {
         case actions.ON_ADDRESS_FORM_RESET_SUCCESS: return onAddressFormResetSuccess(state, action);
         case actions.ON_SAVE_ADDRESS_FAIL: return onSaveAddressFail(state, action);
         case actions.ON_SAVE_ADDRESS_SUCCESS: return onSaveAddressSuccess(state, action);
-        case actions.ON_PAYMENT_FORM_RESET_SUCCESS: return onPaymentFormResetSuccess(state, action);
+        // case actions.ON_PAYMENT_FORM_RESET_SUCCESS: return onPaymentFormResetSuccess(state, action);
         case actions.ON_SAVE_PAYMENT_SUCCESS: return onSavePaymentSuccess(state, action);
         case actions.ON_SAVE_PAYMENT_FAIL: return onSavePaymentFail(state, action);
 
-        case actions.DO_PRE_SAVE_PAYMENT: return doPreSavePayment(state, action);
+        case actions.DO_POST_SAVE_PAYMENT_FINALIZATION: return doPostSavePaymentFinalization(state, action);
 
         case actions.ON_SAVE_PROFILE_FAIL: return onSaveProfileFail(state, action);
         case actions.ON_SAVE_PROFILE_SUCCESS: return onSaveProfileSuccess(state, action);
@@ -154,12 +153,12 @@ const onSaveAddressSuccess = (state, action) => {
     }
 };
 
-const onPaymentFormResetSuccess = (state, action) => {
-    return {
-        ...state,
-        shouldResetPaymentForm: false
-    };
-};
+// const onPaymentFormResetSuccess = (state, action) => {
+//     return {
+//         ...state,
+//         shouldResetPaymentForm: false
+//     };
+// };
 
 
 
@@ -167,11 +166,15 @@ const onSavePaymentSuccess = (state, action) => {
 
     document.querySelector("#closePaymentFormBtn").click();
 
-    alert("TODO: Payment saved... Re-implement this.");
+    alert("TODO: Payment saved... Re-implement this after re-working the payment@read.");
 
     // TODO: Delete this.
     //ish
-    return { ...state, shouldResetPaymentForm: true };
+    return { 
+        ...state,
+        shouldDoPostSavePayment: true,
+        wasPaymentFormCrudOk: true 
+    };
 
 
     // TODO: Re-implement this.
@@ -206,6 +209,8 @@ const onSavePaymentSuccess = (state, action) => {
 
 };
 
+
+
 const onSavePaymentFail = (state, action) => {
     let errorMsg = "";
 
@@ -221,10 +226,8 @@ const onSavePaymentFail = (state, action) => {
     if (errorMsg.length > 0) { alert(errorMsg); }
     else { alert("Oops, there's an error on our end. Please try again."); }
 
-    //ish
     return {
         ...state,
-        shouldDoSavePayment: false,
         shouldDoPostSavePayment: true,
         wasPaymentFormCrudOk: false
     };
@@ -232,12 +235,11 @@ const onSavePaymentFail = (state, action) => {
 
 
 
-//ish
-// const doPreSavePayment = (state, action) => ({ ...state, shouldDoSavePayment: true, isPaymentFormCruding: true });
-const doPreSavePayment = (state, action) => {
-    Bs.displaySeparator(2);
-    Bs.log("In REDUCER 'profile', METHOD 'doPreSavePayment()'")
-    return { ...state, shouldDoSavePayment: true, isPaymentFormCruding: true };
+const doPostSavePaymentFinalization = (state, action) => {
+    return {
+        ...state,
+        shouldDoPostSavePayment: false
+    };
 };
 
 
