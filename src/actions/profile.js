@@ -142,19 +142,17 @@ export const saveProfile = (profile) => {
     };
 };
 
-export const readProfile = (userId) => {
+export const readProfile = () => {
 
     Bs.log("\n###############");
     Bs.log("In REDUCER: join, METHOD: readProfile()");
-
-    Bs.log("apiToken ==> " + BsAppSession.get("apiToken"));
 
 
     return (dispatch) => {
 
         BsCore.ajaxCrud({
             url: '/profile/show',
-            params: { userId: userId, api_token: BsAppSession.get("apiToken") },
+            params: { api_token: BsAppSession.get("apiToken") },
             neededResponseParams: ["profile", "paymentInfos", "addresses"],
             callBackFunc: (requestData, json) => {
                 Bs.log("\n#####################");

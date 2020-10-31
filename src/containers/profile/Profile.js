@@ -21,11 +21,10 @@ class Profile extends React.Component {
         super(props);
         this.state = {
             profile: {},
-            //ish
             newPayment: { cardNumber: "", expirationMonth: "01", expirationYear: "2022", cvc: "", postalCode: "" },
             isPaymentFormCruding: false,
-
             paymentFormCrudMethod: "create",
+
             editedAddress: { street: "", city: "", province: "ON", country: "Canada", postalCode: "" },
             addressFormCrudMethod: "create"
         };
@@ -36,12 +35,14 @@ class Profile extends React.Component {
 
 
     componentDidMount() {
-        this.props.readProfile(BsAppSession.get("userId"));
+        //ish
+        this.props.readProfile();
     }
 
 
 
     componentDidUpdate() {
+
         if (this.props.shouldDisplayProfile) {
             this.setState({
                 profile: this.props.profile
@@ -51,7 +52,6 @@ class Profile extends React.Component {
         }
 
 
-        //ish
         if (this.props.shouldDoPostSavePayment) { this.doPostSavePayment(); }
 
 
@@ -85,7 +85,6 @@ class Profile extends React.Component {
 
 
 
-    //ish
     savePayment = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -118,7 +117,6 @@ class Profile extends React.Component {
 
 
     doPostSavePayment = () => {
-        //ish
         if (this.props.wasPaymentFormCrudOk) {
             this.setState({
                 newPayment: { cardNumber: "", expirationMonth: "01", expirationYear: "2022", cvc: "", postalCode: "" },
@@ -256,7 +254,6 @@ class Profile extends React.Component {
                     onAddressFormInputChanged={this.onAddressFormInputChanged}
                     saveAddress={this.saveAddress} />
 
-                {/* ish */}
                 <PaymentForm paymentFormCrudMethod={this.state.paymentFormCrudMethod}
                     newPayment={this.state.newPayment}
                     isPaymentFormCruding={this.state.isPaymentFormCruding}
@@ -288,13 +285,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        readProfile: (userId) => dispatch(actions.readProfile(userId)),
+        readProfile: () => dispatch(actions.readProfile()),
         onProfileDisplayedSuccess: () => dispatch(actions.onProfileDisplayedSuccess()),
         saveProfile: (profile) => dispatch(actions.saveProfile(profile)),
-        //ish
         doSavePayment: (newPayment, paymentFormCrudMethod) => dispatch(actions.savePayment(newPayment, paymentFormCrudMethod)),
         doPostSavePaymentFinalization: () => dispatch(actions.doPostSavePaymentFinalization()),
-
         // onPaymentFormResetSuccess: () => dispatch(actions.onPaymentFormResetSuccess()),
         saveAddress: (address, addressFormCrudMethod) => dispatch(actions.saveAddress(address, addressFormCrudMethod)),
         onAddressFormResetSuccess: () => dispatch(actions.onAddressFormResetSuccess()),

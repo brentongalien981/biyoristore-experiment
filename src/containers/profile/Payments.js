@@ -8,7 +8,7 @@ function Payments(props) {
     return (
         <div className="tab-pane fade" id="sidebar-1-4" role="tabpanel" aria-labelledby="sidebar-1-4">
 
-            {/* payment banner */}
+            {/* payment-banner */}
             <div className="row">
                 <div className="col">
                     <h3 className="mb-0">Payments</h3>
@@ -30,16 +30,6 @@ function Payments(props) {
 
 function showPaymentDetails(paymentInfos, onPaymenFormShown) {
 
-    // TODO: 
-    const randomLastPaymentDetals = [
-        { amount: "7.00", date: "04/14/2019" },
-        { amount: "19.00", date: "05/15/2019" },
-        { amount: "250.00", date: "09/14/2020" },
-        { amount: "350.00", date: "09/14/2021" },
-        { amount: "450.00", date: "09/14/2022" },
-        { amount: "550.00", date: "09/14/2023" },
-    ];
-
     const paymentDetails = paymentInfos.map((p, i) => {
         return (
             <div className="col-md-6" key={i}>
@@ -47,7 +37,7 @@ function showPaymentDetails(paymentInfos, onPaymenFormShown) {
                     <div className="card-header card-header-options">
                         <div className="row align-items-center">
                             <div className="col">
-                                <h3 className="card-title">{p.type}</h3>
+                                <h3 className="card-title">{p.card.brand}</h3>
                             </div>
                             <div className="col text-right">
                                 <div className="dropdown">
@@ -65,10 +55,10 @@ function showPaymentDetails(paymentInfos, onPaymenFormShown) {
                         </div>
                     </div>
                     <div className="card-body w-75">
-                        <h5 className="eyebrow text-muted">Paymeny Method</h5>
-                        <p className="card-text"><b>{p.type}</b> ends in {p.cardNumber.substring(12)} Exp: {p.expirationMonth}/{p.expirationYear}</p>
-                        <h5 className="eyebrow text-muted">Last Payment</h5>
-                        <p className="card-text"><b>${randomLastPaymentDetals[i].amount}</b> successful on {randomLastPaymentDetals[i].date}</p>
+                        <h5 className="eyebrow text-muted">Payment Method</h5>
+                        <p className="card-text"><b>{p.card.brand}</b> ends in {p.card.last4} Exp: {p.card.exp_month}/{p.card.exp_year}</p>
+                        {/* <h5 className="eyebrow text-muted">Last Payment</h5> */}
+                        {/* <p className="card-text"><b>${randomLastPaymentDetals[i].amount}</b> successful on {randomLastPaymentDetals[i].date}</p> */}
                     </div>
                 </div>
             </div>

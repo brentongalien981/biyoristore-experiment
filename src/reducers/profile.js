@@ -6,14 +6,10 @@ import BsAppSession from '../bs-library/helpers/BsAppSession';
 const initialState = {
     profile: {
     },
-    //ish
     shouldDoPostSavePayment: false,
     wasPaymentFormCrudOk: false,
 
-    paymentInfos: [
-        { id: 1, type: "Visa", cardNumber: "1234123412341234", expirationMonth: "08", expirationYear: "2024" },
-        { id: 2, type: "Mastercard", cardNumber: "0987098709870987", expirationMonth: "01", expirationYear: "2022" },
-    ],
+    paymentInfos: [],
     addresses: [
         { id: 1, street: "78 Monkhouse Rd", city: "Markham", province: "ON", country: "Canada", postalCode: "L6E 1V5" },
     ],
