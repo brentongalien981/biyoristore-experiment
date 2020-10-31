@@ -92,10 +92,12 @@ export const saveAddress = (address, addressFormCrudMethod) => {
 
 export const savePayment = (newPayment, paymentFormCrudMethod) => {
 
+    const url = (paymentFormCrudMethod == "create" ? "/stripePaymentMethod/save" : "/stripePaymentMethod/update");
+
     return (dispatch) => {
 
         BsCore.ajaxCrud({
-            url: '/stripePaymentMethod/save',
+            url: url,
             method: "post",
             params: { ...newPayment, api_token: BsAppSession.get("apiToken") },
             neededResponseParams: ["newPayment"],

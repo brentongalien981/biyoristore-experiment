@@ -36,6 +36,8 @@ function getFormContent(props) {
     const p = props.newPayment;
     const submitBtnText = (props.paymentFormCrudMethod == "create" ? "Add" : "Update");
 
+    const disabledInputAttrib = props.paymentFormCrudMethod == "edit" ? { disabled: true } : {};
+
     if (props.isPaymentFormCruding) {
         return (
             <h5>Saving payment...</h5>
@@ -48,7 +50,7 @@ function getFormContent(props) {
             <div className="col-12">
                 <div className="form-group">
                     <label htmlFor="cardNumber">Card Number</label>
-                    <input type="text" className="form-control" placeholder="" name="cardNumber" value={p.cardNumber} onChange={props.onPaymentFormInputChanged} />
+                    <input type="text" {...disabledInputAttrib} className="form-control" placeholder="" name="cardNumber" value={p.cardNumber} onChange={props.onPaymentFormInputChanged} />
                 </div>
             </div>
 
@@ -80,7 +82,7 @@ function getFormContent(props) {
             <div className="col-6">
                 <div className="form-group">
                     <label htmlFor="cvc">CVC</label>
-                    <input type="text" className="form-control" placeholder="" name="cvc" value={p.cvc} onChange={props.onPaymentFormInputChanged} />
+                    <input type="text" {...disabledInputAttrib} className="form-control" placeholder="" name="cvc" value={p.cvc} onChange={props.onPaymentFormInputChanged} />
                 </div>
             </div>
 

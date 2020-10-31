@@ -162,46 +162,40 @@ const onSavePaymentSuccess = (state, action) => {
 
     document.querySelector("#closePaymentFormBtn").click();
 
-    alert("TODO: Payment saved... Re-implement this after re-working the payment@read.");
+    alert("Payment saved...");
 
-    // TODO: Delete this.
-    //ish
-    return { 
+    
+    let updatedState = {
         ...state,
         shouldDoPostSavePayment: true,
-        wasPaymentFormCrudOk: true 
+        wasPaymentFormCrudOk: true
     };
 
+    let updatedPaymentInfos = state.paymentInfos;
 
-    // TODO: Re-implement this.
-    // let updatedPaymentInfos = state.paymentInfos;
+    if (action.paymentForCrudMethod == "create") {
+        return {
+            ...updatedState,
+            paymentInfos: [...updatedPaymentInfos, action.newPayment]
+        };
+    }
+    else {
 
-    // if (action.paymentForCrudMethod == "create") {
-    //     return {
-    //         ...state,
-    //         paymentInfos: [...updatedPaymentInfos, action.newPayment],
-    //         shouldResetPaymentForm: true
-    //     };
-    // } 
-    // else {
+        let i = 0;
+        for (; i < updatedPaymentInfos.length; i++) {
+            const p = updatedPaymentInfos[i];
 
-    //     let i = 0;
-    //     for (; i < updatedPaymentInfos.length; i++) {
-    //         const p = updatedPaymentInfos[i];
+            if (p.id === action.newPayment.id) { break; }
 
-    //         if (p.id == action.newPayment.id) { break; }
+        }
 
-    //     }
+        updatedPaymentInfos[i] = action.newPayment;
 
-    //     updatedPaymentInfos[i] = action.newPayment;
-
-    //     return {
-    //         ...state,
-    //         paymentInfos: [...updatedPaymentInfos],
-    //         shouldResetPaymentForm: true
-    //     };
-    // }
-
+        return {
+            ...updatedState,
+            paymentInfos: [...updatedPaymentInfos]
+        };
+    }
 
 };
 

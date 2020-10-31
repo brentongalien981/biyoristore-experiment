@@ -107,7 +107,6 @@ class Profile extends React.Component {
         let newPayment = this.state.newPayment;
         newPayment.expirationMonth = parseInt(newPayment.expirationMonth);
         newPayment.expirationYear = parseInt(newPayment.expirationYear);
-        // newPayment.cvc = parseInt(newPayment.cvc);
 
         this.setState({ newPayment: newPayment });
 
@@ -199,6 +198,7 @@ class Profile extends React.Component {
 
 
 
+    //ish
     onPaymenFormShown = (e, payment) => {
         e.preventDefault();
         Bs.log("payment ==> ...");
@@ -207,7 +207,7 @@ class Profile extends React.Component {
         if (payment) {
             // edit payment
             this.setState({
-                newPayment: payment,
+                newPayment: { id: payment.id, cardNumber: "**** **** **** " + payment.card.last4, expirationMonth: payment.card.exp_month, expirationYear: payment.card.exp_year, cvc: "", postalCode: payment.billing_details.address.postal_code },
                 paymentFormCrudMethod: "edit"
             });
         } else {
