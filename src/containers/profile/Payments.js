@@ -47,7 +47,7 @@ function showPaymentDetails(paymentInfos, onPaymenFormShown) {
                                             <a className="dropdown-item" href="#!" data-toggle="modal" data-target="#exampleModal-1" onClick={(e) => onPaymenFormShown(e, p)}>Edit</a>
                                         </li>
                                         <li>
-                                            <a className="dropdown-item" href="#!">Delete</a>
+                                            <a className="dropdown-item" href="#!" onClick={() => alert("TODO: Payment@delete")}>Delete</a>
                                         </li>
                                     </ul>
                                 </div>

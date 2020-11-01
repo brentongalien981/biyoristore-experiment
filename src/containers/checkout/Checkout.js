@@ -1,8 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import BsAppSession from '../../bs-library/helpers/BsAppSession';
 import AddressFormGroup from './AddressFormGroup';
 import CheckoutAsWhoModal from './CheckoutAsWhoModal';
+import PaymentMethodFormGroup from './PaymentMethodFormGroup';
 
 
 class Checkout extends React.Component {
@@ -12,6 +14,14 @@ class Checkout extends React.Component {
 
 
     /* MAIN FUNCS */
+    constructor(props) {
+        super(props);
+
+        if (this.props.cartItems.length < 1) { alert("Add items on your cart first..."); this.props.history.push("/cart"); }
+    }
+
+
+
     componentDidMount() {
 
         // Show the modal.
@@ -44,8 +54,8 @@ class Checkout extends React.Component {
                         <div className="row gutter-4 justify-content-center">
                             <div className="col-lg-10">
                                 <AddressFormGroup addressType="shipping" />
-                                <AddressFormGroup addressType="billing" />
-
+                                {/* ish */}
+                                <PaymentMethodFormGroup />
                             </div>
                         </div>
                     </div>
@@ -79,4 +89,12 @@ class Checkout extends React.Component {
 
 
 
-export default withRouter(Checkout);
+const mapStateToProps = (state) => {
+    return {
+        cartItems: state.cart.cart.cartItems,
+    };
+};
+
+
+
+export default connect(mapStateToProps, null)(withRouter(Checkout));
