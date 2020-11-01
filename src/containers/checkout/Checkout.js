@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import * as actions from '../../actions/checkout';
 import BsAppSession from '../../bs-library/helpers/BsAppSession';
 import AddressFormGroup from './AddressFormGroup';
+import AddressOptions from './AddressOptions';
 import CheckoutAsWhoModal from './CheckoutAsWhoModal';
 import PaymentMethodFormGroup from './PaymentMethodFormGroup';
 
@@ -17,7 +19,7 @@ class Checkout extends React.Component {
     constructor(props) {
         super(props);
 
-        if (this.props.cartItems.length < 1) { alert("Add items on your cart first..."); this.props.history.push("/cart"); }
+        // if (this.props.cartItems.length < 1) { alert("Add items on your cart first..."); this.props.history.push("/cart"); }
     }
 
 
@@ -27,6 +29,9 @@ class Checkout extends React.Component {
         // Show the modal.
         const modalBtn = document.querySelector("#checkoutAsWhoModalBtn");
         if (modalBtn) { modalBtn.click(); }
+
+        //
+        this.props.readCheckoutRequiredData();
     }
 
 
@@ -54,7 +59,6 @@ class Checkout extends React.Component {
                         <div className="row gutter-4 justify-content-center">
                             <div className="col-lg-10">
                                 <AddressFormGroup addressType="shipping" />
-                                {/* ish */}
                                 <PaymentMethodFormGroup />
                             </div>
                         </div>
@@ -62,6 +66,9 @@ class Checkout extends React.Component {
                 </section>
 
                 <CheckoutAsWhoModal login={this.login} dismissModal={this.dismissModal} />
+
+                {/* ish */}
+                <AddressOptions addresses={this.props.addresses} />
             </>
         );
     }
@@ -89,12 +96,22 @@ class Checkout extends React.Component {
 
 
 
+/* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
         cartItems: state.cart.cart.cartItems,
+        addresses: state.checkout.addresses,
     };
 };
 
 
 
-export default connect(mapStateToProps, null)(withRouter(Checkout));
+const mapDispatchToProps = (dispatch) => {
+    return {
+        readCheckoutRequiredData: () => dispatch(actions.readCheckoutRequiredData()),
+    };
+};
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Checkout));

@@ -5,6 +5,7 @@ import productInDetails from './productInDetails';
 import cart from './cart';
 import join from './join';
 import profile from './profile';
+import checkout from './checkout';
 
 export default combineReducers({
     video,
@@ -12,5 +13,6 @@ export default combineReducers({
     productInDetails,
     cart,
     join,
-    profile
+    profile,
+    checkout
 });

@@ -47,13 +47,15 @@ class BsCore2 {
         let json = {
             originalResultData: null,
             isResultOk: false,
-            objs: [],
+            objs: {},
             // isViewingOwnAccount: false,
             errors: {},
             customErrors: null
         };
 
 
+        
+        //
         axios({
             method: defaultCrudData.method,
             url: BsCore2.appApiUrl + defaultCrudData.url,
@@ -62,9 +64,10 @@ class BsCore2 {
             .then(function (response) {
                 //
                 Bs.log("\n\n\n##############################");
-                Bs.log("Start of 1st THEN clause");
+                Bs.log("Start of THEN clause");
+                Bs.log("AJAX Request URL ==> " + defaultCrudData.url);
                 Bs.log("##############################");
-                Bs.log("\nAJAX Request URL ==> " + defaultCrudData.url);
+                
 
                 BsCore2.displayObjects(response, "response");
                 BsCore2.displayObjects(response.data, "response.data");
@@ -99,13 +102,15 @@ class BsCore2 {
 
 
                 Bs.log("\n##############################");
-                Bs.log("End of 1st THEN clause");
+                Bs.log("End of THEN clause");
+                Bs.log("AJAX Request URL ==> " + defaultCrudData.url);
                 Bs.log("##############################");
 
             })
             .catch(function (error) {
                 Bs.log("\n\n\n##############################");
                 Bs.log("Start of the CATCH clause");
+                Bs.log("AJAX Request URL ==> " + defaultCrudData.url);
                 Bs.log("##############################");
                 Bs.log("\nAJAX Request URL ==> " + defaultCrudData.url);
 
@@ -115,8 +120,9 @@ class BsCore2 {
                 defaultCrudData.errorCallBackFunc(json.errors);
 
 
-                Bs.log("##############################");
+                Bs.log("\n##############################");
                 Bs.log("End of the CATCH clause");
+                Bs.log("AJAX Request URL ==> " + defaultCrudData.url);
                 Bs.log("##############################");
             });
     }
