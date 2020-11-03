@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as actions from '../../actions/checkout';
 import BsAppSession from '../../bs-library/helpers/BsAppSession';
+import OrderSummary from './OrderSummary';
 import AddressFormGroup from './AddressFormGroup';
 import AddressOptions from './AddressOptions';
 import CartSummary from './CartSummary';
@@ -60,10 +61,9 @@ class Checkout extends React.Component {
 
                             <aside className="col-lg-4">
                                 <div className="row">
-                                    {/* ish */}
-                                    {/* CartSummary */}
                                     <CartSummary cartItems={this.props.cartItems} />
-                                    {/* OrderSummary */}
+                                    {/* ish */}
+                                    <OrderSummary cartItems={this.props.cartItems} />
                                 </div>
                             </aside>
 
