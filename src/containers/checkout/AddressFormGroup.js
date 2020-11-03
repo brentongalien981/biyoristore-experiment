@@ -13,7 +13,7 @@ export default function AddressFormGroup(props) {
                 <div className="col-md-6">
                     <h2 className="h3 mb-0">{addressType}</h2>
                 </div>
-                {getMyAddressesBtn()}
+                {getMyAddressesBtn(props.numOfAddresses)}
             </div>
 
 
@@ -69,8 +69,8 @@ export default function AddressFormGroup(props) {
 
 
 
-function getMyAddressesBtn() {
-    if (BsAppSession.isLoggedIn()) {
+function getMyAddressesBtn(numOfAddresses) {
+    if (BsAppSession.isLoggedIn() && numOfAddresses > 0) {
         return (
             <div className="col-md-6 text-md-right">
                 <a className="eyebrow unedrline action" data-toggle="modal" data-target="#addresses">My Addresses</a>

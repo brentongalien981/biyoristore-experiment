@@ -21,15 +21,12 @@ class Checkout extends React.Component {
     /* MAIN FUNCS */
     componentDidMount() {
 
-        //
-        // if (this.props.cartItems.length < 1) { alert("Add items on your cart first..."); this.props.history.push("/cart"); }
-
         // Show the modal.
         const modalBtn = document.querySelector("#checkoutAsWhoModalBtn");
         if (modalBtn) { modalBtn.click(); }
 
         //
-        this.props.readCheckoutRequiredData();
+        if (BsAppSession.isLoggedIn()) { this.props.readCheckoutRequiredData(); }
     }
 
 
@@ -55,8 +52,8 @@ class Checkout extends React.Component {
                         <div className="row gutter-4 justify-content-between">
 
                             <div className="col-lg-8">
-                                <AddressFormGroup addressType="shipping" />
-                                <PaymentMethodFormGroup />
+                                <AddressFormGroup addressType="shipping" numOfAddresses={this.props.addresses.length} />
+                                <PaymentMethodFormGroup numOfPaymentMethods={this.props.paymentInfos.length} />
                             </div>
 
                             <aside className="col-lg-4">
@@ -67,7 +64,7 @@ class Checkout extends React.Component {
                                     <div className="col-12 mt-1">
                                         <a href="#!" className="btn btn-primary btn-lg btn-block">Place Order</a>
                                     </div>
-                                    
+
                                 </div>
                             </aside>
 

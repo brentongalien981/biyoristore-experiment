@@ -1,4 +1,5 @@
 import React from 'react';
+import BsAppSession from '../../bs-library/helpers/BsAppSession';
 
 
 
@@ -10,9 +11,7 @@ export default function PaymentMethodFormGroup(props) {
                 <div className="col-md-6">
                     <h2 className="h3 mb-0">Payment Method</h2>
                 </div>
-                <div className="col-md-6 text-md-right">
-                    <a className="eyebrow unedrline action" data-toggle="modal" data-target="#payments">My payment methods</a>
-                </div>
+                {getMyPaymentMethodsBtn(props.numOfPaymentMethods)}
             </div>
 
 
@@ -47,4 +46,18 @@ export default function PaymentMethodFormGroup(props) {
             </div>
         </>
     );
+}
+
+
+
+function getMyPaymentMethodsBtn(numOfPaymentMethods) {
+    if (BsAppSession.isLoggedIn() && numOfPaymentMethods > 0) {
+        return (
+            <div className="col-md-6 text-md-right">
+                <a className="eyebrow unedrline action" data-toggle="modal" data-target="#payments">My payment methods</a>
+            </div>
+        );
+    }
+
+    return null;
 }
