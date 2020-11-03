@@ -5,6 +5,7 @@ import * as actions from '../../actions/checkout';
 import BsAppSession from '../../bs-library/helpers/BsAppSession';
 import AddressFormGroup from './AddressFormGroup';
 import AddressOptions from './AddressOptions';
+import CartSummary from './CartSummary';
 import CheckoutAsWhoModal from './CheckoutAsWhoModal';
 import PaymentMethodFormGroup from './PaymentMethodFormGroup';
 import PaymentMethodOptions from './PaymentMethodOptions';
@@ -17,13 +18,6 @@ class Checkout extends React.Component {
 
 
     /* MAIN FUNCS */
-    constructor(props) {
-        super(props);
-        // TODO: Maybe delete this.
-    }
-
-
-
     componentDidMount() {
 
         //
@@ -50,20 +44,29 @@ class Checkout extends React.Component {
                                 <h1>Checkout</h1>
                             </div>
                         </div>
-
                         {/* <button onClick={this.goToPayNow}>Pay Now</button> */}
                     </div>
                 </section>
 
 
-
                 <section className="no-overflow pt-0">
                     <div className="container">
-                        <div className="row gutter-4 justify-content-center">
-                            <div className="col-lg-10">
+                        <div className="row gutter-4 justify-content-between">
+
+                            <div className="col-lg-8">
                                 <AddressFormGroup addressType="shipping" />
                                 <PaymentMethodFormGroup />
                             </div>
+
+                            <aside className="col-lg-4">
+                                <div className="row">
+                                    {/* ish */}
+                                    {/* CartSummary */}
+                                    <CartSummary cartItems={this.props.cartItems} />
+                                    {/* OrderSummary */}
+                                </div>
+                            </aside>
+
                         </div>
                     </div>
                 </section>
@@ -71,7 +74,6 @@ class Checkout extends React.Component {
                 <CheckoutAsWhoModal login={this.login} dismissModal={this.dismissModal} />
 
                 <AddressOptions addresses={this.props.addresses} />
-                {/* ish */}
                 <PaymentMethodOptions paymentInfos={this.props.paymentInfos} />
             </>
         );

@@ -4,7 +4,7 @@ import React from 'react';
 
 export default function PaymentMethodOptions(props) {
 
-    const paymentMethods = props.paymentInfos?.map((p, i) => {
+    const paymentMethods = props.paymentInfos.map((p, i) => {
 
         return (
             <div className="col-12" key={i}>

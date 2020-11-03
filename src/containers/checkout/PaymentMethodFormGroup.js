@@ -18,12 +18,12 @@ export default function PaymentMethodFormGroup(props) {
 
             <div className="row gutter-1 mb-6">
 
-                <div className="form-group col-md-7">
+                <div className="form-group col-md-6">
                     <label>Card Number</label>
                     <input type="number" className="form-control" name="cardNumber" />
                 </div>
 
-                <div className="form-group col-md-2">
+                <div className="form-group col-md-3">
                     <label>Expiration Month</label>
                     <input type="number" className="form-control" name="expirationMonth" />
                 </div>
