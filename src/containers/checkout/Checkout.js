@@ -62,8 +62,12 @@ class Checkout extends React.Component {
                             <aside className="col-lg-4">
                                 <div className="row">
                                     <CartSummary cartItems={this.props.cartItems} />
-                                    {/* ish */}
                                     <OrderSummary cartItems={this.props.cartItems} />
+
+                                    <div className="col-12 mt-1">
+                                        <a href="#!" className="btn btn-primary btn-lg btn-block">Place Order</a>
+                                    </div>
+                                    
                                 </div>
                             </aside>
 
