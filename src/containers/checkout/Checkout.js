@@ -7,6 +7,7 @@ import AddressFormGroup from './AddressFormGroup';
 import AddressOptions from './AddressOptions';
 import CheckoutAsWhoModal from './CheckoutAsWhoModal';
 import PaymentMethodFormGroup from './PaymentMethodFormGroup';
+import PaymentMethodOptions from './PaymentMethodOptions';
 
 
 class Checkout extends React.Component {
@@ -18,13 +19,15 @@ class Checkout extends React.Component {
     /* MAIN FUNCS */
     constructor(props) {
         super(props);
-
-        // if (this.props.cartItems.length < 1) { alert("Add items on your cart first..."); this.props.history.push("/cart"); }
+        // TODO: Maybe delete this.
     }
 
 
 
     componentDidMount() {
+
+        //
+        // if (this.props.cartItems.length < 1) { alert("Add items on your cart first..."); this.props.history.push("/cart"); }
 
         // Show the modal.
         const modalBtn = document.querySelector("#checkoutAsWhoModalBtn");
@@ -67,8 +70,9 @@ class Checkout extends React.Component {
 
                 <CheckoutAsWhoModal login={this.login} dismissModal={this.dismissModal} />
 
-                {/* ish */}
                 <AddressOptions addresses={this.props.addresses} />
+                {/* ish */}
+                <PaymentMethodOptions paymentInfos={this.props.paymentInfos} />
             </>
         );
     }
@@ -101,6 +105,7 @@ const mapStateToProps = (state) => {
     return {
         cartItems: state.cart.cart.cartItems,
         addresses: state.checkout.addresses,
+        paymentInfos: state.checkout.paymentInfos,
     };
 };
 

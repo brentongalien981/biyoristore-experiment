@@ -10,6 +10,9 @@ export default function PaymentMethodFormGroup(props) {
                 <div className="col-md-6">
                     <h2 className="h3 mb-0">Payment Method</h2>
                 </div>
+                <div className="col-md-6 text-md-right">
+                    <a className="eyebrow unedrline action" data-toggle="modal" data-target="#payments">My payment methods</a>
+                </div>
             </div>
 
 

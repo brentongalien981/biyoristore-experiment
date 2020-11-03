@@ -7,7 +7,8 @@ import BsCore2 from '../bs-library/helpers/BsCore2';
 /* STATE */
 const initialState = {
     message: "This is the initial state of STORE: cart.",
-    addresses: []
+    addresses: [],
+    paymentInfos: [],
 };
 
 
@@ -24,10 +25,11 @@ const checkout = (state = initialState, action) => {
 
 /* NORMAL FUNCS */
 const onReadCheckoutRequiredDataSuccess = (state, action) => {
-    
+
     return {
         ...state,
-        addresses: action.objs.addresses
+        addresses: action.objs.addresses,
+        paymentInfos: action.objs.paymentInfos
     };
 };
 

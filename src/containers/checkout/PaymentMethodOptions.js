@@ -1,18 +1,16 @@
 import React from 'react';
-import Bs from '../../bs-library/helpers/Bs';
 
 
 
-export default function AddressOptions(props) {
+export default function PaymentMethodOptions(props) {
 
-    const addresses = props.addresses?.map((a, i) => {
-        const completeAddress = a.street + ", " + a.city + " " + a.province + ", " + a.country + " " + a.postalCode;
+    const paymentMethods = props.paymentInfos?.map((p, i) => {
 
         return (
             <div className="col-12" key={i}>
                 <div className="custom-control custom-choice">
-                    <input type="radio" name="choiceRadio" className="custom-control-input" id="customChoice1" />
-                    <label className="custom-control-label text-dark" htmlFor="customChoice1">{completeAddress}</label>
+                    <input type="radio" name="choiceRadio2" className="custom-control-input" />
+                    <label className="custom-control-label text-dark">{p.card.brand} ends in {p.card.last4} Exp: {p.card.exp_month}/{p.card.exp_year}</label>
                     <span className="choice-indicator"></span>
                 </div>
             </div>
@@ -22,12 +20,12 @@ export default function AddressOptions(props) {
 
 
     return (
-        <div className="modal sidebar fade" id="addresses" tabIndex="-1" role="dialog" aria-labelledby="addressesLabel" aria-hidden="true">
+        <div className="modal sidebar fade" id="payments" tabIndex="-1" role="dialog" aria-labelledby="paymentsLabel" aria-hidden="true">
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
 
                     <div className="modal-header">
-                        <h5 className="modal-title" id="addressesLabel">My Addresses</h5>
+                        <h5 className="modal-title" id="paymentsLabel">My Payment Methods</h5>
                         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -35,7 +33,7 @@ export default function AddressOptions(props) {
 
                     <div className="modal-body">
                         <div className="row gutter-3">
-                            {addresses}
+                            {paymentMethods}
                         </div>
                     </div>
 
