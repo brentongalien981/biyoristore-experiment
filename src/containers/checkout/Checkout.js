@@ -10,6 +10,7 @@ import CartSummary from './CartSummary';
 import CheckoutAsWhoModal from './CheckoutAsWhoModal';
 import PaymentMethodFormGroup from './PaymentMethodFormGroup';
 import PaymentMethodOptions from './PaymentMethodOptions';
+import Bs from '../../bs-library/helpers/Bs';
 
 
 class Checkout extends React.Component {
@@ -19,6 +20,8 @@ class Checkout extends React.Component {
 
 
     /* MAIN FUNCS */
+    state = { address: { } };
+
     componentDidMount() {
 
         // Show the modal.
@@ -52,7 +55,7 @@ class Checkout extends React.Component {
                         <div className="row gutter-4 justify-content-between">
 
                             <div className="col-lg-8">
-                                <AddressFormGroup addressType="shipping" numOfAddresses={this.props.addresses.length} />
+                                <AddressFormGroup address={this.state.address} addressType="shipping" numOfAddresses={this.props.addresses.length} onOrderInputChange={this.onOrderInputChange} />
                                 <PaymentMethodFormGroup numOfPaymentMethods={this.props.paymentInfos.length} />
                             </div>
 
@@ -74,7 +77,7 @@ class Checkout extends React.Component {
 
                 <CheckoutAsWhoModal login={this.login} dismissModal={this.dismissModal} />
 
-                <AddressOptions addresses={this.props.addresses} />
+                <AddressOptions addresses={this.props.addresses} onAddressSelectionChange={this.onAddressSelectionChange} />
                 <PaymentMethodOptions paymentInfos={this.props.paymentInfos} />
             </>
         );
@@ -83,6 +86,28 @@ class Checkout extends React.Component {
 
 
     /* EVENT FUNCS */
+    onOrderInputChange = (e) => {
+        Bs.log("In METHOD: onOrderInputChange()");
+        
+        const target = e.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        let updatedAddress = this.state.address;
+        updatedAddress[name] = value;
+
+        this.setState({ address: updatedAddress });
+    };
+
+
+
+    onAddressSelectionChange = (a) => {
+        Bs.log("In EVENT: onAddressSelectionChange()");
+        this.setState({ address: a });
+    };
+
+
+
     login = () => {
         BsAppSession.set("hasChosenToCheckoutAsWho", 1);
         this.props.history.push("/join?redirectTo=checkout");
@@ -116,6 +141,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        // onAddressSelectionChange: (e, i) => dispatch(actions.onAddressSelectionChange(e, i)),
         readCheckoutRequiredData: () => dispatch(actions.readCheckoutRequiredData()),
     };
 };

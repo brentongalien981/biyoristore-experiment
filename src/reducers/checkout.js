@@ -16,6 +16,7 @@ const initialState = {
 /* REDUCER */
 const checkout = (state = initialState, action) => {
     switch (action.type) {
+        // case actions.ON_ADDRESS_SELECTION_CHANGE: return onAddressSelectionChange(state, action);
         case actions.ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS: return onReadCheckoutRequiredDataSuccess(state, action);
         default: return state;
     }
@@ -24,6 +25,29 @@ const checkout = (state = initialState, action) => {
 
 
 /* NORMAL FUNCS */
+// TODO: Delete this.
+// const onAddressSelectionChange = (state, action) => {
+
+//     let updatedAddresses = state.addresses;    
+//     updatedAddresses = uncheckAllOptions(updatedAddresses);
+
+//     let updatedAddress = updatedAddresses[action.i];
+//     updatedAddress.isChecked = true;
+
+//     updatedAddresses[action.i] = updatedAddress;
+
+//     Bs.log("updatedAddress.street ==> " + updatedAddress.street);
+//     Bs.log("updatedAddresses ==> ...");
+//     Bs.log(updatedAddresses);
+
+//     return {
+//         ...state,
+//         addresses: updatedAddresses
+//     };
+// };
+
+
+
 const onReadCheckoutRequiredDataSuccess = (state, action) => {
 
     return {
@@ -36,6 +60,16 @@ const onReadCheckoutRequiredDataSuccess = (state, action) => {
 
 
 /* HELPER FUNCS */
+const uncheckAllOptions = (options) => {
+    let updatedOptions = [];
+
+    options.forEach(o => {
+        o.isChecked = false;
+        updatedOptions.push(o);
+    });
+
+    return updatedOptions;
+};
 
 
 

@@ -11,8 +11,8 @@ export default function AddressOptions(props) {
         return (
             <div className="col-12" key={i}>
                 <div className="custom-control custom-choice">
-                    <input type="radio" name="choiceRadio" className="custom-control-input" id="customChoice1" />
-                    <label className="custom-control-label text-dark" htmlFor="customChoice1">{completeAddress}</label>
+                    <input type="radio" name="addressChoiceRadio" className="custom-control-input" id={"customChoice" + i} onChange={() => props.onAddressSelectionChange(a)} />
+                    <label className="custom-control-label text-dark" htmlFor={"customChoice" + i}>{completeAddress}</label>
                     <span className="choice-indicator"></span>
                 </div>
             </div>
