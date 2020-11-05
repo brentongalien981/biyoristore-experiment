@@ -20,7 +20,10 @@ class Checkout extends React.Component {
 
 
     /* MAIN FUNCS */
-    state = { address: { } };
+    state = { 
+        address: {},
+        profile: this.props.profile
+    };
 
     componentDidMount() {
 
@@ -132,6 +135,7 @@ class Checkout extends React.Component {
 const mapStateToProps = (state) => {
     return {
         cartItems: state.cart.cart.cartItems,
+        profile: state.checkout.profile,
         addresses: state.checkout.addresses,
         paymentInfos: state.checkout.paymentInfos,
     };

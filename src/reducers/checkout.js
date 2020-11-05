@@ -7,6 +7,7 @@ import BsCore2 from '../bs-library/helpers/BsCore2';
 /* STATE */
 const initialState = {
     message: "This is the initial state of STORE: cart.",
+    // profile: {},
     addresses: [],
     paymentInfos: [],
 };
@@ -50,9 +51,12 @@ const checkout = (state = initialState, action) => {
 
 const onReadCheckoutRequiredDataSuccess = (state, action) => {
 
+    const updatedAddresses = setAddresses(action.objs);
+
     return {
         ...state,
-        addresses: action.objs.addresses,
+        // profile: action.objs.profile,
+        addresses: updatedAddresses,
         paymentInfos: action.objs.paymentInfos
     };
 };
@@ -60,6 +64,19 @@ const onReadCheckoutRequiredDataSuccess = (state, action) => {
 
 
 /* HELPER FUNCS */
+const setAddresses = (objs) => {
+    let addresses = [];
+
+    objs.addresses.forEach(a => {
+        const addressWithProfile = {...a, ...objs.profile};
+        addresses.push(addressWithProfile);
+    });
+
+    return addresses;
+};
+
+
+
 const uncheckAllOptions = (options) => {
     let updatedOptions = [];
 

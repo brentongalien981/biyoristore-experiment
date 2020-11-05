@@ -24,11 +24,11 @@ export default function AddressFormGroup(props) {
 
                 <div className="form-group col-md-6">
                     <label htmlFor="firstName">First Name</label>
-                    <input type="text" className="form-control" placeholder="" />
+                    <input type="text" className="form-control" value={a.firstName} name="phone" onChange={props.onOrderInputChange} />
                 </div>
                 <div className="form-group col-md-6">
                     <label htmlFor="lastName">Last Name</label>
-                    <input type="text" className="form-control" placeholder="" />
+                    <input type="text" className="form-control" value={a.lastName} name="phone" onChange={props.onOrderInputChange} />
                 </div>
 
                 <div className="form-group col-md-8">
@@ -42,25 +42,25 @@ export default function AddressFormGroup(props) {
 
                 <div className="form-group col-md-4">
                     <label htmlFor="province">Province</label>
-                    <input type="text" className="form-control" placeholder="" />
+                    <input type="text" className="form-control" placeholder="" value={a.province} name="province" onChange={props.onOrderInputChange} />
                 </div>
                 <div className="form-group col-md-4">
                     <label htmlFor="country">Country</label>
-                    <input type="text" className="form-control" placeholder="" />
+                    <input type="text" className="form-control" placeholder="" value={a.country} name="country" onChange={props.onOrderInputChange} />
                 </div>
 
                 <div className="form-group col-md-4">
                     <label htmlFor="postcode">Postal Code</label>
-                    <input type="text" className="form-control" placeholder="" />
+                    <input type="text" className="form-control" placeholder="" value={a.postalCode} name="postalCode" onChange={props.onOrderInputChange} />
                 </div>
 
                 <div className="form-group col-md-6">
                     <label htmlFor="email">Email</label>
-                    <input type="email" className="form-control" placeholder="" />
+                    <input type="email" className="form-control" placeholder="" value={a.email} name="email" onChange={props.onOrderInputChange} />
                 </div>
                 <div className="form-group col-md-6">
                     <label htmlFor="phone">Phone Number</label>
-                    <input type="phone" className="form-control" placeholder="" />
+                    <input type="phone" className="form-control" placeholder="" value={a.phone} name="phone" onChange={props.onOrderInputChange} />
                 </div>
 
             </div>
