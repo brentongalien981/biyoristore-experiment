@@ -67,8 +67,11 @@ const onReadCheckoutRequiredDataSuccess = (state, action) => {
 const setAddresses = (objs) => {
     let addresses = [];
 
+    // Append an option for the user to fill-in her address.
+    addresses.push({ id: 0, isBlankAddress: true });
+
     objs.addresses.forEach(a => {
-        const addressWithProfile = {...a, ...objs.profile};
+        const addressWithProfile = { ...a, ...objs.profile };
         addresses.push(addressWithProfile);
     });
 

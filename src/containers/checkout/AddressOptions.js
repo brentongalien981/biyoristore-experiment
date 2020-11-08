@@ -6,7 +6,9 @@ import Bs from '../../bs-library/helpers/Bs';
 export default function AddressOptions(props) {
 
     const addresses = props.addresses?.map((a, i) => {
-        const completeAddress = a.street + ", " + a.city + " " + a.province + ", " + a.country + " " + a.postalCode;
+
+        let completeAddress = a.street + ", " + a.city + " " + a.province + ", " + a.country + " " + a.postalCode;
+        if (a.isBlankAddress) { completeAddress = "Let me fill-in my address."; }
 
         return (
             <div className="col-12" key={i}>

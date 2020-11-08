@@ -9,7 +9,7 @@ export default function PaymentMethodOptions(props) {
         return (
             <div className="col-12" key={i}>
                 <div className="custom-control custom-choice">
-                    <input type="radio" id={"paymentOption" + i} name="paymentChoiceRadio" className="custom-control-input" />
+                    <input type="radio" id={"paymentOption" + i} name="paymentChoiceRadio" className="custom-control-input" onChange={() => props.onPaymentMethodSelectionChange(p)} />
                     <label htmlFor={"paymentOption" + i} className="custom-control-label text-dark">{p.card.brand} ends in {p.card.last4} Exp: {p.card.exp_month}/{p.card.exp_year}</label>
                     <span className="choice-indicator"></span>
                 </div>

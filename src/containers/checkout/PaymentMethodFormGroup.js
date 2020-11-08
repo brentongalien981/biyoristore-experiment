@@ -5,6 +5,10 @@ import BsAppSession from '../../bs-library/helpers/BsAppSession';
 
 export default function PaymentMethodFormGroup(props) {
 
+    const p = props.paymentMethod;
+    const cardNumber = (p.card ? "**** **** **** " + p.card?.last4 : "");
+    const cvc = (p.card ? "***" : "");
+
     return (
         <>
             <div className="row align-items-end mb-2">
@@ -19,27 +23,27 @@ export default function PaymentMethodFormGroup(props) {
 
                 <div className="form-group col-md-6">
                     <label>Card Number</label>
-                    <input type="number" className="form-control" name="cardNumber" />
+                    <input type="text" className="form-control" name="cardNumber" value={cardNumber} onChange={props.onOrderInputChange} />
                 </div>
 
                 <div className="form-group col-md-3">
                     <label>Expiration Month</label>
-                    <input type="number" className="form-control" name="expirationMonth" />
+                    <input type="number" className="form-control" name="expirationMonth" value={p.card?.exp_month} onChange={props.onOrderInputChange} />
                 </div>
 
                 <div className="form-group col-md-3">
                     <label>Expiration Year</label>
-                    <input type="number" className="form-control" name="expirationyear" />
+                    <input type="number" className="form-control" name="expirationyear" value={p.card?.exp_year} onChange={props.onOrderInputChange} />
                 </div>
 
                 <div className="form-group col-md-6">
                     <label>CVC</label>
-                    <input type="number" className="form-control" name="cvc" />
+                    <input type="text" className="form-control" name="cvc" value={cvc} />
                 </div>
 
                 <div className="form-group col-md-6">
                     <label>Postal/ZIP Code</label>
-                    <input type="text" className="form-control" name="postalCode" />
+                    <input type="text" className="form-control" name="postalCode" value={p.billing_details?.address?.postal_code} />
                 </div>
 
 

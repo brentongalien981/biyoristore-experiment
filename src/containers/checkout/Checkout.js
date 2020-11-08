@@ -20,9 +20,9 @@ class Checkout extends React.Component {
 
 
     /* MAIN FUNCS */
-    state = { 
+    state = {
         address: {},
-        profile: this.props.profile
+        paymentMethod: {}
     };
 
     componentDidMount() {
@@ -59,7 +59,7 @@ class Checkout extends React.Component {
 
                             <div className="col-lg-8">
                                 <AddressFormGroup address={this.state.address} addressType="shipping" numOfAddresses={this.props.addresses.length} onOrderInputChange={this.onOrderInputChange} />
-                                <PaymentMethodFormGroup numOfPaymentMethods={this.props.paymentInfos.length} />
+                                <PaymentMethodFormGroup paymentMethod={this.state.paymentMethod} numOfPaymentMethods={this.props.paymentInfos.length} />
                             </div>
 
                             <aside className="col-lg-4">
@@ -81,7 +81,7 @@ class Checkout extends React.Component {
                 <CheckoutAsWhoModal login={this.login} dismissModal={this.dismissModal} />
 
                 <AddressOptions addresses={this.props.addresses} onAddressSelectionChange={this.onAddressSelectionChange} />
-                <PaymentMethodOptions paymentInfos={this.props.paymentInfos} />
+                <PaymentMethodOptions paymentInfos={this.props.paymentInfos} onPaymentMethodSelectionChange={this.onPaymentMethodSelectionChange} />
             </>
         );
     }
@@ -91,7 +91,7 @@ class Checkout extends React.Component {
     /* EVENT FUNCS */
     onOrderInputChange = (e) => {
         Bs.log("In METHOD: onOrderInputChange()");
-        
+
         const target = e.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
@@ -104,8 +104,20 @@ class Checkout extends React.Component {
 
 
 
+    //ish
+    onPaymentMethodSelectionChange = (paymentMethod) => {
+        Bs.log("In METHOD: onPaymentMethodSelectionChange()");
+        Bs.log("paymentMethod ==> ...");
+        Bs.log(paymentMethod);
+
+        this.setState({ paymentMethod: paymentMethod });
+    };
+
+
+
     onAddressSelectionChange = (a) => {
         Bs.log("In EVENT: onAddressSelectionChange()");
+        if (a.isBlankAddress) { a = { ...a, firstName: "" }; }
         this.setState({ address: a });
     };
 

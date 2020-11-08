@@ -6,7 +6,18 @@ import BsAppSession from '../../bs-library/helpers/BsAppSession';
 export default function AddressFormGroup(props) {
 
     const addressType = props.addressType == "shipping" ? "Shipping Address" : "Billing Address";
-    const a = props.address;
+    let a = props.address;
+    a = {
+        firstName: a.firstName ? a.firstName : "",
+        lastName: a.lastName ? a.lastName : "",
+        street: a.street ? a.street : "",
+        city: a.city ? a.city : "",
+        province: a.province ? a.province : "",
+        country: a.country ? a.country : "",
+        postalCode: a.postalCode ? a.postalCode : "",
+        email: a.email ? a.email : "",
+        phone: a.phone ? a.phone : ""
+    };
 
     return (
         <>
@@ -24,11 +35,11 @@ export default function AddressFormGroup(props) {
 
                 <div className="form-group col-md-6">
                     <label htmlFor="firstName">First Name</label>
-                    <input type="text" className="form-control" value={a.firstName} name="phone" onChange={props.onOrderInputChange} />
+                    <input type="text" className="form-control" value={a.firstName} name="firstName" onChange={props.onOrderInputChange} />
                 </div>
                 <div className="form-group col-md-6">
                     <label htmlFor="lastName">Last Name</label>
-                    <input type="text" className="form-control" value={a.lastName} name="phone" onChange={props.onOrderInputChange} />
+                    <input type="text" className="form-control" value={a.lastName} name="lastName" onChange={props.onOrderInputChange} />
                 </div>
 
                 <div className="form-group col-md-8">
