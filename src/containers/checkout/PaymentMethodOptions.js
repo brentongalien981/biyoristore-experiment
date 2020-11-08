@@ -6,11 +6,15 @@ export default function PaymentMethodOptions(props) {
 
     const paymentMethods = props.paymentInfos.map((p, i) => {
 
+        let paymentLabel = "";
+        if (p.isBlankPaymentInfo) { paymentLabel = "Let me fill-in my payment info."; }
+        else { paymentLabel = p.card.brand + " ends in " + p.card.last4 + " Exp: " + p.card.exp_month + "/" + p.card.exp_year; }
+
         return (
             <div className="col-12" key={i}>
                 <div className="custom-control custom-choice">
                     <input type="radio" id={"paymentOption" + i} name="paymentChoiceRadio" className="custom-control-input" onChange={() => props.onPaymentMethodSelectionChange(p)} />
-                    <label htmlFor={"paymentOption" + i} className="custom-control-label text-dark">{p.card.brand} ends in {p.card.last4} Exp: {p.card.exp_month}/{p.card.exp_year}</label>
+                    <label htmlFor={"paymentOption" + i} className="custom-control-label text-dark">{paymentLabel}</label>
                     <span className="choice-indicator"></span>
                 </div>
             </div>

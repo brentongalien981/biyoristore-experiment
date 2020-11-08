@@ -52,18 +52,25 @@ const checkout = (state = initialState, action) => {
 const onReadCheckoutRequiredDataSuccess = (state, action) => {
 
     const updatedAddresses = setAddresses(action.objs);
+    const updatedPaymentInfos = setPaymentInfos(action.objs.paymentInfos)
 
     return {
         ...state,
         // profile: action.objs.profile,
         addresses: updatedAddresses,
-        paymentInfos: action.objs.paymentInfos
+        paymentInfos: updatedPaymentInfos
     };
 };
 
 
 
 /* HELPER FUNCS */
+const setPaymentInfos = (paymentInfos) => {
+    return [{ id: 0, isBlankPaymentInfo: true }, ...paymentInfos];
+};
+
+
+
 const setAddresses = (objs) => {
     let addresses = [];
 

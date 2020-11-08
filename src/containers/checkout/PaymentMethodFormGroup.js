@@ -8,6 +8,9 @@ export default function PaymentMethodFormGroup(props) {
     const p = props.paymentMethod;
     const cardNumber = (p.card ? "**** **** **** " + p.card?.last4 : "");
     const cvc = (p.card ? "***" : "");
+    const expMonth = p.card?.exp_month ? p.card?.exp_month : "";
+    const expYear = p.card?.exp_year ? p.card?.exp_year : "";
+    const postalCode = p.billing_details?.address?.postal_code ? p.billing_details?.address?.postal_code : "";
 
     return (
         <>
@@ -28,12 +31,12 @@ export default function PaymentMethodFormGroup(props) {
 
                 <div className="form-group col-md-3">
                     <label>Expiration Month</label>
-                    <input type="number" className="form-control" name="expirationMonth" value={p.card?.exp_month} onChange={props.onOrderInputChange} />
+                    <input type="number" className="form-control" name="expirationMonth" value={expMonth} onChange={props.onOrderInputChange} />
                 </div>
 
                 <div className="form-group col-md-3">
                     <label>Expiration Year</label>
-                    <input type="number" className="form-control" name="expirationyear" value={p.card?.exp_year} onChange={props.onOrderInputChange} />
+                    <input type="number" className="form-control" name="expirationyear" value={expYear} onChange={props.onOrderInputChange} />
                 </div>
 
                 <div className="form-group col-md-6">
@@ -43,7 +46,7 @@ export default function PaymentMethodFormGroup(props) {
 
                 <div className="form-group col-md-6">
                     <label>Postal/ZIP Code</label>
-                    <input type="text" className="form-control" name="postalCode" value={p.billing_details?.address?.postal_code} />
+                    <input type="text" className="form-control" name="postalCode" value={postalCode} />
                 </div>
 
 
