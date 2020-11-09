@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 
 
@@ -30,7 +31,7 @@ export default function CartSummary(props) {
                             <h3 className="fs-18 mb-0">Your Cart</h3>
                         </div>
                         <div className="col text-right">
-                            <a href="cart.html" className="underline eyebrow">Edit</a>
+                            <Link className="underline eyebrow" to="/cart">Edit</Link>
                         </div>
                     </div>
                 </div>
