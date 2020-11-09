@@ -66,7 +66,25 @@ const onReadCheckoutRequiredDataSuccess = (state, action) => {
 
 /* HELPER FUNCS */
 const setPaymentInfos = (paymentInfos) => {
-    return [{ id: 0, isBlankPaymentInfo: true }, ...paymentInfos];
+
+    paymentInfos.unshift({});
+    let updatedPaymentInfos = [];
+
+    paymentInfos.forEach(p => {
+        updatedPaymentInfos.push({
+            id: p.id ? p.id : 0,
+            cardNumber: p.card ? "**** **** **** " + p.card?.last4 : "",
+            cvc: p.card ? "***" : "",
+            expMonth: p.card?.exp_month ? p.card?.exp_month : "",
+            expYear: p.card?.exp_year ? p.card?.exp_year : "",
+            postalCode: p.billing_details?.address?.postal_code ? p.billing_details?.address?.postal_code : "",
+            brand: p.card?.brand ? p.card?.brand : "",
+            last4: p.card ? p.card?.last4 : ""
+        });
+    });
+
+
+    return updatedPaymentInfos;
 };
 
 

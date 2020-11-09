@@ -7,8 +7,8 @@ export default function PaymentMethodOptions(props) {
     const paymentMethods = props.paymentInfos.map((p, i) => {
 
         let paymentLabel = "";
-        if (p.isBlankPaymentInfo) { paymentLabel = "Let me fill-in my payment info."; }
-        else { paymentLabel = p.card.brand + " ends in " + p.card.last4 + " Exp: " + p.card.exp_month + "/" + p.card.exp_year; }
+        if (p.id === 0) { paymentLabel = "Let me fill-in my payment info."; }
+        else { paymentLabel = p.brand + " ends with " + p.last4 + " Exp: " + p.expMonth + "/" + p.expYear; }
 
         return (
             <div className="col-12" key={i}>

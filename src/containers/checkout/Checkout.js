@@ -59,7 +59,7 @@ class Checkout extends React.Component {
 
                             <div className="col-lg-8">
                                 <AddressFormGroup address={this.state.address} addressType="shipping" numOfAddresses={this.props.addresses.length} onOrderInputChange={this.onOrderInputChange} />
-                                <PaymentMethodFormGroup paymentMethod={this.state.paymentMethod} numOfPaymentMethods={this.props.paymentInfos.length} />
+                                <PaymentMethodFormGroup paymentMethod={this.state.paymentMethod} numOfPaymentMethods={this.props.paymentInfos.length} onPaymentMethodInputChange={this.onPaymentMethodInputChange} />
                             </div>
 
                             <aside className="col-lg-4">
@@ -90,6 +90,21 @@ class Checkout extends React.Component {
 
     /* EVENT FUNCS */
     //ish
+    onPaymentMethodInputChange = (e) => {
+        Bs.log("In METHOD: onPaymentMethodInputChange()");
+
+        const target = e.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        let updatedPaymentMethod = this.state.paymentMethod;
+        updatedPaymentMethod[name] = value;
+
+        this.setState({ paymentMethod: updatedPaymentMethod });
+    };
+
+
+
     onOrderInputChange = (e) => {
         Bs.log("In METHOD: onOrderInputChange()");
 
