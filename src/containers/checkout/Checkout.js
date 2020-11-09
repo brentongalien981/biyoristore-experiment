@@ -89,6 +89,7 @@ class Checkout extends React.Component {
 
 
     /* EVENT FUNCS */
+    //ish
     onOrderInputChange = (e) => {
         Bs.log("In METHOD: onOrderInputChange()");
 
@@ -104,7 +105,6 @@ class Checkout extends React.Component {
 
 
 
-    //ish
     onPaymentMethodSelectionChange = (paymentMethod) => {
         Bs.log("In METHOD: onPaymentMethodSelectionChange()");
         Bs.log("paymentMethod ==> ...");
