@@ -7,6 +7,9 @@ export default function PaymentMethodFormGroup(props) {
 
     const p = props.paymentMethod;
 
+    let disabledAttrib = { disabled: true };
+    if (!p.id || p.id === 0) { disabledAttrib = {}; }
+
     return (
         <>
             <div className="row align-items-end mb-2">
@@ -21,27 +24,27 @@ export default function PaymentMethodFormGroup(props) {
 
                 <div className="form-group col-md-6">
                     <label>Card Number</label>
-                    <input type="text" className="form-control" name="cardNumber" value={p.cardNumber} onChange={props.onPaymentMethodInputChange} />
+                    <input type="text" className="form-control" {...disabledAttrib} name="cardNumber" value={p.cardNumber} onChange={props.onPaymentMethodInputChange} />
                 </div>
 
                 <div className="form-group col-md-3">
                     <label>Expiration Month</label>
-                    <input type="number" className="form-control" name="expMonth" value={p.expMonth} onChange={props.onPaymentMethodInputChange} />
+                    <input type="number" className="form-control" {...disabledAttrib} name="expMonth" value={p.expMonth} onChange={props.onPaymentMethodInputChange} />
                 </div>
 
                 <div className="form-group col-md-3">
                     <label>Expiration Year</label>
-                    <input type="number" className="form-control" name="expYear" value={p.expYear} onChange={props.onPaymentMethodInputChange} />
+                    <input type="number" className="form-control" {...disabledAttrib} name="expYear" value={p.expYear} onChange={props.onPaymentMethodInputChange} />
                 </div>
 
                 <div className="form-group col-md-6">
                     <label>CVC</label>
-                    <input type="text" className="form-control" name="cvc" value={p.cvc} onChange={props.onPaymentMethodInputChange} />
+                    <input type="text" className="form-control" {...disabledAttrib} name="cvc" value={p.cvc} onChange={props.onPaymentMethodInputChange} />
                 </div>
 
                 <div className="form-group col-md-6">
                     <label>Postal/ZIP Code</label>
-                    <input type="text" className="form-control" name="postalCode" value={p.postalCode} onChange={props.onPaymentMethodInputChange} />
+                    <input type="text" className="form-control" {...disabledAttrib} name="postalCode" value={p.postalCode} onChange={props.onPaymentMethodInputChange} />
                 </div>
 
 
