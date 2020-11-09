@@ -8,6 +8,7 @@ export default function AddressFormGroup(props) {
     const addressType = props.addressType == "shipping" ? "Shipping Address" : "Billing Address";
     let a = props.address;
     a = {
+        id: a.id ? a.id : null,
         firstName: a.firstName ? a.firstName : "",
         lastName: a.lastName ? a.lastName : "",
         street: a.street ? a.street : "",
@@ -18,6 +19,10 @@ export default function AddressFormGroup(props) {
         email: a.email ? a.email : "",
         phone: a.phone ? a.phone : ""
     };
+
+    let disabledAttrib = { disabled: true };
+    if (!a.id || a.id === 0) { disabledAttrib = {}; }
+
 
     return (
         <>
@@ -44,25 +49,25 @@ export default function AddressFormGroup(props) {
 
                 <div className="form-group col-md-8">
                     <label htmlFor="street">Street</label>
-                    <input type="text" className="form-control" placeholder="" value={a.street} name="street" onChange={props.onOrderInputChange} />
+                    <input type="text" className="form-control" placeholder="" {...disabledAttrib} value={a.street} name="street" onChange={props.onOrderInputChange} />
                 </div>
                 <div className="form-group col-md-4">
                     <label>City</label>
-                    <input type="text" className="form-control" placeholder="" value={a.city} name="city" onChange={props.onOrderInputChange} />
+                    <input type="text" className="form-control" placeholder="" {...disabledAttrib} value={a.city} name="city" onChange={props.onOrderInputChange} />
                 </div>
 
                 <div className="form-group col-md-4">
                     <label htmlFor="province">Province</label>
-                    <input type="text" className="form-control" placeholder="" value={a.province} name="province" onChange={props.onOrderInputChange} />
+                    <input type="text" className="form-control" placeholder="" {...disabledAttrib} value={a.province} name="province" onChange={props.onOrderInputChange} />
                 </div>
                 <div className="form-group col-md-4">
                     <label htmlFor="country">Country</label>
-                    <input type="text" className="form-control" placeholder="" value={a.country} name="country" onChange={props.onOrderInputChange} />
+                    <input type="text" className="form-control" placeholder="" {...disabledAttrib} value={a.country} name="country" onChange={props.onOrderInputChange} />
                 </div>
 
                 <div className="form-group col-md-4">
                     <label htmlFor="postcode">Postal Code</label>
-                    <input type="text" className="form-control" placeholder="" value={a.postalCode} name="postalCode" onChange={props.onOrderInputChange} />
+                    <input type="text" className="form-control" placeholder="" {...disabledAttrib} value={a.postalCode} name="postalCode" onChange={props.onOrderInputChange} />
                 </div>
 
                 <div className="form-group col-md-6">

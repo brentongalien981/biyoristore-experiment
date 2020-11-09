@@ -89,7 +89,6 @@ class Checkout extends React.Component {
 
 
     /* EVENT FUNCS */
-    //ish
     onPaymentMethodInputChange = (e) => {
         Bs.log("In METHOD: onPaymentMethodInputChange()");
 
