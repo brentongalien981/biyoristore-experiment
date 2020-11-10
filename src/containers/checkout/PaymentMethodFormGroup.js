@@ -5,6 +5,8 @@ import BsAppSession from '../../bs-library/helpers/BsAppSession';
 
 export default function PaymentMethodFormGroup(props) {
 
+    if (props.numOfPaymentMethods <= 1) { return null; }
+
     const p = props.paymentMethod;
 
     let disabledAttrib = { disabled: true };

@@ -27,7 +27,7 @@ export const readCheckoutRequiredData = () => {
             url: '/checkout/readCheckoutRequiredData',
             method: "post",
             params: { api_token: BsAppSession.get("apiToken") },
-            callBackFunc: (requestData, json) => {
+            callBackFunc: (requestData, json) => { 
                 Bs.log("\n#####################");
                 Bs.log("FILE: actions/checkout.js, METHOD: readCheckoutRequiredData() => ajaxCrud() => callBackFunc()");
 
