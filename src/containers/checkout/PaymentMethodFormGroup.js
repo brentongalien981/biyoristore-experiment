@@ -7,11 +7,6 @@ export default function PaymentMethodFormGroup(props) {
 
     if (props.numOfPaymentMethods <= 1) { return null; }
 
-    const p = props.paymentMethod;
-
-    let disabledAttrib = { disabled: true };
-    if (!p.id || p.id === 0) { disabledAttrib = {}; }
-
     return (
         <>
             <div className="row align-items-end mb-2">
@@ -21,37 +16,49 @@ export default function PaymentMethodFormGroup(props) {
                 {getMyPaymentMethodsBtn(props.numOfPaymentMethods)}
             </div>
 
-
-            <div className="row gutter-1 mb-6">
-
-                <div className="form-group col-md-6">
-                    <label>Card Number</label>
-                    <input type="text" className="form-control" {...disabledAttrib} name="cardNumber" value={p.cardNumber} onChange={props.onPaymentMethodInputChange} />
-                </div>
-
-                <div className="form-group col-md-3">
-                    <label>Expiration Month</label>
-                    <input type="number" className="form-control" {...disabledAttrib} name="expMonth" value={p.expMonth} onChange={props.onPaymentMethodInputChange} />
-                </div>
-
-                <div className="form-group col-md-3">
-                    <label>Expiration Year</label>
-                    <input type="number" className="form-control" {...disabledAttrib} name="expYear" value={p.expYear} onChange={props.onPaymentMethodInputChange} />
-                </div>
-
-                <div className="form-group col-md-6">
-                    <label>CVC</label>
-                    <input type="text" className="form-control" {...disabledAttrib} name="cvc" value={p.cvc} onChange={props.onPaymentMethodInputChange} />
-                </div>
-
-                <div className="form-group col-md-6">
-                    <label>Postal/ZIP Code</label>
-                    <input type="text" className="form-control" {...disabledAttrib} name="postalCode" value={p.postalCode} onChange={props.onPaymentMethodInputChange} />
-                </div>
-
-
-            </div>
+            {getPaymentMethodInputFields(props)}
         </>
+    );
+}
+
+
+
+function getPaymentMethodInputFields(props) {
+
+    const p = props.paymentMethod;
+    
+    if (!p.id || p.id === 0) { return null; }
+
+    let disabledAttrib = { disabled: true };
+    // if (!p.id || p.id === 0) { disabledAttrib = {}; }
+
+    return (
+        <div className="row gutter-1 mb-6">
+            <div className="form-group col-md-6">
+                <label>Card Number</label>
+                <input type="text" className="form-control" {...disabledAttrib} name="cardNumber" value={p.cardNumber} onChange={props.onPaymentMethodInputChange} />
+            </div>
+
+            <div className="form-group col-md-3">
+                <label>Expiration Month</label>
+                <input type="number" className="form-control" {...disabledAttrib} name="expMonth" value={p.expMonth} onChange={props.onPaymentMethodInputChange} />
+            </div>
+
+            <div className="form-group col-md-3">
+                <label>Expiration Year</label>
+                <input type="number" className="form-control" {...disabledAttrib} name="expYear" value={p.expYear} onChange={props.onPaymentMethodInputChange} />
+            </div>
+
+            <div className="form-group col-md-6">
+                <label>CVC</label>
+                <input type="text" className="form-control" {...disabledAttrib} name="cvc" value={p.cvc} onChange={props.onPaymentMethodInputChange} />
+            </div>
+
+            <div className="form-group col-md-6">
+                <label>Postal/ZIP Code</label>
+                <input type="text" className="form-control" {...disabledAttrib} name="postalCode" value={p.postalCode} onChange={props.onPaymentMethodInputChange} />
+            </div>
+        </div>
     );
 }
 

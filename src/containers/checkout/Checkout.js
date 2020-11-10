@@ -119,6 +119,7 @@ class Checkout extends React.Component {
 
 
 
+    //ish
     onPaymentMethodSelectionChange = (paymentMethod) => {
         Bs.log("In METHOD: onPaymentMethodSelectionChange()");
         Bs.log("paymentMethod ==> ...");
