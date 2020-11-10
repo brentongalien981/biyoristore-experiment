@@ -16,12 +16,28 @@ import Bs from '../../bs-library/helpers/Bs';
 class Checkout extends React.Component {
 
     /* HELPER FUNCS */
+    validateFields = (obj) => {
+
+        let returnObj = { isObjValid: true, msg: "" };
+
+        for (const field in obj) {
+            const val = obj[field];
+            if (!val || val.trim().length === 0) {
+                returnObj.isObjValid = false;
+                returnObj.msg += field + " can not be empty.\n";
+            }
+        }
+
+        return returnObj;
+    };
 
 
 
     /* MAIN FUNCS */
+    static BLANK_ADDRESS = { firstName: "", lastName: "", street: "", city: "", province: "", country: "", postalCode: "", email: "", phoneNumber: "" };
+    
     state = {
-        address: {},
+        address: {...Checkout.BLANK_ADDRESS},
         paymentMethod: {}
     };
 
@@ -68,7 +84,7 @@ class Checkout extends React.Component {
                                     <OrderSummary cartItems={this.props.cartItems} />
 
                                     <div className="col-12 mt-1">
-                                        <a href="#!" className="btn btn-primary btn-lg btn-block">Place Order</a>
+                                        <a href="#!" className="btn btn-primary btn-lg btn-block" onClick={this.onOrderPlace}>Place Order</a>
                                     </div>
 
                                 </div>
@@ -89,6 +105,22 @@ class Checkout extends React.Component {
 
 
     /* EVENT FUNCS */
+    //ish
+    onOrderPlace = (e) => {
+        e.preventDefault();
+        Bs.log("In METHOD: onOrderPlace()");
+
+        let returnObj = this.validateFields(this.state.address);
+        
+        if (!returnObj.isObjValid) {
+            alert(returnObj.msg);
+            return;
+        }
+        
+    };
+
+
+
     onPaymentMethodInputChange = (e) => {
         Bs.log("In METHOD: onPaymentMethodInputChange()");
 
@@ -119,7 +151,6 @@ class Checkout extends React.Component {
 
 
 
-    //ish
     onPaymentMethodSelectionChange = (paymentMethod) => {
         Bs.log("In METHOD: onPaymentMethodSelectionChange()");
         Bs.log("paymentMethod ==> ...");
@@ -132,7 +163,7 @@ class Checkout extends React.Component {
 
     onAddressSelectionChange = (a) => {
         Bs.log("In EVENT: onAddressSelectionChange()");
-        if (a.isBlankAddress) { a = { ...a, firstName: "" }; }
+        if (a.isBlankAddress) { a = { ...a, ...Checkout.BLANK_ADDRESS }; }
         this.setState({ address: a });
     };
 

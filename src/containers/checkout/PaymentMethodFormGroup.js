@@ -5,7 +5,7 @@ import BsAppSession from '../../bs-library/helpers/BsAppSession';
 
 export default function PaymentMethodFormGroup(props) {
 
-    if (props.numOfPaymentMethods <= 1) { return null; }
+    if (!props.numOfPaymentMethods || props.numOfPaymentMethods <= 1) { return null; }
 
     return (
         <>
