@@ -5,6 +5,8 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import "./Payment.css";
 import PaymentForm from "./PaymentForm";
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 
 
@@ -28,19 +30,17 @@ class Payment extends React.Component {
 
 
     componentDidMount() {
-        // BsCore.ajaxCrud({
-        //     url: '/paymentIntent',
-        //     method: "post",
-        //     params: {},
-        //     neededResponseParams: ["clientSecret"],
-        //     callBackFunc: (requestData, json) => { 
-        //         Bs.log("\n#####################");
-        //         Bs.log("FILE: Checkout.js, METHOD: componentDidMount() => ajaxCrud() => callBackFunc()");
+        Bs.log("\n\n##############################");
+        Bs.log("In FILE: Payment.js, METHOD: componentDidMount()...");
 
-        //         Bs.log("json.clientSecret ==> " + json.clientSecret);
-        //     }
-        // }); 
+        Bs.log("\nBEFORE:: this.props.location.state ==> ...");
+        Bs.log(this.props.location.state);
+
+        Bs.log("\nthis.props.paymentPageEntryCode ==> " + this.props.paymentPageEntryCode);
+        Bs.log("this.props.location.state.paymentPageEntryCode ==> " + this.props.location.state.paymentPageEntryCode);
     }
+
+
 
     render() {
         return (
@@ -70,4 +70,13 @@ class Payment extends React.Component {
 
 
 
-export default Payment;
+/* REACT-FUNCS */
+const mapStateToProps = (state) => {
+    return {
+        paymentPageEntryCode: state.checkout.paymentPageEntryCode,
+    };
+};
+
+
+
+export default connect(mapStateToProps, null)(withRouter(Payment));

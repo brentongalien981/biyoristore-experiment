@@ -16,7 +16,7 @@ const Join = React.lazy(() => import('./containers/join/Join'));
 const Profile = React.lazy(() => import('./containers/profile/Profile'));
 const CartPage = React.lazy(() => import('./containers/cart/CartPage'));
 const Checkout = React.lazy(() => import('./containers/checkout/Checkout'));
-const Payment = React.lazy(() => import('./containers/checkout/Payment'));
+const Payment = React.lazy(() => import('./containers/payment/Payment'));
 
 const CartWidget = React.lazy(() => import('./components/cart/CartWidget'));
 

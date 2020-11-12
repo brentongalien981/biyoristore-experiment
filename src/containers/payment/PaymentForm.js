@@ -5,7 +5,7 @@ import {
     useElements
 } from "@stripe/react-stripe-js";
 import Bs from "../../bs-library/helpers/Bs";
-import BsCore from "../../bs-library/helpers/BsCore";
+import BsCore2 from "../../bs-library/helpers/BsCore2";
 
 
 
@@ -22,7 +22,7 @@ export default function PaymentForm() {
 
     useEffect(() => {
         // Create PaymentIntent as soon as the page loads
-        BsCore.ajaxCrud({
+        BsCore2.ajaxCrud({
             url: '/paymentIntent',
             method: "post",
             params: {},

@@ -10,6 +10,7 @@ const initialState = {
     // profile: {},
     addresses: [],
     paymentInfos: [],
+    paymentPageEntryCode: ""
 };
 
 
@@ -18,6 +19,7 @@ const initialState = {
 const checkout = (state = initialState, action) => {
     switch (action.type) {
         // case actions.ON_ADDRESS_SELECTION_CHANGE: return onAddressSelectionChange(state, action);
+        case actions.SET_PAYMENT_PAGE_ENTRY_CODE: return setPaymentPageEntryCode(state, action);
         case actions.ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS: return onReadCheckoutRequiredDataSuccess(state, action);
         default: return state;
     }
@@ -26,6 +28,15 @@ const checkout = (state = initialState, action) => {
 
 
 /* NORMAL FUNCS */
+const setPaymentPageEntryCode = (state, action) => {
+    return {
+        ...state,
+        paymentPageEntryCode: Bs.getRandomId(),
+    };
+};
+
+
+
 // TODO: Delete this.
 // const onAddressSelectionChange = (state, action) => {
 

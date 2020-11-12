@@ -11,6 +11,7 @@ import CheckoutAsWhoModal from './CheckoutAsWhoModal';
 import PaymentMethodFormGroup from './PaymentMethodFormGroup';
 import PaymentMethodOptions from './PaymentMethodOptions';
 import Bs from '../../bs-library/helpers/Bs';
+import OrderDetailsSummaryModal from './OrderDetailsSummaryModal';
 
 
 class Checkout extends React.Component {
@@ -34,10 +35,10 @@ class Checkout extends React.Component {
 
 
     /* MAIN FUNCS */
-    static BLANK_ADDRESS = { firstName: "", lastName: "", street: "", city: "", province: "", country: "", postalCode: "", email: "", phoneNumber: "" };
-    
+    static BLANK_ADDRESS = { firstName: "", lastName: "", street: "", city: "", province: "", country: "", postalCode: "", email: "", phone: "" };
+
     state = {
-        address: {...Checkout.BLANK_ADDRESS},
+        address: { ...Checkout.BLANK_ADDRESS },
         paymentMethod: {}
     };
 
@@ -49,6 +50,9 @@ class Checkout extends React.Component {
 
         //
         if (BsAppSession.isLoggedIn()) { this.props.readCheckoutRequiredData(); }
+
+        //ish
+        this.props.setPaymentPageEntryCode();
     }
 
 
@@ -94,10 +98,12 @@ class Checkout extends React.Component {
                     </div>
                 </section>
 
-                <CheckoutAsWhoModal login={this.login} dismissModal={this.dismissModal} />
-
                 <AddressOptions addresses={this.props.addresses} onAddressSelectionChange={this.onAddressSelectionChange} />
                 <PaymentMethodOptions paymentInfos={this.props.paymentInfos} onPaymentMethodSelectionChange={this.onPaymentMethodSelectionChange} />
+
+                <CheckoutAsWhoModal login={this.login} dismissModal={this.dismissModal} />
+                <OrderDetailsSummaryModal address={this.state.address} onOrderDetailsConfirm={this.onOrderDetailsConfirm} />
+
             </>
         );
     }
@@ -105,18 +111,26 @@ class Checkout extends React.Component {
 
 
     /* EVENT FUNCS */
-    //ish
+    onOrderDetailsConfirm = () => {
+        Bs.log("In METHOD: onOrderDetailsConfirm()");
+        this.props.history.push("/payment", { previousPage: "checkout", caller: "Bren", paymentPageEntryCode: this.props.paymentPageEntryCode });
+    };
+
+
+
     onOrderPlace = (e) => {
         e.preventDefault();
         Bs.log("In METHOD: onOrderPlace()");
 
         let returnObj = this.validateFields(this.state.address);
-        
+
         if (!returnObj.isObjValid) {
             alert(returnObj.msg);
             return;
         }
-        
+
+        // Show order details summary.
+        document.querySelector("#OrderDetailsSummaryModalTriggerBtn").click();
     };
 
 
@@ -192,6 +206,7 @@ class Checkout extends React.Component {
 /* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
+        paymentPageEntryCode: state.checkout.paymentPageEntryCode,
         cartItems: state.cart.cart.cartItems,
         profile: state.checkout.profile,
         addresses: state.checkout.addresses,
@@ -204,6 +219,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         // onAddressSelectionChange: (e, i) => dispatch(actions.onAddressSelectionChange(e, i)),
+        setPaymentPageEntryCode: () => dispatch(actions.setPaymentPageEntryCode()),
         readCheckoutRequiredData: () => dispatch(actions.readCheckoutRequiredData()),
     };
 };
