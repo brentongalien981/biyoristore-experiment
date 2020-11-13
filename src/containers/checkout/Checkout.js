@@ -113,7 +113,7 @@ class Checkout extends React.Component {
     /* EVENT FUNCS */
     onOrderDetailsConfirm = () => {
         Bs.log("In METHOD: onOrderDetailsConfirm()");
-        this.props.history.push("/payment", { previousPage: "checkout", caller: "Bren", paymentPageEntryCode: this.props.paymentPageEntryCode });
+        this.props.history.push("/payment", { cartItems: this.props.cartItems, shippingAddress: this.state.address, paymentPageEntryCode: this.props.paymentPageEntryCode });
     };
 
 

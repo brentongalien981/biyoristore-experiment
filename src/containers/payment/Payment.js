@@ -12,13 +12,85 @@ import { connect } from 'react-redux';
 
 class Payment extends React.Component {
 
+    /* PROPERTIES */
+    static HAS_VALID_PAGE_DATA_REQUIREMENTS = false;
+
+
+
     /* HELPER FUNCS */
+    doesCartHaveItem() {
+        if (this.props.location.state.cartItems.length >= 1) { return true; }
+        return false;
+    }
+
+
+
+    checkShippingAddress() {
+        if (this.props.location.state.shippingAddress) { return true; }
+        return false;
+    }
+
+
+
+    checkPageEntryCode() {
+
+        const passedState = this.props.location.state;
+        if (passedState) {
+
+            Bs.log("\nthis.props.location.state ==> ...");
+            Bs.log(this.props.location.state);
+
+
+            // Check if loading this webpage is coming from the checkout-page's 
+            // order-details confirmation.
+            const actualPageEntryCode = this.props.paymentPageEntryCode;
+            const passedPageEntryCode = passedState.paymentPageEntryCode;
+
+            if (!actualPageEntryCode || actualPageEntryCode === "" ||
+                !passedPageEntryCode || passedPageEntryCode === "" ||
+                actualPageEntryCode !== passedPageEntryCode) {
+                return false;
+            }
+
+
+            Bs.log("\nthis.props.paymentPageEntryCode ==> " + this.props.paymentPageEntryCode);
+            Bs.log("this.props.location.state.paymentPageEntryCode ==> " + this.props.location.state.paymentPageEntryCode);
+
+            return true;
+
+        }
+        
+        return false;
+    }
+
+
+
+    checkPageDataRequirements() {
+        
+        Payment.HAS_VALID_PAGE_DATA_REQUIREMENTS = false;
+
+        if (!this.checkPageEntryCode()) { alert("Please confirm your order details first"); return false; }
+        if (!this.checkShippingAddress()) { return false; }
+        if (!this.doesCartHaveItem()) { alert("No cart items..."); return false; }
+
+        Payment.HAS_VALID_PAGE_DATA_REQUIREMENTS = true;
+        return true;
+    }
 
 
 
     /* MAIN FUNCS */
     constructor(props) {
         super(props);
+
+        Bs.log("\n\n##############################");
+        Bs.log("In FILE: Payment.js, METHOD: constructor()...");
+
+        if (!this.checkPageDataRequirements()) {
+            this.props.history.replace("/checkout");
+            return;
+        }
+        
 
         // Make sure to call loadStripe outside of a component’s render to avoid
         // recreating the Stripe object on every render.
@@ -30,19 +102,16 @@ class Payment extends React.Component {
 
 
     componentDidMount() {
-        Bs.log("\n\n##############################");
-        Bs.log("In FILE: Payment.js, METHOD: componentDidMount()...");
-
-        Bs.log("\nBEFORE:: this.props.location.state ==> ...");
-        Bs.log(this.props.location.state);
-
-        Bs.log("\nthis.props.paymentPageEntryCode ==> " + this.props.paymentPageEntryCode);
-        Bs.log("this.props.location.state.paymentPageEntryCode ==> " + this.props.location.state.paymentPageEntryCode);
+        // Bs.log("\n\n##############################");
+        // Bs.log("In FILE: Payment.js, METHOD: componentDidMount()...");
     }
 
 
 
     render() {
+
+        if (!Payment.HAS_VALID_PAGE_DATA_REQUIREMENTS) { return null; }
+
         return (
             <>
                 <section className="hero">
