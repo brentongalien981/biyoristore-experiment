@@ -18,6 +18,20 @@ class Payment extends React.Component {
 
 
     /* HELPER FUNCS */
+    getCartItemsData() {
+        const cartItems = this.props.location.state.cartItems;
+        let data = [];
+
+        cartItems.forEach(i => {
+            const item = { productId: i.product.id, quantity: i.quantity };
+            data.push(item);
+        });
+
+        return data;
+    }
+
+
+
     doesCartHaveItem() {
         if (this.props.location.state.cartItems.length >= 1) { return true; }
         return false;
@@ -59,14 +73,14 @@ class Payment extends React.Component {
             return true;
 
         }
-        
+
         return false;
     }
 
 
 
     checkPageDataRequirements() {
-        
+
         Payment.HAS_VALID_PAGE_DATA_REQUIREMENTS = false;
 
         if (!this.checkPageEntryCode()) { alert("Please confirm your order details first"); return false; }
@@ -90,7 +104,7 @@ class Payment extends React.Component {
             this.props.history.replace("/checkout");
             return;
         }
-        
+
 
         // Make sure to call loadStripe outside of a component’s render to avoid
         // recreating the Stripe object on every render.
@@ -112,6 +126,9 @@ class Payment extends React.Component {
 
         if (!Payment.HAS_VALID_PAGE_DATA_REQUIREMENTS) { return null; }
 
+        const shippingAddress = this.props.location.state.shippingAddress;
+        const cartItemsData = this.getCartItemsData();
+
         return (
             <>
                 <section className="hero">
@@ -126,7 +143,7 @@ class Payment extends React.Component {
 
 
                 <Elements stripe={this.promise}>
-                    <PaymentForm />
+                    <PaymentForm shippingAddress={shippingAddress} cartItemsData={cartItemsData} />
                 </Elements>
             </>
         );

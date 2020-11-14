@@ -22,8 +22,7 @@ function PaymentForm(props) {
         BsCore2.ajaxCrud({
             url: '/paymentIntent',
             method: "post",
-            // TODO: Pass in the order details.
-            params: {},
+            params: { cartItemsData: props.cartItemsData, ...props.shippingAddress },
             neededResponseParams: ["clientSecret"],
             callBackFunc: (requestData, json) => {
                 Bs.log("\n#####################");
