@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-    CardElement,
-    useStripe,
-    useElements
-} from "@stripe/react-stripe-js";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import Bs from "../../bs-library/helpers/Bs";
 import BsCore2 from "../../bs-library/helpers/BsCore2";
+import { withRouter } from "react-router-dom";
 
 
 
-export default function PaymentForm() {
+function PaymentForm(props) {
     const [succeeded, setSucceeded] = useState(false);
     const [error, setError] = useState(null);
     const [processing, setProcessing] = useState('');
@@ -25,12 +22,20 @@ export default function PaymentForm() {
         BsCore2.ajaxCrud({
             url: '/paymentIntent',
             method: "post",
+            // TODO: Pass in the order details.
             params: {},
             neededResponseParams: ["clientSecret"],
             callBackFunc: (requestData, json) => {
                 Bs.log("\n#####################");
                 Bs.log("FILE: CheckoutForm.js, METHOD: useEffect() => ajaxCrud() => callBackFunc()");
-                Bs.log("json.clientSecret ==> " + json.clientSecret);
+
+                if (json.customError) {
+                    alert("Sorry, there's a proble on our end. Please try again shortly.");
+                    props.history.replace("/checkout");
+                    return;
+                }
+
+
                 setClientSecret(json.clientSecret);
             }
         });
@@ -70,6 +75,7 @@ export default function PaymentForm() {
     const handleSubmit = async ev => {
         ev.preventDefault();
         setProcessing(true);
+
         const payload = await stripe.confirmCardPayment(clientSecret, {
             payment_method: {
                 card: elements.getElement(CardElement)
@@ -82,6 +88,8 @@ export default function PaymentForm() {
             setError(null);
             setProcessing(false);
             setSucceeded(true);
+
+            // TODO: Save the order record.
         }
     };
 
@@ -111,10 +119,12 @@ export default function PaymentForm() {
 
             {/* Show a success message upon completion */}
             <p className={succeeded ? "result-message" : "result-message hidden"}>
-                Payment succeeded, see the result in your
-                <a href={"https://dashboard.stripe.com/test/payments"}>{" "}Stripe dashboard.</a>
-                Refresh the page to pay again.
+                Payment succeeded, see the result in your.
             </p>
         </form>
     );
 }
+
+
+
+export default withRouter(PaymentForm);
