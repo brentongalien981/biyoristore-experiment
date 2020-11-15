@@ -24,7 +24,7 @@ function PaymentForm(props) {
             url: '/paymentIntent',
             method: "post",
             params: { cartId: props.cart.id, cartItemsData: props.cartItemsData, ...props.shippingAddress },
-            neededResponseParams: ["clientSecret", "cartId"],
+            neededResponseParams: ["clientSecret", "cart"],
             callBackFunc: (requestData, json) => {
                 
                 Bs.log("\n#####################");
@@ -38,8 +38,8 @@ function PaymentForm(props) {
                 }
 
 
-                // TODO: ISH
-                // props.setCartId(json.cartId);
+                // 
+                props.setCart(json.cart);
                 setClientSecret(json.clientSecret);
             },
             errorCallBackFunc: (errors) => {

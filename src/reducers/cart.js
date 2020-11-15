@@ -36,6 +36,7 @@ const initialState = {
 /* REDUCER */
 const cart = (state = initialState, action) => {
     switch (action.type) {
+        // case actions.SET_CART_ID: return setCartId(state, action);
         case actions.RESET_CART: return resetCart(state, action);
         case actions.ON_SHOULD_RESET_SETTING_CART_ITEM_COUNT_FLAG_SUCCESS: return onShouldResetSettingCartItemCountFlagSuccess(state, action);
         case actions.ON_UPDATE_CART_ITEM_COUNT_FAIL: return onUpdateCartItemCountFail(state, action);
@@ -170,7 +171,6 @@ const onAddToCartSuccess = (state, action) => {
 
 
 const resetCart = (state, action) => {
-    //ish
     Bs.log("\n###############");
     Bs.log("In REDUCER: cart, METHOD: resetCart()");
 
@@ -186,12 +186,11 @@ const resetCart = (state, action) => {
 
 
 const setCart = (state, action) => {
-    //ish
     Bs.log("\n###############");
     Bs.log("In REDUCER: cart, METHOD: setCart()");
 
     let cart = action.obj;
-    if (cart == null) { cart = state.cart; }
+    if (!cart || cart == "") { cart = { id: 0, cartItems: [] }; }
 
     BsAppSession.set("cart", JSON.stringify(cart));
 

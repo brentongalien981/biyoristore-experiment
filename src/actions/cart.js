@@ -5,6 +5,7 @@ import BsAppSession from "../bs-library/helpers/BsAppSession";
 
 
 /* NAMES */
+// export const SET_CART_ID = "SET_CART_ID";
 export const RESET_CART = "RESET_CART";
 export const ON_SHOULD_RESET_SETTING_CART_ITEM_COUNT_FLAG_SUCCESS = "ON_SHOULD_RESET_SETTING_CART_ITEM_COUNT_FLAG_SUCCESS";
 export const ON_UPDATE_CART_ITEM_COUNT_FAIL = "ON_UPDATE_CART_ITEM_COUNT_FAIL";
@@ -19,6 +20,7 @@ export const ON_ADD_TO_CART = "ON_ADD_TO_CART";
 
 
 /* FUNCS */
+// export const setCartId = (cartId) => ({ type: SET_CART_ID, cartId: cartId });
 export const resetCart = () => ({ type: RESET_CART });
 export const onShouldResetSettingCartItemCountFlagSuccess = () => ({ type: ON_SHOULD_RESET_SETTING_CART_ITEM_COUNT_FLAG_SUCCESS });
 export const onUpdateCartItemCountFail = (errors) => ({ type: ON_UPDATE_CART_ITEM_COUNT_FAIL, errors: errors });
@@ -46,7 +48,6 @@ export const updateCartItemCount = (cartItemId, quantity, index) => {
     Bs.log("\n###############");
     Bs.log("In REDUCER: cart, METHOD: updateCartItemCount()");
 
-    //ish
     return (dispatch) => { dispatch(onUpdateCartItemCountSuccess(quantity, index)); };
 
 
@@ -138,7 +139,10 @@ export const showCart = () => {
     Bs.log("In REDUCER: cart, METHOD: showCart()");
 
     //
-    const cart = JSON.parse(BsAppSession.get("cart"));
+    let cart = BsAppSession.get("cart");
+    if (!cart || cart == "") { cart = null; }
+    else { cart = JSON.parse(cart); }
+    
     return (dispatch) => { dispatch(setCart(cart)); };
 
 

@@ -7,6 +7,7 @@ import "./Payment.css";
 import PaymentForm from "./PaymentForm";
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { setCart } from '../../actions/cart';
 
 
 
@@ -143,7 +144,7 @@ class Payment extends React.Component {
 
 
                 <Elements stripe={this.promise}>
-                    <PaymentForm cart={this.props.cart} shippingAddress={shippingAddress} cartItemsData={cartItemsData} setCartId={this.props.setCartId} />
+                    <PaymentForm cart={this.props.cart} shippingAddress={shippingAddress} cartItemsData={cartItemsData} setCart={this.props.setCart} />
                 </Elements>
             </>
         );
@@ -168,8 +169,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        // TODO:
-        // setCartId: (cartId) => dispatch(actions.setCartId()),
+        setCart: (cart) => dispatch(setCart(cart)),
     };
 };
 
