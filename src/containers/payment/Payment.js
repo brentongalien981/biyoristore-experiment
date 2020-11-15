@@ -8,6 +8,7 @@ import PaymentForm from "./PaymentForm";
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setCart } from '../../actions/cart';
+import { setPaymentFinalizationPageEntryCode, setPaymentPageEntryCode } from '../../actions/checkout';
 
 
 
@@ -117,8 +118,22 @@ class Payment extends React.Component {
 
 
     componentDidMount() {
-        // Bs.log("\n\n##############################");
-        // Bs.log("In FILE: Payment.js, METHOD: componentDidMount()...");
+        Bs.log("\n\n##############################");
+        Bs.log("In FILE: Payment.js, METHOD: componentDidMount()...");
+        
+        this.props.setPaymentFinalizationPageEntryCode();
+    }
+
+
+
+    componentWillUnmount() {
+
+        Bs.log("\n\n##############################");
+        Bs.log("In FILE: Payment.js, METHOD: componentWillUnmount()...");
+        
+        // ish
+        this.props.setPaymentPageEntryCode();
+        
     }
 
 
@@ -144,7 +159,7 @@ class Payment extends React.Component {
 
 
                 <Elements stripe={this.promise}>
-                    <PaymentForm cart={this.props.cart} shippingAddress={shippingAddress} cartItemsData={cartItemsData} setCart={this.props.setCart} />
+                    <PaymentForm paymentFinalizationPageEntryCode={this.props.paymentFinalizationPageEntryCode} cart={this.props.cart} shippingAddress={shippingAddress} cartItemsData={cartItemsData} setCart={this.props.setCart} />
                 </Elements>
             </>
         );
@@ -160,6 +175,7 @@ class Payment extends React.Component {
 /* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
+        paymentFinalizationPageEntryCode: state.checkout.paymentFinalizationPageEntryCode,
         paymentPageEntryCode: state.checkout.paymentPageEntryCode,
         cart: state.cart.cart,
     };
@@ -169,6 +185,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        setPaymentPageEntryCode: () => dispatch(setPaymentPageEntryCode()),
+        setPaymentFinalizationPageEntryCode: () => dispatch(setPaymentFinalizationPageEntryCode()),
         setCart: (cart) => dispatch(setCart(cart)),
     };
 };

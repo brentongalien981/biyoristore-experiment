@@ -51,7 +51,7 @@ class Checkout extends React.Component {
         //
         if (BsAppSession.isLoggedIn()) { this.props.readCheckoutRequiredData(); }
 
-        //ish
+        //
         this.props.setPaymentPageEntryCode();
     }
 

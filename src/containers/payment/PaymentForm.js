@@ -26,7 +26,7 @@ function PaymentForm(props) {
             params: { cartId: props.cart.id, cartItemsData: props.cartItemsData, ...props.shippingAddress },
             neededResponseParams: ["clientSecret", "cart"],
             callBackFunc: (requestData, json) => {
-                
+
                 Bs.log("\n#####################");
                 Bs.log("FILE: PaymentForm.js, METHOD: useEffect() => ajaxCrud() => callBackFunc()");
 
@@ -100,7 +100,8 @@ function PaymentForm(props) {
             setProcessing(false);
             setSucceeded(true);
 
-            // TODO: Save the order record.
+            // TODO: redirect to page payment-finalization
+            props.history.replace("/payment-finalization", { paymentFinalizationPageEntryCode: props.paymentFinalizationPageEntryCode, cartId: props.cart.id, shippingInfo: props.shippingAddress });
         }
     };
 
@@ -130,7 +131,7 @@ function PaymentForm(props) {
 
             {/* Show a success message upon completion */}
             <p className={succeeded ? "result-message" : "result-message hidden"}>
-                Payment succeeded, see the result in your.
+                Payment succeeded, we're now finalizing your order...
             </p>
         </form>
     );

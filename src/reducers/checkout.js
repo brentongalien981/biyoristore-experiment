@@ -10,7 +10,8 @@ const initialState = {
     // profile: {},
     addresses: [],
     paymentInfos: [],
-    paymentPageEntryCode: ""
+    paymentPageEntryCode: "",
+    paymentFinalizationPageEntryCode: ""
 };
 
 
@@ -19,6 +20,9 @@ const initialState = {
 const checkout = (state = initialState, action) => {
     switch (action.type) {
         // case actions.ON_ADDRESS_SELECTION_CHANGE: return onAddressSelectionChange(state, action);
+        case actions.ON_FINALIZE_ORDER_FAIL: return onFinalizeOrderFail(state, action);
+        case actions.ON_FINALIZE_ORDER_SUCCESS: return onFinalizeOrderSuccess(state, action);
+        case actions.SET_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE: return setPaymentFinalizationPageEntryCode(state, action);
         case actions.SET_PAYMENT_PAGE_ENTRY_CODE: return setPaymentPageEntryCode(state, action);
         case actions.ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS: return onReadCheckoutRequiredDataSuccess(state, action);
         default: return state;
@@ -28,6 +32,37 @@ const checkout = (state = initialState, action) => {
 
 
 /* NORMAL FUNCS */
+const onFinalizeOrderFail = (state, action) => {
+
+    alert("In REDUCER: checkout, METHOD: onFinalizeOrderFail()");
+
+    return {
+        ...state,
+    };
+};
+
+
+
+const onFinalizeOrderSuccess = (state, action) => {
+
+    alert("In REDUCER: checkout, METHOD: onFinalizeOrderSuccess()");
+
+    return {
+        ...state,
+    };
+};
+
+
+
+const setPaymentFinalizationPageEntryCode = (state, action) => {
+    return {
+        ...state,
+        paymentFinalizationPageEntryCode: Bs.getRandomId(),
+    };
+};
+
+
+
 const setPaymentPageEntryCode = (state, action) => {
     return {
         ...state,
@@ -37,7 +72,7 @@ const setPaymentPageEntryCode = (state, action) => {
 
 
 
-// TODO: Delete this.
+// TODO:LATER Delete this.
 // const onAddressSelectionChange = (state, action) => {
 
 //     let updatedAddresses = state.addresses;    
