@@ -23,7 +23,7 @@ class Payment extends React.Component {
         let data = [];
 
         cartItems.forEach(i => {
-            const item = { productId: i.product.id, quantity: i.quantity };
+            const item = { id: i.id, productId: i.product.id, quantity: i.quantity };
             data.push(item);
         });
 
@@ -143,7 +143,7 @@ class Payment extends React.Component {
 
 
                 <Elements stripe={this.promise}>
-                    <PaymentForm shippingAddress={shippingAddress} cartItemsData={cartItemsData} />
+                    <PaymentForm cart={this.props.cart} shippingAddress={shippingAddress} cartItemsData={cartItemsData} setCartId={this.props.setCartId} />
                 </Elements>
             </>
         );
@@ -160,9 +160,19 @@ class Payment extends React.Component {
 const mapStateToProps = (state) => {
     return {
         paymentPageEntryCode: state.checkout.paymentPageEntryCode,
+        cart: state.cart.cart,
     };
 };
 
 
 
-export default connect(mapStateToProps, null)(withRouter(Payment));
+const mapDispatchToProps = (dispatch) => {
+    return {
+        // TODO:
+        // setCartId: (cartId) => dispatch(actions.setCartId()),
+    };
+};
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Payment));

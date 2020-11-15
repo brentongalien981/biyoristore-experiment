@@ -18,24 +18,36 @@ function PaymentForm(props) {
 
 
     useEffect(() => {
+
         // Create PaymentIntent as soon as the page loads
         BsCore2.ajaxCrud({
             url: '/paymentIntent',
             method: "post",
-            params: { cartItemsData: props.cartItemsData, ...props.shippingAddress },
-            neededResponseParams: ["clientSecret"],
+            params: { cartId: props.cart.id, cartItemsData: props.cartItemsData, ...props.shippingAddress },
+            neededResponseParams: ["clientSecret", "cartId"],
             callBackFunc: (requestData, json) => {
+                
                 Bs.log("\n#####################");
-                Bs.log("FILE: CheckoutForm.js, METHOD: useEffect() => ajaxCrud() => callBackFunc()");
+                Bs.log("FILE: PaymentForm.js, METHOD: useEffect() => ajaxCrud() => callBackFunc()");
+
 
                 if (json.customError) {
-                    alert("Sorry, there's a proble on our end. Please try again shortly.");
+                    alert("Sorry, there's 3rd party problem on our end. Please try again shortly.");
                     props.history.replace("/checkout");
                     return;
                 }
 
 
+                // TODO: ISH
+                // props.setCartId(json.cartId);
                 setClientSecret(json.clientSecret);
+            },
+            errorCallBackFunc: (errors) => {
+                Bs.log("\n#####################");
+                Bs.log("FILE: PaymentForm.js, METHOD: useEffect() => ajaxCrud() => errorCallBackFunc()");
+                alert("Sorry, there's a problem on our end. Please try again shortly.");
+                props.history.replace("/checkout");
+                return;
             }
         });
     }, []);

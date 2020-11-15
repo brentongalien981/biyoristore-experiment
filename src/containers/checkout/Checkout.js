@@ -207,6 +207,7 @@ class Checkout extends React.Component {
 const mapStateToProps = (state) => {
     return {
         paymentPageEntryCode: state.checkout.paymentPageEntryCode,
+        cart: state.cart.cart,
         cartItems: state.cart.cart.cartItems,
         profile: state.checkout.profile,
         addresses: state.checkout.addresses,
