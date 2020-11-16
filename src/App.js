@@ -19,6 +19,10 @@ const Checkout = React.lazy(() => import('./containers/checkout/Checkout'));
 const Payment = React.lazy(() => import('./containers/payment/Payment'));
 const PaymentFinalization = React.lazy(() => import('./containers/payment/PaymentFinalization'));
 
+// TODO: Delete this
+const TestPageWithHistoryNavigationBlocker = React.lazy(() => import('./containers/experiment/TestPageWithHistoryNavigationBlocker'));
+
+
 const CartWidget = React.lazy(() => import('./components/cart/CartWidget'));
 
 
@@ -39,6 +43,7 @@ function App() {
 				<Route path="/checkout" exact render={() => <Suspense fallback={<div>loading...</div>}><Checkout /></Suspense>} />
 				<Route path="/payment" exact render={() => <Suspense fallback={<div>loading...</div>}><Payment /></Suspense>} />
 				<Route path="/payment-finalization" exact render={() => <Suspense fallback={<div>loading...</div>}><PaymentFinalization /></Suspense>} />
+				<Route path="/navigation-blocker" exact render={() => <Suspense fallback={<div>loading...</div>}><TestPageWithHistoryNavigationBlocker /></Suspense>} />
 				{/* <Route path="/product" exact component={ProductInDetails} /> */}
 			</Switch>
 

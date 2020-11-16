@@ -93,18 +93,33 @@ function PaymentForm(props) {
             return;
         }
 
+
+        // 2 WARNINGS: Warn user from moving away from the page when pay-process has already been dispatched.
+        let unblock = props.history.block(() => {
+            alert("Please wait we're processing your payment. \nIf you wanna cancel your order, please contact customer service at \ncustomerservice@anyshotbasketball.com");
+            return false;
+        });
+        // window.onbeforeunload = () => { return "Please wait we're processing your payment. \nIf you wanna cancel your order, please contact customer service at \ncustomerservice@anyshotbasketball.com"; };
+
+
+        // Process the payment.
         const payload = await stripe.confirmCardPayment(clientSecret, {
             payment_method: {
                 card: elements.getElement(CardElement)
             }
         });
+
+
+        // Do actions after payment results.
         if (payload.error) {
             setError(`Payment failed ${payload.error.message}`);
             setProcessing(false);
+            unblock();
         } else {
             setError(null);
             setProcessing(false);
             setSucceeded(true);
+            unblock();
 
             // redirect to page payment-finalization
             props.history.replace("/payment-finalization", { paymentFinalizationPageEntryCode: props.paymentFinalizationPageEntryCode, cartId: props.cart.id, shippingInfo: props.shippingAddress });

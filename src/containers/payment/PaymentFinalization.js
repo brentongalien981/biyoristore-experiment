@@ -11,6 +11,7 @@ class PaymentFinalization extends React.Component {
 
     /* PROPERTIES */
     static HAS_VALID_PAGE_DATA_REQUIREMENTS = false;
+    static unblockHistoryNavigation = null;
 
 
 
@@ -50,13 +51,34 @@ class PaymentFinalization extends React.Component {
 
 
 
+    setWarningForHistoryNavChange() {
+        // 2 WARNINGS: Warn user from moving away from the page when pay-process has already been dispatched.
+        PaymentFinalization.unblockHistoryNavigation = this.props.history.block(() => {
+            alert("Please wait we're processing your payment. \nIf you wanna cancel your order, please contact customer service at \ncustomerservice@anyshotbasketball.com");
+            return false;
+        });
+        // window.onbeforeunload = () => { return "Please wait we're processing your payment. \nIf you wanna cancel your order, please contact customer service at \ncustomerservice@anyshotbasketball.com"; };
+    }
+
+
+
     /* MAIN FUNCS */
+    componentDidUpdate() {
+        if (this.props.shouldDisplayFinalizationMsg) {
+            PaymentFinalization.unblockHistoryNavigation();
+        }
+    }
+
+
+
     componentDidMount() {
 
         this.props.resetFinalizationMsg();
 
         if (PaymentFinalization.HAS_VALID_PAGE_DATA_REQUIREMENTS) {
             this.props.finalizeOrder(this.props.location.state.cartId, this.props.location.state.shippingInfo);
+
+            this.setWarningForHistoryNavChange();
         }
     }
 
@@ -92,7 +114,7 @@ class PaymentFinalization extends React.Component {
 
     render() {
 
-        let msgComponent = (<h1 className="mb-2">Please wait. We're finalizing your order.</h1>);
+        let msgComponent = (<p className="lead">Please wait. We're finalizing your order.</p>);
         let orderLink = null;
 
         if (this.props.shouldDisplayFinalizationMsg) {
@@ -112,7 +134,11 @@ class PaymentFinalization extends React.Component {
                 msgComponent = (
                     <>
                         <h1 className="mb-2">Order Successful!</h1>
-                        <p>We've received your order and sent you an email for your info.</p>
+                        <p>
+                            We've received your order and sent you an email for your info.<br />
+                            Should you want to cancel your order before shipping, please contact our<br />
+                            Customer Service at <b style={{ color: "orangered" }}>customerservice@anyshotbasketball.com</b>
+                        </p>
                     </>
                 );
 
