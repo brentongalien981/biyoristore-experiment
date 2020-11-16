@@ -87,6 +87,12 @@ function PaymentForm(props) {
         ev.preventDefault();
         setProcessing(true);
 
+        if (!clientSecret || clientSecret == "") {
+            alert("Please wait, we're preparing your payment... Try again in a couple of seconds.");
+            setProcessing(false);
+            return;
+        }
+
         const payload = await stripe.confirmCardPayment(clientSecret, {
             payment_method: {
                 card: elements.getElement(CardElement)
@@ -100,7 +106,7 @@ function PaymentForm(props) {
             setProcessing(false);
             setSucceeded(true);
 
-            // TODO: redirect to page payment-finalization
+            // redirect to page payment-finalization
             props.history.replace("/payment-finalization", { paymentFinalizationPageEntryCode: props.paymentFinalizationPageEntryCode, cartId: props.cart.id, shippingInfo: props.shippingAddress });
         }
     };

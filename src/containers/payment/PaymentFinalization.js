@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Bs from '../../bs-library/helpers/Bs';
-import { setPaymentFinalizationPageEntryCode, finalizeOrder } from '../../actions/checkout';
+import { setPaymentFinalizationPageEntryCode, finalizeOrder, resetFinalizationMsg } from '../../actions/checkout';
+import BsAppSession from '../../bs-library/helpers/BsAppSession';
 
 
 
@@ -52,6 +53,8 @@ class PaymentFinalization extends React.Component {
     /* MAIN FUNCS */
     componentDidMount() {
 
+        this.props.resetFinalizationMsg();
+
         if (PaymentFinalization.HAS_VALID_PAGE_DATA_REQUIREMENTS) {
             this.props.finalizeOrder(this.props.location.state.cartId, this.props.location.state.shippingInfo);
         }
@@ -76,10 +79,10 @@ class PaymentFinalization extends React.Component {
 
         PaymentFinalization.HAS_VALID_PAGE_DATA_REQUIREMENTS = false;
 
-        if (!this.checkPageEntryCode()) { 
-            alert("Please confirm your order details first"); 
+        if (!this.checkPageEntryCode()) {
+            alert("Please confirm your order details first");
             this.props.history.replace("/checkout");
-            return; 
+            return;
         }
 
         PaymentFinalization.HAS_VALID_PAGE_DATA_REQUIREMENTS = true;
@@ -88,13 +91,45 @@ class PaymentFinalization extends React.Component {
 
 
     render() {
+
+        let msgComponent = (<h1 className="mb-2">Please wait. We're finalizing your order.</h1>);
+        let orderLink = null;
+
+        if (this.props.shouldDisplayFinalizationMsg) {
+
+            if (this.props.isThereError) {
+                msgComponent = (
+                    <>
+                        <h1 className="mb-2">Order Error!</h1>
+                        <p>
+                            We've received your payment, but couldn't finalize your order.<br />
+                            Please contact our Customer Service at <b style={{ color: "orangered" }}>customerservice@anyshotbasketball.com</b> to finalize your order.
+                        </p>
+                    </>
+                );
+            }
+            else {
+                msgComponent = (
+                    <>
+                        <h1 className="mb-2">Order Successful!</h1>
+                        <p>We've received your order and sent you an email for your info.</p>
+                    </>
+                );
+
+                if (BsAppSession.isLoggedIn()) { orderLink = (<Link to="#">TODO: Link this to the order.</Link>); }
+            }
+
+        }
+
+
+
         return (
-            <section className="hero">
+            <section className="hero" style={{ paddingTop: "200px", paddingBottom: "300px" }}>
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-lg-8">
-                            <h1 className="mb-2">Order Finalizing</h1>
-                            <p>Payment successful! We're just finalizing your order. Please wait...</p>
+                            {msgComponent}
+                            {orderLink}
                         </div>
                     </div>
 
@@ -113,6 +148,8 @@ class PaymentFinalization extends React.Component {
 /* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
+        isThereError: state.checkout.isThereError,
+        shouldDisplayFinalizationMsg: state.checkout.shouldDisplayFinalizationMsg,
         paymentFinalizationPageEntryCode: state.checkout.paymentFinalizationPageEntryCode,
     };
 };
@@ -121,6 +158,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        resetFinalizationMsg: () => dispatch(resetFinalizationMsg()),
         finalizeOrder: (cartId, shippingInfo) => dispatch(finalizeOrder(cartId, shippingInfo)),
         setPaymentFinalizationPageEntryCode: () => dispatch(setPaymentFinalizationPageEntryCode()),
     };

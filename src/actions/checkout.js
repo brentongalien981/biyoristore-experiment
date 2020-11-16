@@ -1,11 +1,13 @@
 import BsCore2 from "../bs-library/helpers/BsCore2";
 import Bs from "../bs-library/helpers/Bs";
 import BsAppSession from "../bs-library/helpers/BsAppSession";
+import { resetCart } from "./cart";
 
 
 
 /* NAMES */
 // export const ON_ADDRESS_SELECTION_CHANGE = "ON_ADDRESS_SELECTION_CHANGE";
+export const RESET_FINALIZATION_MSG = "RESET_FINALIZATION_MSG";
 export const ON_FINALIZE_ORDER_FAIL = "ON_FINALIZE_ORDER_FAIL";
 export const ON_FINALIZE_ORDER_SUCCESS = "ON_FINALIZE_ORDER_SUCCESS";
 export const SET_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE = "SET_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE";
@@ -15,6 +17,7 @@ export const ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS = "ON_READ_CHECKOUT_REQUIRED
 
 /* FUNCS */
 // export const onAddressSelectionChange = (e, i) => ({ type: ON_ADDRESS_SELECTION_CHANGE, e: e, i: i });
+export const resetFinalizationMsg = () => ({ type: RESET_FINALIZATION_MSG });
 export const onFinalizeOrderFail = () => ({ type: ON_FINALIZE_ORDER_FAIL });
 export const onFinalizeOrderSuccess = () => ({ type: ON_FINALIZE_ORDER_SUCCESS });
 export const setPaymentFinalizationPageEntryCode = () => ({ type: SET_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE });
@@ -40,14 +43,14 @@ export const finalizeOrder = (cartId, shippingInfo) => {
                 Bs.log("\n#####################");
                 Bs.log("ACTION: checkout, METHOD: finalizeOrder() => ajaxCrud() => callBackFunc()");
 
-                // TODO: 
-                dispatch(onFinalizeOrderSuccess());
 
-                // TODO: dispatch resetCart().
+                dispatch(onFinalizeOrderSuccess());
+                dispatch(resetCart());
             },
             errorCallBackFunc: (errors) => {
                 // TODO:
                 dispatch(onFinalizeOrderFail());
+                dispatch(resetCart());
             }
         });
     };

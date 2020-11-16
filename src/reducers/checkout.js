@@ -11,7 +11,9 @@ const initialState = {
     addresses: [],
     paymentInfos: [],
     paymentPageEntryCode: "",
-    paymentFinalizationPageEntryCode: ""
+    paymentFinalizationPageEntryCode: "",
+    shouldDisplayFinalizationMsg: false,
+    isThereError: false
 };
 
 
@@ -20,6 +22,7 @@ const initialState = {
 const checkout = (state = initialState, action) => {
     switch (action.type) {
         // case actions.ON_ADDRESS_SELECTION_CHANGE: return onAddressSelectionChange(state, action);
+        case actions.RESET_FINALIZATION_MSG: return resetFinalizationMsg(state, action);
         case actions.ON_FINALIZE_ORDER_FAIL: return onFinalizeOrderFail(state, action);
         case actions.ON_FINALIZE_ORDER_SUCCESS: return onFinalizeOrderSuccess(state, action);
         case actions.SET_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE: return setPaymentFinalizationPageEntryCode(state, action);
@@ -32,23 +35,31 @@ const checkout = (state = initialState, action) => {
 
 
 /* NORMAL FUNCS */
-const onFinalizeOrderFail = (state, action) => {
+const resetFinalizationMsg = (state, action) => {
+    return {
+        ...state,
+        shouldDisplayFinalizationMsg: false,
+        isThereError: false
+    };
+};
 
-    alert("In REDUCER: checkout, METHOD: onFinalizeOrderFail()");
+
+
+const onFinalizeOrderFail = (state, action) => {
 
     return {
         ...state,
+        shouldDisplayFinalizationMsg: true,
+        isThereError: true
     };
 };
 
 
 
 const onFinalizeOrderSuccess = (state, action) => {
-
-    alert("In REDUCER: checkout, METHOD: onFinalizeOrderSuccess()");
-
     return {
         ...state,
+        shouldDisplayFinalizationMsg: true
     };
 };
 
