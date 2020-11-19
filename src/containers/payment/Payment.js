@@ -33,7 +33,7 @@ class Payment extends React.Component {
     }
 
 
-
+//ish
     doesCartHaveItem() {
         if (this.props.location.state.cartItems.length >= 1) { return true; }
         return false;
@@ -85,11 +85,12 @@ class Payment extends React.Component {
 
         Payment.HAS_VALID_PAGE_DATA_REQUIREMENTS = false;
 
-        if (!this.checkPageEntryCode()) { alert("Please confirm your order details first"); return false; }
-        if (!this.checkShippingAddress()) { return false; }
+        if (!this.checkPageEntryCode()) { alert("Please confirm your order details first."); return false; }
+        if (!this.checkShippingAddress()) { alert("Invalid shipping info."); return false; }
         if (!this.doesCartHaveItem()) { alert("No cart items..."); return false; }
 
         Payment.HAS_VALID_PAGE_DATA_REQUIREMENTS = true;
+
         return true;
     }
 
@@ -130,8 +131,7 @@ class Payment extends React.Component {
 
         Bs.log("\n\n##############################");
         Bs.log("In FILE: Payment.js, METHOD: componentWillUnmount()...");
-        
-        // ish
+
         this.props.setPaymentPageEntryCode();
         
     }

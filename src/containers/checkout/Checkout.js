@@ -30,6 +30,9 @@ class Checkout extends React.Component {
 
         for (const field in obj) {
             const val = obj[field];
+
+            if (field === "id" || field === "isBlankAddress") { continue; }
+
             if (!val || val.trim().length === 0) {
                 returnObj.isObjValid = false;
                 returnObj.msg += field + " can not be empty.\n";
@@ -137,7 +140,7 @@ class Checkout extends React.Component {
             // set redirect-page's data-requirements
             redirectPage = "/predefined-payment-finalization";
             redirectPageDataRequirements = {
-                predefinedPaymentFinalizationPageEntryCode: this.props.predefinedPaymentFinalizationPageEntryCode,
+                pageEntryCode: this.props.predefinedPaymentFinalizationPageEntryCode,
                 paymentMethodId: this.state.paymentMethod.id,
                 shippingInfo: this.state.address,
             };
