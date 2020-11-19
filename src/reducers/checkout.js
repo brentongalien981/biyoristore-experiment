@@ -12,6 +12,7 @@ const initialState = {
     paymentInfos: [],
     paymentPageEntryCode: "",
     paymentFinalizationPageEntryCode: "",
+    predefinedPaymentFinalizationPageEntryCode: "",
     shouldDisplayFinalizationMsg: false,
     isThereError: false
 };
@@ -25,6 +26,7 @@ const checkout = (state = initialState, action) => {
         case actions.RESET_FINALIZATION_MSG: return resetFinalizationMsg(state, action);
         case actions.ON_FINALIZE_ORDER_FAIL: return onFinalizeOrderFail(state, action);
         case actions.ON_FINALIZE_ORDER_SUCCESS: return onFinalizeOrderSuccess(state, action);
+        case actions.SET_PREDEFINED_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE: return setPredefinedPaymentFinalizationPageEntryCode(state, action);
         case actions.SET_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE: return setPaymentFinalizationPageEntryCode(state, action);
         case actions.SET_PAYMENT_PAGE_ENTRY_CODE: return setPaymentPageEntryCode(state, action);
         case actions.ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS: return onReadCheckoutRequiredDataSuccess(state, action);
@@ -60,6 +62,15 @@ const onFinalizeOrderSuccess = (state, action) => {
     return {
         ...state,
         shouldDisplayFinalizationMsg: true
+    };
+};
+
+
+
+const setPredefinedPaymentFinalizationPageEntryCode = (state, action) => {
+    return {
+        ...state,
+        predefinedPaymentFinalizationPageEntryCode: Bs.getRandomId(),
     };
 };
 

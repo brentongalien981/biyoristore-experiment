@@ -17,6 +17,13 @@ import OrderDetailsSummaryModal from './OrderDetailsSummaryModal';
 class Checkout extends React.Component {
 
     /* HELPER FUNCS */
+    isPaymentMethodPredefined() {
+        if (this.state.paymentMethod.id != null && this.state.paymentMethod.id !== 0) { return true; }
+        return false;
+    }
+
+
+
     validateFields = (obj) => {
 
         let returnObj = { isObjValid: true, msg: "" };
@@ -52,6 +59,7 @@ class Checkout extends React.Component {
         if (BsAppSession.isLoggedIn()) { this.props.readCheckoutRequiredData(); }
 
         //
+        this.props.setPredefinedPaymentFinalizationPageEntryCode();
         this.props.setPaymentPageEntryCode();
     }
 
@@ -112,8 +120,50 @@ class Checkout extends React.Component {
 
     /* EVENT FUNCS */
     onOrderDetailsConfirm = () => {
+
+        Bs.log("\n\n##############################");
         Bs.log("In METHOD: onOrderDetailsConfirm()");
-        this.props.history.push("/payment", { cartItems: this.props.cartItems, shippingAddress: this.state.address, paymentPageEntryCode: this.props.paymentPageEntryCode });
+
+        //
+        let redirectPage = "/payment";
+        let redirectPageDataRequirements = {};
+
+        
+        if (this.isPaymentMethodPredefined()) {
+
+            // ish
+            Bs.log("payment method is predefined, redirect to predefined-payment-page");
+
+            // set redirect-page's data-requirements
+            redirectPage = "/predefined-payment-finalization";
+            redirectPageDataRequirements = {
+                predefinedPaymentFinalizationPageEntryCode: this.props.predefinedPaymentFinalizationPageEntryCode,
+                paymentMethodId: this.state.paymentMethod.id,
+                shippingInfo: this.state.address,
+            };
+        }
+        else {
+
+            //
+            Bs.log("payment method is NOT predefined, redirect to payment-page");
+
+            // set payment-page's data-requirements
+            redirectPageDataRequirements = {
+                cartItems: this.props.cartItems,
+                shippingAddress: this.state.address,
+                paymentPageEntryCode: this.props.paymentPageEntryCode
+            };
+        }
+
+
+        //
+        Bs.log("redirectPageDataRequirements ==> ...");
+        Bs.log(redirectPageDataRequirements);
+
+        // redirect
+        this.props.history.push(redirectPage, redirectPageDataRequirements);
+
+
     };
 
 
@@ -129,8 +179,9 @@ class Checkout extends React.Component {
             return;
         }
 
-        // Show order details summary.
+        // show order details summary.
         document.querySelector("#OrderDetailsSummaryModalTriggerBtn").click();
+
     };
 
 
@@ -206,6 +257,7 @@ class Checkout extends React.Component {
 /* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
+        predefinedPaymentFinalizationPageEntryCode: state.checkout.predefinedPaymentFinalizationPageEntryCode,
         paymentPageEntryCode: state.checkout.paymentPageEntryCode,
         cart: state.cart.cart,
         cartItems: state.cart.cart.cartItems,
@@ -220,6 +272,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         // onAddressSelectionChange: (e, i) => dispatch(actions.onAddressSelectionChange(e, i)),
+        setPredefinedPaymentFinalizationPageEntryCode: () => dispatch(actions.setPredefinedPaymentFinalizationPageEntryCode()),
         setPaymentPageEntryCode: () => dispatch(actions.setPaymentPageEntryCode()),
         readCheckoutRequiredData: () => dispatch(actions.readCheckoutRequiredData()),
     };
