@@ -12,6 +12,7 @@ class PaymentFinalization extends React.Component {
     /* PROPERTIES */
     static HAS_VALID_PAGE_DATA_REQUIREMENTS = false;
     static unblockHistoryNavigation = null;
+    static isPaymentFinalizationProcessing = false;
 
 
 
@@ -62,6 +63,20 @@ class PaymentFinalization extends React.Component {
 
 
 
+    doPrePaymentFinalizationProcess() {
+        if (PaymentFinalization.isPaymentFinalizationProcessing) {
+            alert("Please wait. We're finalizing your order.");
+            return false;
+        }
+
+        PaymentFinalization.isPaymentFinalizationProcessing = true;
+
+        // ish: enable browser-navigation-blocker
+        return true;
+    }
+
+
+
     /* MAIN FUNCS */
     componentDidUpdate() {
         if (this.props.shouldDisplayFinalizationMsg) {
@@ -73,7 +88,9 @@ class PaymentFinalization extends React.Component {
 
     componentDidMount() {
 
-        this.props.resetFinalizationMsg();
+        //ish
+        if (!this.doPrePaymentFinalizationProcess()) { return; }
+
 
         if (PaymentFinalization.HAS_VALID_PAGE_DATA_REQUIREMENTS) {
             this.props.finalizeOrder(this.props.location.state.cartId, this.props.location.state.shippingInfo);
@@ -108,6 +125,7 @@ class PaymentFinalization extends React.Component {
         }
 
         PaymentFinalization.HAS_VALID_PAGE_DATA_REQUIREMENTS = true;
+        this.props.resetFinalizationMsg();
     }
 
 

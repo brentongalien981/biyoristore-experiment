@@ -15,6 +15,10 @@ function PaymentForm(props) {
     const stripe = useStripe();
     const elements = useElements();
 
+    //
+    let unblockNavBlocker = null;
+    const navBlockerMsg = "Please wait we're processing your payment. \nIf you wanna cancel your order, please contact customer service at \ncustomerservice@anyshotbasketball.com";
+
 
 
     useEffect(() => {
@@ -82,24 +86,37 @@ function PaymentForm(props) {
     };
 
 
+    const isPaymentFormPrepared = () => {
+        if (!clientSecret || clientSecret == "") { return false; };
+        return true;
+    };
 
-    const handleSubmit = async ev => {
-        ev.preventDefault();
+
+
+    const doPrePayProcess = () => {
+        if (!isPaymentFormPrepared()) {
+            alert("Please wait, we're preparing your payment... Try again in a couple of seconds.");
+            return false;
+        }
+        if (processing) { alert("Please wait we're processing your payment."); return false; }
+
         setProcessing(true);
 
-        if (!clientSecret || clientSecret == "") {
-            alert("Please wait, we're preparing your payment... Try again in a couple of seconds.");
-            setProcessing(false);
-            return;
-        }
-
-
         // 2 WARNINGS: Warn user from moving away from the page when pay-process has already been dispatched.
-        let unblock = props.history.block(() => {
-            alert("Please wait we're processing your payment. \nIf you wanna cancel your order, please contact customer service at \ncustomerservice@anyshotbasketball.com");
+        unblockNavBlocker = props.history.block(() => {
+            alert(navBlockerMsg);
             return false;
         });
         // window.onbeforeunload = () => { return "Please wait we're processing your payment. \nIf you wanna cancel your order, please contact customer service at \ncustomerservice@anyshotbasketball.com"; };
+
+        return true;
+    };
+
+
+
+    const handleSubmit = async ev => {
+        ev.preventDefault();
+        if (!doPrePayProcess()) { return; }
 
 
         // Process the payment.
@@ -114,15 +131,22 @@ function PaymentForm(props) {
         if (payload.error) {
             setError(`Payment failed ${payload.error.message}`);
             setProcessing(false);
-            unblock();
+            unblockNavBlocker();
         } else {
             setError(null);
             setProcessing(false);
             setSucceeded(true);
-            unblock();
+            unblockNavBlocker();
 
             // redirect to page payment-finalization
-            props.history.replace("/payment-finalization", { paymentFinalizationPageEntryCode: props.paymentFinalizationPageEntryCode, cartId: props.cart.id, shippingInfo: props.shippingAddress });
+            const redirectPageDataRequirements = {
+                paymentFinalizationPageEntryCode: props.paymentFinalizationPageEntryCode,
+                cartId: props.cart.id,
+                shippingInfo: props.shippingAddress
+            };
+
+            //
+            props.history.replace("/payment-finalization", redirectPageDataRequirements);
         }
     };
 

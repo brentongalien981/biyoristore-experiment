@@ -131,7 +131,7 @@ class Payment extends React.Component {
 
         Bs.log("\n\n##############################");
         Bs.log("In FILE: Payment.js, METHOD: componentWillUnmount()...");
-
+        Bs.log("dispatching METHOD: setPaymentPageEntryCode()...");
         this.props.setPaymentPageEntryCode();
         
     }
