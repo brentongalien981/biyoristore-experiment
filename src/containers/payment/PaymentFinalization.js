@@ -10,7 +10,7 @@ import BsAppSession from '../../bs-library/helpers/BsAppSession';
 class PaymentFinalization extends React.Component {
 
     /* PROPERTIES */
-    // static HAS_VALID_PAGE_DATA_REQUIREMENTS = false;
+    static ARE_PAGE_DATA_REQUIREMENTS_VALID = false;
     static unblockNavBlocker = null;
     static isPaymentFinalizationProcessing = false;
 
@@ -64,6 +64,8 @@ class PaymentFinalization extends React.Component {
 
 
     doPrePaymentFinalizationProcess() {
+        if (!PaymentFinalization.ARE_PAGE_DATA_REQUIREMENTS_VALID) { return false; }
+
         if (PaymentFinalization.isPaymentFinalizationProcessing) {
             alert("Please wait. We're finalizing your order.");
             return false;
@@ -134,7 +136,7 @@ class PaymentFinalization extends React.Component {
 
 
     componentDidMount() {
-
+        //ish
         if (!this.doPrePaymentFinalizationProcess()) { return; }
         this.doActualPaymentFinalizationProcess();
     }
@@ -145,6 +147,12 @@ class PaymentFinalization extends React.Component {
         Bs.log("\n\n##############################");
         Bs.log("In CLASS: PaymentFinalization, METHOD: componentWillUnmount()...");
 
+        if (PaymentFinalization.isPaymentFinalizationProcessing) {
+            alert("Please wait we're processing your payment. \nIf you wanna cancel your order, please contact customer service at \ncustomerservice@anyshotbasketball.com");
+            return;
+        }
+
+        PaymentFinalization.unblockNavBlocker();
         this.props.setPaymentFinalizationPageEntryCode();
     }
 
@@ -152,11 +160,13 @@ class PaymentFinalization extends React.Component {
 
     constructor(props) {
 
+        //ish
         super(props);
         Bs.log("\n\n##############################");
         Bs.log("In CLASS: PaymentFinalization, METHOD: constructor()...");
 
-        // PaymentFinalization.HAS_VALID_PAGE_DATA_REQUIREMENTS = false;
+        PaymentFinalization.ARE_PAGE_DATA_REQUIREMENTS_VALID = false;
+        PaymentFinalization.isPaymentFinalizationProcessing = false;
 
         if (!this.checkPageEntryCode()) {
             alert("Please confirm your order details first");
@@ -164,7 +174,7 @@ class PaymentFinalization extends React.Component {
             return;
         }
 
-        // PaymentFinalization.HAS_VALID_PAGE_DATA_REQUIREMENTS = true;
+        PaymentFinalization.ARE_PAGE_DATA_REQUIREMENTS_VALID = true;
         this.props.resetFinalizationObjs();
     }
 
