@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import Bs from '../../bs-library/helpers/Bs';
-import { setPaymentFinalizationPageEntryCode, finalizeOrder, resetFinalizationMsg } from '../../actions/checkout';
+import { setPaymentFinalizationPageEntryCode, finalizeOrder, resetFinalizationObjs, endPaymentFinalizationProcess } from '../../actions/checkout';
 import BsAppSession from '../../bs-library/helpers/BsAppSession';
 
 
@@ -10,8 +10,8 @@ import BsAppSession from '../../bs-library/helpers/BsAppSession';
 class PaymentFinalization extends React.Component {
 
     /* PROPERTIES */
-    static HAS_VALID_PAGE_DATA_REQUIREMENTS = false;
-    static unblockHistoryNavigation = null;
+    // static HAS_VALID_PAGE_DATA_REQUIREMENTS = false;
+    static unblockNavBlocker = null;
     static isPaymentFinalizationProcessing = false;
 
 
@@ -52,9 +52,9 @@ class PaymentFinalization extends React.Component {
 
 
 
-    setWarningForHistoryNavChange() {
+    enableNavBlocker() {
         // 2 WARNINGS: Warn user from moving away from the page when pay-process has already been dispatched.
-        PaymentFinalization.unblockHistoryNavigation = this.props.history.block(() => {
+        PaymentFinalization.unblockNavBlocker = this.props.history.block(() => {
             alert("Please wait we're processing your payment. \nIf you wanna cancel your order, please contact customer service at \ncustomerservice@anyshotbasketball.com");
             return false;
         });
@@ -71,16 +71,63 @@ class PaymentFinalization extends React.Component {
 
         PaymentFinalization.isPaymentFinalizationProcessing = true;
 
-        // ish: enable browser-navigation-blocker
+        this.enableNavBlocker();
         return true;
+    }
+
+
+
+    doActualPaymentFinalizationProcess() {
+        this.props.finalizeOrder(this.props.location.state.cartId, this.props.location.state.shippingInfo);
+    }
+
+
+
+    doPostPaymentFinalizationProcess() {
+        PaymentFinalization.unblockNavBlocker();
+        PaymentFinalization.isPaymentFinalizationProcessing = false;
+        this.props.endPaymentFinalizationProcess();
+    }
+
+
+
+    getMsgComponent() {
+
+        let msgHeader = "";
+        let msgBody = "";
+        let orderLink = null; // TODO:LATER add order-link.
+
+
+        switch (this.props.orderProcessStatusCode) {
+            case 0:
+                msgBody = "Please wait. We're finalizing your order.";
+                break;
+            default:
+                msgHeader = "Payment Successful!";
+                msgBody = (
+                    <>
+                        We've received your payment and now processing your order.<br />
+                        If you have any questions or want to cancel your order before it's shipped,<br />
+                        please contact our Customer Service at <b style={{ color: "orangered" }}>customerservice@anyshotbasketball.com</b>
+                    </>
+                );
+                break;
+        }
+
+        return (
+            <>
+                <h1 className="mb-2">{msgHeader}</h1>
+                <p>{msgBody}</p>
+            </>
+        );
     }
 
 
 
     /* MAIN FUNCS */
     componentDidUpdate() {
-        if (this.props.shouldDisplayFinalizationMsg) {
-            PaymentFinalization.unblockHistoryNavigation();
+        if (this.props.shouldDoPostPaymentFinalizationProcess) {
+            this.doPostPaymentFinalizationProcess();
         }
     }
 
@@ -88,15 +135,8 @@ class PaymentFinalization extends React.Component {
 
     componentDidMount() {
 
-        //ish
         if (!this.doPrePaymentFinalizationProcess()) { return; }
-
-
-        if (PaymentFinalization.HAS_VALID_PAGE_DATA_REQUIREMENTS) {
-            this.props.finalizeOrder(this.props.location.state.cartId, this.props.location.state.shippingInfo);
-
-            this.setWarningForHistoryNavChange();
-        }
+        this.doActualPaymentFinalizationProcess();
     }
 
 
@@ -116,7 +156,7 @@ class PaymentFinalization extends React.Component {
         Bs.log("\n\n##############################");
         Bs.log("In CLASS: PaymentFinalization, METHOD: constructor()...");
 
-        PaymentFinalization.HAS_VALID_PAGE_DATA_REQUIREMENTS = false;
+        // PaymentFinalization.HAS_VALID_PAGE_DATA_REQUIREMENTS = false;
 
         if (!this.checkPageEntryCode()) {
             alert("Please confirm your order details first");
@@ -124,48 +164,15 @@ class PaymentFinalization extends React.Component {
             return;
         }
 
-        PaymentFinalization.HAS_VALID_PAGE_DATA_REQUIREMENTS = true;
-        this.props.resetFinalizationMsg();
+        // PaymentFinalization.HAS_VALID_PAGE_DATA_REQUIREMENTS = true;
+        this.props.resetFinalizationObjs();
     }
 
 
 
     render() {
 
-        let msgComponent = (<p className="lead">Please wait. We're finalizing your order.</p>);
-        let orderLink = null;
-
-        if (this.props.shouldDisplayFinalizationMsg) {
-
-            if (this.props.isThereError) {
-                msgComponent = (
-                    <>
-                        <h1 className="mb-2">Order Error!</h1>
-                        <p>
-                            We've received your payment, but couldn't finalize your order.<br />
-                            Please contact our Customer Service at <b style={{ color: "orangered" }}>customerservice@anyshotbasketball.com</b> to finalize your order.
-                        </p>
-                    </>
-                );
-            }
-            else {
-                msgComponent = (
-                    <>
-                        <h1 className="mb-2">Order Successful!</h1>
-                        <p>
-                            We've received your order and sent you an email for your info.<br />
-                            Should you want to cancel your order before shipping, please contact our<br />
-                            Customer Service at <b style={{ color: "orangered" }}>customerservice@anyshotbasketball.com</b>
-                        </p>
-                    </>
-                );
-
-                if (BsAppSession.isLoggedIn()) { orderLink = (<Link to="#">TODO: Link this to the order.</Link>); }
-            }
-
-        }
-
-
+        let msgComponent = this.getMsgComponent();
 
         return (
             <section className="hero" style={{ paddingTop: "200px", paddingBottom: "300px" }}>
@@ -173,7 +180,6 @@ class PaymentFinalization extends React.Component {
                     <div className="row justify-content-center">
                         <div className="col-lg-8">
                             {msgComponent}
-                            {orderLink}
                         </div>
                     </div>
 
@@ -192,8 +198,10 @@ class PaymentFinalization extends React.Component {
 /* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
-        isThereError: state.checkout.isThereError,
-        shouldDisplayFinalizationMsg: state.checkout.shouldDisplayFinalizationMsg,
+        // isThereError: state.checkout.isThereError,
+        orderProcessStatusCode: state.checkout.orderProcessStatusCode,
+        // shouldDisplayFinalizationMsg: state.checkout.shouldDisplayFinalizationMsg,
+        shouldDoPostPaymentFinalizationProcess: state.checkout.shouldDoPostPaymentFinalizationProcess,
         paymentFinalizationPageEntryCode: state.checkout.paymentFinalizationPageEntryCode,
     };
 };
@@ -202,7 +210,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        resetFinalizationMsg: () => dispatch(resetFinalizationMsg()),
+        endPaymentFinalizationProcess: () => dispatch(endPaymentFinalizationProcess()),
+        resetFinalizationObjs: () => dispatch(resetFinalizationObjs()),
         finalizeOrder: (cartId, shippingInfo) => dispatch(finalizeOrder(cartId, shippingInfo)),
         setPaymentFinalizationPageEntryCode: () => dispatch(setPaymentFinalizationPageEntryCode()),
     };

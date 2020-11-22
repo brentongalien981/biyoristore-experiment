@@ -7,9 +7,11 @@ import { resetCart } from "./cart";
 
 /* NAMES */
 // export const ON_ADDRESS_SELECTION_CHANGE = "ON_ADDRESS_SELECTION_CHANGE";
-export const RESET_FINALIZATION_MSG = "RESET_FINALIZATION_MSG";
-export const ON_FINALIZE_ORDER_FAIL = "ON_FINALIZE_ORDER_FAIL";
-export const ON_FINALIZE_ORDER_SUCCESS = "ON_FINALIZE_ORDER_SUCCESS";
+export const END_PAYMENT_FINALIZATION_PROCESS = "END_PAYMENT_FINALIZATION_PROCESS";
+export const RESET_FINALIZATION_OBJS = "RESET_FINALIZATION_OBJS";
+export const ON_FINALIZE_ORDER_RETURN = "ON_FINALIZE_ORDER_RETURN";
+// export const ON_FINALIZE_ORDER_FAIL = "ON_FINALIZE_ORDER_FAIL";
+// export const ON_FINALIZE_ORDER_SUCCESS = "ON_FINALIZE_ORDER_SUCCESS";
 export const SET_PREDEFINED_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE = "SET_PREDEFINED_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE";
 export const SET_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE = "SET_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE";
 export const SET_PAYMENT_PAGE_ENTRY_CODE = "SET_PAYMENT_PAGE_ENTRY_CODE";
@@ -18,9 +20,11 @@ export const ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS = "ON_READ_CHECKOUT_REQUIRED
 
 /* FUNCS */
 // export const onAddressSelectionChange = (e, i) => ({ type: ON_ADDRESS_SELECTION_CHANGE, e: e, i: i });
-export const resetFinalizationMsg = () => ({ type: RESET_FINALIZATION_MSG });
-export const onFinalizeOrderFail = () => ({ type: ON_FINALIZE_ORDER_FAIL });
-export const onFinalizeOrderSuccess = () => ({ type: ON_FINALIZE_ORDER_SUCCESS });
+export const endPaymentFinalizationProcess = () => ({ type: END_PAYMENT_FINALIZATION_PROCESS });
+export const resetFinalizationObjs = () => ({ type: RESET_FINALIZATION_OBJS });
+export const onFinalizeOrderReturn = (objs = null) => ({ type: ON_FINALIZE_ORDER_RETURN, objs: objs });
+// export const onFinalizeOrderFail = () => ({ type: ON_FINALIZE_ORDER_FAIL });
+// export const onFinalizeOrderSuccess = () => ({ type: ON_FINALIZE_ORDER_SUCCESS });
 export const setPredefinedPaymentFinalizationPageEntryCode = () => ({ type: SET_PREDEFINED_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE });
 export const setPaymentFinalizationPageEntryCode = () => ({ type: SET_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE });
 export const setPaymentPageEntryCode = () => ({ type: SET_PAYMENT_PAGE_ENTRY_CODE });
@@ -40,18 +44,19 @@ export const finalizeOrder = (cartId, shippingInfo) => {
             url: '/checkout/finalizeOrder',
             method: "post",
             params: { cartId: cartId, ...shippingInfo },
-            callBackFunc: (requestData, json) => { 
+            neededResponseParams: ["orderProcessStatusCode", "order"],
+            callBackFunc: (requestData, json) => {
 
                 Bs.log("\n#####################");
                 Bs.log("ACTION: checkout, METHOD: finalizeOrder() => ajaxCrud() => callBackFunc()");
 
-
-                dispatch(onFinalizeOrderSuccess());
+                const objs = { orderProcessStatusCode: json.orderProcessStatusCode, order: json.order };
+                dispatch(onFinalizeOrderReturn(objs));
                 dispatch(resetCart());
             },
             errorCallBackFunc: (errors) => {
                 // TODO:
-                dispatch(onFinalizeOrderFail());
+                dispatch(onFinalizeOrderReturn());
                 dispatch(resetCart());
             }
         });
@@ -72,7 +77,7 @@ export const readCheckoutRequiredData = () => {
             url: '/checkout/readCheckoutRequiredData',
             method: "post",
             params: { api_token: BsAppSession.get("apiToken") },
-            callBackFunc: (requestData, json) => { 
+            callBackFunc: (requestData, json) => {
                 Bs.log("\n#####################");
                 Bs.log("FILE: actions/checkout.js, METHOD: readCheckoutRequiredData() => ajaxCrud() => callBackFunc()");
 

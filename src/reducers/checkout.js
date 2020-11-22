@@ -6,15 +6,18 @@ import BsCore2 from '../bs-library/helpers/BsCore2';
 
 /* STATE */
 const initialState = {
-    message: "This is the initial state of STORE: cart.",
+    message: "This is the initial state of STORE: checkout.",
     // profile: {},
     addresses: [],
     paymentInfos: [],
     paymentPageEntryCode: "",
     paymentFinalizationPageEntryCode: "",
     predefinedPaymentFinalizationPageEntryCode: "",
-    shouldDisplayFinalizationMsg: false,
-    isThereError: false
+    // shouldDisplayFinalizationMsg: false,
+    shouldDoPostPaymentFinalizationProcess: false,
+    orderProcessStatusCode: 0,
+    // isThereError: false,
+    order: {}
 };
 
 
@@ -23,9 +26,11 @@ const initialState = {
 const checkout = (state = initialState, action) => {
     switch (action.type) {
         // case actions.ON_ADDRESS_SELECTION_CHANGE: return onAddressSelectionChange(state, action);
-        case actions.RESET_FINALIZATION_MSG: return resetFinalizationMsg(state, action);
-        case actions.ON_FINALIZE_ORDER_FAIL: return onFinalizeOrderFail(state, action);
-        case actions.ON_FINALIZE_ORDER_SUCCESS: return onFinalizeOrderSuccess(state, action);
+        case actions.END_PAYMENT_FINALIZATION_PROCESS: return endPaymentFinalizationProcess(state, action);
+        case actions.ON_FINALIZE_ORDER_RETURN: return onFinalizeOrderReturn(state, action);
+        case actions.RESET_FINALIZATION_OBJS: return resetFinalizationObjs(state, action);
+        // case actions.ON_FINALIZE_ORDER_FAIL: return onFinalizeOrderFail(state, action);
+        // case actions.ON_FINALIZE_ORDER_SUCCESS: return onFinalizeOrderSuccess(state, action);
         case actions.SET_PREDEFINED_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE: return setPredefinedPaymentFinalizationPageEntryCode(state, action);
         case actions.SET_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE: return setPaymentFinalizationPageEntryCode(state, action);
         case actions.SET_PAYMENT_PAGE_ENTRY_CODE: return setPaymentPageEntryCode(state, action);
@@ -37,33 +42,42 @@ const checkout = (state = initialState, action) => {
 
 
 /* NORMAL FUNCS */
-const resetFinalizationMsg = (state, action) => {
+const endPaymentFinalizationProcess = (state, action) => {
     return {
         ...state,
-        shouldDisplayFinalizationMsg: false,
-        isThereError: false
+        shouldDoPostPaymentFinalizationProcess: false
     };
 };
 
 
 
-const onFinalizeOrderFail = (state, action) => {
-
+const resetFinalizationObjs = (state, action) => {
     return {
         ...state,
-        shouldDisplayFinalizationMsg: true,
-        isThereError: true
+        orderProcessStatusCode: 0,
+        order: {}
     };
 };
 
 
 
-const onFinalizeOrderSuccess = (state, action) => {
+const onFinalizeOrderReturn = (state, action) => {
     return {
         ...state,
-        shouldDisplayFinalizationMsg: true
+        shouldDoPostPaymentFinalizationProcess: true,
+        orderProcessStatusCode: (action.objs?.orderProcessStatusCode ? action.objs.orderProcessStatusCode : -1),
+        order: (action.objs?.order ? action.objs.order : {})
     };
 };
+
+
+
+// const onFinalizeOrderSuccess = (state, action) => {
+//     return {
+//         ...state,
+//         shouldDisplayFinalizationMsg: true
+//     };
+// };
 
 
 
