@@ -152,8 +152,8 @@ class PaymentFinalization extends React.Component {
             return;
         }
 
-        PaymentFinalization.unblockNavBlocker();
         this.props.setPaymentFinalizationPageEntryCode();
+        PaymentFinalization.unblockNavBlocker();
     }
 
 
