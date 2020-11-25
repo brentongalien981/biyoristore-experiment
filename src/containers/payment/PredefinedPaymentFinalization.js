@@ -16,12 +16,28 @@ class PredefinedPaymentFinalization extends React.Component {
 
 
     /* HELPER FUNCS */
+    getCartItemsInfo() {
+        const cartItems = this.props.location.state.cartItems;
+        let info = [];
+
+        cartItems.forEach(i => {
+            const item = { id: i.id, productId: i.product.id, quantity: i.quantity };
+            info.push(item);
+        });
+
+        return info;
+    }
+
+
+
     doActualPredefinedPaymentFinalizationProcess() {
         //ish
         const objs = {
             paymentMethodId: this.props.location.state.paymentMethodId,
-            shippingInfo: this.props.location.state.shippingInfo
+            shippingInfo: this.props.location.state.shippingInfo,
+            cartItemsInfo: this.getCartItemsInfo()
         };
+
         this.props.finalizeOrderWithPredefinedPayment(objs);
     }
 
@@ -115,11 +131,12 @@ class PredefinedPaymentFinalization extends React.Component {
     /* MAIN FUNCS */
     componentDidMount() {
         
-        if (!this.checkPageEntryCode()) { 
-            alert("Please confirm your order first.");
-            this.props.history.replace("/checkout");
-            return; 
-        }
+        // // TODO: Enable this.
+        // if (!this.checkPageEntryCode()) { 
+        //     alert("Please confirm your order first.");
+        //     this.props.history.replace("/checkout");
+        //     return; 
+        // }
 
         this.props.resetFinalizationObjs();
 
@@ -168,6 +185,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        finalizeOrderWithPredefinedPayment: (objs) => dispatch(actions.finalizeOrderWithPredefinedPayment(objs)),
         resetFinalizationObjs: () => dispatch(actions.resetFinalizationObjs()),
     };
 };

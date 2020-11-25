@@ -32,6 +32,50 @@ export const onReadCheckoutRequiredDataSuccess = (objs) => ({ type: ON_READ_CHEC
 
 
 /* AJAX FUNCS */
+export const finalizeOrderWithPredefinedPayment = (objs) => {
+
+    Bs.log("\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    Bs.log("In ACTION: checkout, METHOD: finalizeOrderWithPredefinedPayment()");
+    Bs.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+
+    return (dispatch) => {
+
+        BsCore2.ajaxCrud({
+            url: '/checkout/finalizeOrderWithPredefinedPayment',
+            method: "post",
+            params: {
+                api_token: BsAppSession.get("apiToken"),
+                paymentMethodId: objs.paymentMethodId,
+                cartItemsInfo: objs.cartItemsInfo,
+                ...objs.shippingInfo
+            },
+            neededResponseParams: ["orderProcessStatusCode", "order"],
+            callBackFunc: (requestData, json) => {
+
+                Bs.log("\n@@@@@@@@@@@@@@@@@@@@");
+                Bs.log("START OF ACTION: checkout, METHOD: finalizeOrderWithPredefinedPayment() => ajaxCrud() => callBackFunc()");
+                Bs.log("@@@@@@@@@@@@@@@@@@@@");
+
+                // const objs = { orderProcessStatusCode: json.orderProcessStatusCode, order: json.order };
+                // dispatch(onFinalizeOrderReturn(objs));
+                // dispatch(resetCart());
+
+                Bs.log("\n####################");
+                Bs.log("END OF ACTION: checkout, METHOD: finalizeOrderWithPredefinedPayment() => ajaxCrud() => callBackFunc()");
+                Bs.log("####################");
+            },
+            errorCallBackFunc: (errors) => {
+                // TODO:
+                // dispatch(onFinalizeOrderReturn());
+                // dispatch(resetCart());
+            }
+        });
+    };
+};
+
+
+
 export const finalizeOrder = (cartId, shippingInfo) => {
 
     Bs.log("\n###############");

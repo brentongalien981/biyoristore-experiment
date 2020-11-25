@@ -143,6 +143,7 @@ class Checkout extends React.Component {
                 pageEntryCode: this.props.predefinedPaymentFinalizationPageEntryCode,
                 paymentMethodId: this.state.paymentMethod.id,
                 shippingInfo: this.state.address,
+                cartItems: this.props.cartItems,
             };
         }
         else {
