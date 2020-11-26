@@ -155,9 +155,12 @@ class PredefinedPaymentFinalization extends React.Component {
 
     /* MAIN FUNCS */
     componentWillUnmount() {
-        //ish
+        if (PredefinedPaymentFinalization.isPredefinedPaymentFinalizationProcessing) {
+            alert("Please wait we're processing your payment. \nIf you wanna cancel your order, please contact customer service at \ncustomerservice@anyshotbasketball.com");
+            return;
+        }
+
         this.props.setPredefinedPaymentFinalizationPageEntryCode();
-        // PredefinedPaymentFinalization.unblockNavBlocker();
     }
 
 
