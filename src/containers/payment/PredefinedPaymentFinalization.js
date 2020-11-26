@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import * as actions from '../../actions/checkout';
 import Bs from '../../bs-library/helpers/Bs';
 
@@ -16,6 +16,14 @@ class PredefinedPaymentFinalization extends React.Component {
 
 
     /* HELPER FUNCS */
+    doPostPredefinedPaymentFinalizationProcess() {
+        PredefinedPaymentFinalization.unblockNavBlocker();
+        PredefinedPaymentFinalization.isPredefinedPaymentFinalizationProcessing = false;
+        this.props.endPaymentFinalizationProcess();
+    }
+
+
+
     getCartItemsInfo() {
         const cartItems = this.props.location.state.cartItems;
         let info = [];
@@ -31,7 +39,6 @@ class PredefinedPaymentFinalization extends React.Component {
 
 
     doActualPredefinedPaymentFinalizationProcess() {
-        //ish
         const objs = {
             paymentMethodId: this.props.location.state.paymentMethodId,
             shippingInfo: this.props.location.state.shippingInfo,
@@ -76,12 +83,31 @@ class PredefinedPaymentFinalization extends React.Component {
         let orderLink = null; // TODO:LATER add order-link.
 
 
-        switch (this.props.orderProcessStatusCode) {
+        //ish
+        switch (this.props.paymentProcessStatusCode) {
+            case -1:
+                msgHeader = "Oops, sorry...";
+                msgBody = (
+                    <>
+                        We couldn't process your payment. Your payment was not charged.<br />
+                        Please use another card <Link to="/checkout">here and try again.</Link><br />
+                    </>
+                );
+                break;
             case 0:
                 msgHeader = "Please wait...";
                 msgBody = "Please wait. We're finalizing your order.";
                 break;
-            default:
+            case 1:
+                msgHeader = "Oops, sorry...";
+                msgBody = (
+                    <>
+                        We couldn't process your payment. Your payment was not charged.<br />
+                        Please use another card <Link to="/checkout">here and try again.</Link><br />
+                    </>
+                );
+                break;
+            case 2:
                 msgHeader = "Payment Successful!";
                 msgBody = (
                     <>
@@ -129,6 +155,14 @@ class PredefinedPaymentFinalization extends React.Component {
 
 
     /* MAIN FUNCS */
+    componentDidUpdate() {
+        if (this.props.shouldDoPostPaymentFinalizationProcess) {
+            this.doPostPredefinedPaymentFinalizationProcess();
+        }
+    }
+
+
+
     componentDidMount() {
         
         // // TODO: Enable this.
@@ -142,7 +176,6 @@ class PredefinedPaymentFinalization extends React.Component {
 
         if (!this.doPrePredefinedPaymentFinalizationProcess()) { return; }
 
-        //ish
         this.doActualPredefinedPaymentFinalizationProcess();
     }
 
@@ -176,6 +209,8 @@ class PredefinedPaymentFinalization extends React.Component {
 /* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
+        paymentProcessStatusCode: state.checkout.paymentProcessStatusCode,
+        shouldDoPostPaymentFinalizationProcess: state.checkout.shouldDoPostPaymentFinalizationProcess,
         orderProcessStatusCode: state.checkout.orderProcessStatusCode,
         actualPageEntryCode: state.checkout.predefinedPaymentFinalizationPageEntryCode,
     };
@@ -185,6 +220,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        endPaymentFinalizationProcess: () => dispatch(actions.endPaymentFinalizationProcess()),
         finalizeOrderWithPredefinedPayment: (objs) => dispatch(actions.finalizeOrderWithPredefinedPayment(objs)),
         resetFinalizationObjs: () => dispatch(actions.resetFinalizationObjs()),
     };

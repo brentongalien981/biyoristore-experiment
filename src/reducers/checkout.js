@@ -15,6 +15,7 @@ const initialState = {
     predefinedPaymentFinalizationPageEntryCode: "",
     // shouldDisplayFinalizationMsg: false,
     shouldDoPostPaymentFinalizationProcess: false,
+    paymentProcessStatusCode: 0,
     orderProcessStatusCode: 0,
     // isThereError: false,
     order: {}
@@ -54,6 +55,7 @@ const endPaymentFinalizationProcess = (state, action) => {
 const resetFinalizationObjs = (state, action) => {
     return {
         ...state,
+        paymentProcessStatusCode: 0,
         orderProcessStatusCode: 0,
         order: {}
     };
@@ -61,10 +63,12 @@ const resetFinalizationObjs = (state, action) => {
 
 
 
+//ish
 const onFinalizeOrderReturn = (state, action) => {
     return {
         ...state,
         shouldDoPostPaymentFinalizationProcess: true,
+        paymentProcessStatusCode: (action.objs?.paymentProcessStatusCode ? action.objs.paymentProcessStatusCode : -1),
         orderProcessStatusCode: (action.objs?.orderProcessStatusCode ? action.objs.orderProcessStatusCode : -1),
         order: (action.objs?.order ? action.objs.order : {})
     };

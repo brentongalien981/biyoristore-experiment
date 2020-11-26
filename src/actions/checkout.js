@@ -50,25 +50,29 @@ export const finalizeOrderWithPredefinedPayment = (objs) => {
                 cartItemsInfo: objs.cartItemsInfo,
                 ...objs.shippingInfo
             },
-            neededResponseParams: ["orderProcessStatusCode", "order"],
+            neededResponseParams: ["paymentProcessStatusCode", "orderProcessStatusCode", "order"],
             callBackFunc: (requestData, json) => {
 
                 Bs.log("\n@@@@@@@@@@@@@@@@@@@@");
                 Bs.log("START OF ACTION: checkout, METHOD: finalizeOrderWithPredefinedPayment() => ajaxCrud() => callBackFunc()");
                 Bs.log("@@@@@@@@@@@@@@@@@@@@");
 
-                // const objs = { orderProcessStatusCode: json.orderProcessStatusCode, order: json.order };
-                // dispatch(onFinalizeOrderReturn(objs));
-                // dispatch(resetCart());
+                const objs = { paymentProcessStatusCode: json.paymentProcessStatusCode, orderProcessStatusCode: json.orderProcessStatusCode, order: json.order };
+                dispatch(onFinalizeOrderReturn(objs));
+
+                const PAYMENT_METHOD_CHARGED = 2;
+                if (json.paymentProcessStatusCode === PAYMENT_METHOD_CHARGED) {
+                    alert("TODO: dispatch resetCart()");
+                    // dispatch(resetCart());
+                }
+                
 
                 Bs.log("\n####################");
                 Bs.log("END OF ACTION: checkout, METHOD: finalizeOrderWithPredefinedPayment() => ajaxCrud() => callBackFunc()");
                 Bs.log("####################");
             },
             errorCallBackFunc: (errors) => {
-                // TODO:
-                // dispatch(onFinalizeOrderReturn());
-                // dispatch(resetCart());
+                dispatch(onFinalizeOrderReturn());
             }
         });
     };
@@ -88,7 +92,7 @@ export const finalizeOrder = (cartId, shippingInfo) => {
             url: '/checkout/finalizeOrder',
             method: "post",
             params: { cartId: cartId, ...shippingInfo },
-            neededResponseParams: ["orderProcessStatusCode", "order"],
+            neededResponseParams: ["paymentProcessStatusCode", "orderProcessStatusCode", "order"],
             callBackFunc: (requestData, json) => {
 
                 Bs.log("\n#####################");
