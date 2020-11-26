@@ -83,14 +83,13 @@ class PredefinedPaymentFinalization extends React.Component {
         let orderLink = null; // TODO:LATER add order-link.
 
 
-        //ish
         switch (this.props.paymentProcessStatusCode) {
             case -1:
                 msgHeader = "Oops, sorry...";
                 msgBody = (
                     <>
-                        We couldn't process your payment. Your payment was not charged.<br />
-                        Please use another card <Link to="/checkout">here and try again.</Link><br />
+                        Something went wrong on our end. Your payment was not charged.<br />
+                        Please try again shortly<br />
                     </>
                 );
                 break;
@@ -155,6 +154,14 @@ class PredefinedPaymentFinalization extends React.Component {
 
 
     /* MAIN FUNCS */
+    componentWillUnmount() {
+        //ish
+        this.props.setPredefinedPaymentFinalizationPageEntryCode();
+        // PredefinedPaymentFinalization.unblockNavBlocker();
+    }
+
+
+
     componentDidUpdate() {
         if (this.props.shouldDoPostPaymentFinalizationProcess) {
             this.doPostPredefinedPaymentFinalizationProcess();
@@ -165,12 +172,12 @@ class PredefinedPaymentFinalization extends React.Component {
 
     componentDidMount() {
         
-        // // TODO: Enable this.
-        // if (!this.checkPageEntryCode()) { 
-        //     alert("Please confirm your order first.");
-        //     this.props.history.replace("/checkout");
-        //     return; 
-        // }
+        // ish
+        if (!this.checkPageEntryCode()) { 
+            alert("Please confirm your order first.");
+            this.props.history.replace("/checkout");
+            return; 
+        }
 
         this.props.resetFinalizationObjs();
 
@@ -220,6 +227,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        setPredefinedPaymentFinalizationPageEntryCode: () => dispatch(actions.setPredefinedPaymentFinalizationPageEntryCode()),
         endPaymentFinalizationProcess: () => dispatch(actions.endPaymentFinalizationProcess()),
         finalizeOrderWithPredefinedPayment: (objs) => dispatch(actions.finalizeOrderWithPredefinedPayment(objs)),
         resetFinalizationObjs: () => dispatch(actions.resetFinalizationObjs()),

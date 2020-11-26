@@ -62,8 +62,8 @@ export const finalizeOrderWithPredefinedPayment = (objs) => {
 
                 const PAYMENT_METHOD_CHARGED = 2;
                 if (json.paymentProcessStatusCode === PAYMENT_METHOD_CHARGED) {
-                    alert("TODO: dispatch resetCart()");
-                    // dispatch(resetCart());
+                    // alert("TODO: dispatch resetCart()");
+                    dispatch(resetCart());
                 }
                 
 
