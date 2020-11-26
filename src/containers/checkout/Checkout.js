@@ -54,6 +54,8 @@ class Checkout extends React.Component {
 
     componentDidMount() {
 
+        //ish
+
         // Show the modal.
         const modalBtn = document.querySelector("#checkoutAsWhoModalBtn");
         if (modalBtn) { modalBtn.click(); }
@@ -134,7 +136,6 @@ class Checkout extends React.Component {
         
         if (this.isPaymentMethodPredefined()) {
 
-            // ish
             Bs.log("payment method is predefined, redirect to predefined-payment-page");
 
             // set redirect-page's data-requirements
