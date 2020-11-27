@@ -54,7 +54,11 @@ class Checkout extends React.Component {
 
     componentDidMount() {
 
-        //ish
+        if (this.props.cartItems.length === 0) { 
+            alert("Please add items to your cart before checkout.");
+            this.props.history.replace("/products");
+            return;
+        }
 
         // Show the modal.
         const modalBtn = document.querySelector("#checkoutAsWhoModalBtn");
