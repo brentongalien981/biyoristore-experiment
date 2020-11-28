@@ -160,6 +160,7 @@ export const readProfile = () => {
                 Bs.log("\n#####################");
                 Bs.log("FILE: actions/join.js, METHOD: readProfile() => ajaxCrud() => callBackFunc()");
 
+                // ish: pass the json.orders as argument.
                 dispatch(setProfile(json.profile, json.paymentInfos, json.addresses));
                 
             }

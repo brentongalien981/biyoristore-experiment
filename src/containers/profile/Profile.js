@@ -12,6 +12,7 @@ import PaymentModal from './PaymentModal';
 import PaymentForm from './PaymentForm';
 import Addresses from './Addresses';
 import AddressForm from './AddressForm';
+import Orders from './Orders';
 
 
 
@@ -238,6 +239,7 @@ class Profile extends React.Component {
                                     <div className="col">
                                         <div className="tab-content" id="myTabContent">
                                             <PersonalData profile={this.state.profile} onPersonalDataChanged={this.onPersonalDataChanged} saveProfile={this.saveProfile} />
+                                            <Orders />
                                             <Addresses addresses={this.props.addresses} onAddressFormShown={this.onAddressFormShown} onDelete={this.onAddressDelete} />
                                             <Payments paymentInfos={this.props.paymentInfos} onPaymenFormShown={this.onPaymenFormShown} />
                                         </div>
