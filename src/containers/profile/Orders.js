@@ -1,13 +1,12 @@
 import React from 'react';
-import OrderItem from './OrderItem';
+import Order from './Order';
 
 
 
 function Orders(props) {
 
-    const orderItems = [1, 2, 3];
-    const orders = orderItems.map((o, i) => {
-        return (<OrderItem key={i} />);
+    const orders = props.orders.map((o, i) => {
+        return (<Order key={i} order={o} />);
     });
 
     return (
@@ -16,7 +15,7 @@ function Orders(props) {
             <div className="row">
                 <div className="col-12">
                     <h3 className="mb-0">Orders</h3>
-                    <span className="eyebrow">8 Items</span>
+                    <span className="eyebrow">{props.ordersMetaData?.totalNumOfItems} Items</span>
                 </div>
             </div>
 

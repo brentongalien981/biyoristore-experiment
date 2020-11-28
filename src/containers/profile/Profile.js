@@ -239,7 +239,7 @@ class Profile extends React.Component {
                                     <div className="col">
                                         <div className="tab-content" id="myTabContent">
                                             <PersonalData profile={this.state.profile} onPersonalDataChanged={this.onPersonalDataChanged} saveProfile={this.saveProfile} />
-                                            <Orders />
+                                            <Orders orders={this.props.orders} ordersMetaData={this.props.ordersMetaData} />
                                             <Addresses addresses={this.props.addresses} onAddressFormShown={this.onAddressFormShown} onDelete={this.onAddressDelete} />
                                             <Payments paymentInfos={this.props.paymentInfos} onPaymenFormShown={this.onPaymenFormShown} />
                                         </div>
@@ -279,6 +279,8 @@ const mapStateToProps = (state) => {
         paymentInfos: state.profile.paymentInfos,
         // shouldResetPaymentForm: state.profile.shouldResetPaymentForm,
         addresses: state.profile.addresses,
+        orders: state.profile.orders,
+        ordersMetaData: state.profile.ordersMetaData,
         shouldResetAddressForm: state.profile.shouldResetAddressForm,
     };
 };

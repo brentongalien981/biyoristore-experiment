@@ -37,7 +37,7 @@ export const doPostSavePaymentFinalization = () => ({ type: DO_POST_SAVE_PAYMENT
 export const onSaveProfileFail = (errors) => ({ type: ON_SAVE_PROFILE_FAIL, errors: errors });
 export const onSaveProfileSuccess = (profile) => ({ type: ON_SAVE_PROFILE_SUCCESS, profile: profile });
 export const onProfileDisplayedSuccess = () => ({ type: ON_PROFILE_DISPLAYED_SUCCESS });
-export const setProfile = (profile, paymentInfos, addresses) => ({ type: SET_PROFILE, profile: profile, paymentInfos: paymentInfos, addresses: addresses });
+export const setProfile = (profile, paymentInfos, addresses, orders, ordersMetaData) => ({ type: SET_PROFILE, profile: profile, paymentInfos: paymentInfos, addresses: addresses, orders: orders, ordersMetaData: ordersMetaData });
 
 
 
@@ -155,14 +155,14 @@ export const readProfile = () => {
         BsCore.ajaxCrud({
             url: '/profile/show',
             params: { api_token: BsAppSession.get("apiToken") },
-            neededResponseParams: ["profile", "paymentInfos", "addresses"],
+            neededResponseParams: ["profile", "paymentInfos", "addresses", "orders", "ordersMetaData"],
             callBackFunc: (requestData, json) => {
                 Bs.log("\n#####################");
                 Bs.log("FILE: actions/join.js, METHOD: readProfile() => ajaxCrud() => callBackFunc()");
 
                 // ish: pass the json.orders as argument.
-                dispatch(setProfile(json.profile, json.paymentInfos, json.addresses));
-                
+                dispatch(setProfile(json.profile, json.paymentInfos, json.addresses, json.orders, json.ordersMetaData));
+
             }
         });
     };

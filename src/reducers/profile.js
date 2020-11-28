@@ -13,6 +13,8 @@ const initialState = {
     addresses: [
         { id: 1, street: "78 Monkhouse Rd", city: "Markham", province: "ON", country: "Canada", postalCode: "L6E 1V5" },
     ],
+    orders: [],
+    ordersMetaData: {},
     shouldDisplayProfile: false,
     // shouldResetPaymentForm: false,
 };
@@ -277,6 +279,8 @@ const setProfile = (state, action) => {
         profile: action.profile,
         paymentInfos: action.paymentInfos,
         addresses: action.addresses,
+        orders: action.orders,
+        ordersMetaData: action.ordersMetaData,
         shouldDisplayProfile: true
     };
 };

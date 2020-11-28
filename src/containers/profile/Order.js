@@ -2,7 +2,7 @@ import React from 'react';
 
 
 
-function OrderItem(props) {
+function Order(props) {
 
     return (
         <div className="col-12">
@@ -10,12 +10,12 @@ function OrderItem(props) {
                 <div className="row align-items-center">
 
                     <div className="col-lg-4">
-                        <h3 className="order-number">Order 524312</h3>
+                        <h3 className="order-number">Order# {props.order.id}</h3>
                         <a href="#!" className="action eyebrow underline">View Order</a>
                     </div>
 
                     <div className="col-lg-4">
-                        <span className="order-status">In Progress</span>
+                        <span className="order-status">{props.order.status.readable_name}</span>
                     </div>
 
                     <div className="col-lg-4">
@@ -27,7 +27,7 @@ function OrderItem(props) {
                             </li>
                         </ul>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -36,4 +36,4 @@ function OrderItem(props) {
 
 
 
-export default OrderItem;
+export default Order;
