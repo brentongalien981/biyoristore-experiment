@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import BsCore2 from '../../bs-library/helpers/BsCore2';
 
 
 
@@ -20,19 +22,37 @@ function Order(props) {
 
                     <div className="col-lg-4">
                         <ul className="order-preview justify-content-end">
-                            <li>
-                                <a href="product-1.html" title="Black Low Curve Iceman Trimix Sneakers" data-toggle="tooltip" data-placement="top">
-                                    <img src="assets/images/demo/product-11.jpg" alt="Black Low Curve Iceman Trimix Sneakers" />
-                                </a>
-                            </li>
+                            {getOrderItems(props.order.orderItems)}
                         </ul>
-                    </div>
-
                 </div>
+
             </div>
         </div>
+        </div >
     );
 }
+
+
+
+function getOrderItems(items) {
+    const itemsComponent = items.map((item, i) => {
+
+        const productLink = "/product?productId=" + item.product.id;
+        const firstPhotoUrl = BsCore2.pubPhotoUrl + item.product.productPhotoUrls[0].url;
+
+
+        return (
+            <li key={i}>
+                <Link to={productLink} title={item.product.name} data-toggle="tooltip" data-placement="top">
+                    <img src={firstPhotoUrl} alt={item.product.name} />
+                </Link>
+            </li>
+        );
+    });
+
+    return itemsComponent;
+}
+
 
 
 
