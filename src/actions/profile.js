@@ -1,10 +1,12 @@
 import BsCore from "../bs-library/helpers/BsCore";
 import Bs from "../bs-library/helpers/Bs";
 import BsAppSession from "../bs-library/helpers/BsAppSession";
+import BsCore2 from "../bs-library/helpers/BsCore2";
 
 
 
 /* NAMES */
+export const ON_READ_ORDERS_RETURN = "ON_READ_ORDERS_RETURN";
 export const ON_ADDRESS_DELETE_FAIL = "ON_ADDRESS_DELETE_FAIL";
 export const ON_ADDRESS_DELETE_SUCCESS = "ON_ADDRESS_DELETE_SUCCESS";
 export const ON_ADDRESS_FORM_RESET_SUCCESS = "ON_ADDRESS_FORM_RESET_SUCCESS";
@@ -24,6 +26,7 @@ export const SET_PROFILE = "SET_PROFILE";
 
 
 /* FUNCS */
+export const onReadOrdersReturn = (objs) => ({ type: ON_READ_ORDERS_RETURN, objs: objs });
 export const onAddressDeleteFail = () => ({ type: ON_ADDRESS_DELETE_FAIL });
 export const onAddressDeleteSuccess = (addressId) => ({ type: ON_ADDRESS_DELETE_SUCCESS, addressId: addressId });
 export const onAddressFormResetSuccess = () => ({ type: ON_ADDRESS_FORM_RESET_SUCCESS });
@@ -42,6 +45,29 @@ export const setProfile = (profile, paymentInfos, addresses, orders, ordersMetaD
 
 
 /* AJAX FUNCS */
+export const readOrders = (objs) => {
+
+    Bs.log("\n###############");
+    Bs.log("In ACTION: profile, METHOD: readOrders()");
+
+
+    return (dispatch) => {
+
+        BsCore2.ajaxCrud({
+            url: '/orders',
+            params: { api_token: BsAppSession.get("apiToken"), pageNum: objs.pageNum },
+            callBackFunc: (requestData, json) => {
+                Bs.log("\n#####################");
+                Bs.log("FILE: actions/profile.js, METHOD: readOrders() => ajaxCrud() => callBackFunc()");
+
+                dispatch(onReadOrdersReturn(json.objs));
+            }
+        });
+    };
+};
+
+
+
 export const onAddressDelete = (addressId) => {
 
     return (dispatch) => {

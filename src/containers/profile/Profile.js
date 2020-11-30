@@ -36,7 +36,6 @@ class Profile extends React.Component {
 
 
     componentDidMount() {
-        //ish
         this.props.readProfile();
     }
 
@@ -66,6 +65,17 @@ class Profile extends React.Component {
 
 
 
+    onOrderPageNumClick = (e, pageNum) => {
+        //ish
+        e.preventDefault();
+        Bs.log("TODO: onOrderPageNumClick()");
+        Bs.log("pageNum ==> " + pageNum);
+
+        this.props.readOrders({ pageNum: pageNum });
+    };
+
+
+
     onPersonalDataChanged = (e) => {
         const target = e.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -75,7 +85,7 @@ class Profile extends React.Component {
         updatedProfile[name] = value;
 
         this.setState({ profile: updatedProfile });
-    }
+    };
 
 
 
@@ -199,7 +209,6 @@ class Profile extends React.Component {
 
 
 
-    //ish
     onPaymenFormShown = (e, payment) => {
         e.preventDefault();
         Bs.log("payment ==> ...");
@@ -239,7 +248,7 @@ class Profile extends React.Component {
                                     <div className="col">
                                         <div className="tab-content" id="myTabContent">
                                             <PersonalData profile={this.state.profile} onPersonalDataChanged={this.onPersonalDataChanged} saveProfile={this.saveProfile} />
-                                            <Orders orders={this.props.orders} ordersMetaData={this.props.ordersMetaData} />
+                                            <Orders orders={this.props.orders} ordersMetaData={this.props.ordersMetaData} onOrderPageNumClick={this.onOrderPageNumClick} />
                                             <Addresses addresses={this.props.addresses} onAddressFormShown={this.onAddressFormShown} onDelete={this.onAddressDelete} />
                                             <Payments paymentInfos={this.props.paymentInfos} onPaymenFormShown={this.onPaymenFormShown} />
                                         </div>
@@ -289,6 +298,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        readOrders: (objs) => dispatch(actions.readOrders(objs)),
         readProfile: () => dispatch(actions.readProfile()),
         onProfileDisplayedSuccess: () => dispatch(actions.onProfileDisplayedSuccess()),
         saveProfile: (profile) => dispatch(actions.saveProfile(profile)),

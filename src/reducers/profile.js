@@ -24,6 +24,7 @@ const initialState = {
 /* REDUCER */
 const profile = (state = initialState, action) => {
     switch (action.type) {
+        case actions.ON_READ_ORDERS_RETURN: return onReadOrdersReturn(state, action);
         case actions.ON_ADDRESS_DELETE_FAIL: return onAddressDeleteFail(state, action);
         case actions.ON_ADDRESS_DELETE_SUCCESS: return onAddressDeleteSuccess(state, action);
         case actions.ON_ADDRESS_FORM_RESET_SUCCESS: return onAddressFormResetSuccess(state, action);
@@ -46,6 +47,24 @@ const profile = (state = initialState, action) => {
 
 
 /* NORMAL */
+const onReadOrdersReturn = (state, action) => {
+
+    let updatedOrders = state.orders;
+
+    if (action.objs.orders?.length > 0) {
+        updatedOrders = action.objs.orders;
+    } else {
+        alert("No orders to view...");
+    }
+
+    return {
+        ...state,
+        orders: updatedOrders
+    };
+};
+
+
+
 const onAddressDeleteFail = (state, action) => {
     let errorMsg = "";
 
