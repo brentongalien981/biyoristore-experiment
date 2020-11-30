@@ -26,17 +26,31 @@ function Orders(props) {
 
 
             {/* page-number-navigation */}
-            <div className="row">
-                <div className="col">
-                    <ul className="pagination">
-                        <li className="page-item active"><a className="page-link" href="#!">1 <span className="sr-only">(current)</span></a></li>
-                        <li className="page-item" aria-current="page"><a className="page-link" href="#!">2</a></li>
-                        <li className="page-item"><a className="page-link" href="#!">3</a></li>
-                        <li className="page-item"><a className="page-link" href="#!">4</a></li>
-                    </ul>
-                </div>
-            </div>
+            {getPageNumNav(props.ordersMetaData)}
+        </div>
+    );
+}
 
+
+
+function getPageNumNav(ordersMetaData) {
+
+    const numOfOrderPages = Math.ceil(parseFloat(ordersMetaData?.totalNumOfItems) / ordersMetaData?.numOfItemsPerPage);
+    let pageNumComponent = [];
+
+    for (let i = 0; i < numOfOrderPages; i++) {
+        if (i === 0) { pageNumComponent.push(<li key={i} className="page-item active"><a className="page-link" onClick={() => { alert("TODO") }}>{i + 1}<span className="sr-only">(current)</span></a></li>); }
+        else { pageNumComponent.push(<li key={i} className="page-item"><a className="page-link" onClick={() => { alert("TODO") }}>{i + 1}</a></li>); }
+
+    }
+
+    return (
+        <div className="row">
+            <div className="col">
+                <ul className="pagination">
+                    {pageNumComponent}
+                </ul>
+            </div>
         </div>
     );
 }
