@@ -2,7 +2,8 @@ import * as actions from '../actions/order';
 
 /* INITIAL STATE */
 const initialState = {
-    order: {}
+    order: {},
+    paymentInfo: {}
 };
 
 
@@ -21,12 +22,17 @@ const order = (state = initialState, action) => {
 const onShowOrderReturn = (state, action) => {
 
     let updatedOrder = state.order;
+    let updatedPaymentInfo = state.paymentInfo;
+
     if (action.objs?.order) { updatedOrder = action.objs.order; }
     else { updatedOrder = { id: -1 }; }
 
+    if (action.objs?.paymentInfo) { updatedPaymentInfo = action.objs.paymentInfo; }
+
     return {
         ...state,
-        order: updatedOrder
+        order: updatedOrder,
+        paymentInfo: updatedPaymentInfo
     };
 };
 

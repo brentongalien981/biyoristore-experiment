@@ -4,6 +4,7 @@ import ShippingInfo from './ShippingInfo';
 import * as actions from '../../actions/order';
 import { withRouter } from 'react-router-dom';
 import Bs from '../../bs-library/helpers/Bs';
+import PaymentInfo from './PaymentInfo';
 
 
 
@@ -23,7 +24,7 @@ class Order extends React.Component {
         const urlParams = this.props.location.search;
         const acceptedParams = ["id"];
         const parsedUrlParams = Bs.getParsedQueryParams(urlParams, acceptedParams);
-        
+
 
         if (parsedUrlParams.id) {
             const objs = { orderId: parsedUrlParams.id };
@@ -51,6 +52,7 @@ class Order extends React.Component {
 
                 <div className="row gutter-2">
                     <ShippingInfo order={this.props.order} />
+                    <PaymentInfo paymentInfo={this.props.paymentInfo} />
                 </div>
             </>
         );
@@ -66,6 +68,7 @@ class Order extends React.Component {
 /* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
+        paymentInfo: state.order.paymentInfo,
         order: state.order.order,
     };
 };
