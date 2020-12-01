@@ -71,6 +71,7 @@ class Profile extends React.Component {
         Bs.log("TODO: onOrderPageNumClick()");
         Bs.log("pageNum ==> " + pageNum);
 
+        if (pageNum === this.props.selectedOrderPageNum) { Bs.log("same pageNum..."); return; }
         this.props.readOrders({ pageNum: pageNum });
     };
 

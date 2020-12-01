@@ -41,8 +41,8 @@ function getPageNumNav(ordersMetaData, onOrderPageNumClick, selectedPageNum) {
     for (let i = 0; i < numOfOrderPages; i++) {
         const pageNum = i + 1;
 
-        if (selectedPageNum === pageNum) { pageNumComponent.push(<li key={i} className="page-item active"><a className="page-link" onClick={(e) => { onOrderPageNumClick(e, pageNum) }}>{pageNum}<span className="sr-only">(current)</span></a></li>); }
-        else { pageNumComponent.push(<li key={i} className="page-item"><a className="page-link" onClick={(e) => { onOrderPageNumClick(e, pageNum) }}>{pageNum}</a></li>); }
+        if (selectedPageNum === pageNum) { pageNumComponent.push(<li key={i} className="page-item active"><a className="page-link" href="#" onClick={(e) => { onOrderPageNumClick(e, pageNum) }}>{pageNum}<span className="sr-only">(current)</span></a></li>); }
+        else { pageNumComponent.push(<li key={i} className="page-item"><a className="page-link" href="#" onClick={(e) => { onOrderPageNumClick(e, pageNum) }}>{pageNum}</a></li>); }
 
     }
 
