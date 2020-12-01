@@ -26,21 +26,22 @@ function Orders(props) {
 
 
             {/* page-number-navigation */}
-            {getPageNumNav(props.ordersMetaData, props.onOrderPageNumClick)}
+            {getPageNumNav(props.ordersMetaData, props.onOrderPageNumClick, props.selectedPageNum)}
         </div>
     );
 }
 
 
 
-function getPageNumNav(ordersMetaData, onOrderPageNumClick) {
+function getPageNumNav(ordersMetaData, onOrderPageNumClick, selectedPageNum) {
 
     const numOfOrderPages = Math.ceil(parseFloat(ordersMetaData?.totalNumOfItems) / ordersMetaData?.numOfItemsPerPage);
     let pageNumComponent = [];
 
     for (let i = 0; i < numOfOrderPages; i++) {
         const pageNum = i + 1;
-        if (i === 0) { pageNumComponent.push(<li key={i} className="page-item active"><a className="page-link" onClick={(e) => { onOrderPageNumClick(e, pageNum) }}>{pageNum}<span className="sr-only">(current)</span></a></li>); }
+
+        if (selectedPageNum === pageNum) { pageNumComponent.push(<li key={i} className="page-item active"><a className="page-link" onClick={(e) => { onOrderPageNumClick(e, pageNum) }}>{pageNum}<span className="sr-only">(current)</span></a></li>); }
         else { pageNumComponent.push(<li key={i} className="page-item"><a className="page-link" onClick={(e) => { onOrderPageNumClick(e, pageNum) }}>{pageNum}</a></li>); }
 
     }

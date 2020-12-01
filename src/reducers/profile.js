@@ -16,6 +16,7 @@ const initialState = {
     orders: [],
     ordersMetaData: {},
     shouldDisplayProfile: false,
+    selectedOrderPageNum: 1
     // shouldResetPaymentForm: false,
 };
 
@@ -59,7 +60,8 @@ const onReadOrdersReturn = (state, action) => {
 
     return {
         ...state,
-        orders: updatedOrders
+        orders: updatedOrders,
+        selectedOrderPageNum: action.objs.pageNum
     };
 };
 

@@ -60,6 +60,8 @@ export const readOrders = (objs) => {
                 Bs.log("\n#####################");
                 Bs.log("FILE: actions/profile.js, METHOD: readOrders() => ajaxCrud() => callBackFunc()");
 
+                json.objs.pageNum = objs.pageNum;
+
                 dispatch(onReadOrdersReturn(json.objs));
             }
         });
