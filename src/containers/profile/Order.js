@@ -6,6 +6,8 @@ import BsCore2 from '../../bs-library/helpers/BsCore2';
 
 function Order(props) {
 
+    const orderLink = "/order?id=" + props.order.id;
+
     return (
         <div className="col-12">
             <div className="order">
@@ -13,7 +15,7 @@ function Order(props) {
 
                     <div className="col-lg-4">
                         <h3 className="order-number">Order# {props.order.id}</h3>
-                        <a href="#!" className="action eyebrow underline">View Order</a>
+                        <Link to={orderLink} className="action eyebrow underline">View Order</Link>
                     </div>
 
                     <div className="col-lg-4">
