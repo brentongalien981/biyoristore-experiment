@@ -26,7 +26,7 @@ export const SET_PROFILE = "SET_PROFILE";
 
 
 /* FUNCS */
-export const onReadOrdersReturn = (objs) => ({ type: ON_READ_ORDERS_RETURN, objs: objs });
+export const onReadOrdersReturn = (objs = null) => ({ type: ON_READ_ORDERS_RETURN, objs: objs });
 export const onAddressDeleteFail = () => ({ type: ON_ADDRESS_DELETE_FAIL });
 export const onAddressDeleteSuccess = (addressId) => ({ type: ON_ADDRESS_DELETE_SUCCESS, addressId: addressId });
 export const onAddressFormResetSuccess = () => ({ type: ON_ADDRESS_FORM_RESET_SUCCESS });
@@ -63,6 +63,9 @@ export const readOrders = (objs) => {
                 json.objs.pageNum = objs.pageNum;
 
                 dispatch(onReadOrdersReturn(json.objs));
+            },
+            errorCallBackFunc: (errors) => {
+                dispatch(onReadOrdersReturn());
             }
         });
     };

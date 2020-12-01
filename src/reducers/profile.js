@@ -51,17 +51,19 @@ const profile = (state = initialState, action) => {
 const onReadOrdersReturn = (state, action) => {
 
     let updatedOrders = state.orders;
+    let updatedPageNum = state.selectedOrderPageNum;
 
-    if (action.objs.orders?.length > 0) {
+    if (action.objs?.orders?.length > 0) {
         updatedOrders = action.objs.orders;
+        updatedPageNum = action.objs.pageNum
     } else {
-        alert("No orders to view...");
+        alert("No orders to view there...");
     }
 
     return {
         ...state,
         orders: updatedOrders,
-        selectedOrderPageNum: action.objs.pageNum
+        selectedOrderPageNum: updatedPageNum
     };
 };
 
