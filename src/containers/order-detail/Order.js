@@ -5,6 +5,7 @@ import * as actions from '../../actions/order';
 import { withRouter } from 'react-router-dom';
 import Bs from '../../bs-library/helpers/Bs';
 import PaymentInfo from './PaymentInfo';
+import OrderTable from './OrderTable';
 
 
 
@@ -54,6 +55,8 @@ class Order extends React.Component {
                     <ShippingInfo order={this.props.order} />
                     <PaymentInfo paymentInfo={this.props.paymentInfo} />
                 </div>
+
+                <OrderTable orderItems={this.props.order.orderItems} />
             </>
         );
     }

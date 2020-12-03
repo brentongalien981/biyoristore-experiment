@@ -5,7 +5,10 @@ import Bs from '../../bs-library/helpers/Bs';
 
 function OrderSummary(props) {
 
-    const orderSummaryVals = getOrderSummaryValues(props.items);
+    const orderSummaryVals = getOrderSummaryValues(props.items, props.shouldCalculateForOrderPage);
+
+    let checkoutBtn = null;
+    if (!props.withNoCheckoutBtn) { checkoutBtn = (<a href="#" className="btn btn-lg btn-primary btn-block mt-1" onClick={props.onCheckout}>Checkout</a>); }
 
     return (
         <div className="col-lg-4">
@@ -23,7 +26,7 @@ function OrderSummary(props) {
                     <ul className="list-group list-group-minimal">
 
                         <li className="list-group-item d-flex justify-content-between align-items-center">
-                            Subtotal<span>${orderSummaryVals.subtotal}</span>
+                            Subtotal<span>${orderSummaryVals.subtotal.toFixed(2)}</span>
                         </li>
 
                         <li className="list-group-item d-flex justify-content-between align-items-center">
@@ -31,7 +34,7 @@ function OrderSummary(props) {
                         </li>
 
                         <li className="list-group-item d-flex justify-content-between align-items-center">
-                            Tax<span>${orderSummaryVals.tax}</span>
+                            Tax<span>${orderSummaryVals.tax.toFixed(2)}</span>
                         </li>
                     </ul>
                 </div>
@@ -39,21 +42,21 @@ function OrderSummary(props) {
                 <div className="card-footer py-2">
                     <ul className="list-group list-group-minimal">
                         <li className="list-group-item d-flex justify-content-between align-items-center text-dark fs-18">
-                            Total<span>${orderSummaryVals.total}</span>
+                            Total<span>${orderSummaryVals.total.toFixed(2)}</span>
                         </li>
                     </ul>
                 </div>
 
             </div>
 
-            <a href="#" className="btn btn-lg btn-primary btn-block mt-1" onClick={props.onCheckout}>Checkout</a>
+            {checkoutBtn}
         </div>
     );
 }
 
 
 
-function getOrderSummaryValues(items) {
+function getOrderSummaryValues(items, shouldCalculateForOrderPage) {
 
     let vals = {
         subtotal: 0, tax: 0, total: 0
@@ -61,7 +64,10 @@ function getOrderSummaryValues(items) {
 
     if (items != null && items?.length != 0) { 
         items.forEach(i => {
-            const itemTotalPrice = parseFloat(i.product.price) * parseInt(i.quantity);
+            let itemTotalPrice = 0;
+            if (!shouldCalculateForOrderPage) { itemTotalPrice = parseFloat(i.product.price) * parseInt(i.quantity); }
+            else { itemTotalPrice = parseFloat(i.price) * parseInt(i.quantity); }
+            
             vals.subtotal += itemTotalPrice;
         });
     
