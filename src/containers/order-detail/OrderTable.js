@@ -38,7 +38,6 @@ function OrderTable(props) {
                         {items}
                     </div>
 
-                    {/* TODO: order-summary */}
                     <OrderSummary items={props.orderItems} withNoCheckoutBtn shouldCalculateForOrderPage />
                 </div>
 

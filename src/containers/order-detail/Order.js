@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import ShippingInfo from './ShippingInfo';
+// import ShippingInfo from './ShippingInfo';
 import * as actions from '../../actions/order';
 import { withRouter } from 'react-router-dom';
 import Bs from '../../bs-library/helpers/Bs';
 import PaymentInfo from './PaymentInfo';
 import OrderTable from './OrderTable';
+import OrderInfo from './OrderInfo';
 
 
 
@@ -29,7 +30,7 @@ class Order extends React.Component {
 
         if (parsedUrlParams.id) {
             const objs = { orderId: parsedUrlParams.id };
-            this.props.showOrder(objs); 
+            this.props.showOrder(objs);
         }
     }
 
@@ -43,19 +44,24 @@ class Order extends React.Component {
                     <div className="container">
                         <div className="row">
                             <div className="col text-center">
-                                <h1>Order #: {this.props.order.id}</h1>
+                                <h1>Order Info</h1>
                             </div>
                         </div>
                     </div>
                 </section>
 
 
-
-                <div className="row gutter-2">
-                    <ShippingInfo order={this.props.order} />
-                    <PaymentInfo paymentInfo={this.props.paymentInfo} />
+                <div className="container">
+                    <div className="row justify-content-center">
+                        <OrderInfo order={this.props.order} paymentInfo={this.props.paymentInfo} />
+                        {/* <PaymentInfo paymentInfo={this.props.paymentInfo} /> */}
+                    </div>
                 </div>
 
+                
+                <div className="container pt-8 pb-2">
+                    <h4>Items</h4>
+                </div>
                 <OrderTable orderItems={this.props.order.orderItems} />
             </>
         );
