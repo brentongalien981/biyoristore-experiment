@@ -188,6 +188,11 @@ class Checkout extends React.Component {
             return;
         }
 
+
+        // TODO: Verify shipping address.
+        
+
+
         // show order details summary.
         document.querySelector("#OrderDetailsSummaryModalTriggerBtn").click();
 
