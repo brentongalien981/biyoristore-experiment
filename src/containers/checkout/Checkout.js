@@ -189,8 +189,8 @@ class Checkout extends React.Component {
         }
 
 
-        // TODO: Verify shipping address.
-        
+        // TODO: get all the seller-ids of all order-items
+
 
 
         // show order details summary.
