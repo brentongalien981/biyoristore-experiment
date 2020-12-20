@@ -2,6 +2,8 @@ import BsCore2 from "../bs-library/helpers/BsCore2";
 import Bs from "../bs-library/helpers/Bs";
 import BsAppSession from "../bs-library/helpers/BsAppSession";
 import { resetCart } from "./cart";
+import BsKeys from "../bs-library/helpers/BsKeys";
+import axios from "axios";
 
 
 
@@ -32,6 +34,39 @@ export const onReadCheckoutRequiredDataSuccess = (objs) => ({ type: ON_READ_CHEC
 
 
 /* AJAX FUNCS */
+export const testGetShippingRates = (items) => {
+
+    Bs.log("\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    Bs.log("In ACTION: checkout, METHOD: testGetShippingRates()");
+    Bs.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+
+    return (dispatch) => {
+
+        BsCore2.ajaxCrud({
+            url: '/customized-easypost/getRates',
+            params: {
+            },
+            callBackFunc: (requestData, json) => {
+
+                Bs.log("\n@@@@@@@@@@@@@@@@@@@@");
+                Bs.log("START OF ACTION: checkout, METHOD: testGetShippingRates() => ajaxCrud() => callBackFunc()");
+                Bs.log("@@@@@@@@@@@@@@@@@@@@");
+
+                // dispatch(resetCart());
+
+
+                Bs.log("\n####################");
+                Bs.log("END OF ACTION: checkout, METHOD: testGetShippingRates() => ajaxCrud() => callBackFunc()");
+                Bs.log("####################");
+            }
+        });
+
+    };
+};
+
+
+
 export const finalizeOrderWithPredefinedPayment = (objs) => {
 
     Bs.log("\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
@@ -65,7 +100,7 @@ export const finalizeOrderWithPredefinedPayment = (objs) => {
                     // alert("TODO: dispatch resetCart()");
                     dispatch(resetCart());
                 }
-                
+
 
                 Bs.log("\n####################");
                 Bs.log("END OF ACTION: checkout, METHOD: finalizeOrderWithPredefinedPayment() => ajaxCrud() => callBackFunc()");

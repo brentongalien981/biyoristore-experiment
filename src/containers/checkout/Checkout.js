@@ -189,12 +189,18 @@ class Checkout extends React.Component {
         }
 
 
-        // TODO: get all the seller-ids of all order-items
+        // TODO: check shipping validity for every order-item
+        const items = this.props.cartItems;
+        for (const i of items) {
+            Bs.log("i.product.mostEfficientSeller.name ==> " + i.product.mostEfficientSeller.name);
+        }
+
+        this.props.testGetShippingRates(items);
 
 
 
-        // show order details summary.
-        document.querySelector("#OrderDetailsSummaryModalTriggerBtn").click();
+        // TODO: show order details summary.
+        // document.querySelector("#OrderDetailsSummaryModalTriggerBtn").click();
 
     };
 
@@ -285,6 +291,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        testGetShippingRates: (items) => dispatch(actions.testGetShippingRates(items)),
         // onAddressSelectionChange: (e, i) => dispatch(actions.onAddressSelectionChange(e, i)),
         setPredefinedPaymentFinalizationPageEntryCode: () => dispatch(actions.setPredefinedPaymentFinalizationPageEntryCode()),
         setPaymentPageEntryCode: () => dispatch(actions.setPaymentPageEntryCode()),

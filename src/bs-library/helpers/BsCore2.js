@@ -36,6 +36,7 @@ class BsCore2 {
             method: "get",
             url: data.url,
             params: {},
+            headers: {},
             callBackFunc: BsCore2.defaultCallBackFunc,
             neededResponseParams: [],
             errorCallBackFunc: BsCore2.defaultErrorCallBackFunc,
@@ -57,10 +58,14 @@ class BsCore2 {
 
         
         //
+        let url = BsCore2.appApiUrl + defaultCrudData.url;
+        if (data.isUrlExternal) { url = defaultCrudData.url; }
+
         axios({
             method: defaultCrudData.method,
-            url: BsCore2.appApiUrl + defaultCrudData.url,
+            url: url,
             params: defaultCrudData.params,
+            headers: defaultCrudData.headers,
         })
             .then(function (response) {
                 //
