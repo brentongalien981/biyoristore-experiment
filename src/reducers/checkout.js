@@ -18,7 +18,8 @@ const initialState = {
     paymentProcessStatusCode: 0,
     orderProcessStatusCode: 0,
     // isThereError: false,
-    order: {}
+    order: {},
+    shouldShowShippingDetails: false,
 };
 
 
@@ -26,6 +27,9 @@ const initialState = {
 /* REDUCER */
 const checkout = (state = initialState, action) => {
     switch (action.type) {
+        case actions.FINALIZE_SHOW_SHIPPING_DETAILS: return finalizeShowShippingDetails(state, action);
+        case actions.ON_GET_SHIPPING_RATES_FAIL: return onGetShippingRatesFail(state, action);
+        case actions.ON_GET_SHIPPING_RATES_RETURN: return onGetShippingRatesReturn(state, action);
         // case actions.ON_ADDRESS_SELECTION_CHANGE: return onAddressSelectionChange(state, action);
         case actions.END_PAYMENT_FINALIZATION_PROCESS: return endPaymentFinalizationProcess(state, action);
         case actions.ON_FINALIZE_ORDER_RETURN: return onFinalizeOrderReturn(state, action);
@@ -43,6 +47,51 @@ const checkout = (state = initialState, action) => {
 
 
 /* NORMAL FUNCS */
+const finalizeShowShippingDetails = (state, action) => {
+
+    alert("In REDUCER: checkout, METHOD: finalizeShowShippingDetails()");
+
+    return {
+        ...state,
+        shouldShowShippingDetails: false
+    };
+};
+
+
+
+const onGetShippingRatesFail = (state, action) => {
+
+    document.querySelector("#LoaderTriggerBtn").click();
+    alert("Oops! There's problem on our end. Please try again later.");
+
+    return {
+        ...state,
+    };
+};
+
+
+
+const onGetShippingRatesReturn = (state, action) => {
+
+    document.querySelector("#LoaderTriggerBtn").click();
+
+    const resultCode = action.objs.entireProcessResultCode;
+    const DESTINATION_ADDRESS_EXCEPTION = 3;
+    let shouldShowShippingDetails = false;
+
+    if (action.objs.isResultOk) {
+        if (resultCode == DESTINATION_ADDRESS_EXCEPTION) { alert("Oops! Please enter a valid address."); }
+        else { shouldShowShippingDetails = true; }
+    } else { alert("Oops! There's problem on our end. Please try again later."); }
+
+    return {
+        ...state,
+        shouldShowShippingDetails: shouldShowShippingDetails
+    };
+};
+
+
+
 const endPaymentFinalizationProcess = (state, action) => {
     return {
         ...state,

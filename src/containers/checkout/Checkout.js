@@ -12,6 +12,7 @@ import PaymentMethodFormGroup from './PaymentMethodFormGroup';
 import PaymentMethodOptions from './PaymentMethodOptions';
 import Bs from '../../bs-library/helpers/Bs';
 import OrderDetailsSummaryModal from './OrderDetailsSummaryModal';
+import Loader from '../../components/loader/Loader';
 
 
 class Checkout extends React.Component {
@@ -52,9 +53,20 @@ class Checkout extends React.Component {
         paymentMethod: {}
     };
 
+
+
+    componentDidUpdate() {
+        //ish
+        if (this.props.shouldShowShippingDetails) {
+            alert("TODO: shouldShowShippingDetails");
+            this.props.finalizeShowShippingDetails();
+        }
+    }
+
+
     componentDidMount() {
 
-        if (this.props.cartItems.length === 0) { 
+        if (this.props.cartItems.length === 0) {
             alert("Please add items to your cart before checkout.");
             this.props.history.replace("/products");
             return;
@@ -119,6 +131,7 @@ class Checkout extends React.Component {
                 <PaymentMethodOptions paymentInfos={this.props.paymentInfos} onPaymentMethodSelectionChange={this.onPaymentMethodSelectionChange} />
 
                 <CheckoutAsWhoModal login={this.login} dismissModal={this.dismissModal} />
+                <Loader />
                 <OrderDetailsSummaryModal address={this.state.address} onOrderDetailsConfirm={this.onOrderDetailsConfirm} />
 
             </>
@@ -137,7 +150,7 @@ class Checkout extends React.Component {
         let redirectPage = "/payment";
         let redirectPageDataRequirements = {};
 
-        
+
         if (this.isPaymentMethodPredefined()) {
 
             Bs.log("payment method is predefined, redirect to predefined-payment-page");
@@ -183,24 +196,29 @@ class Checkout extends React.Component {
 
         let returnObj = this.validateFields(this.state.address);
 
+        // check that address fields are filled
         if (!returnObj.isObjValid) {
             alert(returnObj.msg);
             return;
         }
 
 
-        // TODO: check shipping validity for every order-item
-        const items = this.props.cartItems;
-        for (const i of items) {
-            Bs.log("i.product.mostEfficientSeller.name ==> " + i.product.mostEfficientSeller.name);
-        }
-
-        this.props.testGetShippingRates(items);
-
-
-
         // TODO: show order details summary.
         // document.querySelector("#OrderDetailsSummaryModalTriggerBtn").click();
+        // TODO: show Loader component
+        const loader = document.querySelector("#LoaderTriggerBtn");
+        // loader.setAttribute("shouldBeShwon", "no");
+        loader.click()
+
+
+
+        // check shipping validity
+        const items = this.props.cartItems;
+        // for (const i of items) {
+        //     Bs.log("i.product.mostEfficientSeller.name ==> " + i.product.mostEfficientSeller.name);
+        // }
+        this.props.testGetShippingRates(items);
+
 
     };
 
@@ -277,6 +295,7 @@ class Checkout extends React.Component {
 /* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
+        shouldShowShippingDetails: state.checkout.shouldShowShippingDetails,
         predefinedPaymentFinalizationPageEntryCode: state.checkout.predefinedPaymentFinalizationPageEntryCode,
         paymentPageEntryCode: state.checkout.paymentPageEntryCode,
         cart: state.cart.cart,
@@ -291,6 +310,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        finalizeShowShippingDetails: () => dispatch(actions.finalizeShowShippingDetails()),
+        // TODO: change the name
         testGetShippingRates: (items) => dispatch(actions.testGetShippingRates(items)),
         // onAddressSelectionChange: (e, i) => dispatch(actions.onAddressSelectionChange(e, i)),
         setPredefinedPaymentFinalizationPageEntryCode: () => dispatch(actions.setPredefinedPaymentFinalizationPageEntryCode()),

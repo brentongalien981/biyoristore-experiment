@@ -8,6 +8,9 @@ import axios from "axios";
 
 
 /* NAMES */
+export const FINALIZE_SHOW_SHIPPING_DETAILS = "FINALIZE_SHOW_SHIPPING_DETAILS";
+export const ON_GET_SHIPPING_RATES_FAIL = "ON_GET_SHIPPING_RATES_FAIL";
+export const ON_GET_SHIPPING_RATES_RETURN = "ON_GET_SHIPPING_RATES_RETURN";
 // export const ON_ADDRESS_SELECTION_CHANGE = "ON_ADDRESS_SELECTION_CHANGE";
 export const END_PAYMENT_FINALIZATION_PROCESS = "END_PAYMENT_FINALIZATION_PROCESS";
 export const RESET_FINALIZATION_OBJS = "RESET_FINALIZATION_OBJS";
@@ -21,6 +24,9 @@ export const ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS = "ON_READ_CHECKOUT_REQUIRED
 
 
 /* FUNCS */
+export const finalizeShowShippingDetails = () => ({ type: FINALIZE_SHOW_SHIPPING_DETAILS });
+export const onGetShippingRatesFail = () => ({ type: ON_GET_SHIPPING_RATES_FAIL });
+export const onGetShippingRatesReturn = (objs) => ({ type: ON_GET_SHIPPING_RATES_RETURN, objs: objs });
 // export const onAddressSelectionChange = (e, i) => ({ type: ON_ADDRESS_SELECTION_CHANGE, e: e, i: i });
 export const endPaymentFinalizationProcess = () => ({ type: END_PAYMENT_FINALIZATION_PROCESS });
 export const resetFinalizationObjs = () => ({ type: RESET_FINALIZATION_OBJS });
@@ -53,12 +59,16 @@ export const testGetShippingRates = (items) => {
                 Bs.log("START OF ACTION: checkout, METHOD: testGetShippingRates() => ajaxCrud() => callBackFunc()");
                 Bs.log("@@@@@@@@@@@@@@@@@@@@");
 
-                // dispatch(resetCart());
+                //ish
+                dispatch(onGetShippingRatesReturn(json.objs));
 
 
                 Bs.log("\n####################");
                 Bs.log("END OF ACTION: checkout, METHOD: testGetShippingRates() => ajaxCrud() => callBackFunc()");
                 Bs.log("####################");
+            },
+            errorCallBackFunc: (errors) => {
+                dispatch(onGetShippingRatesFail());
             }
         });
 
