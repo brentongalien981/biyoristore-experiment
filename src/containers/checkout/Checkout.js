@@ -13,6 +13,7 @@ import PaymentMethodOptions from './PaymentMethodOptions';
 import Bs from '../../bs-library/helpers/Bs';
 import OrderDetailsSummaryModal from './OrderDetailsSummaryModal';
 import Loader from '../../components/loader/Loader';
+import NonClosableLoader from '../../components/loader/NonClosableLoader';
 
 
 class Checkout extends React.Component {
@@ -59,6 +60,7 @@ class Checkout extends React.Component {
         //ish
         if (this.props.shouldShowShippingDetails) {
             alert("TODO: shouldShowShippingDetails");
+            this.setState({nonClosableLoader: null});
             this.props.finalizeShowShippingDetails();
         }
     }
@@ -102,6 +104,9 @@ class Checkout extends React.Component {
                 </section>
 
 
+                {/* TODO */}
+                {/* <button onClick={this.onShit}>show nonclosableloader</button> */}
+
                 <section className="no-overflow pt-0">
                     <div className="container">
                         <div className="row gutter-4 justify-content-between">
@@ -131,7 +136,7 @@ class Checkout extends React.Component {
                 <PaymentMethodOptions paymentInfos={this.props.paymentInfos} onPaymentMethodSelectionChange={this.onPaymentMethodSelectionChange} />
 
                 <CheckoutAsWhoModal login={this.login} dismissModal={this.dismissModal} />
-                <Loader />
+                {this.state.nonClosableLoader}
                 <OrderDetailsSummaryModal address={this.state.address} onOrderDetailsConfirm={this.onOrderDetailsConfirm} />
 
             </>
@@ -190,6 +195,13 @@ class Checkout extends React.Component {
 
 
 
+    onShit = () => {
+        // TODO: Delete this func.
+        this.setState({nonClosableLoader: <NonClosableLoader />});
+    };
+
+
+
     onOrderPlace = (e) => {
         e.preventDefault();
         Bs.log("In METHOD: onOrderPlace()");
@@ -203,12 +215,13 @@ class Checkout extends React.Component {
         }
 
 
+        // TODO: show Loader component
+        this.setState({nonClosableLoader: <NonClosableLoader msg="Please wait... We're looking for your shipping options." />});
+        
+
+
         // TODO: show order details summary.
         // document.querySelector("#OrderDetailsSummaryModalTriggerBtn").click();
-        // TODO: show Loader component
-        const loader = document.querySelector("#LoaderTriggerBtn");
-        // loader.setAttribute("shouldBeShwon", "no");
-        loader.click()
 
 
 

@@ -73,7 +73,7 @@ const onGetShippingRatesFail = (state, action) => {
 
 const onGetShippingRatesReturn = (state, action) => {
 
-    document.querySelector("#LoaderTriggerBtn").click();
+    // document.querySelector("#LoaderTriggerBtn").click();
 
     const resultCode = action.objs.entireProcessResultCode;
     const DESTINATION_ADDRESS_EXCEPTION = 3;
