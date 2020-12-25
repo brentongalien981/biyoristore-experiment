@@ -59,8 +59,36 @@ class Checkout extends React.Component {
     componentDidUpdate() {
         //ish
         if (this.props.shouldShowShippingDetails) {
-            alert("TODO: shouldShowShippingDetails");
-            this.setState({nonClosableLoader: null});
+
+            // of all the order-items, get the product-seller that has the slowest restock-time
+            const items = this.props.cartItems;
+            let slowestItemToRestock = null;
+            let slowestRestockDays = 0;
+
+            for (const i of items) {
+                if (i.product.mostEfficientSeller.productSeller.restock_days >= slowestRestockDays) {
+                    slowestItemToRestock = i;
+                    slowestRestockDays = i.product.mostEfficientSeller.productSeller.restock_days;
+                }
+            }
+
+            // TODO: set estimate-shipping-time
+            let i = 1;
+            for (const r of this.props.efficientShipmentRates) {
+                const estimateShippingTime = slowestRestockDays + r.delivery_days;
+                Bs.log("shipment " + i + " => " + r.service + " => " + estimateShippingTime + " days => $" + r.rate + " " + r.currency);
+                ++i;
+            }
+
+            this.setState({ nonClosableLoader: null });
+
+
+            // TODO: shouldShowShippingDetails
+
+
+            // TODO: show order details summary.
+            // document.querySelector("#OrderDetailsSummaryModalTriggerBtn").click();
+
             this.props.finalizeShowShippingDetails();
         }
     }
@@ -102,10 +130,6 @@ class Checkout extends React.Component {
                         {/* <button onClick={this.goToPayNow}>Pay Now</button> */}
                     </div>
                 </section>
-
-
-                {/* TODO */}
-                {/* <button onClick={this.onShit}>show nonclosableloader</button> */}
 
                 <section className="no-overflow pt-0">
                     <div className="container">
@@ -195,13 +219,6 @@ class Checkout extends React.Component {
 
 
 
-    onShit = () => {
-        // TODO: Delete this func.
-        this.setState({nonClosableLoader: <NonClosableLoader />});
-    };
-
-
-
     onOrderPlace = (e) => {
         e.preventDefault();
         Bs.log("In METHOD: onOrderPlace()");
@@ -215,14 +232,8 @@ class Checkout extends React.Component {
         }
 
 
-        // TODO: show Loader component
-        this.setState({nonClosableLoader: <NonClosableLoader msg="Please wait... We're looking for your shipping options." />});
-        
-
-
-        // TODO: show order details summary.
-        // document.querySelector("#OrderDetailsSummaryModalTriggerBtn").click();
-
+        // show loader
+        this.setState({ nonClosableLoader: <NonClosableLoader msg="Please wait... We're looking for your shipping options." /> });
 
 
         // check shipping validity
@@ -308,6 +319,7 @@ class Checkout extends React.Component {
 /* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
+        efficientShipmentRates: state.checkout.efficientShipmentRates,
         shouldShowShippingDetails: state.checkout.shouldShowShippingDetails,
         predefinedPaymentFinalizationPageEntryCode: state.checkout.predefinedPaymentFinalizationPageEntryCode,
         paymentPageEntryCode: state.checkout.paymentPageEntryCode,

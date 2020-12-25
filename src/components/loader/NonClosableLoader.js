@@ -12,7 +12,7 @@ export default function NonClosableLoader(props) {
     return (
         <div className="NonClosableLoader">
             <div className="NonClosableLoader-body">
-                <h5>{msg}</h5>
+                <h6>{msg}</h6>
             </div>
         </div>
     );

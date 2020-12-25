@@ -20,6 +20,7 @@ const initialState = {
     // isThereError: false,
     order: {},
     shouldShowShippingDetails: false,
+    efficientShipmentRates: [],
 };
 
 
@@ -78,15 +79,20 @@ const onGetShippingRatesReturn = (state, action) => {
     const resultCode = action.objs.entireProcessResultCode;
     const DESTINATION_ADDRESS_EXCEPTION = 3;
     let shouldShowShippingDetails = false;
+    let efficientShipmentRates = [];
 
     if (action.objs.isResultOk) {
         if (resultCode == DESTINATION_ADDRESS_EXCEPTION) { alert("Oops! Please enter a valid address."); }
-        else { shouldShowShippingDetails = true; }
+        else { 
+            shouldShowShippingDetails = true; 
+            efficientShipmentRates = action.objs.efficientShipmentRates;
+        }
     } else { alert("Oops! There's problem on our end. Please try again later."); }
 
     return {
         ...state,
-        shouldShowShippingDetails: shouldShowShippingDetails
+        shouldShowShippingDetails: shouldShowShippingDetails,
+        efficientShipmentRates: efficientShipmentRates
     };
 };
 
