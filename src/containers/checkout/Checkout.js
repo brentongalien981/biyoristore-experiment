@@ -14,6 +14,7 @@ import Bs from '../../bs-library/helpers/Bs';
 import OrderDetailsSummaryModal from './OrderDetailsSummaryModal';
 import Loader from '../../components/loader/Loader';
 import NonClosableLoader from '../../components/loader/NonClosableLoader';
+import ShippingOptions from './ShippingOptions';
 
 
 class Checkout extends React.Component {
@@ -72,7 +73,7 @@ class Checkout extends React.Component {
                 }
             }
 
-            // TODO: set estimate-shipping-time
+            // set estimate-shipping-time
             let i = 1;
             for (const r of this.props.efficientShipmentRates) {
                 const estimateShippingTime = slowestRestockDays + r.delivery_days;
@@ -82,8 +83,10 @@ class Checkout extends React.Component {
 
             this.setState({ nonClosableLoader: null });
 
+            // TODO: show shipping-options
+            document.querySelector("#ShippingOptionsTriggerBtn").click();
 
-            // TODO: shouldShowShippingDetails
+
 
 
             // TODO: show order details summary.
@@ -161,6 +164,7 @@ class Checkout extends React.Component {
 
                 <CheckoutAsWhoModal login={this.login} dismissModal={this.dismissModal} />
                 {this.state.nonClosableLoader}
+                <ShippingOptions shippingRates={this.props.efficientShipmentRates} />
                 <OrderDetailsSummaryModal address={this.state.address} onOrderDetailsConfirm={this.onOrderDetailsConfirm} />
 
             </>
