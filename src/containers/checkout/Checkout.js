@@ -20,6 +20,24 @@ import ShippingOptions from './ShippingOptions';
 class Checkout extends React.Component {
 
     /* HELPER FUNCS */
+    showShippingOptions() {
+
+        // show shipping-options
+        document.querySelector("#ShippingOptionsTriggerBtn").click();
+
+        this.setState({ nonClosableLoader: null });
+
+        this.props.finalizeShowShippingDetails();
+
+
+
+
+        // TODO: show order details summary.
+        // document.querySelector("#OrderDetailsSummaryModalTriggerBtn").click();
+    }
+
+
+
     isPaymentMethodPredefined() {
         if (this.state.paymentMethod.id != null && this.state.paymentMethod.id !== 0) { return true; }
         return false;
@@ -58,52 +76,20 @@ class Checkout extends React.Component {
 
 
     componentDidUpdate() {
-        //ish
         if (this.props.shouldShowShippingDetails) {
-
-            // of all the order-items, get the product-seller that has the slowest restock-time
-            const items = this.props.cartItems;
-            let slowestItemToRestock = null;
-            let slowestRestockDays = 0;
-
-            for (const i of items) {
-                if (i.product.mostEfficientSeller.productSeller.restock_days >= slowestRestockDays) {
-                    slowestItemToRestock = i;
-                    slowestRestockDays = i.product.mostEfficientSeller.productSeller.restock_days;
-                }
-            }
-
-            // set estimate-shipping-time
-            let i = 1;
-            for (const r of this.props.efficientShipmentRates) {
-                const estimateShippingTime = slowestRestockDays + r.delivery_days;
-                Bs.log("shipment " + i + " => " + r.service + " => " + estimateShippingTime + " days => $" + r.rate + " " + r.currency);
-                ++i;
-            }
-
-            this.setState({ nonClosableLoader: null });
-
-            // TODO: show shipping-options
-            document.querySelector("#ShippingOptionsTriggerBtn").click();
-
-
-
-
-            // TODO: show order details summary.
-            // document.querySelector("#OrderDetailsSummaryModalTriggerBtn").click();
-
-            this.props.finalizeShowShippingDetails();
+            this.showShippingOptions();
         }
     }
 
 
     componentDidMount() {
 
-        if (this.props.cartItems.length === 0) {
-            alert("Please add items to your cart before checkout.");
-            this.props.history.replace("/products");
-            return;
-        }
+        // if (this.props.cartItems.length === 0) {
+        //     // TODO: Modify this chunk.
+        //     alert("Please add items to your cart before checkout.");
+        //     this.props.history.replace("/products");
+        //     return;
+        // }
 
         // Show the modal.
         const modalBtn = document.querySelector("#checkoutAsWhoModalBtn");
@@ -164,7 +150,7 @@ class Checkout extends React.Component {
 
                 <CheckoutAsWhoModal login={this.login} dismissModal={this.dismissModal} />
                 {this.state.nonClosableLoader}
-                <ShippingOptions shippingRates={this.props.efficientShipmentRates} />
+                <ShippingOptions shippingRates={this.props.efficientShipmentRates} cartItems={this.props.cartItems} />
                 <OrderDetailsSummaryModal address={this.state.address} onOrderDetailsConfirm={this.onOrderDetailsConfirm} />
 
             </>

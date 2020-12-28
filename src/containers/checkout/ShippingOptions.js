@@ -5,18 +5,19 @@ import Bs from '../../bs-library/helpers/Bs';
 
 export default function ShippingOptions(props) {
 
-    let msg = "Please choose your shipping option";
-    // msg += (props.msg ? " " + props.msg : "");
+    const slowestRestockDays = getSlowestRestockDays(props.cartItems);
 
     const options = props.shippingRates?.map((r, i) => {
+
+        const estimatedShippingDays = slowestRestockDays + r.delivery_days;
         
-        const label = r.service + " ==> " + r.delivery_days + " days ==> $" + r.rate + " " + r.currency;
+        const shippingDescription = getShippingDescription(estimatedShippingDays, r);
 
         return (
-            <li key={"shipping-rate-" + i}>
-                <input type="radio" id={"rate-" + i} name="shipping-option" value={"shipping-option-" + i} />
-                <label htmlFor={"rate-" + i}>{" " + label}</label>
-            </li>
+            <div key={i} className="custom-control custom-radio mb-2">
+                <input type="radio" name="custom-radio-1" className="custom-control-input" id={"shipping-option-" + i} />
+                <label className="custom-control-label" htmlFor={"shipping-option-" + i}>{shippingDescription}</label>
+            </div>
         );
     });
 
@@ -29,10 +30,10 @@ export default function ShippingOptions(props) {
                     <div className="modal-content">
 
                         <div className="modal-header">
+                            <h3>Choose your shipping option</h3>
                         </div>
 
                         <div className="modal-body">
-                            <h3>{msg}</h3>
                             <ul>{options}</ul>
                         </div>
 
@@ -44,4 +45,44 @@ export default function ShippingOptions(props) {
             </div>
         </>
     );
+}
+
+
+
+function getShippingDescription(estimatedShippingDays, rate) {
+    const r = rate;
+    Bs.log("estimatedShippingDays ==> " + estimatedShippingDays);
+
+    let label = r.service + " | ";
+
+    if (estimatedShippingDays >= 4) {
+        label += (estimatedShippingDays-3) + "-" + estimatedShippingDays + " business days";
+    } else if (estimatedShippingDays > 1) {
+        label += "1-" + estimatedShippingDays + " business days";
+    } else {
+        label += estimatedShippingDays + " business day";
+    }
+
+    label += " | $" + r.rate + " " + r.currency;
+
+    return label;
+}
+
+
+
+function getSlowestRestockDays(cartItems) {
+
+    // of all the order-items, get the product-seller that has the slowest restock-time
+    const items = cartItems;
+    let slowestItemToRestock = null;
+    let slowestRestockDays = 0;
+
+    for (const i of items) {
+        if (i.product.mostEfficientSeller.productSeller.restock_days >= slowestRestockDays) {
+            slowestItemToRestock = i;
+            slowestRestockDays = i.product.mostEfficientSeller.productSeller.restock_days;
+        }
+    }
+
+    return slowestRestockDays;
 }
