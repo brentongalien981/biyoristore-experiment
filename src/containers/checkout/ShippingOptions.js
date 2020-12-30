@@ -10,7 +10,7 @@ export default function ShippingOptions(props) {
     const options = props.shippingRates?.map((r, i) => {
 
         const estimatedShippingDays = slowestRestockDays + r.delivery_days;
-        
+
         const shippingDescription = getShippingDescription(estimatedShippingDays, r);
 
         return (
@@ -30,7 +30,7 @@ export default function ShippingOptions(props) {
                     <div className="modal-content">
 
                         <div className="modal-header">
-                            <h3>Choose your shipping option</h3>
+                            <h4>Choose your shipping option</h4>
                         </div>
 
                         <div className="modal-body">
@@ -38,6 +38,16 @@ export default function ShippingOptions(props) {
                         </div>
 
                         <div className="modal-footer">
+                            <div className="container-fluid">
+                                <div className="row gutter-0">
+                                    <div className="col">
+                                        <button type="button" className="btn btn-block btn-secondary" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                    <div className="col">
+                                        <button type="button" className="btn btn-block btn-primary" data-dismiss="modal">Confirm</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -53,17 +63,17 @@ function getShippingDescription(estimatedShippingDays, rate) {
     const r = rate;
     Bs.log("estimatedShippingDays ==> " + estimatedShippingDays);
 
-    let label = r.service + " | ";
+    let label = r.service + " / ";
 
     if (estimatedShippingDays >= 4) {
-        label += (estimatedShippingDays-3) + "-" + estimatedShippingDays + " business days";
+        label += (estimatedShippingDays - 3) + "-" + estimatedShippingDays + " business days";
     } else if (estimatedShippingDays > 1) {
         label += "1-" + estimatedShippingDays + " business days";
     } else {
         label += estimatedShippingDays + " business day";
     }
 
-    label += " | $" + r.rate + " " + r.currency;
+    label += " / $" + r.rate + " " + r.currency;
 
     return label;
 }
