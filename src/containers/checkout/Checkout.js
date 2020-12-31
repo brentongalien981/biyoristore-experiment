@@ -228,10 +228,12 @@ class Checkout extends React.Component {
 
         // check shipping validity
         const items = this.props.cartItems;
-        // for (const i of items) {
-        //     Bs.log("i.product.mostEfficientSeller.name ==> " + i.product.mostEfficientSeller.name);
-        // }
-        this.props.testGetShippingRates(items);
+        let reducedCartItemsData = [];
+        for (const i of items) {
+            const reducedCartItem = { quantity: i.quantity, packageItemTypeId: i.product.packageItemTypeId };
+            reducedCartItemsData.push(reducedCartItem);
+        }
+        this.props.testGetShippingRates(reducedCartItemsData);
 
 
     };
@@ -327,7 +329,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         finalizeShowShippingDetails: () => dispatch(actions.finalizeShowShippingDetails()),
         // TODO: change the name
-        testGetShippingRates: (items) => dispatch(actions.testGetShippingRates(items)),
+        testGetShippingRates: (reducedCartItemsData) => dispatch(actions.testGetShippingRates(reducedCartItemsData)),
         // onAddressSelectionChange: (e, i) => dispatch(actions.onAddressSelectionChange(e, i)),
         setPredefinedPaymentFinalizationPageEntryCode: () => dispatch(actions.setPredefinedPaymentFinalizationPageEntryCode()),
         setPaymentPageEntryCode: () => dispatch(actions.setPaymentPageEntryCode()),
