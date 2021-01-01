@@ -42,7 +42,7 @@ export const onReadCheckoutRequiredDataSuccess = (objs) => ({ type: ON_READ_CHEC
 
 
 /* AJAX FUNCS */
-export const testGetShippingRates = (reducedCartItemsData) => {
+export const testGetShippingRates = (params) => {
 
     Bs.log("\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     Bs.log("In ACTION: checkout, METHOD: testGetShippingRates()");
@@ -53,9 +53,10 @@ export const testGetShippingRates = (reducedCartItemsData) => {
 
         BsCore2.ajaxCrud({
             url: '/customized-easypost/getRates',
-            // url: '/customized-easypost/checkCartItems',
+            // url: '/customized-easypost/test',
             params: {
-                reducedCartItemsData: reducedCartItemsData
+                reducedCartItemsData: params.reducedCartItemsData,
+                shippingInfo: params.shippingInfo
             },
             callBackFunc: (requestData, json) => {
 

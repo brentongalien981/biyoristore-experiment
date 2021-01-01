@@ -223,7 +223,7 @@ class Checkout extends React.Component {
         }
 
 
-        // show loader
+        // TODO: show loader
         this.setState({ nonClosableLoader: <NonClosableLoader msg="Please wait... We're looking for your shipping options." /> });
 
 
@@ -234,7 +234,13 @@ class Checkout extends React.Component {
             const reducedCartItem = { quantity: i.quantity, packageItemTypeId: i.product.packageItemTypeId };
             reducedCartItemsData.push(reducedCartItem);
         }
-        this.props.testGetShippingRates(reducedCartItemsData);
+
+        const params = {
+            reducedCartItemsData: reducedCartItemsData,
+            shippingInfo: this.state.address
+        };
+
+        this.props.testGetShippingRates(params);
 
 
     };
@@ -332,7 +338,7 @@ const mapDispatchToProps = (dispatch) => {
         doGetShippingRatesFinalizationProcess: () => dispatch(actions.doGetShippingRatesFinalizationProcess()),
         // finalizeShowShippingDetails: () => dispatch(actions.finalizeShowShippingDetails()),
         // TODO: change the name
-        testGetShippingRates: (reducedCartItemsData) => dispatch(actions.testGetShippingRates(reducedCartItemsData)),
+        testGetShippingRates: (params) => dispatch(actions.testGetShippingRates(params)),
         // onAddressSelectionChange: (e, i) => dispatch(actions.onAddressSelectionChange(e, i)),
         setPredefinedPaymentFinalizationPageEntryCode: () => dispatch(actions.setPredefinedPaymentFinalizationPageEntryCode()),
         setPaymentPageEntryCode: () => dispatch(actions.setPaymentPageEntryCode()),
