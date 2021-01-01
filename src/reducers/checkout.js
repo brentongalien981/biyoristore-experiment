@@ -76,8 +76,8 @@ const onGetShippingRatesReturn = (state, action) => {
 
     // document.querySelector("#LoaderTriggerBtn").click();
 
-    const resultCode = action.objs.entireProcessResultCode;
-    const DESTINATION_ADDRESS_EXCEPTION = 3;
+    const resultCode = action.objs.resultCode;
+    const DESTINATION_ADDRESS_EXCEPTION = -2;
     let shouldShowShippingDetails = false;
     let efficientShipmentRates = [];
 
