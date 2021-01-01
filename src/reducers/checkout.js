@@ -19,6 +19,7 @@ const initialState = {
     orderProcessStatusCode: 0,
     // isThereError: false,
     order: {},
+    shouldDoGetShippingRatesPostProcess: false,
     shouldShowShippingDetails: false,
     efficientShipmentRates: [],
 };
@@ -28,7 +29,8 @@ const initialState = {
 /* REDUCER */
 const checkout = (state = initialState, action) => {
     switch (action.type) {
-        case actions.FINALIZE_SHOW_SHIPPING_DETAILS: return finalizeShowShippingDetails(state, action);
+        case actions.DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS: return doGetShippingRatesFinalizationProcess(state, action);
+        // case actions.FINALIZE_SHOW_SHIPPING_DETAILS: return finalizeShowShippingDetails(state, action);
         case actions.ON_GET_SHIPPING_RATES_FAIL: return onGetShippingRatesFail(state, action);
         case actions.ON_GET_SHIPPING_RATES_RETURN: return onGetShippingRatesReturn(state, action);
         // case actions.ON_ADDRESS_SELECTION_CHANGE: return onAddressSelectionChange(state, action);
@@ -48,12 +50,10 @@ const checkout = (state = initialState, action) => {
 
 
 /* NORMAL FUNCS */
-const finalizeShowShippingDetails = (state, action) => {
-
-    alert("In REDUCER: checkout, METHOD: finalizeShowShippingDetails()");
-
+const doGetShippingRatesFinalizationProcess = (state, action) => {
     return {
         ...state,
+        shouldDoGetShippingRatesPostProcess: false,
         shouldShowShippingDetails: false
     };
 };
@@ -62,11 +62,11 @@ const finalizeShowShippingDetails = (state, action) => {
 
 const onGetShippingRatesFail = (state, action) => {
 
-    document.querySelector("#LoaderTriggerBtn").click();
     alert("Oops! There's problem on our end. Please try again later.");
 
     return {
         ...state,
+        shouldDoGetShippingRatesPostProcess: true
     };
 };
 
@@ -74,23 +74,29 @@ const onGetShippingRatesFail = (state, action) => {
 
 const onGetShippingRatesReturn = (state, action) => {
 
-    // document.querySelector("#LoaderTriggerBtn").click();
-
     const resultCode = action.objs.resultCode;
     const DESTINATION_ADDRESS_EXCEPTION = -2;
+    const ENTIRE_PROCESS_OK = 1;
     let shouldShowShippingDetails = false;
     let efficientShipmentRates = [];
 
-    if (action.objs.isResultOk) {
-        if (resultCode == DESTINATION_ADDRESS_EXCEPTION) { alert("Oops! Please enter a valid address."); }
-        else { 
-            shouldShowShippingDetails = true; 
+    switch (resultCode) {
+        case DESTINATION_ADDRESS_EXCEPTION:
+            alert("Oops! Please enter a valid address.");
+            break;
+        case ENTIRE_PROCESS_OK:
+            shouldShowShippingDetails = true;
             efficientShipmentRates = action.objs.efficientShipmentRates;
-        }
-    } else { alert("Oops! There's problem on our end. Please try again later."); }
+            break;
+        default:
+            alert("Oops! There's problem on our end. Please try again later.");
+            break;
+    }
+
 
     return {
         ...state,
+        shouldDoGetShippingRatesPostProcess: true,
         shouldShowShippingDetails: shouldShowShippingDetails,
         efficientShipmentRates: efficientShipmentRates
     };

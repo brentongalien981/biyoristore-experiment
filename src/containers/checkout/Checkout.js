@@ -25,12 +25,6 @@ class Checkout extends React.Component {
         // show shipping-options
         document.querySelector("#ShippingOptionsTriggerBtn").click();
 
-        this.setState({ nonClosableLoader: null });
-
-        this.props.finalizeShowShippingDetails();
-
-
-
 
         // TODO: show order details summary.
         // document.querySelector("#OrderDetailsSummaryModalTriggerBtn").click();
@@ -76,8 +70,15 @@ class Checkout extends React.Component {
 
 
     componentDidUpdate() {
-        if (this.props.shouldShowShippingDetails) {
-            this.showShippingOptions();
+        if (this.props.shouldDoGetShippingRatesPostProcess) {
+
+            this.setState({ nonClosableLoader: null });
+
+            if (this.props.shouldShowShippingDetails) {
+                this.showShippingOptions();
+            }
+
+            this.props.doGetShippingRatesFinalizationProcess();
         }
     }
 
@@ -312,6 +313,7 @@ class Checkout extends React.Component {
 const mapStateToProps = (state) => {
     return {
         efficientShipmentRates: state.checkout.efficientShipmentRates,
+        shouldDoGetShippingRatesPostProcess: state.checkout.shouldDoGetShippingRatesPostProcess,
         shouldShowShippingDetails: state.checkout.shouldShowShippingDetails,
         predefinedPaymentFinalizationPageEntryCode: state.checkout.predefinedPaymentFinalizationPageEntryCode,
         paymentPageEntryCode: state.checkout.paymentPageEntryCode,
@@ -327,7 +329,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        finalizeShowShippingDetails: () => dispatch(actions.finalizeShowShippingDetails()),
+        doGetShippingRatesFinalizationProcess: () => dispatch(actions.doGetShippingRatesFinalizationProcess()),
+        // finalizeShowShippingDetails: () => dispatch(actions.finalizeShowShippingDetails()),
         // TODO: change the name
         testGetShippingRates: (reducedCartItemsData) => dispatch(actions.testGetShippingRates(reducedCartItemsData)),
         // onAddressSelectionChange: (e, i) => dispatch(actions.onAddressSelectionChange(e, i)),

@@ -8,7 +8,8 @@ import axios from "axios";
 
 
 /* NAMES */
-export const FINALIZE_SHOW_SHIPPING_DETAILS = "FINALIZE_SHOW_SHIPPING_DETAILS";
+export const DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS = "DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS";
+// export const FINALIZE_SHOW_SHIPPING_DETAILS = "FINALIZE_SHOW_SHIPPING_DETAILS";
 export const ON_GET_SHIPPING_RATES_FAIL = "ON_GET_SHIPPING_RATES_FAIL";
 export const ON_GET_SHIPPING_RATES_RETURN = "ON_GET_SHIPPING_RATES_RETURN";
 // export const ON_ADDRESS_SELECTION_CHANGE = "ON_ADDRESS_SELECTION_CHANGE";
@@ -24,7 +25,8 @@ export const ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS = "ON_READ_CHECKOUT_REQUIRED
 
 
 /* FUNCS */
-export const finalizeShowShippingDetails = () => ({ type: FINALIZE_SHOW_SHIPPING_DETAILS });
+export const doGetShippingRatesFinalizationProcess = () => ({ type: DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS });
+// export const finalizeShowShippingDetails = () => ({ type: FINALIZE_SHOW_SHIPPING_DETAILS });
 export const onGetShippingRatesFail = () => ({ type: ON_GET_SHIPPING_RATES_FAIL });
 export const onGetShippingRatesReturn = (objs) => ({ type: ON_GET_SHIPPING_RATES_RETURN, objs: objs });
 // export const onAddressSelectionChange = (e, i) => ({ type: ON_ADDRESS_SELECTION_CHANGE, e: e, i: i });
@@ -61,9 +63,7 @@ export const testGetShippingRates = (reducedCartItemsData) => {
                 Bs.log("START OF ACTION: checkout, METHOD: testGetShippingRates() => ajaxCrud() => callBackFunc()");
                 Bs.log("@@@@@@@@@@@@@@@@@@@@");
 
-                //ish
                 dispatch(onGetShippingRatesReturn(json.objs));
-
 
                 Bs.log("\n####################");
                 Bs.log("END OF ACTION: checkout, METHOD: testGetShippingRates() => ajaxCrud() => callBackFunc()");
@@ -109,7 +109,6 @@ export const finalizeOrderWithPredefinedPayment = (objs) => {
 
                 const PAYMENT_METHOD_CHARGED = 2;
                 if (json.paymentProcessStatusCode === PAYMENT_METHOD_CHARGED) {
-                    // alert("TODO: dispatch resetCart()");
                     dispatch(resetCart());
                 }
 
@@ -150,7 +149,6 @@ export const finalizeOrder = (cartId, shippingInfo) => {
                 dispatch(resetCart());
             },
             errorCallBackFunc: (errors) => {
-                // TODO:
                 dispatch(onFinalizeOrderReturn());
                 dispatch(resetCart());
             }
