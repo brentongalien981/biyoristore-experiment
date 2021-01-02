@@ -231,7 +231,7 @@ class Checkout extends React.Component {
         const items = this.props.cartItems;
         let reducedCartItemsData = [];
         for (const i of items) {
-            const reducedCartItem = { quantity: i.quantity, packageItemTypeId: i.product.packageItemTypeId };
+            const reducedCartItem = { productId: i.product.id, quantity: i.quantity, packageItemTypeId: i.product.packageItemTypeId };
             reducedCartItemsData.push(reducedCartItem);
         }
 
