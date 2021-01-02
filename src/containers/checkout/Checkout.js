@@ -21,13 +21,7 @@ class Checkout extends React.Component {
 
     /* HELPER FUNCS */
     showShippingOptions() {
-
-        // show shipping-options
         document.querySelector("#ShippingOptionsTriggerBtn").click();
-
-
-        // TODO: show order details summary.
-        // document.querySelector("#OrderDetailsSummaryModalTriggerBtn").click();
     }
 
 
@@ -223,7 +217,7 @@ class Checkout extends React.Component {
         }
 
 
-        // TODO: show loader
+        // show loader
         this.setState({ nonClosableLoader: <NonClosableLoader msg="Please wait... We're looking for your shipping options." /> });
 
 
@@ -240,7 +234,7 @@ class Checkout extends React.Component {
             shippingInfo: this.state.address
         };
 
-        this.props.testGetShippingRates(params);
+        this.props.getShippingRates(params);
 
 
     };
@@ -337,8 +331,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         doGetShippingRatesFinalizationProcess: () => dispatch(actions.doGetShippingRatesFinalizationProcess()),
         // finalizeShowShippingDetails: () => dispatch(actions.finalizeShowShippingDetails()),
-        // TODO: change the name
-        testGetShippingRates: (params) => dispatch(actions.testGetShippingRates(params)),
+        getShippingRates: (params) => dispatch(actions.getShippingRates(params)),
         // onAddressSelectionChange: (e, i) => dispatch(actions.onAddressSelectionChange(e, i)),
         setPredefinedPaymentFinalizationPageEntryCode: () => dispatch(actions.setPredefinedPaymentFinalizationPageEntryCode()),
         setPaymentPageEntryCode: () => dispatch(actions.setPaymentPageEntryCode()),

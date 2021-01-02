@@ -42,10 +42,10 @@ export const onReadCheckoutRequiredDataSuccess = (objs) => ({ type: ON_READ_CHEC
 
 
 /* AJAX FUNCS */
-export const testGetShippingRates = (params) => {
+export const getShippingRates = (params) => {
 
     Bs.log("\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-    Bs.log("In ACTION: checkout, METHOD: testGetShippingRates()");
+    Bs.log("In ACTION: checkout, METHOD: getShippingRates()");
     Bs.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
 
@@ -61,13 +61,13 @@ export const testGetShippingRates = (params) => {
             callBackFunc: (requestData, json) => {
 
                 Bs.log("\n@@@@@@@@@@@@@@@@@@@@");
-                Bs.log("START OF ACTION: checkout, METHOD: testGetShippingRates() => ajaxCrud() => callBackFunc()");
+                Bs.log("START OF ACTION: checkout, METHOD: getShippingRates() => ajaxCrud() => callBackFunc()");
                 Bs.log("@@@@@@@@@@@@@@@@@@@@");
 
                 dispatch(onGetShippingRatesReturn(json.objs));
 
                 Bs.log("\n####################");
-                Bs.log("END OF ACTION: checkout, METHOD: testGetShippingRates() => ajaxCrud() => callBackFunc()");
+                Bs.log("END OF ACTION: checkout, METHOD: getShippingRates() => ajaxCrud() => callBackFunc()");
                 Bs.log("####################");
             },
             errorCallBackFunc: (errors) => {

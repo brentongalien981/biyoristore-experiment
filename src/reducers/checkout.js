@@ -76,6 +76,7 @@ const onGetShippingRatesReturn = (state, action) => {
 
     const resultCode = action.objs.resultCode;
     const DESTINATION_ADDRESS_EXCEPTION = -2;
+    const EMPTY_CART_EXCEPTION = -4;
     const ENTIRE_PROCESS_OK = 1;
     let shouldShowShippingDetails = false;
     let efficientShipmentRates = [];
@@ -83,6 +84,9 @@ const onGetShippingRatesReturn = (state, action) => {
     switch (resultCode) {
         case DESTINATION_ADDRESS_EXCEPTION:
             alert("Oops! Please enter a valid address.");
+            break;
+        case EMPTY_CART_EXCEPTION:
+            alert("Oops! Please add items to your cart.");
             break;
         case ENTIRE_PROCESS_OK:
             shouldShowShippingDetails = true;
@@ -124,7 +128,6 @@ const resetFinalizationObjs = (state, action) => {
 
 
 
-//ish
 const onFinalizeOrderReturn = (state, action) => {
     return {
         ...state,
