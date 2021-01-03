@@ -15,7 +15,7 @@ export default function ShippingOptions(props) {
 
         return (
             <div key={i} className="custom-control custom-radio mb-2">
-                <input type="radio" name="custom-radio-1" className="custom-control-input" id={"shipping-option-" + i} />
+                <input type="radio" name="custom-radio-1" className="custom-control-input" id={"shipping-option-" + i} onChange={() => props.onShippingOptionChange(r.id)} />
                 <label className="custom-control-label" htmlFor={"shipping-option-" + i}>{shippingDescription}</label>
             </div>
         );
@@ -44,7 +44,7 @@ export default function ShippingOptions(props) {
                                         <button type="button" className="btn btn-block btn-secondary" data-dismiss="modal">Cancel</button>
                                     </div>
                                     <div className="col">
-                                        <button type="button" className="btn btn-block btn-primary" data-dismiss="modal">Confirm</button>
+                                        <button type="button" className="btn btn-block btn-primary" data-dismiss="modal" onClick={props.onShippingOptionConfirm}>Confirm</button>
                                     </div>
                                 </div>
                             </div>

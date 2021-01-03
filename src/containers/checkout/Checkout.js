@@ -58,7 +58,8 @@ class Checkout extends React.Component {
 
     state = {
         address: { ...Checkout.BLANK_ADDRESS },
-        paymentMethod: {}
+        paymentMethod: {},
+        shipmentRateId: ""
     };
 
 
@@ -74,6 +75,11 @@ class Checkout extends React.Component {
 
             this.props.doGetShippingRatesFinalizationProcess();
         }
+
+        
+        if (this.props.shouldGoToCheckoutFinalizationPage) {
+            Bs.log("ish: shouldGoToCheckoutFinalizationPage()");
+        }
     }
 
 
@@ -86,6 +92,8 @@ class Checkout extends React.Component {
         //     return;
         // }
 
+        this.props.resetReducerInitVars();
+
         // Show the modal.
         const modalBtn = document.querySelector("#checkoutAsWhoModalBtn");
         if (modalBtn) { modalBtn.click(); }
@@ -93,7 +101,7 @@ class Checkout extends React.Component {
         //
         if (BsAppSession.isLoggedIn()) { this.props.readCheckoutRequiredData(); }
 
-        //
+        // 
         this.props.setPredefinedPaymentFinalizationPageEntryCode();
         this.props.setPaymentPageEntryCode();
     }
@@ -145,7 +153,8 @@ class Checkout extends React.Component {
 
                 <CheckoutAsWhoModal login={this.login} dismissModal={this.dismissModal} />
                 {this.state.nonClosableLoader}
-                <ShippingOptions shippingRates={this.props.efficientShipmentRates} cartItems={this.props.cartItems} />
+                <ShippingOptions shippingRates={this.props.efficientShipmentRates} cartItems={this.props.cartItems} onShippingOptionConfirm={this.onShippingOptionConfirm} onShippingOptionChange={this.onShippingOptionChange} />
+                {/* TODO:DELETE */}
                 <OrderDetailsSummaryModal address={this.state.address} onOrderDetailsConfirm={this.onOrderDetailsConfirm} />
 
             </>
@@ -155,6 +164,27 @@ class Checkout extends React.Component {
 
 
     /* EVENT FUNCS */
+    onShippingOptionChange = (rateId) => {
+        Bs.log("\n\n##############################");
+        Bs.log("In METHOD: onShippingOptionChange()");
+        Bs.log("rateId ==> " + rateId);
+        this.setState({ shipmentRateId: rateId });
+    };
+
+
+
+    onShippingOptionConfirm = () => {
+        Bs.log("\n\n##############################");
+        Bs.log("In METHOD: onShippingOptionConfirm()");
+
+        if (this.state.shipmentRateId === "") { return; }
+        this.props.setShipmentRateId(this.state.shipmentRateId);
+
+    };
+
+
+
+    // TODO: Move this to CheckoutFinalization.
     onOrderDetailsConfirm = () => {
 
         Bs.log("\n\n##############################");
@@ -205,6 +235,7 @@ class Checkout extends React.Component {
 
 
     onOrderPlace = (e) => {
+
         e.preventDefault();
         Bs.log("In METHOD: onOrderPlace()");
 
@@ -312,6 +343,8 @@ class Checkout extends React.Component {
 /* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
+        shouldGoToCheckoutFinalizationPage: state.checkout.shouldGoToCheckoutFinalizationPage,
+        canSelectShippingOption: state.checkout.canSelectShippingOption,
         efficientShipmentRates: state.checkout.efficientShipmentRates,
         shouldDoGetShippingRatesPostProcess: state.checkout.shouldDoGetShippingRatesPostProcess,
         shouldShowShippingDetails: state.checkout.shouldShowShippingDetails,
@@ -329,6 +362,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        setShipmentRateId: (shipmentRateId) => dispatch(actions.setShipmentRateId(shipmentRateId)),
+        resetReducerInitVars: () => dispatch(actions.resetReducerInitVars()),
         doGetShippingRatesFinalizationProcess: () => dispatch(actions.doGetShippingRatesFinalizationProcess()),
         // finalizeShowShippingDetails: () => dispatch(actions.finalizeShowShippingDetails()),
         getShippingRates: (params) => dispatch(actions.getShippingRates(params)),

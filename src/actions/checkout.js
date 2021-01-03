@@ -8,6 +8,8 @@ import axios from "axios";
 
 
 /* NAMES */
+export const SET_SHIPMENT_RATE_ID = "SET_SHIPMENT_RATE_ID";
+export const RESET_REDUCER_INIT_VARS = "RESET_REDUCER_INIT_VARS";
 export const DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS = "DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS";
 // export const FINALIZE_SHOW_SHIPPING_DETAILS = "FINALIZE_SHOW_SHIPPING_DETAILS";
 export const ON_GET_SHIPPING_RATES_FAIL = "ON_GET_SHIPPING_RATES_FAIL";
@@ -24,7 +26,10 @@ export const SET_PAYMENT_PAGE_ENTRY_CODE = "SET_PAYMENT_PAGE_ENTRY_CODE";
 export const ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS = "ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS";
 
 
+
 /* FUNCS */
+export const setShipmentRateId = (shipmentRateId) => ({ type: SET_SHIPMENT_RATE_ID, shipmentRateId: shipmentRateId });
+export const resetReducerInitVars = () => ({ type: RESET_REDUCER_INIT_VARS });
 export const doGetShippingRatesFinalizationProcess = () => ({ type: DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS });
 // export const finalizeShowShippingDetails = () => ({ type: FINALIZE_SHOW_SHIPPING_DETAILS });
 export const onGetShippingRatesFail = () => ({ type: ON_GET_SHIPPING_RATES_FAIL });
@@ -39,6 +44,7 @@ export const setPredefinedPaymentFinalizationPageEntryCode = () => ({ type: SET_
 export const setPaymentFinalizationPageEntryCode = () => ({ type: SET_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE });
 export const setPaymentPageEntryCode = () => ({ type: SET_PAYMENT_PAGE_ENTRY_CODE });
 export const onReadCheckoutRequiredDataSuccess = (objs) => ({ type: ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS, objs: objs });
+
 
 
 /* AJAX FUNCS */

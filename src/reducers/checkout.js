@@ -22,6 +22,10 @@ const initialState = {
     shouldDoGetShippingRatesPostProcess: false,
     shouldShowShippingDetails: false,
     efficientShipmentRates: [],
+    canSelectShippingOption: false,
+    shipmentId: "",
+    shipmentRateId: "",
+    shouldGoToCheckoutFinalizationPage: false
 };
 
 
@@ -29,6 +33,8 @@ const initialState = {
 /* REDUCER */
 const checkout = (state = initialState, action) => {
     switch (action.type) {
+        case actions.SET_SHIPMENT_RATE_ID: return setShipmentRateId(state, action);
+        case actions.RESET_REDUCER_INIT_VARS: return resetReducerInitVars(state, action);
         case actions.DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS: return doGetShippingRatesFinalizationProcess(state, action);
         // case actions.FINALIZE_SHOW_SHIPPING_DETAILS: return finalizeShowShippingDetails(state, action);
         case actions.ON_GET_SHIPPING_RATES_FAIL: return onGetShippingRatesFail(state, action);
@@ -50,6 +56,26 @@ const checkout = (state = initialState, action) => {
 
 
 /* NORMAL FUNCS */
+const setShipmentRateId = (state, action) => {
+    return {
+        ...state,
+        shipmentRateId: action.shipmentRateId,
+        shouldGoToCheckoutFinalizationPage: true
+    };
+};
+
+
+
+const resetReducerInitVars = (state, action) => {
+    return {
+        ...state,
+        canSelectShippingOption: false,
+        shouldGoToCheckoutFinalizationPage: false
+    };
+};
+
+
+
 const doGetShippingRatesFinalizationProcess = (state, action) => {
     return {
         ...state,
@@ -78,7 +104,10 @@ const onGetShippingRatesReturn = (state, action) => {
     const DESTINATION_ADDRESS_EXCEPTION = -2;
     const EMPTY_CART_EXCEPTION = -4;
     const ENTIRE_PROCESS_OK = 1;
+
+    let canSelectShippingOption = false;
     let shouldShowShippingDetails = false;
+    let shipmentId = "";
     let efficientShipmentRates = [];
 
     switch (resultCode) {
@@ -89,7 +118,9 @@ const onGetShippingRatesReturn = (state, action) => {
             alert("Oops! Please add items to your cart.");
             break;
         case ENTIRE_PROCESS_OK:
+            canSelectShippingOption = true;
             shouldShowShippingDetails = true;
+            shipmentId = action.objs.shipmentId;
             efficientShipmentRates = action.objs.efficientShipmentRates;
             break;
         default:
@@ -100,7 +131,9 @@ const onGetShippingRatesReturn = (state, action) => {
 
     return {
         ...state,
+        canSelectShippingOption: canSelectShippingOption,
         shouldDoGetShippingRatesPostProcess: true,
+        shipmentId: shipmentId,
         shouldShowShippingDetails: shouldShowShippingDetails,
         efficientShipmentRates: efficientShipmentRates
     };
