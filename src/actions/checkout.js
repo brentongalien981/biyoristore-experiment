@@ -8,7 +8,7 @@ import axios from "axios";
 
 
 /* NAMES */
-export const SET_SHIPMENT_RATE_ID = "SET_SHIPMENT_RATE_ID";
+export const SET_SHIPMENT_RATE = "SET_SHIPMENT_RATE";
 export const RESET_REDUCER_INIT_VARS = "RESET_REDUCER_INIT_VARS";
 export const DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS = "DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS";
 // export const FINALIZE_SHOW_SHIPPING_DETAILS = "FINALIZE_SHOW_SHIPPING_DETAILS";
@@ -29,7 +29,7 @@ export const ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS = "ON_READ_CHECKOUT_REQUIRED
 
 
 /* FUNCS */
-export const setShipmentRateId = (shipmentRateId) => ({ type: SET_SHIPMENT_RATE_ID, shipmentRateId: shipmentRateId });
+export const setShipmentRate = (shipmentRate) => ({ type: SET_SHIPMENT_RATE, shipmentRate: shipmentRate });
 export const resetReducerInitVars = () => ({ type: RESET_REDUCER_INIT_VARS });
 export const doGetShippingRatesFinalizationProcess = () => ({ type: DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS });
 // export const finalizeShowShippingDetails = () => ({ type: FINALIZE_SHOW_SHIPPING_DETAILS });

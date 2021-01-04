@@ -70,7 +70,7 @@ class Checkout extends React.Component {
     state = {
         address: { ...Checkout.BLANK_ADDRESS },
         paymentMethod: {},
-        shipmentRateId: ""
+        shipmentRate: {}
     };
 
 
@@ -170,8 +170,8 @@ class Checkout extends React.Component {
 
 
     /* EVENT FUNCS */
-    onShippingOptionChange = (rateId) => {
-        this.setState({ shipmentRateId: rateId });
+    onShippingOptionChange = (e, r) => {
+        this.setState({ shipmentRate: r });
     };
 
 
@@ -179,7 +179,7 @@ class Checkout extends React.Component {
     onShippingOptionConfirm = () => {
 
         // If user confirms without selection, re-show the options.
-        if (this.state.shipmentRateId === "") { 
+        if (!this.state.shipmentRate || this.state.shipmentRate.id === "") { 
 
             alert("Please select a shipping option.");
 
@@ -190,8 +190,7 @@ class Checkout extends React.Component {
             return; 
         }
 
-        
-        this.props.setShipmentRateId(this.state.shipmentRateId);
+        this.props.setShipmentRate(this.state.shipmentRate);
     };
 
 
@@ -311,7 +310,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setShipmentRateId: (shipmentRateId) => dispatch(actions.setShipmentRateId(shipmentRateId)),
+        setShipmentRate: (shipmentRate) => dispatch(actions.setShipmentRate(shipmentRate)),
         resetReducerInitVars: () => dispatch(actions.resetReducerInitVars()),
         doGetShippingRatesFinalizationProcess: () => dispatch(actions.doGetShippingRatesFinalizationProcess()),
         getShippingRates: (params) => dispatch(actions.getShippingRates(params)),

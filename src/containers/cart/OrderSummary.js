@@ -5,10 +5,16 @@ import Bs from '../../bs-library/helpers/Bs';
 
 function OrderSummary(props) {
 
-    const orderSummaryVals = getOrderSummaryValues(props.items, props.shouldCalculateForOrderPage);
+    const orderSummaryVals = getOrderSummaryValues(props.items, props.shouldCalculateForOrderPage, props.shouldCalculateForCheckoutFinalizationPage, props.shipmentRate);
 
     let checkoutBtn = null;
     if (!props.withNoCheckoutBtn) { checkoutBtn = (<a href="#" className="btn btn-lg btn-primary btn-block mt-1" onClick={props.onCheckout}>Checkout</a>); }
+
+    const shipmentRateFee = orderSummaryVals.shipmentRateFee.toFixed(2);
+    let shipmentRateFeeSection = null;
+    if (shipmentRateFee != 0.0) {
+        shipmentRateFeeSection = (<li className="list-group-item d-flex justify-content-between align-items-center">Shipping<span>${shipmentRateFee}</span></li>);
+    }
 
     return (
         <div className="col-lg-4">
@@ -29,9 +35,7 @@ function OrderSummary(props) {
                             Subtotal<span>${orderSummaryVals.subtotal.toFixed(2)}</span>
                         </li>
 
-                        <li className="list-group-item d-flex justify-content-between align-items-center">
-                            Shipping<span>Free</span>
-                        </li>
+                        {shipmentRateFeeSection}
 
                         <li className="list-group-item d-flex justify-content-between align-items-center">
                             Tax<span>${orderSummaryVals.tax.toFixed(2)}</span>
@@ -56,22 +60,36 @@ function OrderSummary(props) {
 
 
 
-function getOrderSummaryValues(items, shouldCalculateForOrderPage) {
+function getOrderSummaryValues(items, shouldCalculateForOrderPage, shouldCalculateForCheckoutFinalizationPage, shipmentRate) {
 
     let vals = {
-        subtotal: 0, tax: 0, total: 0
+        subtotal: 0.0, shipmentRateFee: parseFloat(shipmentRate?.rate) ?? 0.0, tax: 0.0, total: 0.0
     };
 
-    if (items != null && items?.length != 0) { 
+    if (items != null && items?.length != 0) {
+
         items.forEach(i => {
-            let itemTotalPrice = 0;
-            if (!shouldCalculateForOrderPage) { itemTotalPrice = parseFloat(i.product.price) * parseInt(i.quantity); }
-            else { itemTotalPrice = parseFloat(i.price) * parseInt(i.quantity); }
-            
+
+            let itemTotalPrice = 0.0;
+
+            // TODO: Refactor to handle multiple scenarios.
+            if (shouldCalculateForCheckoutFinalizationPage) {
+
+                let itemMostEfficientPrice = i.product.mostEfficientSeller.productSeller.discount_sell_price ?? i.product.mostEfficientSeller.productSeller.sell_price;
+                itemMostEfficientPrice = parseFloat(itemMostEfficientPrice);
+                itemTotalPrice = itemMostEfficientPrice * parseInt(i.quantity);
+
+            } else if (shouldCalculateForOrderPage) {
+                itemTotalPrice = parseFloat(i.price) * parseInt(i.quantity);
+            } else {
+                itemTotalPrice = parseFloat(i.product.price) * parseInt(i.quantity);
+            }
+
+
             vals.subtotal += itemTotalPrice;
         });
-    
-        vals.tax = vals.subtotal * 0.13;
+
+        vals.tax = (vals.subtotal + vals.shipmentRateFee) * 0.13;
         vals.total = vals.subtotal + vals.tax;
     }
 

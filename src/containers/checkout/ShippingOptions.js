@@ -15,7 +15,7 @@ export default function ShippingOptions(props) {
 
         return (
             <div key={i} className="custom-control custom-radio mb-2">
-                <input type="radio" name="custom-radio-1" className="custom-control-input" id={"shipping-option-" + i} onChange={() => props.onShippingOptionChange(r.id)} />
+                <input type="radio" name="custom-radio-1" className="custom-control-input" id={"shipping-option-" + i} onChange={(e) => props.onShippingOptionChange(e, r)} />
                 <label className="custom-control-label" htmlFor={"shipping-option-" + i}>{shippingDescription}</label>
             </div>
         );

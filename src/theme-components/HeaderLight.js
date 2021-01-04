@@ -32,6 +32,9 @@ function HeaderLight(props) {
                                                 <li><a className="dropdown-item" href="index.html">Home - classNameic</a></li>
                                                 <li><a className="dropdown-item" href="index-carousel.html">Home - carousel</a></li>
                                                 <li><a className="dropdown-item" href="index-categories.html">Home - categories</a></li>
+                                                <li><Link className="dropdown-item" to="/checkout-finalization">CheckoutFinalization</Link></li>
+                                                <li><Link className="dropdown-item" to="/payment-finalization">PaymentFinalization</Link></li>
+                                                <li><Link className="dropdown-item" to="/predefined-payment-finalization">PredefinedPaymentFinalization</Link></li>
                                                 <li><Link className="dropdown-item" to="/">Home - modern</Link></li>
                                                 <li><a className="dropdown-item" href="index-minimal.html">Home - minimal</a></li>
                                                 <li><span className="megamenu-title">Shop</span></li>

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as actions from '../../actions/checkout';
 import Bs from '../../bs-library/helpers/Bs';
+import OrderTable from './OrderTable';
 
 
 
@@ -48,14 +49,23 @@ class CheckoutFinalization extends React.Component {
 
     componentDidMount() {
 
-        // ish
-        if (!this.checkPageEntryCode()) {
+        // TODO:DELETE
+        return;
+
+        // Check page-data-requirements.
+        if (!this.checkPageEntryCode()
+            || (this.props.shipmentId === null || this.props.shipmentId === "")
+            || (!this.props.shipmentRate || this.props.shipmentRate.id === "")
+        ) {
             alert("Please confirm your order first.");
             this.props.history.replace("/checkout");
             return;
-
         }
-        // TODO: Check page-data-requirements.
+
+
+        // set the page-entry-codes for the possible-next-sequential-pages
+        this.props.setPaymentFinalizationPageEntryCode();
+        this.props.setPredefinedPaymentFinalizationPageEntryCode();
     }
 
 
@@ -63,16 +73,32 @@ class CheckoutFinalization extends React.Component {
     render() {
 
         return (
-            <section className="hero" style={{ paddingTop: "200px", paddingBottom: "300px" }}>
-                <div className="container">
-                    <div className="row justify-content-center">
-                        <div className="col-lg-8">
-                            <h3>CheckoutFinalization</h3>
+            <>
+                {/* page header */}
+                <section className="hero">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col text-center">
+                                <h1>Finalize Order</h1>
+                            </div>
                         </div>
                     </div>
+                </section>
 
+
+                <div className="container pt-8 pb-2">
+                    <h4>Items</h4>
                 </div>
-            </section>
+                <OrderTable orderItems={this.props.cartItems} shipmentRate={this.props.shipmentRate} />
+
+
+                <div className="container">
+                    <div className="row justify-content-center">
+                        {/* ish */}
+                        {/* <OrderInfo order={this.props.order} paymentInfo={this.props.paymentInfo} /> */}
+                    </div>
+                </div>
+            </>
         );
     }
 
@@ -127,7 +153,11 @@ class CheckoutFinalization extends React.Component {
 /* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
-        actualPageEntryCode: state.checkout.checkoutFinalizationPageEntryCode,
+        cartItems: state.cart.cart.cartItems,
+        shipmentRate: state.checkout.shipmentRate,
+        // shipmentRateId: state.checkout.shipmentRateId,
+        shipmentId: state.checkout.shipmentId,
+        actualPageEntryCode: state.checkout.checkoutFinalizationPageEntryCode
     };
 };
 
@@ -135,7 +165,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        // setPredefinedPaymentFinalizationPageEntryCode: () => dispatch(actions.setPredefinedPaymentFinalizationPageEntryCode()),
+        setPredefinedPaymentFinalizationPageEntryCode: () => dispatch(actions.setPredefinedPaymentFinalizationPageEntryCode()),
+        setPaymentFinalizationPageEntryCode: () => dispatch(actions.setPaymentFinalizationPageEntryCode())
     };
 };
 

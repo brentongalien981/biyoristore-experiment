@@ -25,7 +25,7 @@ const initialState = {
     efficientShipmentRates: [],
     canSelectShippingOption: false,
     shipmentId: "",
-    shipmentRateId: "",
+    shipmentRate: {},
     shouldGoToCheckoutFinalizationPage: false
 };
 
@@ -34,7 +34,7 @@ const initialState = {
 /* REDUCER */
 const checkout = (state = initialState, action) => {
     switch (action.type) {
-        case actions.SET_SHIPMENT_RATE_ID: return setShipmentRateId(state, action);
+        case actions.SET_SHIPMENT_RATE: return setShipmentRate(state, action);
         case actions.RESET_REDUCER_INIT_VARS: return resetReducerInitVars(state, action);
         case actions.DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS: return doGetShippingRatesFinalizationProcess(state, action);
         // case actions.FINALIZE_SHOW_SHIPPING_DETAILS: return finalizeShowShippingDetails(state, action);
@@ -58,10 +58,10 @@ const checkout = (state = initialState, action) => {
 
 
 /* NORMAL FUNCS */
-const setShipmentRateId = (state, action) => {
+const setShipmentRate = (state, action) => {
     return {
         ...state,
-        shipmentRateId: action.shipmentRateId,
+        shipmentRate: action.shipmentRate,
         shouldGoToCheckoutFinalizationPage: true
     };
 };
