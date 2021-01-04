@@ -11,6 +11,7 @@ const initialState = {
     addresses: [],
     paymentInfos: [],
     paymentPageEntryCode: "",
+    checkoutFinalizationPageEntryCode: "",
     paymentFinalizationPageEntryCode: "",
     predefinedPaymentFinalizationPageEntryCode: "",
     // shouldDisplayFinalizationMsg: false,
@@ -48,6 +49,7 @@ const checkout = (state = initialState, action) => {
         case actions.SET_PREDEFINED_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE: return setPredefinedPaymentFinalizationPageEntryCode(state, action);
         case actions.SET_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE: return setPaymentFinalizationPageEntryCode(state, action);
         case actions.SET_PAYMENT_PAGE_ENTRY_CODE: return setPaymentPageEntryCode(state, action);
+        case actions.SET_CHECKOUT_FINALIZATION_PAGE_ENTRY_CODE: return setCheckoutFinalizationPageEntryCode(state, action);        
         case actions.ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS: return onReadCheckoutRequiredDataSuccess(state, action);
         default: return state;
     }
@@ -182,6 +184,15 @@ const onFinalizeOrderReturn = (state, action) => {
 
 
 
+const setCheckoutFinalizationPageEntryCode = (state, action) => {
+    return {
+        ...state,
+        checkoutFinalizationPageEntryCode: Bs.getRandomId(),
+    };
+};
+
+
+
 const setPredefinedPaymentFinalizationPageEntryCode = (state, action) => {
     return {
         ...state,
@@ -206,29 +217,6 @@ const setPaymentPageEntryCode = (state, action) => {
         paymentPageEntryCode: Bs.getRandomId(),
     };
 };
-
-
-
-// TODO:LATER Delete this.
-// const onAddressSelectionChange = (state, action) => {
-
-//     let updatedAddresses = state.addresses;    
-//     updatedAddresses = uncheckAllOptions(updatedAddresses);
-
-//     let updatedAddress = updatedAddresses[action.i];
-//     updatedAddress.isChecked = true;
-
-//     updatedAddresses[action.i] = updatedAddress;
-
-//     Bs.log("updatedAddress.street ==> " + updatedAddress.street);
-//     Bs.log("updatedAddresses ==> ...");
-//     Bs.log(updatedAddresses);
-
-//     return {
-//         ...state,
-//         addresses: updatedAddresses
-//     };
-// };
 
 
 

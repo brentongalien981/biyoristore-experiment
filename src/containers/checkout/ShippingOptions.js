@@ -66,11 +66,11 @@ function getShippingDescription(estimatedShippingDays, rate) {
     let label = r.service + " / ";
 
     if (estimatedShippingDays >= 4) {
-        label += (estimatedShippingDays - 3) + "-" + estimatedShippingDays + " business days";
+        label += (estimatedShippingDays - 3) + "-" + estimatedShippingDays + " Business Days";
     } else if (estimatedShippingDays > 1) {
-        label += "1-" + estimatedShippingDays + " business days";
+        label += "1-" + estimatedShippingDays + " Business Days";
     } else {
-        label += estimatedShippingDays + " business day";
+        label += estimatedShippingDays + " Business Day";
     }
 
     label += " / $" + r.rate + " " + r.currency;

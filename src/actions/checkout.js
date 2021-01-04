@@ -23,6 +23,7 @@ export const ON_FINALIZE_ORDER_RETURN = "ON_FINALIZE_ORDER_RETURN";
 export const SET_PREDEFINED_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE = "SET_PREDEFINED_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE";
 export const SET_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE = "SET_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE";
 export const SET_PAYMENT_PAGE_ENTRY_CODE = "SET_PAYMENT_PAGE_ENTRY_CODE";
+export const SET_CHECKOUT_FINALIZATION_PAGE_ENTRY_CODE = "SET_CHECKOUT_FINALIZATION_PAGE_ENTRY_CODE";
 export const ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS = "ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS";
 
 
@@ -43,6 +44,7 @@ export const onFinalizeOrderReturn = (objs = null) => ({ type: ON_FINALIZE_ORDER
 export const setPredefinedPaymentFinalizationPageEntryCode = () => ({ type: SET_PREDEFINED_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE });
 export const setPaymentFinalizationPageEntryCode = () => ({ type: SET_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE });
 export const setPaymentPageEntryCode = () => ({ type: SET_PAYMENT_PAGE_ENTRY_CODE });
+export const setCheckoutFinalizationPageEntryCode = () => ({ type: SET_CHECKOUT_FINALIZATION_PAGE_ENTRY_CODE });
 export const onReadCheckoutRequiredDataSuccess = (objs) => ({ type: ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS, objs: objs });
 
 

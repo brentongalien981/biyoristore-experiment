@@ -20,6 +20,17 @@ import ShippingOptions from './ShippingOptions';
 class Checkout extends React.Component {
 
     /* HELPER FUNCS */
+    goToCheckoutFinalizationPage() {
+        const redirectPage = "/checkout-finalization";
+        const redirectPageDataRequirements = {
+            pageEntryCode: this.props.checkoutFinalizationPageEntryCode
+        };
+
+        this.props.history.push(redirectPage, redirectPageDataRequirements);
+    }
+
+
+
     showShippingOptions() {
         document.querySelector("#ShippingOptionsTriggerBtn").click();
     }
@@ -53,7 +64,7 @@ class Checkout extends React.Component {
 
 
 
-    /* MAIN FUNCS */
+    /* PROPERTIES */
     static BLANK_ADDRESS = { firstName: "", lastName: "", street: "", city: "", province: "", country: "", postalCode: "", email: "", phone: "" };
 
     state = {
@@ -64,6 +75,7 @@ class Checkout extends React.Component {
 
 
 
+    /* MAIN FUNCS */
     componentDidUpdate() {
         if (this.props.shouldDoGetShippingRatesPostProcess) {
 
@@ -78,15 +90,15 @@ class Checkout extends React.Component {
 
         
         if (this.props.shouldGoToCheckoutFinalizationPage) {
-            Bs.log("ish: shouldGoToCheckoutFinalizationPage()");
+            this.goToCheckoutFinalizationPage();
         }
     }
 
 
     componentDidMount() {
 
+        // TODO:LATER Modify this chunk. Check if cart has items.
         // if (this.props.cartItems.length === 0) {
-        //     // TODO: Modify this chunk.
         //     alert("Please add items to your cart before checkout.");
         //     this.props.history.replace("/products");
         //     return;
@@ -98,12 +110,9 @@ class Checkout extends React.Component {
         const modalBtn = document.querySelector("#checkoutAsWhoModalBtn");
         if (modalBtn) { modalBtn.click(); }
 
-        //
         if (BsAppSession.isLoggedIn()) { this.props.readCheckoutRequiredData(); }
 
-        // 
-        this.props.setPredefinedPaymentFinalizationPageEntryCode();
-        this.props.setPaymentPageEntryCode();
+        this.props.setCheckoutFinalizationPageEntryCode();
     }
 
 
@@ -119,7 +128,6 @@ class Checkout extends React.Component {
                                 <h1>Checkout</h1>
                             </div>
                         </div>
-                        {/* <button onClick={this.goToPayNow}>Pay Now</button> */}
                     </div>
                 </section>
 
@@ -154,8 +162,6 @@ class Checkout extends React.Component {
                 <CheckoutAsWhoModal login={this.login} dismissModal={this.dismissModal} />
                 {this.state.nonClosableLoader}
                 <ShippingOptions shippingRates={this.props.efficientShipmentRates} cartItems={this.props.cartItems} onShippingOptionConfirm={this.onShippingOptionConfirm} onShippingOptionChange={this.onShippingOptionChange} />
-                {/* TODO:DELETE */}
-                <OrderDetailsSummaryModal address={this.state.address} onOrderDetailsConfirm={this.onOrderDetailsConfirm} />
 
             </>
         );
@@ -165,71 +171,27 @@ class Checkout extends React.Component {
 
     /* EVENT FUNCS */
     onShippingOptionChange = (rateId) => {
-        Bs.log("\n\n##############################");
-        Bs.log("In METHOD: onShippingOptionChange()");
-        Bs.log("rateId ==> " + rateId);
         this.setState({ shipmentRateId: rateId });
     };
 
 
 
     onShippingOptionConfirm = () => {
-        Bs.log("\n\n##############################");
-        Bs.log("In METHOD: onShippingOptionConfirm()");
 
-        if (this.state.shipmentRateId === "") { return; }
+        // If user confirms without selection, re-show the options.
+        if (this.state.shipmentRateId === "") { 
+
+            alert("Please select a shipping option.");
+
+            setTimeout(() => {
+                document.querySelector("#ShippingOptionsTriggerBtn").click();
+            }, 200);
+
+            return; 
+        }
+
+        
         this.props.setShipmentRateId(this.state.shipmentRateId);
-
-    };
-
-
-
-    // TODO: Move this to CheckoutFinalization.
-    onOrderDetailsConfirm = () => {
-
-        Bs.log("\n\n##############################");
-        Bs.log("In METHOD: onOrderDetailsConfirm()");
-
-        //
-        let redirectPage = "/payment";
-        let redirectPageDataRequirements = {};
-
-
-        if (this.isPaymentMethodPredefined()) {
-
-            Bs.log("payment method is predefined, redirect to predefined-payment-page");
-
-            // set redirect-page's data-requirements
-            redirectPage = "/predefined-payment-finalization";
-            redirectPageDataRequirements = {
-                pageEntryCode: this.props.predefinedPaymentFinalizationPageEntryCode,
-                paymentMethodId: this.state.paymentMethod.id,
-                shippingInfo: this.state.address,
-                cartItems: this.props.cartItems,
-            };
-        }
-        else {
-
-            //
-            Bs.log("payment method is NOT predefined, redirect to payment-page");
-
-            // set payment-page's data-requirements
-            redirectPageDataRequirements = {
-                cartItems: this.props.cartItems,
-                shippingAddress: this.state.address,
-                paymentPageEntryCode: this.props.paymentPageEntryCode
-            };
-        }
-
-
-        //
-        Bs.log("redirectPageDataRequirements ==> ...");
-        Bs.log(redirectPageDataRequirements);
-
-        // redirect
-        this.props.history.push(redirectPage, redirectPageDataRequirements);
-
-
     };
 
 
@@ -252,7 +214,7 @@ class Checkout extends React.Component {
         this.setState({ nonClosableLoader: <NonClosableLoader msg="Please wait... We're looking for your shipping options." /> });
 
 
-        // check shipping validity
+        // check shipping validity and get shipment-rates
         const items = this.props.cartItems;
         let reducedCartItemsData = [];
         for (const i of items) {
@@ -288,7 +250,6 @@ class Checkout extends React.Component {
 
 
     onOrderInputChange = (e) => {
-        Bs.log("In METHOD: onOrderInputChange()");
 
         const target = e.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -303,17 +264,12 @@ class Checkout extends React.Component {
 
 
     onPaymentMethodSelectionChange = (paymentMethod) => {
-        Bs.log("In METHOD: onPaymentMethodSelectionChange()");
-        Bs.log("paymentMethod ==> ...");
-        Bs.log(paymentMethod);
-
         this.setState({ paymentMethod: paymentMethod });
     };
 
 
 
     onAddressSelectionChange = (a) => {
-        Bs.log("In EVENT: onAddressSelectionChange()");
         if (a.isBlankAddress) { a = { ...a, ...Checkout.BLANK_ADDRESS }; }
         this.setState({ address: a });
     };
@@ -330,12 +286,6 @@ class Checkout extends React.Component {
     dismissModal = () => {
         BsAppSession.set("hasChosenToCheckoutAsWho", 1);
     };
-
-
-
-    goToPayNow = () => {
-        this.props.history.push("/payment");
-    };
 }
 
 
@@ -348,8 +298,7 @@ const mapStateToProps = (state) => {
         efficientShipmentRates: state.checkout.efficientShipmentRates,
         shouldDoGetShippingRatesPostProcess: state.checkout.shouldDoGetShippingRatesPostProcess,
         shouldShowShippingDetails: state.checkout.shouldShowShippingDetails,
-        predefinedPaymentFinalizationPageEntryCode: state.checkout.predefinedPaymentFinalizationPageEntryCode,
-        paymentPageEntryCode: state.checkout.paymentPageEntryCode,
+        checkoutFinalizationPageEntryCode: state.checkout.checkoutFinalizationPageEntryCode,
         cart: state.cart.cart,
         cartItems: state.cart.cart.cartItems,
         profile: state.checkout.profile,
@@ -365,11 +314,9 @@ const mapDispatchToProps = (dispatch) => {
         setShipmentRateId: (shipmentRateId) => dispatch(actions.setShipmentRateId(shipmentRateId)),
         resetReducerInitVars: () => dispatch(actions.resetReducerInitVars()),
         doGetShippingRatesFinalizationProcess: () => dispatch(actions.doGetShippingRatesFinalizationProcess()),
-        // finalizeShowShippingDetails: () => dispatch(actions.finalizeShowShippingDetails()),
         getShippingRates: (params) => dispatch(actions.getShippingRates(params)),
         // onAddressSelectionChange: (e, i) => dispatch(actions.onAddressSelectionChange(e, i)),
-        setPredefinedPaymentFinalizationPageEntryCode: () => dispatch(actions.setPredefinedPaymentFinalizationPageEntryCode()),
-        setPaymentPageEntryCode: () => dispatch(actions.setPaymentPageEntryCode()),
+        setCheckoutFinalizationPageEntryCode: () => dispatch(actions.setCheckoutFinalizationPageEntryCode()),
         readCheckoutRequiredData: () => dispatch(actions.readCheckoutRequiredData()),
     };
 };
