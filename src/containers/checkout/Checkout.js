@@ -179,7 +179,7 @@ class Checkout extends React.Component {
     onShippingOptionConfirm = () => {
 
         // If user confirms without selection, re-show the options.
-        if (!this.state.shipmentRate || this.state.shipmentRate.id === "") { 
+        if (!this.state.shipmentRate || this.state.shipmentRate.id == null || this.state.shipmentRate.id === "") { 
 
             alert("Please select a shipping option.");
 
@@ -221,14 +221,14 @@ class Checkout extends React.Component {
             reducedCartItemsData.push(reducedCartItem);
         }
 
+        
         const params = {
             reducedCartItemsData: reducedCartItemsData,
-            shippingInfo: this.state.address
+            shippingInfo: this.state.address,
+            paymentMethod: this.state.paymentMethod
         };
 
         this.props.getShippingRates(params);
-
-
     };
 
 

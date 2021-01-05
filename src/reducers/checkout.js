@@ -26,7 +26,9 @@ const initialState = {
     canSelectShippingOption: false,
     shipmentId: "",
     shipmentRate: {},
-    shouldGoToCheckoutFinalizationPage: false
+    shouldGoToCheckoutFinalizationPage: false,
+    shippingInfo: {},
+    paymentMethod: {}
 };
 
 
@@ -34,6 +36,8 @@ const initialState = {
 /* REDUCER */
 const checkout = (state = initialState, action) => {
     switch (action.type) {
+        case actions.SET_PAYMENT_METHOD: return setPaymentMethod(state, action);
+        case actions.SET_SHIPPING_INFO: return setShippingInfo(state, action);
         case actions.SET_SHIPMENT_RATE: return setShipmentRate(state, action);
         case actions.RESET_REDUCER_INIT_VARS: return resetReducerInitVars(state, action);
         case actions.DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS: return doGetShippingRatesFinalizationProcess(state, action);
@@ -58,6 +62,24 @@ const checkout = (state = initialState, action) => {
 
 
 /* NORMAL FUNCS */
+const setPaymentMethod = (state, action) => {
+    return {
+        ...state,
+        paymentMethod: action.paymentMethod
+    };
+};
+
+
+
+const setShippingInfo = (state, action) => {
+    return {
+        ...state,
+        shippingInfo: action.shippingInfo
+    };
+};
+
+
+
 const setShipmentRate = (state, action) => {
     return {
         ...state,

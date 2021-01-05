@@ -8,6 +8,8 @@ import axios from "axios";
 
 
 /* NAMES */
+export const SET_PAYMENT_METHOD = "SET_PAYMENT_METHOD";
+export const SET_SHIPPING_INFO = "SET_SHIPPING_INFO";
 export const SET_SHIPMENT_RATE = "SET_SHIPMENT_RATE";
 export const RESET_REDUCER_INIT_VARS = "RESET_REDUCER_INIT_VARS";
 export const DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS = "DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS";
@@ -29,6 +31,8 @@ export const ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS = "ON_READ_CHECKOUT_REQUIRED
 
 
 /* FUNCS */
+export const setPaymentMethod = (paymentMethod) => ({ type: SET_PAYMENT_METHOD, paymentMethod: paymentMethod });
+export const setShippingInfo = (shippingInfo) => ({ type: SET_SHIPPING_INFO, shippingInfo: shippingInfo });
 export const setShipmentRate = (shipmentRate) => ({ type: SET_SHIPMENT_RATE, shipmentRate: shipmentRate });
 export const resetReducerInitVars = () => ({ type: RESET_REDUCER_INIT_VARS });
 export const doGetShippingRatesFinalizationProcess = () => ({ type: DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS });
@@ -73,6 +77,8 @@ export const getShippingRates = (params) => {
                 Bs.log("@@@@@@@@@@@@@@@@@@@@");
 
                 dispatch(onGetShippingRatesReturn(json.objs));
+                dispatch(setShippingInfo(params.shippingInfo));
+                dispatch(setPaymentMethod(params.paymentMethod));
 
                 Bs.log("\n####################");
                 Bs.log("END OF ACTION: checkout, METHOD: getShippingRates() => ajaxCrud() => callBackFunc()");

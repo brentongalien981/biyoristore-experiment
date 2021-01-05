@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as actions from '../../actions/checkout';
 import Bs from '../../bs-library/helpers/Bs';
+import OrderInfo from './OrderInfo';
 import OrderTable from './OrderTable';
 
 
@@ -94,8 +95,7 @@ class CheckoutFinalization extends React.Component {
 
                 <div className="container">
                     <div className="row justify-content-center">
-                        {/* ish */}
-                        {/* <OrderInfo order={this.props.order} paymentInfo={this.props.paymentInfo} /> */}
+                        <OrderInfo cartItems={this.props.cartItems} shipmentRate={this.props.shipmentRate} paymentMethod={this.props.paymentMethod} shippingInfo={this.props.shippingInfo} />
                     </div>
                 </div>
             </>
@@ -153,6 +153,8 @@ class CheckoutFinalization extends React.Component {
 /* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
+        paymentMethod: state.checkout.paymentMethod,
+        shippingInfo: state.checkout.shippingInfo,
         cartItems: state.cart.cart.cartItems,
         shipmentRate: state.checkout.shipmentRate,
         // shipmentRateId: state.checkout.shipmentRateId,
