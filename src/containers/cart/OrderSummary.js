@@ -10,6 +10,11 @@ function OrderSummary(props) {
     let checkoutBtn = null;
     if (!props.withNoCheckoutBtn) { checkoutBtn = (<a href="#" className="btn btn-lg btn-primary btn-block mt-1" onClick={props.onCheckout}>Checkout</a>); }
 
+    let payBtn = null;
+    if (props.withPayBtn) {
+        payBtn = (<button className="btn btn-lg btn-primary btn-block mt-1" onClick={props.onPay}>Pay</button>);
+    }
+
     const shipmentRateFee = orderSummaryVals.shipmentRateFee.toFixed(2);
     let shipmentRateFeeSection = null;
     if (shipmentRateFee != 0.0) {
@@ -54,6 +59,7 @@ function OrderSummary(props) {
             </div>
 
             {checkoutBtn}
+            {payBtn}
         </div>
     );
 }

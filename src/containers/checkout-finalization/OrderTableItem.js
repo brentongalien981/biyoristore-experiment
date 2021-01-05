@@ -13,8 +13,10 @@ function OrderTableItem(props) {
     const quantity = parseInt(props.item.quantity);
     const productLink = "/product?productId=" + props.item.product.id;
 
+    const lastItemExtraStyle = (props.isLastItem) ? {borderBottom: "1px solid #dddddd"} : {};
+
     return (
-        <div className="cart-item">
+        <div className="cart-item" style={lastItemExtraStyle}>
             <div className="row align-items-center">
                 <div className="col-12 col-lg-6">
                     <div className="media media-product">

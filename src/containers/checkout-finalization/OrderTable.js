@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import OrderSummary from '../cart/OrderSummary';
 import OrderTableItem from './OrderTableItem';
 
@@ -6,16 +7,19 @@ import OrderTableItem from './OrderTableItem';
 
 function OrderTable(props) {
 
+    const numOrderItems = props.orderItems.length ?? 0;
     const items = props.orderItems?.map((item, i) => {
+
+        const isLastItemAttrib = (i + 1 === numOrderItems) ? { isLastItem: true } : {};
         return (
-            <OrderTableItem item={item} key={i} />
+            <OrderTableItem item={item} key={i} {...isLastItemAttrib} />
         );
     });
 
 
 
     return (
-        <section className="pt-0">
+        <section className="pt-0 pb-10">
             <div className="container">
 
                 {/* table-header */}
@@ -36,10 +40,19 @@ function OrderTable(props) {
                     {/* cart items */}
                     <div className="col-lg-8 cart-item-list">
                         {items}
+                        <Link to="/cart" className="btn btn-warning mt-1">Edit Cart</Link>
                     </div>
 
-                    <OrderSummary items={props.orderItems} shipmentRate={props.shipmentRate} withNoCheckoutBtn shouldCalculateForCheckoutFinalizationPage />
+
+                    <OrderSummary
+                        items={props.orderItems}
+                        shipmentRate={props.shipmentRate}
+                        withNoCheckoutBtn
+                        withPayBtn
+                        onPay={props.onPay}
+                        shouldCalculateForCheckoutFinalizationPage />
                 </div>
+
 
             </div>
         </section>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import * as actions from '../../actions/checkout';
 import Bs from '../../bs-library/helpers/Bs';
 import OrderInfo from './OrderInfo';
@@ -11,11 +11,16 @@ import OrderTable from './OrderTable';
 class CheckoutFinalization extends React.Component {
 
     /* PROPERTIES */
-    // static unblockNavBlocker = null;
 
 
 
     /* HELPER FUNCS */
+    isPaymentMethodPredefined() {
+        if (this.props.paymentMethod.id != null && this.props.paymentMethod.id !== 0) { return true; }
+        return false;
+    }
+
+
     checkPageEntryCode() {
 
         const passedState = this.props.location.state;
@@ -62,7 +67,7 @@ class CheckoutFinalization extends React.Component {
 
 
         // set the page-entry-codes for the possible-next-sequential-pages
-        this.props.setPaymentFinalizationPageEntryCode();
+        this.props.setPaymentPageEntryCode();
         this.props.setPredefinedPaymentFinalizationPageEntryCode();
     }
 
@@ -73,7 +78,7 @@ class CheckoutFinalization extends React.Component {
         return (
             <>
                 {/* page header */}
-                <section className="hero">
+                <section className="hero pb-0">
                     <div className="container">
                         <div className="row">
                             <div className="col text-center">
@@ -87,13 +92,15 @@ class CheckoutFinalization extends React.Component {
                 <div className="container pt-8 pb-2">
                     <h4>Items</h4>
                 </div>
-                <OrderTable orderItems={this.props.cartItems} shipmentRate={this.props.shipmentRate} />
+
+                <OrderTable orderItems={this.props.cartItems} shipmentRate={this.props.shipmentRate} onPay={this.onPay} />
 
 
                 <div className="container">
-                    <div className="row justify-content-center">
+                    <div className="row justify-content-center mb-1">
                         <OrderInfo cartItems={this.props.cartItems} shipmentRate={this.props.shipmentRate} paymentMethod={this.props.paymentMethod} shippingInfo={this.props.shippingInfo} />
                     </div>
+                    <Link to="/checkout" className="btn btn-warning">Edit Order Details</Link>
                 </div>
             </>
         );
@@ -102,43 +109,32 @@ class CheckoutFinalization extends React.Component {
 
 
     /* EVENT FUNCS */
-    // TODO:
-    onOrderDetailsConfirm = () => {
+    onPay = () => {
 
         let redirectPage = "/payment";
         let redirectPageDataRequirements = {};
 
-
         if (this.isPaymentMethodPredefined()) {
-
-            Bs.log("payment method is predefined, redirect to predefined-payment-page");
 
             // set redirect-page's data-requirements
             redirectPage = "/predefined-payment-finalization";
             redirectPageDataRequirements = {
                 pageEntryCode: this.props.predefinedPaymentFinalizationPageEntryCode,
-                paymentMethodId: this.state.paymentMethod.id,
-                shippingInfo: this.state.address,
+                paymentMethodId: this.props.paymentMethod.id,
+                shippingInfo: this.props.shippingInfo,
                 cartItems: this.props.cartItems,
             };
         }
         else {
 
-            //
-            Bs.log("payment method is NOT predefined, redirect to payment-page");
-
             // set payment-page's data-requirements
             redirectPageDataRequirements = {
                 cartItems: this.props.cartItems,
-                shippingAddress: this.state.address,
+                shippingAddress: this.props.shippingInfo,
                 paymentPageEntryCode: this.props.paymentPageEntryCode
             };
         }
 
-
-        //
-        Bs.log("redirectPageDataRequirements ==> ...");
-        Bs.log(redirectPageDataRequirements);
 
         // redirect
         this.props.history.push(redirectPage, redirectPageDataRequirements);
@@ -150,11 +146,12 @@ class CheckoutFinalization extends React.Component {
 /* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
+        paymentPageEntryCode: state.checkout.paymentPageEntryCode,
+        predefinedPaymentFinalizationPageEntryCode: state.checkout.predefinedPaymentFinalizationPageEntryCode,
         paymentMethod: state.checkout.paymentMethod,
         shippingInfo: state.checkout.shippingInfo,
         cartItems: state.cart.cart.cartItems,
         shipmentRate: state.checkout.shipmentRate,
-        // shipmentRateId: state.checkout.shipmentRateId,
         shipmentId: state.checkout.shipmentId,
         actualPageEntryCode: state.checkout.checkoutFinalizationPageEntryCode
     };
@@ -166,7 +163,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setCheckoutFinalizationPageEntryCode: () => dispatch(actions.setCheckoutFinalizationPageEntryCode()),
         setPredefinedPaymentFinalizationPageEntryCode: () => dispatch(actions.setPredefinedPaymentFinalizationPageEntryCode()),
-        setPaymentFinalizationPageEntryCode: () => dispatch(actions.setPaymentFinalizationPageEntryCode())
+        setPaymentPageEntryCode: () => dispatch(actions.setPaymentPageEntryCode())
     };
 };
 

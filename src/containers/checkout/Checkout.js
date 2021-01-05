@@ -37,13 +37,6 @@ class Checkout extends React.Component {
 
 
 
-    isPaymentMethodPredefined() {
-        if (this.state.paymentMethod.id != null && this.state.paymentMethod.id !== 0) { return true; }
-        return false;
-    }
-
-
-
     validateFields = (obj) => {
 
         let returnObj = { isObjValid: true, msg: "" };
@@ -130,6 +123,7 @@ class Checkout extends React.Component {
                         </div>
                     </div>
                 </section>
+
 
                 <section className="no-overflow pt-0">
                     <div className="container">
@@ -221,7 +215,7 @@ class Checkout extends React.Component {
             reducedCartItemsData.push(reducedCartItem);
         }
 
-        
+
         const params = {
             reducedCartItemsData: reducedCartItemsData,
             shippingInfo: this.state.address,
