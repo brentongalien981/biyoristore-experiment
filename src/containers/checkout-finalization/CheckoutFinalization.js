@@ -43,15 +43,12 @@ class CheckoutFinalization extends React.Component {
 
     /* MAIN FUNCS */
     componentWillUnmount() {
-        // this.props.setPredefinedPaymentFinalizationPageEntryCode();
+        this.props.setCheckoutFinalizationPageEntryCode();
     }
 
 
 
     componentDidMount() {
-
-        // TODO:DELETE
-        return;
 
         // Check page-data-requirements.
         if (!this.checkPageEntryCode()
@@ -167,6 +164,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        setCheckoutFinalizationPageEntryCode: () => dispatch(actions.setCheckoutFinalizationPageEntryCode()),
         setPredefinedPaymentFinalizationPageEntryCode: () => dispatch(actions.setPredefinedPaymentFinalizationPageEntryCode()),
         setPaymentFinalizationPageEntryCode: () => dispatch(actions.setPaymentFinalizationPageEntryCode())
     };
