@@ -15,10 +15,14 @@ function OrderSummary(props) {
         payBtn = (<button className="btn btn-lg btn-primary btn-block mt-1" onClick={props.onPay}>Pay</button>);
     }
 
-    const shipmentRateFee = orderSummaryVals.shipmentRateFee.toFixed(2);
-    let shipmentRateFeeSection = null;
-    if (shipmentRateFee != 0.0) {
-        shipmentRateFeeSection = (<li className="list-group-item d-flex justify-content-between align-items-center">Shipping<span>${shipmentRateFee}</span></li>);
+    const shipmentRateFee = orderSummaryVals.shipmentRateFee;
+    const tax = orderSummaryVals.tax ? "$" + orderSummaryVals.tax : "To be Calculated";
+    const total = orderSummaryVals.total ? "$" + orderSummaryVals.total : "To be Calculated";
+
+
+    let shipmentRateFeeSection = (<li className="list-group-item d-flex justify-content-between align-items-center">Shipping<span>To be Calculated</span></li>);
+    if (shipmentRateFee) {
+        shipmentRateFeeSection = (<li className="list-group-item d-flex justify-content-between align-items-center">Shipping<span>${shipmentRateFee.toFixed(2)}</span></li>);
     }
 
     return (
@@ -43,7 +47,7 @@ function OrderSummary(props) {
                         {shipmentRateFeeSection}
 
                         <li className="list-group-item d-flex justify-content-between align-items-center">
-                            Tax<span>${orderSummaryVals.tax.toFixed(2)}</span>
+                            Tax<span>{tax}</span>
                         </li>
                     </ul>
                 </div>
@@ -51,7 +55,7 @@ function OrderSummary(props) {
                 <div className="card-footer py-2">
                     <ul className="list-group list-group-minimal">
                         <li className="list-group-item d-flex justify-content-between align-items-center text-dark fs-18">
-                            Total<span>${orderSummaryVals.total.toFixed(2)}</span>
+                            Total<span>{total}</span>
                         </li>
                     </ul>
                 </div>
@@ -68,8 +72,11 @@ function OrderSummary(props) {
 
 function getOrderSummaryValues(items, shouldCalculateForOrderPage, shouldCalculateForCheckoutFinalizationPage, shipmentRate) {
 
+    let shipmentRateFee = shipmentRate?.rate ?? null;
+    shipmentRateFee = shipmentRate?.rate ? parseFloat(shipmentRate?.rate) : null;
+
     let vals = {
-        subtotal: 0.0, shipmentRateFee: parseFloat(shipmentRate?.rate) ?? 0.0, tax: 0.0, total: 0.0
+        subtotal: 0.0, shipmentRateFee: shipmentRateFee, tax: null, total: null
     };
 
     if (items != null && items?.length != 0) {
@@ -95,8 +102,10 @@ function getOrderSummaryValues(items, shouldCalculateForOrderPage, shouldCalcula
             vals.subtotal += itemTotalPrice;
         });
 
-        vals.tax = (vals.subtotal + vals.shipmentRateFee) * 0.13;
-        vals.total = vals.subtotal + vals.tax;
+        if (shipmentRateFee) {
+            vals.tax = (vals.subtotal + vals.shipmentRateFee) * 0.13;
+            vals.total = vals.subtotal + vals.tax;
+        }
     }
 
     return vals;

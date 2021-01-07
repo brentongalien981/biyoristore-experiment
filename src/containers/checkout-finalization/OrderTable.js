@@ -40,7 +40,7 @@ function OrderTable(props) {
                     {/* cart items */}
                     <div className="col-lg-8 cart-item-list">
                         {items}
-                        <Link to="/cart" className="btn btn-warning mt-1">Edit Cart</Link>
+                        <Link to="/cart" className="btn btn-light mt-1">Edit Cart</Link>
                     </div>
 
 

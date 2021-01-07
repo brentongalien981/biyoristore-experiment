@@ -100,7 +100,7 @@ class CheckoutFinalization extends React.Component {
                     <div className="row justify-content-center mb-1">
                         <OrderInfo cartItems={this.props.cartItems} shipmentRate={this.props.shipmentRate} paymentMethod={this.props.paymentMethod} shippingInfo={this.props.shippingInfo} />
                     </div>
-                    <Link to="/checkout" className="btn btn-warning">Edit Order Details</Link>
+                    <Link to="/checkout" className="btn btn-light">Edit Order Details</Link>
                 </div>
             </>
         );
