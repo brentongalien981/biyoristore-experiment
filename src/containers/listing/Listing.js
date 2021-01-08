@@ -24,6 +24,7 @@ class Listing extends React.Component {
         Bs.log("\n####################");
         Bs.log("CLASS:: Listing, METHOD:: componentDidMount()");
 
+        // ish
         this.props.readBrands();
         this.props.readCategories();
 

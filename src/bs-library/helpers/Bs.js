@@ -1,5 +1,7 @@
 class Bs {
 
+    static appName = "BS";
+
     static getRandomId(length = 64) {
         var result = '';
         var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
