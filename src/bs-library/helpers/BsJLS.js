@@ -16,10 +16,24 @@ class BsJLS {
     }
 
 
+    static isSet(key) {
+        key = Bs.appName + "::" + key;
+        let val = localStorage.getItem(key);
+
+        if (!val || val === "") { return false; }
+
+        return true;
+    }
+
+
 
     static get(key) {
+        
+        if (!BsJLS.isSet(key)) { return null; }
+
         key = Bs.appName + "::" + key;
-        const val = JSON.parse(localStorage.getItem(key));
+        let val = localStorage.getItem(key);
+        val = JSON.parse(val);
         return val;
     }
 }

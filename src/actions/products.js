@@ -1,5 +1,7 @@
 import BsCore from "../bs-library/helpers/BsCore";
 import Bs from "../bs-library/helpers/Bs";
+import BsJLSOLM from "../bs-library/helpers/BsJLSOLM";
+import BsJLS from "../bs-library/helpers/BsJLS";
 
 export const READ_PRODUCTS = "READ_PRODUCTS";
 export const READ_BRANDS = "READ_BRANDS";
@@ -9,8 +11,10 @@ export const ON_PRODUCT_CLICKED_VIA_LISTING_REDUCER = "ON_PRODUCT_CLICKED_VIA_LI
 export const ON_PRODUCT_LIKED = "ON_PRODUCT_LIKED";
 
 export const DISPLAY_CATEGORIES = "DISPLAY_CATEGORIES";
+export const ON_READ_FILTERS_OK = "ON_READ_FILTERS_OK";
 export const AJAX_READ_BRANDS = "AJAX_READ_BRANDS";
 export const AJAX_READ_PRODUCTS = "AJAX_READ_PRODUCTS";
+
 
 
 
@@ -38,6 +42,8 @@ export const ajaxReadBrands = (objs) => ({
     type: AJAX_READ_BRANDS,
     objs: objs
 });
+
+export const onReadFiltersOk = (objs) => ({ type: ON_READ_FILTERS_OK, objs: objs });
 
 
 
@@ -95,6 +101,40 @@ export const readBrands = () => {
                 Bs.log(json.objs);
 
                 dispatch(ajaxReadBrands(json.objs));
+            }
+        });
+    };
+};
+
+
+
+export const readFilters = () => {
+
+    // Check if relevant BsJLSOLM objects still have relatively fresh values.
+    if (!BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.products.brands)
+        || !BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.products.categories)) {
+
+        const objs = {
+            brands: BsJLS.get("products.brands"),
+            categories: BsJLS.get("products.categories"),
+            retrievedDataFrom: "localStorage"
+        };
+
+        Bs.log("objs ==> ...");
+        Bs.log(objs);
+        return onReadFiltersOk(objs);
+    }
+
+
+    // If the obj values are old, refresh.
+    return (dispatch) => {
+        BsCore.ajaxCrud({
+            url: '/listing/read-filters',
+            callBackFunc: (requestData, json) => {
+                BsJLSOLM.updateRefreshDate("products.brands");
+                BsJLSOLM.updateRefreshDate("products.categories");
+
+                dispatch(onReadFiltersOk(json.objs));
             }
         });
     };

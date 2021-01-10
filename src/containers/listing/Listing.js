@@ -20,14 +20,17 @@ import { onAddToCart } from '../../actions/cart';
 
 class Listing extends React.Component {
 
+    
     componentDidMount() {
-        Bs.log("\n####################");
-        Bs.log("CLASS:: Listing, METHOD:: componentDidMount()");
-
         // ish
-        this.props.readBrands();
-        this.props.readCategories();
+        this.props.readFilters();
+        // TODO: Delete the workflow for these.
+        // this.props.readBrands();
+        // this.props.readCategories();
 
+
+
+        // TODO: Re-implement this with method "refreshProducts()".
         const acceptedParams = ["page", "search"];
         const parsedQueryParams = Bs.getParsedQueryParams(this.props.location.search, acceptedParams);
 
@@ -39,6 +42,7 @@ class Listing extends React.Component {
 
 
 
+    //ish
     componentDidUpdate() {
         Bs.log("\n####################");
         Bs.log("CLASS:: Listing, METHOD:: componentDidUpdate()");
@@ -179,6 +183,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onAddToCart: (product) => dispatch(onAddToCart(product)),
         readProducts: (params) => dispatch(productsActions.readProducts(params)),
+        readFilters: () => dispatch(productsActions.readFilters()),
         readBrands: () => dispatch(productsActions.readBrands()),
         readCategories: () => dispatch(productsActions.readCategories()),
         onBrandFilterChanged: (brandFilterEventData) => dispatch(productsActions.onBrandFilterChanged(brandFilterEventData)),

@@ -1,5 +1,6 @@
 import * as productsActions from '../actions/products';
 import Bs from '../bs-library/helpers/Bs';
+import BsJLS from '../bs-library/helpers/BsJLS';
 
 
 
@@ -28,6 +29,7 @@ const initialState = {
 const products = (state = initialState, action) => {
     switch (action.type) {
         case productsActions.READ_PRODUCTS: return readProducts(state, action);
+        case productsActions.ON_READ_FILTERS_OK: return onReadFiltersOk(state, action);
         case productsActions.AJAX_READ_PRODUCTS: return ajaxReadProducts(state, action);
         case productsActions.AJAX_READ_BRANDS: return ajaxReadBrands(state, action);
         case productsActions.ON_BRAND_FILTER_CHANGED: return onBrandFilterChanged(state, action);
@@ -148,6 +150,22 @@ const ajaxReadBrands = (state, action) => {
         ...state,
         brands: action.objs,
         message: "Just executed METHOD:: ajaxReadBrands() from REDUCER:: products"
+    };
+};
+
+
+
+const onReadFiltersOk = (state, action) => {
+
+    if (action.objs.retrievedDataFrom === "cache" || action.objs.retrievedDataFrom === "db") {
+        BsJLS.set("products.brands", action.objs.brands);
+        BsJLS.set("products.categories", action.objs.categories);
+    }
+
+    return {
+        ...state,
+        brands: action.objs.brands,
+        categories: action.objs.categories,
     };
 };
 
