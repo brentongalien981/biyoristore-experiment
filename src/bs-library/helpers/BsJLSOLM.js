@@ -3,7 +3,7 @@ import BsJLS from "./BsJLS";
 /**
  * JLSOLM stands for JsonifiedLocalStorage Object LifespanManager
  * var dateRefreshed: milliseconds after 1970
- * var lifespan: lifespan in sec
+ * var lifespan: lifespan in min
  * 
  * NOTE: Everytime you update a valuo of BsJLSOLM, call BsJLS.set("BsJLSOLM-objs") or BsJLS.set("BsJLSOLM-searchQueries")
  */
@@ -11,13 +11,44 @@ export default class BsJLSOLM {
 
     static defaultObjs = {
         products: {
-            brands: { dateRefreshed: null, lifespan: 3600 },
-            categories: { dateRefreshed: null, lifespan: 3600 }
+            brands: { dateRefreshed: null, lifespan: 10080, shouldForceReadDb: false },
+            categories: { dateRefreshed: null, lifespan: 10080, shouldForceReadDb: false }
         },
         checkout: {},
         cart: {},
         profile: {}
     };
+
+     
+
+    /**
+     * @deprecated
+     */
+    static getDefaultObjs() {
+
+        const reducerNames = {
+            products: ["brands", "categories"],
+            checkout: ["addresses", "paymentInfos", "efficientShipmentRates"],
+            cart: ["cart"],
+            profile: ["paymentInfos", "orders"]
+        };
+
+        let defaultObjs = {};
+
+        for (const reducerName in reducerNames) {
+            const reducerPropNames = reducerNames[reducerName];
+
+            let actualNewReducer = {};
+
+            reducerPropNames.forEach(reducerPropName => {
+
+                actualNewReducer[reducerPropName] = {dateRefreshed: null, lifespan: 3600};
+
+            });
+
+            defaultObjs[reducerName] = actualNewReducer;
+        }
+    }
 
 
 
@@ -46,7 +77,11 @@ export default class BsJLSOLM {
             currentTraversedObj = currentTraversedObj[key];
         });
 
-        currentTraversedObj.dateRefreshed = Date.now();
+        const dateTimeNow = Date.now();
+        const dateTimeNowObj = new Date();
+        currentTraversedObj.dateRefreshed = dateTimeNow;
+        currentTraversedObj.readableDateRefreshed = dateTimeNowObj.getHours() + ":" + dateTimeNowObj.getMinutes() + ":" + dateTimeNowObj.getSeconds();
+        currentTraversedObj.shouldForceReadDb = false;
 
         BsJLS.set("BsJLSOLM-objs", BsJLSOLM.objs);
     }
@@ -55,9 +90,10 @@ export default class BsJLSOLM {
 
     static shouldObjRefresh(obj) {
         if (!obj.dateRefreshed) { return true; }
+        if (obj.shouldForceReadDb) { return true; }
         
         const msNow = Date.now();
-        const objLifespan = obj.lifespan * 1000;
+        const objLifespan = obj.lifespan * 60 * 1000;
         const elapsedTime = msNow - obj.dateRefreshed;
 
         if (elapsedTime > objLifespan) { return true; }

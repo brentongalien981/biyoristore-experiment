@@ -9,10 +9,25 @@ class BsJLS {
         localStorage.clear();
     }
 
+
+    /**
+     * 
+     * @param {*} key 
+     * @param {*} val 
+     * @returns bool
+     */
     static set(key, val) {
         key = Bs.appName + "::" + key;
         val = JSON.stringify(val);
-        localStorage.setItem(key, val);
+
+        try {
+            localStorage.setItem(key, val);
+        } catch (e) {
+            return false;
+        }
+
+        return true;
+        
     }
 
 

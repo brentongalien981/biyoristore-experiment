@@ -31,12 +31,10 @@ const products = (state = initialState, action) => {
         case productsActions.READ_PRODUCTS: return readProducts(state, action);
         case productsActions.ON_READ_FILTERS_OK: return onReadFiltersOk(state, action);
         case productsActions.AJAX_READ_PRODUCTS: return ajaxReadProducts(state, action);
-        case productsActions.AJAX_READ_BRANDS: return ajaxReadBrands(state, action);
         case productsActions.ON_BRAND_FILTER_CHANGED: return onBrandFilterChanged(state, action);
         case productsActions.ON_CATEGORY_FILTER_CHANGED: return onCategoryFilterChanged(state, action);
         case productsActions.ON_PRODUCT_CLICKED_VIA_LISTING_REDUCER: return onProductClickedViaListingReducer(state, action);
         case productsActions.ON_PRODUCT_LIKED: return onProductLiked(state, action);
-        case productsActions.DISPLAY_CATEGORIES: return displayCategories(state, action);
         default: return state;
     }
 }
@@ -55,16 +53,7 @@ const onProductLiked = (state, action) => {
     };
 };
 
-const displayCategories = (state, action) => {
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: products, METHOD: displayCategories()");
 
-    return {
-        ...state,
-        categories: action.objs,
-        message: "Just executed METHOD:: displayCategories() from REDUCER:: products"
-    };
-};
 
 const onProductClickedViaListingReducer = (state, action) => {
     Bs.log("\n###############");
@@ -137,19 +126,6 @@ const ajaxReadProducts = (state, action) => {
         shouldRefreshProducts: false,
         paginationData: action.paginationData,
         message: "Just executed METHOD: ajaxReadProducts() from REDUCER: products"
-    };
-};
-
-
-
-const ajaxReadBrands = (state, action) => {
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: products, METHOD: ajaxReadBrands()");
-
-    return {
-        ...state,
-        brands: action.objs,
-        message: "Just executed METHOD:: ajaxReadBrands() from REDUCER:: products"
     };
 };
 

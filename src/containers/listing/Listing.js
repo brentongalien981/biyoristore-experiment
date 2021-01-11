@@ -20,29 +20,49 @@ import { onAddToCart } from '../../actions/cart';
 
 class Listing extends React.Component {
 
-    
-    componentDidMount() {
-        // ish
-        this.props.readFilters();
-        // TODO: Delete the workflow for these.
-        // this.props.readBrands();
-        // this.props.readCategories();
+    /* HELPER FUNCS */
+    buildUrlQuery(readParams) {
+        let urlQuery = "";
 
+        for (const key in readParams) {
+            const val = readParams[key];
 
+            if (Array.isArray(val)) {
+                if (val.length === 0) { urlQuery += key + "=null"; }
+                else { urlQuery += key + "=" + val.toString(); }
+            } else {
+                if (val === "") { urlQuery += key + "=null"; }
+                else { urlQuery += key + "=" + val; }
+            }
 
-        // TODO: Re-implement this with method "refreshProducts()".
-        const acceptedParams = ["page", "search"];
-        const parsedQueryParams = Bs.getParsedQueryParams(this.props.location.search, acceptedParams);
+            urlQuery += "&";
+        }
 
-        Bs.log("\n###################");
-        Bs.log("parsedQueryParams ==> ...");
-        Bs.log(parsedQueryParams);
-        this.props.readProducts(parsedQueryParams);
+        return urlQuery;
     }
 
 
 
-    //ish
+    /* MAIN FUNCS */
+    componentDidMount() {
+
+        this.props.readFilters();
+
+
+        // ish: Re-implement this with method "refreshProducts()".
+        this.refreshProducts();
+
+        // const acceptedParams = ["page", "search"];
+        // const parsedQueryParams = Bs.getParsedQueryParams(this.props.location.search, acceptedParams);
+
+        // Bs.log("\n###################");
+        // Bs.log("parsedQueryParams ==> ...");
+        // Bs.log(parsedQueryParams);
+        // this.props.readProducts(parsedQueryParams);
+    }
+
+
+
     componentDidUpdate() {
         Bs.log("\n####################");
         Bs.log("CLASS:: Listing, METHOD:: componentDidUpdate()");
@@ -61,11 +81,21 @@ class Listing extends React.Component {
 
     refreshProducts() {
         const urlParams = this.props.location.search;
-        const acceptedParams = ["page", "search"];
+        const acceptedParams = ["page", "search", "brands", "categories"];
         const parsedUrlParams = Bs.getParsedQueryParams(urlParams, acceptedParams);
 
+        parsedUrlParams["page"] = parsedUrlParams["page"] ?? 1;
+        parsedUrlParams["search"] = parsedUrlParams["search"] ?? "";
+
+
         const selectedBrandIds = this.getSelectedBrandIds();
-        const readParams = { ...parsedUrlParams, selectedBrandIds: selectedBrandIds, selectedCategoryId: this.props.selectedCategory?.id };
+        // TODO: Re-implement the use of brands.
+        // TODO: Re-implement the use of categories.
+        // TODO: Re-implement the use of teams.
+        let readParams = { ...parsedUrlParams, selectedBrandIds: selectedBrandIds };
+        const completeUrlQuery = this.buildUrlQuery(readParams);
+        readParams = { ...readParams, completeUrlQuery: completeUrlQuery };
+        //ish
         this.props.readProducts(readParams);
     }
 
@@ -184,8 +214,6 @@ const mapDispatchToProps = (dispatch) => {
         onAddToCart: (product) => dispatch(onAddToCart(product)),
         readProducts: (params) => dispatch(productsActions.readProducts(params)),
         readFilters: () => dispatch(productsActions.readFilters()),
-        readBrands: () => dispatch(productsActions.readBrands()),
-        readCategories: () => dispatch(productsActions.readCategories()),
         onBrandFilterChanged: (brandFilterEventData) => dispatch(productsActions.onBrandFilterChanged(brandFilterEventData)),
         onCategoryClicked: (categoryFilterEventData) => dispatch(productsActions.onCategoryFilterChanged(categoryFilterEventData)),
         onProductClickedViaListingReducer: (e, props, product) => dispatch(productsActions.onProductClickedViaListingReducer(e, props, product))
