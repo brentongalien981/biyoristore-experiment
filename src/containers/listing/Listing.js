@@ -45,36 +45,19 @@ class Listing extends React.Component {
 
     /* MAIN FUNCS */
     componentDidMount() {
-
         this.props.readFilters();
-
-
-        // ish: Re-implement this with method "refreshProducts()".
         this.refreshProducts();
-
-        // const acceptedParams = ["page", "search"];
-        // const parsedQueryParams = Bs.getParsedQueryParams(this.props.location.search, acceptedParams);
-
-        // Bs.log("\n###################");
-        // Bs.log("parsedQueryParams ==> ...");
-        // Bs.log(parsedQueryParams);
-        // this.props.readProducts(parsedQueryParams);
     }
 
 
 
     componentDidUpdate() {
-        Bs.log("\n####################");
-        Bs.log("CLASS:: Listing, METHOD:: componentDidUpdate()");
+        // TODO
+        // this.checkHasPageNumberChanged();
 
-        Bs.log("this.props ==> ...");
-        Bs.log(this.props);
-
-        this.checkHasPageNumberChanged();
-
-        if (this.props.shouldRefreshProducts) {
-            this.refreshProducts();
-        }
+        // if (this.props.shouldRefreshProducts) {
+        //     this.refreshProducts();
+        // }
     }
 
 
@@ -89,13 +72,13 @@ class Listing extends React.Component {
 
 
         const selectedBrandIds = this.getSelectedBrandIds();
-        // TODO: Re-implement the use of brands.
-        // TODO: Re-implement the use of categories.
-        // TODO: Re-implement the use of teams.
+        // TODO: Re-implement with the use of brands.
+        // TODO: Re-implement with the use of categories.
+        // TODO: Re-implement with the use of teams.
         let readParams = { ...parsedUrlParams, selectedBrandIds: selectedBrandIds };
         const completeUrlQuery = this.buildUrlQuery(readParams);
         readParams = { ...readParams, completeUrlQuery: completeUrlQuery };
-        //ish
+        
         this.props.readProducts(readParams);
     }
 

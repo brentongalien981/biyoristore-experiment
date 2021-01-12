@@ -19,6 +19,17 @@ export default class BsJLSOLM {
         profile: {}
     };
 
+    static defaultSearchQueryObjs = {
+        'query=exampleSearchQuery&isCool=true': { dateRefreshed: null, lifespan: 120, shouldForceReadDb: false },
+        'teamId=8&categoryId=2': { dateRefreshed: null, lifespan: 120, shouldForceReadDb: false },
+    };
+
+    static SEARCH_QUERY_LIFESPAN = 120;
+
+
+    static objs = BsJLS.get("BsJLSOLM-objs") ?? BsJLSOLM.defaultObjs;
+    static searchQueryObjs = BsJLS.get("BsJLSOLM-searchQueryObjs") ?? BsJLSOLM.defaultSearchQueryObjs;
+
      
 
     /**
@@ -52,19 +63,25 @@ export default class BsJLSOLM {
 
 
 
-    static objs = BsJLS.get("BsJLSOLM-objs") ?? BsJLSOLM.defaultObjs;
+    static updateRefreshDateForSearchQuery(q) {
+        if (!q || q === "") { return; }
 
+        const updatedSearchQueryObjs = BsJLSOLM.searchQueryObjs;
+        const updatedSearchQueryObj = {};
 
+        const dateTimeNow = Date.now();
+        const dateTimeNowObj = new Date();
 
-    static searchQueries = {
-        'teamId=8&categoryId=2': {
-            lifespan: 3600,
-            products: [
-                { productId: 1, name: "Durant Jersey" },
-                { productId: 2, name: "LeBron Jersey" }
-            ]
-        },
-    };
+        updatedSearchQueryObj.dateRefreshed = dateTimeNow;
+        updatedSearchQueryObj.readableDateRefreshed = dateTimeNowObj.getHours() + ":" + dateTimeNowObj.getMinutes() + ":" + dateTimeNowObj.getSeconds();
+        updatedSearchQueryObj.shouldForceReadDb = false;
+        updatedSearchQueryObj.lifespan = BsJLSOLM.SEARCH_QUERY_LIFESPAN;
+
+        updatedSearchQueryObjs[q] = updatedSearchQueryObj;
+
+        
+        BsJLS.set("BsJLSOLM-searchQueryObjs", updatedSearchQueryObjs);
+    }
 
 
     static updateRefreshDate(objPath) {

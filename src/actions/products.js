@@ -9,8 +9,8 @@ export const ON_CATEGORY_FILTER_CHANGED = "ON_CATEGORY_FILTER_CHANGED";
 export const ON_PRODUCT_CLICKED_VIA_LISTING_REDUCER = "ON_PRODUCT_CLICKED_VIA_LISTING_REDUCER";
 export const ON_PRODUCT_LIKED = "ON_PRODUCT_LIKED";
 
+export const ON_READ_PRODUCTS_OK = "ON_READ_PRODUCTS_OK";
 export const ON_READ_FILTERS_OK = "ON_READ_FILTERS_OK";
-export const AJAX_READ_PRODUCTS = "AJAX_READ_PRODUCTS";
 
 
 
@@ -25,14 +25,7 @@ export const onProductLiked = (event) => ({
 });
 
 
-export const ajaxReadProducts = (objs, paginationData) => ({
-    type: AJAX_READ_PRODUCTS,
-    objs: objs,
-    paginationData: paginationData
-});
-
-
-
+export const onReadProductsOk = (objs) => ({ type: ON_READ_PRODUCTS_OK, objs: objs });
 export const onReadFiltersOk = (objs) => ({ type: ON_READ_FILTERS_OK, objs: objs });
 
 
@@ -49,54 +42,50 @@ export const onBrandFilterChanged = (brandFilterEventData) => {
 
 export const readProducts = (params) => {
 
-    // TODO: Use BsJLSOLM.
+    if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.searchQueryObjs[params.completeUrlQuery])) {
+
+        return (dispatch) => {
+
+            BsCore2.ajaxCrud({
+                url: '/listing/read-products',
+                params: { ...params },
+                callBackFunc: (requestData, json) => {
+
+                    BsJLSOLM.updateRefreshDateForSearchQuery(params.completeUrlQuery);
+
+                    const objs = { ...json.objs, completeUrlQuery: params.completeUrlQuery }
+                    dispatch(onReadProductsOk(objs));
+                }
+            });
+        };
+    }
 
 
-
-    return (dispatch) => {
-
-        BsCore2.ajaxCrud({
-            url: '/listing/read-products',
-            params: { ...params },
-            callBackFunc: (requestData, json) => {
-                //ish
-                // dispatch(ajaxReadProducts(json.objs, json.paginationData));
-            }
-        });
-    };
+    return onReadProductsOk({ retrievedDataFrom: "localStorage", completeUrlQuery: params.completeUrlQuery });
 };
 
 
 
 export const readFilters = () => {
 
-    // Check if relevant BsJLSOLM objects still have relatively fresh values.
-    if (!BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.products.brands)
-        && !BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.products.categories)) {
+    if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.products.brands)
+        || BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.products.categories)) {
 
-        const objs = {
-            brands: BsJLS.get("products.brands") ?? [],
-            categories: BsJLS.get("products.categories") ?? [],
-            retrievedDataFrom: "localStorage"
+        return (dispatch) => {
+            BsCore2.ajaxCrud({
+                url: '/listing/read-filters',
+                callBackFunc: (requestData, json) => {
+
+                    BsJLSOLM.updateRefreshDate("products.brands");
+                    BsJLSOLM.updateRefreshDate("products.categories");
+
+                    dispatch(onReadFiltersOk(json.objs));
+                }
+            });
         };
-
-        Bs.log("objs ==> ...");
-        Bs.log(objs);
-        return onReadFiltersOk(objs);
     }
 
 
-    // If the obj values are old, refresh.
-    return (dispatch) => {
-        BsCore2.ajaxCrud({
-            url: '/listing/read-filters',
-            callBackFunc: (requestData, json) => {
+    return onReadFiltersOk({ retrievedDataFrom: "localStorage" });
 
-                BsJLSOLM.updateRefreshDate("products.brands");
-                BsJLSOLM.updateRefreshDate("products.categories");
-
-                dispatch(onReadFiltersOk(json.objs));
-            }
-        });
-    };
 };

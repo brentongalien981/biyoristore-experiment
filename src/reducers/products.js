@@ -29,8 +29,8 @@ const initialState = {
 const products = (state = initialState, action) => {
     switch (action.type) {
         case productsActions.READ_PRODUCTS: return readProducts(state, action);
+        case productsActions.ON_READ_PRODUCTS_OK: return onReadProductsOk(state, action);
         case productsActions.ON_READ_FILTERS_OK: return onReadFiltersOk(state, action);
-        case productsActions.AJAX_READ_PRODUCTS: return ajaxReadProducts(state, action);
         case productsActions.ON_BRAND_FILTER_CHANGED: return onBrandFilterChanged(state, action);
         case productsActions.ON_CATEGORY_FILTER_CHANGED: return onCategoryFilterChanged(state, action);
         case productsActions.ON_PRODUCT_CLICKED_VIA_LISTING_REDUCER: return onProductClickedViaListingReducer(state, action);
@@ -119,13 +119,25 @@ const readProducts = (state, action) => {
 
 
 /* AJAX */
-const ajaxReadProducts = (state, action) => {
+const onReadProductsOk = (state, action) => {
+
+    const completeUrlQuery = action.objs.completeUrlQuery;
+    if (action.objs.retrievedDataFrom === "cache" || action.objs.retrievedDataFrom === "db") {
+        
+        const productListingData = {
+            products: action.objs.products,
+            paginationData: action.objs.paginationData
+        };
+
+        BsJLS.set(action.objs.completeUrlQuery, productListingData);
+    }
+
+
     return {
         ...state,
-        products: action.objs,
-        shouldRefreshProducts: false,
-        paginationData: action.paginationData,
-        message: "Just executed METHOD: ajaxReadProducts() from REDUCER: products"
+        products: BsJLS.get(completeUrlQuery).products ?? [],
+        paginationData: BsJLS.get(completeUrlQuery).paginationData ?? {}
+        // shouldRefreshProducts: false,
     };
 };
 
@@ -138,10 +150,11 @@ const onReadFiltersOk = (state, action) => {
         BsJLS.set("products.categories", action.objs.categories);
     }
 
+
     return {
         ...state,
-        brands: action.objs.brands,
-        categories: action.objs.categories,
+        brands: BsJLS.get("products.brands") ?? [],
+        categories: BsJLS.get("products.categories") ?? []
     };
 };
 
