@@ -9,6 +9,7 @@ export const ON_CATEGORY_FILTER_CHANGED = "ON_CATEGORY_FILTER_CHANGED";
 export const ON_PRODUCT_CLICKED_VIA_LISTING_REDUCER = "ON_PRODUCT_CLICKED_VIA_LISTING_REDUCER";
 export const ON_PRODUCT_LIKED = "ON_PRODUCT_LIKED";
 
+export const SET_SELECTED_CATEGORY = "SET_SELECTED_CATEGORY";
 export const ON_READ_PRODUCTS_OK = "ON_READ_PRODUCTS_OK";
 export const ON_READ_FILTERS_OK = "ON_READ_FILTERS_OK";
 
@@ -25,11 +26,12 @@ export const onProductLiked = (event) => ({
 });
 
 
+export const setSelectedCategory = (categoryFilterIndex) => ({ type: SET_SELECTED_CATEGORY, categoryFilterIndex: categoryFilterIndex });
 export const onReadProductsOk = (objs) => ({ type: ON_READ_PRODUCTS_OK, objs: objs });
 export const onReadFiltersOk = (objs) => ({ type: ON_READ_FILTERS_OK, objs: objs });
 
 
-
+//ish
 export const onCategoryFilterChanged = (categoryFilterEventData) => {
     return { type: ON_CATEGORY_FILTER_CHANGED, categoryFilterEventData: categoryFilterEventData };
 };

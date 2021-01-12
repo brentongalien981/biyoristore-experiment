@@ -9,7 +9,8 @@ const initialState = {
     paginationData: { currentPageNum: 1 },
     shouldRefreshProducts: false,
     brands: [{ id: 1, name: "Nike" }, { id: 2, name: "Adidas", isSelected: false }, { id: 3, name: "Toyota", isSelected: true }],
-    selectedCategory: null,
+    selectedCategory: {},
+    currentPageNum: 1,
     categories: [{ id: 1, name: "laptop" }, { id: 2, name: "phone" }, { id: 3, name: "tablet" }],
     products: [
         // {
@@ -29,9 +30,13 @@ const initialState = {
 const products = (state = initialState, action) => {
     switch (action.type) {
         case productsActions.READ_PRODUCTS: return readProducts(state, action);
+
+
+        case productsActions.SET_SELECTED_CATEGORY: return setSelectedCategory(state, action);
         case productsActions.ON_READ_PRODUCTS_OK: return onReadProductsOk(state, action);
         case productsActions.ON_READ_FILTERS_OK: return onReadFiltersOk(state, action);
         case productsActions.ON_BRAND_FILTER_CHANGED: return onBrandFilterChanged(state, action);
+        //ish
         case productsActions.ON_CATEGORY_FILTER_CHANGED: return onCategoryFilterChanged(state, action);
         case productsActions.ON_PRODUCT_CLICKED_VIA_LISTING_REDUCER: return onProductClickedViaListingReducer(state, action);
         case productsActions.ON_PRODUCT_LIKED: return onProductLiked(state, action);
@@ -73,6 +78,21 @@ const onProductClickedViaListingReducer = (state, action) => {
     };
 };
 
+//ish
+const setSelectedCategory = (state, action) => {
+
+    const i = action.categoryFilterIndex;
+    const updatedSelectedCategory = state.categories[i];
+
+    return {
+        ...state,
+        currentPageNum: 1,
+        selectedCategory: updatedSelectedCategory,
+        shouldRefreshProducts: true
+    };
+};
+
+//ish
 const onCategoryFilterChanged = (state, action) => {
     Bs.log("\n###############");
     Bs.log("In REDUCER: products, METHOD: onCategoryFilterChanged()");
@@ -123,7 +143,7 @@ const onReadProductsOk = (state, action) => {
 
     const completeUrlQuery = action.objs.completeUrlQuery;
     if (action.objs.retrievedDataFrom === "cache" || action.objs.retrievedDataFrom === "db") {
-        
+
         const productListingData = {
             products: action.objs.products,
             paginationData: action.objs.paginationData
@@ -136,8 +156,8 @@ const onReadProductsOk = (state, action) => {
     return {
         ...state,
         products: BsJLS.get(completeUrlQuery).products ?? [],
-        paginationData: BsJLS.get(completeUrlQuery).paginationData ?? {}
-        // shouldRefreshProducts: false,
+        paginationData: BsJLS.get(completeUrlQuery).paginationData ?? {},
+        shouldRefreshProducts: false
     };
 };
 
@@ -151,10 +171,15 @@ const onReadFiltersOk = (state, action) => {
     }
 
 
+    //
+    const categoryForAllItems = { id: 0, name: "All Products" };
+    let categories = [categoryForAllItems, ...BsJLS.get("products.categories")];
+
+
     return {
         ...state,
         brands: BsJLS.get("products.brands") ?? [],
-        categories: BsJLS.get("products.categories") ?? []
+        categories: categories
     };
 };
 

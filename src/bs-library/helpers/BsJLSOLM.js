@@ -64,7 +64,7 @@ export default class BsJLSOLM {
 
 
     static updateRefreshDateForSearchQuery(q) {
-        if (!q || q === "") { return; }
+        if (!q) { return; }
 
         const updatedSearchQueryObjs = BsJLSOLM.searchQueryObjs;
         const updatedSearchQueryObj = {};
@@ -106,6 +106,7 @@ export default class BsJLSOLM {
 
 
     static shouldObjRefresh(obj) {
+        if (!obj) { return true; }
         if (!obj.dateRefreshed) { return true; }
         if (obj.shouldForceReadDb) { return true; }
         

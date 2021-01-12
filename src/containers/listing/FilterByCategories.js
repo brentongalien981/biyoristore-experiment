@@ -10,7 +10,7 @@ function FilterByCategories(props) {
 
         return (
             <li key={i} className="nav-item">
-                <a className="nav-link" href="#" onClick={(e) => props.onCategoryClicked(categoryFilterEventData)}>{c.name}</a>
+                <a className="nav-link" href="#" onClick={(e) => props.onCategoryClicked(e, i, c.id)}>{c.name}</a>
             </li>
         );
     });

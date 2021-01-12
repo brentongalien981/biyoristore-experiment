@@ -21,21 +21,49 @@ import { onAddToCart } from '../../actions/cart';
 class Listing extends React.Component {
 
     /* HELPER FUNCS */
+    getUpdatedUrl() {
+
+        let url = "/products";
+        let params = [];
+
+        // page-number
+        let pageNum = this.props.currentPageNum;
+        if (pageNum !== 1) { params.push({ name: "page", val: pageNum }); }
+
+        // category
+        let categoryId = this.props.selectedCategory.id;
+        if (categoryId && categoryId !== 0) { params.push({ name: "category", val: categoryId }); }
+
+        // TODO: brand
+
+        // 
+        let i = 0;
+        params.forEach(param => {
+            if (i === 0) {
+                url += "?" + param.name + "=" + param.val;
+            } else {
+                url += "&" + param.name + "=" + param.val;
+            }
+            ++i;
+        });
+
+        return url;
+    }
+
+
+
     buildUrlQuery(readParams) {
         let urlQuery = "";
 
+        let i = 0;
         for (const key in readParams) {
             const val = readParams[key];
 
-            if (Array.isArray(val)) {
-                if (val.length === 0) { urlQuery += key + "=null"; }
-                else { urlQuery += key + "=" + val.toString(); }
+            if (i === 0) {
+                urlQuery += "?" + key + "=" + val;
             } else {
-                if (val === "") { urlQuery += key + "=null"; }
-                else { urlQuery += key + "=" + val; }
+                urlQuery += "&" + key + "=" + val;
             }
-
-            urlQuery += "&";
         }
 
         return urlQuery;
@@ -52,33 +80,42 @@ class Listing extends React.Component {
 
 
     componentDidUpdate() {
-        // TODO
+        // TODO:DELETE
+        // Bs.log("componentDidUpdate()");
         // this.checkHasPageNumberChanged();
 
-        // if (this.props.shouldRefreshProducts) {
-        //     this.refreshProducts();
-        // }
+        if (this.props.shouldRefreshProducts) {
+            Bs.log("AFTER ==> " + this.props.selectedCategory.id);
+            // ish
+            // Set the new url.
+            const url = this.getUpdatedUrl();
+            this.props.history.push(url);
+            // this.refreshProducts();
+        }
     }
 
 
 
     refreshProducts() {
         const urlParams = this.props.location.search;
-        const acceptedParams = ["page", "search", "brands", "categories"];
+        const acceptedParams = ["page", "search", "brands", "category"];
         const parsedUrlParams = Bs.getParsedQueryParams(urlParams, acceptedParams);
 
-        parsedUrlParams["page"] = parsedUrlParams["page"] ?? 1;
-        parsedUrlParams["search"] = parsedUrlParams["search"] ?? "";
-
-
-        const selectedBrandIds = this.getSelectedBrandIds();
         // TODO: Re-implement with the use of brands.
-        // TODO: Re-implement with the use of categories.
         // TODO: Re-implement with the use of teams.
-        let readParams = { ...parsedUrlParams, selectedBrandIds: selectedBrandIds };
-        const completeUrlQuery = this.buildUrlQuery(readParams);
-        readParams = { ...readParams, completeUrlQuery: completeUrlQuery };
+        // const selectedBrandIds = this.getSelectedBrandIds();
+        // let readParams = { ...parsedUrlParams, selectedBrandIds: selectedBrandIds };
+
+        //ish
+        let completeUrlQuery = this.buildUrlQuery(parsedUrlParams);
+        completeUrlQuery = completeUrlQuery == "" ? "all-products" : completeUrlQuery;
+
+        parsedUrlParams["page"] = parsedUrlParams["page"] ?? 1;
         
+        const readParams = { ...parsedUrlParams, completeUrlQuery: completeUrlQuery };
+
+        Bs.log("readParams ==> ...");
+        Bs.log(readParams);
         this.props.readProducts(readParams);
     }
 
@@ -116,6 +153,17 @@ class Listing extends React.Component {
             this.refreshProducts();
         }
     }
+
+
+    /** EVENT FUNCS */
+    onCategoryClicked = (e, categoryFilterIndex, categoryId) => {
+        e.stopPropagation();
+        e.preventDefault();
+
+        if (this.props.selectedCategory.id == categoryId) { return; }
+
+        this.props.setSelectedCategory(categoryFilterIndex);
+    };
 
 
 
@@ -156,7 +204,7 @@ class Listing extends React.Component {
 
                             {/* sidebar */}
                             <aside className="col-lg-3 sidebar">
-                                <FilterByCategories categories={this.props.categories} onCategoryClicked={this.props.onCategoryClicked} />
+                                <FilterByCategories categories={this.props.categories} onCategoryClicked={this.onCategoryClicked} />
                                 <FilterByBrand brands={this.props.brands} onBrandFilterChanged={this.props.onBrandFilterChanged} />
                                 <FilterByColor />
                                 <FilterByPrice />
@@ -182,6 +230,7 @@ const mapStateToProps = (state) => {
     return {
         message: state.products.message,
         shouldRefreshProducts: state.products.shouldRefreshProducts,
+        currentPageNum: state.products.currentPageNum,
         brands: state.products.brands,
         selectedCategory: state.products.selectedCategory,
         categories: state.products.categories,
@@ -198,7 +247,10 @@ const mapDispatchToProps = (dispatch) => {
         readProducts: (params) => dispatch(productsActions.readProducts(params)),
         readFilters: () => dispatch(productsActions.readFilters()),
         onBrandFilterChanged: (brandFilterEventData) => dispatch(productsActions.onBrandFilterChanged(brandFilterEventData)),
+        //TODO:DELETE
         onCategoryClicked: (categoryFilterEventData) => dispatch(productsActions.onCategoryFilterChanged(categoryFilterEventData)),
+
+        setSelectedCategory: (categoryFilterIndex) => dispatch(productsActions.setSelectedCategory(categoryFilterIndex)),
         onProductClickedViaListingReducer: (e, props, product) => dispatch(productsActions.onProductClickedViaListingReducer(e, props, product))
     };
 };

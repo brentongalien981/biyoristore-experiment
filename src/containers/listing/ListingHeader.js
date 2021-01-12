@@ -4,7 +4,7 @@ import React from 'react';
 
 function ListingHeader(props) {
 
-    const categoryName = props.category ? props.category.name : "All Products";
+    const categoryName = props.category.name ?? "All Products";
 
     return (
         <div className="row justify-content-end">
