@@ -3,6 +3,8 @@ import Bs from '../bs-library/helpers/Bs';
 import BsJLS from '../bs-library/helpers/BsJLS';
 
 
+/** PROPERTIES */
+const DEFAULT_CATEGORY = { id: 0, name: "All Products" };
 
 const initialState = {
     message: "This is the initial state of products-store.",
@@ -30,18 +32,38 @@ const initialState = {
 const products = (state = initialState, action) => {
     switch (action.type) {
         case productsActions.READ_PRODUCTS: return readProducts(state, action);
-
-
-        case productsActions.SET_SELECTED_CATEGORY: return setSelectedCategory(state, action);
+        //ish
+        case productsActions.ON_URL_CHANGED: return onUrlChanged(state, action);
         case productsActions.ON_READ_PRODUCTS_OK: return onReadProductsOk(state, action);
         case productsActions.ON_READ_FILTERS_OK: return onReadFiltersOk(state, action);
         case productsActions.ON_BRAND_FILTER_CHANGED: return onBrandFilterChanged(state, action);
-        //ish
+        //TODO:DELETE
+        case productsActions.SET_SELECTED_CATEGORY: return setSelectedCategory(state, action);
         case productsActions.ON_CATEGORY_FILTER_CHANGED: return onCategoryFilterChanged(state, action);
+
         case productsActions.ON_PRODUCT_CLICKED_VIA_LISTING_REDUCER: return onProductClickedViaListingReducer(state, action);
         case productsActions.ON_PRODUCT_LIKED: return onProductLiked(state, action);
         default: return state;
     }
+}
+
+
+
+/** HELPER FUNCS */
+const getSelectedCategory = (state, categoryId) => {
+
+    let category = {...DEFAULT_CATEGORY};
+    const categories = state.categories;
+
+    for (const c of categories) {
+
+        if (c.id === parseInt(categoryId)) {
+            category = c;
+            break;
+        }
+    }
+
+    return category;
 }
 
 
@@ -78,7 +100,17 @@ const onProductClickedViaListingReducer = (state, action) => {
     };
 };
 
-//ish
+const onUrlChanged = (state, action) => {
+
+    return {
+        ...state,
+        shouldRefreshProducts: true,
+    };
+};
+
+
+
+// TODO:DELETE
 const setSelectedCategory = (state, action) => {
 
     const i = action.categoryFilterIndex;
@@ -86,13 +118,14 @@ const setSelectedCategory = (state, action) => {
 
     return {
         ...state,
-        currentPageNum: 1,
         selectedCategory: updatedSelectedCategory,
-        shouldRefreshProducts: true
+        shouldRefreshProducts: true,
+        // TODO:DELETE
+        // currentPageNum: 1,
     };
 };
 
-//ish
+// TODO:DELETE
 const onCategoryFilterChanged = (state, action) => {
     Bs.log("\n###############");
     Bs.log("In REDUCER: products, METHOD: onCategoryFilterChanged()");
@@ -129,6 +162,7 @@ const onBrandFilterChanged = (state, action) => {
     };
 };
 
+// TODO:DELETE
 const readProducts = (state, action) => {
     return {
         ...state,
@@ -149,14 +183,16 @@ const onReadProductsOk = (state, action) => {
             paginationData: action.objs.paginationData
         };
 
-        BsJLS.set(action.objs.completeUrlQuery, productListingData);
+        BsJLS.set(completeUrlQuery, productListingData);
     }
 
 
     return {
         ...state,
-        products: BsJLS.get(completeUrlQuery).products ?? [],
-        paginationData: BsJLS.get(completeUrlQuery).paginationData ?? {},
+        //ish
+        selectedCategory: getSelectedCategory(state, action.objs.category),
+        products: BsJLS.get(completeUrlQuery)?.products ?? [],
+        paginationData: BsJLS.get(completeUrlQuery)?.paginationData ?? {},
         shouldRefreshProducts: false
     };
 };

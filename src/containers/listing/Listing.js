@@ -20,44 +20,54 @@ import { onAddToCart } from '../../actions/cart';
 
 class Listing extends React.Component {
 
-    /* HELPER FUNCS */
-    getUpdatedUrl() {
-
-        let url = "/products";
-        let params = [];
-
-        // page-number
-        let pageNum = this.props.currentPageNum;
-        if (pageNum !== 1) { params.push({ name: "page", val: pageNum }); }
-
-        // category
-        let categoryId = this.props.selectedCategory.id;
-        if (categoryId && categoryId !== 0) { params.push({ name: "category", val: categoryId }); }
-
-        // TODO: brand
-
-        // 
-        let i = 0;
-        params.forEach(param => {
-            if (i === 0) {
-                url += "?" + param.name + "=" + param.val;
-            } else {
-                url += "&" + param.name + "=" + param.val;
-            }
-            ++i;
-        });
-
-        return url;
+    /** PROPERTIES */
+    state = {
+        shouldRefreshProducts: false,
+        selectedCategoryIndex: 0
     }
 
 
 
-    buildUrlQuery(readParams) {
+    /* HELPER FUNCS */
+    buildNewUrlQuery(params) {
+
+        // Default params values.
+        params = {
+            pageNumber: params.pageNumber ?? 1,
+            categoryId: params.categoryId ?? 0
+        };
+
+
+        let urlQuery = "";
+        let queryParams = [];
+
+        if (params.pageNumber !== 1) { queryParams.push({ name: "page", val: params.pageNumber }); }
+        if (params.categoryId !== 0) { queryParams.push({ name: "category", val: params.categoryId }); }
+        // TODO: brand
+
+
+        let i = 0;
+        queryParams.forEach(qp => {
+            if (i === 0) {
+                urlQuery += "?" + qp.name + "=" + qp.val;
+            } else {
+                urlQuery += "&" + qp.name + "=" + qp.val;
+            }
+            ++i;
+        });
+
+
+        return urlQuery;
+    }
+
+
+
+    buildCleanUrlQuery(cleanParams) {
         let urlQuery = "";
 
         let i = 0;
-        for (const key in readParams) {
-            const val = readParams[key];
+        for (const key in cleanParams) {
+            const val = cleanParams[key];
 
             if (i === 0) {
                 urlQuery += "?" + key + "=" + val;
@@ -81,16 +91,11 @@ class Listing extends React.Component {
 
     componentDidUpdate() {
         // TODO:DELETE
-        // Bs.log("componentDidUpdate()");
-        // this.checkHasPageNumberChanged();
+        Bs.log("componentDidUpdate()");
 
         if (this.props.shouldRefreshProducts) {
-            Bs.log("AFTER ==> " + this.props.selectedCategory.id);
-            // ish
-            // Set the new url.
-            const url = this.getUpdatedUrl();
-            this.props.history.push(url);
-            // this.refreshProducts();
+            //ish
+            this.refreshProducts();
         }
     }
 
@@ -99,24 +104,22 @@ class Listing extends React.Component {
     refreshProducts() {
         const urlParams = this.props.location.search;
         const acceptedParams = ["page", "search", "brands", "category"];
-        const parsedUrlParams = Bs.getParsedQueryParams(urlParams, acceptedParams);
+        const parsedCleanUrlParams = Bs.getParsedQueryParams(urlParams, acceptedParams);
 
-        // TODO: Re-implement with the use of brands.
-        // TODO: Re-implement with the use of teams.
-        // const selectedBrandIds = this.getSelectedBrandIds();
-        // let readParams = { ...parsedUrlParams, selectedBrandIds: selectedBrandIds };
+        let cleanUrlQuery = this.buildCleanUrlQuery(parsedCleanUrlParams);
+        cleanUrlQuery = (cleanUrlQuery == "" ? "all-products" : cleanUrlQuery);
 
-        //ish
-        let completeUrlQuery = this.buildUrlQuery(parsedUrlParams);
-        completeUrlQuery = completeUrlQuery == "" ? "all-products" : completeUrlQuery;
+        // Default params values.
+        parsedCleanUrlParams["page"] = parsedCleanUrlParams["page"] ?? 1;
 
-        parsedUrlParams["page"] = parsedUrlParams["page"] ?? 1;
-        
-        const readParams = { ...parsedUrlParams, completeUrlQuery: completeUrlQuery };
+        const readParams = { ...parsedCleanUrlParams, completeUrlQuery: cleanUrlQuery };
 
+        // TODO:DELETE
         Bs.log("readParams ==> ...");
         Bs.log(readParams);
+
         this.props.readProducts(readParams);
+        //ish
     }
 
 
@@ -162,7 +165,17 @@ class Listing extends React.Component {
 
         if (this.props.selectedCategory.id == categoryId) { return; }
 
-        this.props.setSelectedCategory(categoryFilterIndex);
+        
+        // Set the new url.
+        const urlQuery = this.buildNewUrlQuery({ categoryId: categoryId });
+        const url = "/products" + urlQuery;
+        this.props.history.push(url);
+
+        this.props.onUrlChanged();
+
+
+        // TODO:DELETE
+        // this.props.setSelectedCategory(categoryFilterIndex);
     };
 
 
@@ -243,6 +256,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        onUrlChanged: () => dispatch(productsActions.onUrlChanged()),
         onAddToCart: (product) => dispatch(onAddToCart(product)),
         readProducts: (params) => dispatch(productsActions.readProducts(params)),
         readFilters: () => dispatch(productsActions.readFilters()),
