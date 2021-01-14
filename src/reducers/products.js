@@ -31,7 +31,6 @@ const initialState = {
 /* REDUCER */
 const products = (state = initialState, action) => {
     switch (action.type) {
-        case productsActions.READ_PRODUCTS: return readProducts(state, action);
         //ish
         case productsActions.ON_URL_CHANGED: return onUrlChanged(state, action);
         case productsActions.ON_READ_PRODUCTS_OK: return onReadProductsOk(state, action);
@@ -142,6 +141,7 @@ const onCategoryFilterChanged = (state, action) => {
     };
 };
 
+// TODO:DELETE
 const onBrandFilterChanged = (state, action) => {
     Bs.log("\n###############");
     Bs.log("In REDUCER: products, METHOD: onBrandFilterChanged()");
@@ -159,14 +159,6 @@ const onBrandFilterChanged = (state, action) => {
         brands: updatedBrands,
         shouldRefreshProducts: true,
         message: "Just executed METHOD:: onBrandFilterChanged() from REDUCER:: products"
-    };
-};
-
-// TODO:DELETE
-const readProducts = (state, action) => {
-    return {
-        ...state,
-        message: "Just executed METHOD:: readProducts() from REDUCER:: products"
     };
 };
 
