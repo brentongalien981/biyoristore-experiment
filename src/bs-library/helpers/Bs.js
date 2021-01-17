@@ -53,6 +53,12 @@ class Bs {
 
         return parsedParams;
     }
+
+
+
+    static compareNumberically(a, b) {
+        return a - b;
+    }
 }
 
 

@@ -81,7 +81,7 @@ class Listing extends React.Component {
         }
 
         if (updatedSelectedBrandIds.length > 0) { 
-            updatedSelectedBrandIds.sort();
+            updatedSelectedBrandIds.sort(Bs.compareNumberically);
             queryParams.push({ name: "brands", val: updatedSelectedBrandIds.toString() }); 
         }
         //ish
@@ -173,7 +173,7 @@ class Listing extends React.Component {
                 }
             }
             newlySelectedBrandIds = tempIds;
-            newlySelectedBrandIds.sort();
+            newlySelectedBrandIds.sort(Bs.compareNumberically);
         }
 
 

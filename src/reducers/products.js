@@ -10,7 +10,8 @@ const initialState = {
     message: "This is the initial state of products-store.",
     paginationData: { currentPageNum: 1 },
     shouldRefreshProducts: false,
-    brands: [{ id: 1, name: "Nike" }, { id: 2, name: "Adidas", isSelected: false }, { id: 3, name: "Toyota", isSelected: true }],
+    // brands: [{ id: 1, name: "Nike" }, { id: 2, name: "Adidas", isSelected: false }, { id: 3, name: "Toyota", isSelected: true }],
+    brands: [],
     selectedCategory: {},
     currentPageNum: 1,
     categories: [{ id: 1, name: "laptop" }, { id: 2, name: "phone" }, { id: 3, name: "tablet" }],
@@ -49,6 +50,21 @@ const products = (state = initialState, action) => {
 
 
 /** HELPER FUNCS */
+const markSelectedBrands = (brandsToBeMarked, newlySelectedBrandIds) => {
+
+    brandsToBeMarked.forEach(b => {
+        if (newlySelectedBrandIds?.includes(b.id)) {
+            b.isSelected = true;
+        } else {
+            b.isSelected = false;
+        }
+    });
+
+    return brandsToBeMarked;
+};
+
+
+
 const getSelectedCategory = (state, categoryId) => {
 
     let category = {...DEFAULT_CATEGORY};
@@ -179,9 +195,14 @@ const onReadProductsOk = (state, action) => {
     }
 
 
+    const newlySelectedBrandIds = action.objs.brands;
+    const updatedBrands = markSelectedBrands(state.brands, newlySelectedBrandIds);    
+    
+
     return {
         ...state,
         //ish
+        brands: updatedBrands,
         selectedCategory: getSelectedCategory(state, action.objs.category),
         products: BsJLS.get(completeUrlQuery)?.products ?? [],
         paginationData: BsJLS.get(completeUrlQuery)?.paginationData ?? {},
@@ -203,10 +224,12 @@ const onReadFiltersOk = (state, action) => {
     const categoryForAllItems = { id: 0, name: "All Products" };
     let categories = [categoryForAllItems, ...BsJLS.get("products.categories")];
 
+    const brands = BsJLS.get("products.brands") ?? [];
+
 
     return {
         ...state,
-        brands: BsJLS.get("products.brands") ?? [],
+        brands:  brands,
         categories: categories
     };
 };

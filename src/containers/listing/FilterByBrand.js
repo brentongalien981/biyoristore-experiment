@@ -7,12 +7,12 @@ function FilterByBrand(props) {
     const brandFilters = props.brands.map((b, i) => {
 
         const inputId = "customCheck" + b.id;
-        const checkedAttrib = b.isSelected ? { checked: true } : {};
+        const checkedAttrib = b.isSelected ? { checked: true } : { checked: false };
         const brandFilterEventData = { brandFilterIndex: i, brandId: b.id };
 
         return (
             <div key={b.id} className="custom-control custom-checkbox">
-                <input type="checkbox" className="custom-control-input" id={inputId} onChange={(e) => props.onBrandFilterChanged(brandFilterEventData)} />
+                <input type="checkbox" className="custom-control-input" id={inputId} value={inputId} {...checkedAttrib} onChange={(e) => props.onBrandFilterChanged(brandFilterEventData)} />
                 <label className="custom-control-label" htmlFor={inputId}>{b.name}</label>
             </div>
         );
