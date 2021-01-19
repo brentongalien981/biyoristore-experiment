@@ -22,6 +22,9 @@ class Listing extends React.Component {
 
     /** PROPERTIES */
     state = {
+        isReadingFilter: false,
+        isRefreshingProducts: false,
+        isRefreshingProducts: false,
         shouldRefreshProducts: false,
         selectedCategoryIndex: 0
     }
@@ -29,11 +32,32 @@ class Listing extends React.Component {
 
 
     /* HELPER FUNCS */
+    doPreRefreshProductsProcess() {
+        if (this.state.isRefreshingProducts) { return false; }
+        this.setState({ isRefreshingProducts: true });
+        return true;
+    }
+
+
+
+    doActualReadFiltersProcess() {
+        this.props.readFilters();
+    }
+
+
+
+    doPreReadFiltersProcess() {
+        if (this.state.isReadingFilter) { return false; }
+        this.setState({ isReadingFilter: true });
+        return true;
+    }
+
+
+
     changeUrl(params) {
         const urlQuery = this.buildNewUrlQuery(params);
         const url = "/products" + urlQuery;
         this.props.history.push(url);
-        //ish
         this.props.onUrlChanged();
     }
 
@@ -80,11 +104,10 @@ class Listing extends React.Component {
             updatedSelectedBrandIds = previouslySelectedBrandIds;
         }
 
-        if (updatedSelectedBrandIds.length > 0) { 
+        if (updatedSelectedBrandIds.length > 0) {
             updatedSelectedBrandIds.sort(Bs.compareNumberically);
-            queryParams.push({ name: "brands", val: updatedSelectedBrandIds.toString() }); 
+            queryParams.push({ name: "brands", val: updatedSelectedBrandIds.toString() });
         }
-        //ish
 
 
         let i = 0;
@@ -126,8 +149,8 @@ class Listing extends React.Component {
 
     /* MAIN FUNCS */
     componentDidMount() {
-        this.props.readFilters();
-        this.refreshProducts();
+        if (this.doPreReadFiltersProcess()) { this.doActualReadFiltersProcess(); }
+        this.doActualRefreshProductsProcess();
     }
 
 
@@ -136,14 +159,26 @@ class Listing extends React.Component {
         // TODO:DELETE
         // Bs.log("componentDidUpdate()");
 
-        if (this.props.shouldRefreshProducts) {
-            this.refreshProducts();
+        if (this.props.shouldDoPostReadFiltersProcess) {
+            this.setState({ isReadingFilter: false });
+            this.props.endReadFiltersProcess();
         }
+
+        if (this.props.shouldRefreshProducts) {
+            if (this.doPreRefreshProductsProcess()) { this.doActualRefreshProductsProcess(); }
+        }
+
+        if (this.props.shouldDoPostRefreshProductsProcess) {
+            this.setState({ isRefreshingProducts: false });
+            this.props.endRefreshProductsProcess();
+        }
+
+        //ish
     }
 
 
 
-    refreshProducts() {
+    doActualRefreshProductsProcess() {
         const urlParams = this.props.location.search;
         const acceptedParams = ["page", "search", "brands", "category"];
         const parsedCleanUrlParams = Bs.getParsedQueryParams(urlParams, acceptedParams);
@@ -194,8 +229,7 @@ class Listing extends React.Component {
         Bs.log(readParams);
 
         this.props.readProducts(readParams);
-        //ish
-        
+
     }
 
 
@@ -236,10 +270,12 @@ class Listing extends React.Component {
 
     /** EVENT FUNCS */
     onBrandFilterChanged = (brandFilterEventData) => {
+        if (this.state.isReadingFilter) { return; }
+        if (this.state.isRefreshingProducts) { return; }
+
         // Set the new url.
         const params = { brandIdToChange: brandFilterEventData.brandId };
         this.changeUrl(params);
-        //ish
     };
 
 
@@ -248,6 +284,8 @@ class Listing extends React.Component {
         e.stopPropagation();
         e.preventDefault();
 
+        if (this.state.isReadingFilter) { return; }
+        if (this.state.isRefreshingProducts) {alert("wait");  return; }
         if (this.props.selectedCategory.id == categoryId) { return; }
 
         // Set the new url.
@@ -319,6 +357,8 @@ class Listing extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+        shouldDoPostRefreshProductsProcess: state.products.shouldDoPostRefreshProductsProcess,
+        shouldDoPostReadFiltersProcess: state.products.shouldDoPostReadFiltersProcess,
         message: state.products.message,
         shouldRefreshProducts: state.products.shouldRefreshProducts,
         currentPageNum: state.products.currentPageNum,
@@ -334,6 +374,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        endRefreshProductsProcess: () => dispatch(productsActions.endRefreshProductsProcess()),
+        endReadFiltersProcess: () => dispatch(productsActions.endReadFiltersProcess()),
         onUrlChanged: () => dispatch(productsActions.onUrlChanged()),
         onAddToCart: (product) => dispatch(onAddToCart(product)),
         readProducts: (params) => dispatch(productsActions.readProducts(params)),

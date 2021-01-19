@@ -12,6 +12,8 @@ export const ON_PRODUCT_LIKED = "ON_PRODUCT_LIKED";
 // TODO:DELETE
 export const SET_SELECTED_CATEGORY = "SET_SELECTED_CATEGORY";
 
+export const END_REFRESH_PRODUCTS_PROCESS = "END_REFRESH_PRODUCTS_PROCESS";
+export const END_READ_FILTERS_PROCESS = "END_READ_FILTERS_PROCESS";
 export const ON_URL_CHANGED = "ON_URL_CHANGED";
 export const ON_READ_PRODUCTS_OK = "ON_READ_PRODUCTS_OK";
 export const ON_READ_FILTERS_OK = "ON_READ_FILTERS_OK";
@@ -30,6 +32,8 @@ export const onProductLiked = (event) => ({
 
 
 //ish
+export const endRefreshProductsProcess = () => ({ type: END_REFRESH_PRODUCTS_PROCESS });
+export const endReadFiltersProcess = () => ({ type: END_READ_FILTERS_PROCESS });
 export const onUrlChanged = () => ({ type: ON_URL_CHANGED });
 export const onReadProductsOk = (objs) => ({ type: ON_READ_PRODUCTS_OK, objs: objs });
 export const onReadFiltersOk = (objs) => ({ type: ON_READ_FILTERS_OK, objs: objs });

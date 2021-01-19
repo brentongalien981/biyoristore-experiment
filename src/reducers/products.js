@@ -24,7 +24,10 @@ const initialState = {
         //         {url: "assets/images/iphone11b.jpg"},
         //     ]
         // }
-    ]
+    ],
+    // FLAGS
+    shouldDoPostReadFiltersProcess: false,
+    shouldDoPostRefreshProductsProcess: false
 };
 
 
@@ -33,6 +36,8 @@ const initialState = {
 const products = (state = initialState, action) => {
     switch (action.type) {
         //ish
+        case productsActions.END_REFRESH_PRODUCTS_PROCESS: return endRefreshProductsProcess(state, action);
+        case productsActions.END_READ_FILTERS_PROCESS: return endReadFiltersProcess(state, action);
         case productsActions.ON_URL_CHANGED: return onUrlChanged(state, action);
         case productsActions.ON_READ_PRODUCTS_OK: return onReadProductsOk(state, action);
         case productsActions.ON_READ_FILTERS_OK: return onReadFiltersOk(state, action);
@@ -50,6 +55,24 @@ const products = (state = initialState, action) => {
 
 
 /** HELPER FUNCS */
+const endRefreshProductsProcess = (state, action) => {
+    return {
+        ...state,
+        shouldDoPostRefreshProductsProcess: false
+    };
+};
+
+
+
+const endReadFiltersProcess = (state, action) => {
+    return {
+        ...state,
+        shouldDoPostReadFiltersProcess: false
+    };
+};
+
+
+
 const markSelectedBrands = (brandsToBeMarked, newlySelectedBrandIds) => {
 
     brandsToBeMarked.forEach(b => {
@@ -206,7 +229,8 @@ const onReadProductsOk = (state, action) => {
         selectedCategory: getSelectedCategory(state, action.objs.category),
         products: BsJLS.get(completeUrlQuery)?.products ?? [],
         paginationData: BsJLS.get(completeUrlQuery)?.paginationData ?? {},
-        shouldRefreshProducts: false
+        shouldRefreshProducts: false,
+        shouldDoPostRefreshProductsProcess: true
     };
 };
 
@@ -230,7 +254,8 @@ const onReadFiltersOk = (state, action) => {
     return {
         ...state,
         brands:  brands,
-        categories: categories
+        categories: categories,
+        shouldDoPostReadFiltersProcess: true
     };
 };
 
