@@ -71,6 +71,7 @@ class Listing extends React.Component {
             categoryId: params.categoryId ?? 0,
             brandIdToChange: params.brandIdToChange
         };
+        //ish
 
 
         let urlQuery = "";
@@ -269,12 +270,29 @@ class Listing extends React.Component {
 
 
     /** EVENT FUNCS */
+    onPageNumClick = (e, pageNum) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (this.state.isReadingFilter) { return; }
+        if (this.state.isRefreshingProducts) { return; }
+
+        // Set the new url.
+        const params = { pageNumber: pageNum, categoryId: this.props.selectedCategory.id };
+        this.changeUrl(params);
+    };
+
+
+
     onBrandFilterChanged = (brandFilterEventData) => {
         if (this.state.isReadingFilter) { return; }
         if (this.state.isRefreshingProducts) { return; }
 
         // Set the new url.
-        const params = { brandIdToChange: brandFilterEventData.brandId };
+        const params = { 
+            brandIdToChange: brandFilterEventData.brandId,
+            categoryId: this.props.selectedCategory.id
+        };
         this.changeUrl(params);
     };
 
@@ -285,7 +303,7 @@ class Listing extends React.Component {
         e.preventDefault();
 
         if (this.state.isReadingFilter) { return; }
-        if (this.state.isRefreshingProducts) {alert("wait");  return; }
+        if (this.state.isRefreshingProducts) { return; }
         if (this.props.selectedCategory.id == categoryId) { return; }
 
         // Set the new url.
@@ -342,7 +360,7 @@ class Listing extends React.Component {
                             {/* content */}
                             <div className="col-lg-9">
                                 <div className="row gutter-2 gutter-lg-3">{products}</div>
-                                <Pagination {...this.props.paginationData} />
+                                <Pagination {...this.props.paginationData} onPageNumClick={this.onPageNumClick} />
                             </div>
 
                         </div>
