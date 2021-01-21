@@ -12,7 +12,8 @@ export default class BsJLSOLM {
     static defaultObjs = {
         products: {
             brands: { dateRefreshed: null, lifespan: 10080, shouldForceReadDb: false },
-            categories: { dateRefreshed: null, lifespan: 10080, shouldForceReadDb: false }
+            categories: { dateRefreshed: null, lifespan: 10080, shouldForceReadDb: false },
+            teams: { dateRefreshed: null, lifespan: 10080, shouldForceReadDb: false }
         },
         checkout: {},
         cart: {},
@@ -73,7 +74,8 @@ export default class BsJLSOLM {
         const dateTimeNowObj = new Date();
 
         updatedSearchQueryObj.dateRefreshed = dateTimeNow;
-        updatedSearchQueryObj.readableDateRefreshed = dateTimeNowObj.getHours() + ":" + dateTimeNowObj.getMinutes() + ":" + dateTimeNowObj.getSeconds();
+        // updatedSearchQueryObj.readableDateRefreshed = dateTimeNowObj.getHours() + ":" + dateTimeNowObj.getMinutes() + ":" + dateTimeNowObj.getSeconds();
+        updatedSearchQueryObj.readableDateRefreshed = (dateTimeNowObj.getMonth()+1) + "/" + (dateTimeNowObj.getDate()) + "/" + (dateTimeNowObj.getFullYear()) + " " + dateTimeNowObj.getHours() + ":" + dateTimeNowObj.getMinutes() + ":" + dateTimeNowObj.getSeconds();
         updatedSearchQueryObj.shouldForceReadDb = false;
         updatedSearchQueryObj.lifespan = BsJLSOLM.SEARCH_QUERY_LIFESPAN;
 
@@ -91,13 +93,16 @@ export default class BsJLSOLM {
 
         let currentTraversedObj = BsJLSOLM.objs;
         objPathArr.forEach(key => {
+            if (!currentTraversedObj[key]) {
+                currentTraversedObj[key] = {};
+            }
             currentTraversedObj = currentTraversedObj[key];
         });
 
         const dateTimeNow = Date.now();
         const dateTimeNowObj = new Date();
         currentTraversedObj.dateRefreshed = dateTimeNow;
-        currentTraversedObj.readableDateRefreshed = dateTimeNowObj.getHours() + ":" + dateTimeNowObj.getMinutes() + ":" + dateTimeNowObj.getSeconds();
+        currentTraversedObj.readableDateRefreshed = (dateTimeNowObj.getMonth()+1) + "/" + (dateTimeNowObj.getDate()) + "/" + (dateTimeNowObj.getFullYear()) + " " + dateTimeNowObj.getHours() + ":" + dateTimeNowObj.getMinutes() + ":" + dateTimeNowObj.getSeconds();
         currentTraversedObj.shouldForceReadDb = false;
 
         BsJLS.set("BsJLSOLM-objs", BsJLSOLM.objs);

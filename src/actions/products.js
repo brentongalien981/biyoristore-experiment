@@ -80,7 +80,8 @@ export const readProducts = (params) => {
 export const readFilters = () => {
 
     if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.products.brands)
-        || BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.products.categories)) {
+        || BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.products.categories)
+        || BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.products.teams)) {
 
         return (dispatch) => {
             BsCore2.ajaxCrud({
@@ -89,6 +90,7 @@ export const readFilters = () => {
 
                     BsJLSOLM.updateRefreshDate("products.brands");
                     BsJLSOLM.updateRefreshDate("products.categories");
+                    BsJLSOLM.updateRefreshDate("products.teams");
 
                     dispatch(onReadFiltersOk(json.objs));
                 }

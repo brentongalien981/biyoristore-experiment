@@ -12,6 +12,7 @@ const initialState = {
     shouldRefreshProducts: false,
     // brands: [{ id: 1, name: "Nike" }, { id: 2, name: "Adidas", isSelected: false }, { id: 3, name: "Toyota", isSelected: true }],
     brands: [],
+    teams: [],
     selectedCategory: {},
     currentPageNum: 1,
     categories: [{ id: 1, name: "laptop" }, { id: 2, name: "phone" }, { id: 3, name: "tablet" }],
@@ -241,6 +242,7 @@ const onReadFiltersOk = (state, action) => {
     if (action.objs.retrievedDataFrom === "cache" || action.objs.retrievedDataFrom === "db") {
         BsJLS.set("products.brands", action.objs.brands);
         BsJLS.set("products.categories", action.objs.categories);
+        BsJLS.set("products.teams", action.objs.teams);
     }
 
 
@@ -249,12 +251,14 @@ const onReadFiltersOk = (state, action) => {
     let categories = [categoryForAllItems, ...BsJLS.get("products.categories")];
 
     const brands = BsJLS.get("products.brands") ?? [];
+    const teams = BsJLS.get("products.teams") ?? [];
 
 
     return {
         ...state,
         brands:  brands,
         categories: categories,
+        teams: teams,
         shouldDoPostReadFiltersProcess: true
     };
 };

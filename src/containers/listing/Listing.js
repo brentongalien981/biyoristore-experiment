@@ -151,6 +151,7 @@ class Listing extends React.Component {
     /* MAIN FUNCS */
     componentDidMount() {
         if (this.doPreReadFiltersProcess()) { this.doActualReadFiltersProcess(); }
+        //ish
         this.doActualRefreshProductsProcess();
     }
 
