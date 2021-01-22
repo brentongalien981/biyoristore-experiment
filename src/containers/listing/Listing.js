@@ -33,6 +33,67 @@ class Listing extends React.Component {
 
 
     /* HELPER FUNCS */
+    getUpdatedSelectedTeamIds(teamIdToChange) {
+        let updatedSelectedTeamIds = [];
+        const previouslySelectedTeamIds = this.getSelectedTeamIds();
+        //ish
+        if (teamIdToChange) {
+
+            // Set the new updatedSelectedTeamIds.
+            let didTheUserSelectTeamId = true;
+
+            for (const id of previouslySelectedTeamIds) {
+                // This means the brandId was unchecked, so don't include it to the updatedSelectedTeamIds.
+                if (id === teamIdToChange) {
+                    didTheUserSelectTeamId = false;
+                    continue;
+                }
+                updatedSelectedTeamIds.push(id);
+            }
+
+            if (didTheUserSelectTeamId) {
+                updatedSelectedTeamIds.push(teamIdToChange);
+            }
+        }
+        else {
+            updatedSelectedTeamIds = previouslySelectedTeamIds;
+        }
+
+        return updatedSelectedTeamIds.sort(Bs.compareNumberically);
+    }
+
+
+
+    getUpdatedSelectedBrandIds(brandIdToChange) {
+        let updatedSelectedBrandIds = [];
+        const previouslySelectedBrandIds = this.getSelectedBrandIds();
+        if (brandIdToChange) {
+
+            // Set the new updatedSelectedBrandIds.
+            let didTheUserSelectBrandId = true;
+
+            for (const id of previouslySelectedBrandIds) {
+                // This means the brandId was unchecked, so don't include it to the updatedSelectedBrandIds.
+                if (id === brandIdToChange) {
+                    didTheUserSelectBrandId = false;
+                    continue;
+                }
+                updatedSelectedBrandIds.push(id);
+            }
+
+            if (didTheUserSelectBrandId) {
+                updatedSelectedBrandIds.push(brandIdToChange);
+            }
+        }
+        else {
+            updatedSelectedBrandIds = previouslySelectedBrandIds;
+        }
+
+        return updatedSelectedBrandIds.sort(Bs.compareNumberically);
+    }
+
+
+
     doPreRefreshProductsProcess() {
         if (this.state.isRefreshingProducts) { return false; }
         this.setState({ isRefreshingProducts: true });
@@ -70,9 +131,9 @@ class Listing extends React.Component {
         params = {
             pageNumber: params.pageNumber ?? 1,
             categoryId: params.categoryId ?? 0,
-            brandIdToChange: params.brandIdToChange
+            brandIdToChange: params.brandIdToChange,
+            teamIdToChange: params.teamIdToChange
         };
-        //ish
 
 
         let urlQuery = "";
@@ -81,35 +142,17 @@ class Listing extends React.Component {
         if (params.pageNumber !== 1) { queryParams.push({ name: "page", val: params.pageNumber }); }
         if (params.categoryId !== 0) { queryParams.push({ name: "category", val: params.categoryId }); }
 
-
-        let updatedSelectedBrandIds = [];
-        const previouslySelectedBrandIds = this.getSelectedBrandIds();
-        if (params.brandIdToChange) {
-
-            // Set the new updatedSelectedBrandIds.
-            let didTheUserSelectBrandId = true;
-
-            for (const id of previouslySelectedBrandIds) {
-                // This means the brandId was unchecked, so don't include it to the updatedSelectedBrandIds.
-                if (id === params.brandIdToChange) {
-                    didTheUserSelectBrandId = false;
-                    continue;
-                }
-                updatedSelectedBrandIds.push(id);
-            }
-
-            if (didTheUserSelectBrandId) {
-                updatedSelectedBrandIds.push(params.brandIdToChange);
-            }
-        }
-        else {
-            updatedSelectedBrandIds = previouslySelectedBrandIds;
-        }
-
+        let updatedSelectedBrandIds = this.getUpdatedSelectedBrandIds(params.brandIdToChange);
         if (updatedSelectedBrandIds.length > 0) {
-            updatedSelectedBrandIds.sort(Bs.compareNumberically);
             queryParams.push({ name: "brands", val: updatedSelectedBrandIds.toString() });
         }
+
+        let updatedSelectedTeamIds = this.getUpdatedSelectedTeamIds(params.teamIdToChange);
+        if (updatedSelectedTeamIds.length > 0) {
+            queryParams.push({ name: "teams", val: updatedSelectedTeamIds.toString() });
+        }
+        //ish
+
 
 
         let i = 0;
@@ -174,8 +217,6 @@ class Listing extends React.Component {
             this.setState({ isRefreshingProducts: false });
             this.props.endRefreshProductsProcess();
         }
-
-        //ish
     }
 
 
@@ -248,6 +289,18 @@ class Listing extends React.Component {
 
 
 
+    getSelectedTeamIds() {
+        let selectedTeamIds = [];
+
+        this.props.teams.forEach(t => {
+            if (t.isSelected) { selectedTeamIds.push(t.id); }
+        });
+
+        return selectedTeamIds;
+    }
+
+
+
     checkHasPageNumberChanged() {
         Bs.log("\n####################");
         Bs.log("CLASS:: Listing, METHOD:: checkHasPageNumberChanged()");
@@ -275,16 +328,13 @@ class Listing extends React.Component {
         if (this.state.isReadingFilter) { return; }
         if (this.state.isRefreshingProducts) { return; }
 
-        Bs.log("teamId ==> " + teamId);
-        return;
-        //ish
-
         // Set the new url.
         const params = { 
-            teamId: teamId,
+            teamIdToChange: teamId,
             categoryId: this.props.selectedCategory.id
         };
         this.changeUrl(params);
+        //ish
     };
 
 
@@ -372,7 +422,6 @@ class Listing extends React.Component {
                             <aside className="col-lg-3 sidebar">
                                 <FilterByCategories categories={this.props.categories} onCategoryClicked={this.onCategoryClicked} />
                                 <FilterByBrand brands={this.props.brands} onBrandFilterChanged={this.onBrandFilterChanged} />
-                                {/* ish */}
                                 <FilterByTeam teams={this.props.teams} onTeamFilterChange={this.onTeamFilterChange} />
                                 <FilterByColor />
                                 <FilterByPrice />
