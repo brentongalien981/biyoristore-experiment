@@ -15,6 +15,7 @@ import * as productsActions from '../../actions/products';
 import { withRouter } from 'react-router-dom';
 import BsAppSession from '../../bs-library/helpers/BsAppSession';
 import { onAddToCart } from '../../actions/cart';
+import FilterByTeam from './FilterByTeam';
 
 
 
@@ -151,7 +152,6 @@ class Listing extends React.Component {
     /* MAIN FUNCS */
     componentDidMount() {
         if (this.doPreReadFiltersProcess()) { this.doActualReadFiltersProcess(); }
-        //ish
         this.doActualRefreshProductsProcess();
     }
 
@@ -271,6 +271,24 @@ class Listing extends React.Component {
 
 
     /** EVENT FUNCS */
+    onTeamFilterChange = (teamId) => {
+        if (this.state.isReadingFilter) { return; }
+        if (this.state.isRefreshingProducts) { return; }
+
+        Bs.log("teamId ==> " + teamId);
+        return;
+        //ish
+
+        // Set the new url.
+        const params = { 
+            teamId: teamId,
+            categoryId: this.props.selectedCategory.id
+        };
+        this.changeUrl(params);
+    };
+
+
+
     onPageNumClick = (e, pageNum) => {
         e.preventDefault();
         e.stopPropagation();
@@ -354,6 +372,8 @@ class Listing extends React.Component {
                             <aside className="col-lg-3 sidebar">
                                 <FilterByCategories categories={this.props.categories} onCategoryClicked={this.onCategoryClicked} />
                                 <FilterByBrand brands={this.props.brands} onBrandFilterChanged={this.onBrandFilterChanged} />
+                                {/* ish */}
+                                <FilterByTeam teams={this.props.teams} onTeamFilterChange={this.onTeamFilterChange} />
                                 <FilterByColor />
                                 <FilterByPrice />
                             </aside>
@@ -383,6 +403,7 @@ const mapStateToProps = (state) => {
         currentPageNum: state.products.currentPageNum,
         brands: state.products.brands,
         selectedCategory: state.products.selectedCategory,
+        teams: state.products.teams,
         categories: state.products.categories,
         products: state.products.products,
         paginationData: state.products.paginationData
