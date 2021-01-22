@@ -74,6 +74,21 @@ const endReadFiltersProcess = (state, action) => {
 
 
 
+const markSelectedTeams = (teamsToBeMarked, newlySelectedTeamIds) => {
+
+    teamsToBeMarked.forEach(t => {
+        if (newlySelectedTeamIds?.includes(t.id)) {
+            t.isSelected = true;
+        } else {
+            t.isSelected = false;
+        }
+    });
+
+    return teamsToBeMarked;
+};
+
+
+
 const markSelectedBrands = (brandsToBeMarked, newlySelectedBrandIds) => {
 
     brandsToBeMarked.forEach(b => {
@@ -220,12 +235,16 @@ const onReadProductsOk = (state, action) => {
 
 
     const newlySelectedBrandIds = action.objs.brands;
-    const updatedBrands = markSelectedBrands(state.brands, newlySelectedBrandIds);    
+    const updatedBrands = markSelectedBrands(state.brands, newlySelectedBrandIds);   
+    
+    const newlySelectedTeamIds = action.objs.teams;
+    const updatedTeams = markSelectedTeams(state.teams, newlySelectedTeamIds);   
+    //ish
     
 
     return {
         ...state,
-        //ish
+        teams: updatedTeams,
         brands: updatedBrands,
         selectedCategory: getSelectedCategory(state, action.objs.category),
         products: BsJLS.get(completeUrlQuery)?.products ?? [],

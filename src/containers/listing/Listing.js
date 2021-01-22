@@ -223,7 +223,7 @@ class Listing extends React.Component {
 
     doActualRefreshProductsProcess() {
         const urlParams = this.props.location.search;
-        const acceptedParams = ["page", "search", "brands", "category"];
+        const acceptedParams = ["page", "search", "brands", "category", "teams"];
         const parsedCleanUrlParams = Bs.getParsedQueryParams(urlParams, acceptedParams);
 
         // Further clean param "page".
@@ -255,15 +255,31 @@ class Listing extends React.Component {
         }
 
 
+        // Further clean param "teams".
+        let newlySelectedTeamIds = [];
+        if (parsedCleanUrlParams["teams"] && parsedCleanUrlParams["teams"] !== "") {
+            newlySelectedTeamIds = parsedCleanUrlParams["teams"].split(",");
+            let tempIds = [];
+            for (const id of newlySelectedTeamIds) {
+                if (parseInt(id)) {
+                    tempIds.push(parseInt(id));
+                }
+            }
+            newlySelectedTeamIds = tempIds;
+            newlySelectedTeamIds.sort(Bs.compareNumberically);
+        }
+
+
         // Finalize the url-params.
         let finalizedUrlParams = { page: pageNumber };
         if (categoryId) { finalizedUrlParams.category = categoryId; }
         if (newlySelectedBrandIds.length > 0) { finalizedUrlParams.brands = newlySelectedBrandIds; }
+        if (newlySelectedTeamIds.length > 0) { finalizedUrlParams.teams = newlySelectedTeamIds; }
 
 
+        //ish
         let completeUrlQuery = this.buildCleanUrlQuery(finalizedUrlParams);
         completeUrlQuery = (completeUrlQuery == "" ? "all-products" : completeUrlQuery);
-
 
         const readParams = { ...finalizedUrlParams, completeUrlQuery: completeUrlQuery };
 
@@ -301,6 +317,7 @@ class Listing extends React.Component {
 
 
 
+    // TODO:DELETE
     checkHasPageNumberChanged() {
         Bs.log("\n####################");
         Bs.log("CLASS:: Listing, METHOD:: checkHasPageNumberChanged()");
@@ -329,7 +346,7 @@ class Listing extends React.Component {
         if (this.state.isRefreshingProducts) { return; }
 
         // Set the new url.
-        const params = { 
+        const params = {
             teamIdToChange: teamId,
             categoryId: this.props.selectedCategory.id
         };
@@ -358,7 +375,7 @@ class Listing extends React.Component {
         if (this.state.isRefreshingProducts) { return; }
 
         // Set the new url.
-        const params = { 
+        const params = {
             brandIdToChange: brandFilterEventData.brandId,
             categoryId: this.props.selectedCategory.id
         };
