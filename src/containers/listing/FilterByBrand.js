@@ -24,13 +24,7 @@ function FilterByBrand(props) {
             <div className="d-lg-block collapse" id="collapse-2">
                 <span className="widget-title">Brands</span>
                 <div className="widget-content">
-
-                    {/* <div className="custom-control custom-checkbox">
-                        <input type="checkbox" className="custom-control-input" id="customCheck1" checked />
-                        <label className="custom-control-label" htmlFor="customCheck1">Calvin Klein</label>
-                    </div> */}
                     {brandFilters}
-
                 </div>
             </div>
         </div>

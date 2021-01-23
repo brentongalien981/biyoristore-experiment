@@ -36,16 +36,11 @@ const initialState = {
 /* REDUCER */
 const products = (state = initialState, action) => {
     switch (action.type) {
-        //ish
         case productsActions.END_REFRESH_PRODUCTS_PROCESS: return endRefreshProductsProcess(state, action);
         case productsActions.END_READ_FILTERS_PROCESS: return endReadFiltersProcess(state, action);
         case productsActions.ON_URL_CHANGED: return onUrlChanged(state, action);
         case productsActions.ON_READ_PRODUCTS_OK: return onReadProductsOk(state, action);
         case productsActions.ON_READ_FILTERS_OK: return onReadFiltersOk(state, action);
-        case productsActions.ON_BRAND_FILTER_CHANGED: return onBrandFilterChanged(state, action);
-        //TODO:DELETE
-        case productsActions.SET_SELECTED_CATEGORY: return setSelectedCategory(state, action);
-        case productsActions.ON_CATEGORY_FILTER_CHANGED: return onCategoryFilterChanged(state, action);
 
         case productsActions.ON_PRODUCT_CLICKED_VIA_LISTING_REDUCER: return onProductClickedViaListingReducer(state, action);
         case productsActions.ON_PRODUCT_LIKED: return onProductLiked(state, action);
@@ -106,7 +101,7 @@ const markSelectedBrands = (brandsToBeMarked, newlySelectedBrandIds) => {
 
 const getSelectedCategory = (state, categoryId) => {
 
-    let category = {...DEFAULT_CATEGORY};
+    let category = { ...DEFAULT_CATEGORY };
     const categories = state.categories;
 
     for (const c of categories) {
@@ -164,61 +159,6 @@ const onUrlChanged = (state, action) => {
 
 
 
-// TODO:DELETE
-const setSelectedCategory = (state, action) => {
-
-    const i = action.categoryFilterIndex;
-    const updatedSelectedCategory = state.categories[i];
-
-    return {
-        ...state,
-        selectedCategory: updatedSelectedCategory,
-        shouldRefreshProducts: true,
-        // TODO:DELETE
-        // currentPageNum: 1,
-    };
-};
-
-// TODO:DELETE
-const onCategoryFilterChanged = (state, action) => {
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: products, METHOD: onCategoryFilterChanged()");
-    Bs.log("action.categoryFilterEventData ==> ...");
-    Bs.log(action.categoryFilterEventData);
-
-    const i = action.categoryFilterEventData.categoryFilterIndex;
-    let updatedSelectedCategory = state.categories[i];
-    return {
-        ...state,
-        selectedCategory: updatedSelectedCategory,
-        shouldRefreshProducts: true,
-        message: "Just executed METHOD:: onCategoryFilterChanged() from REDUCER:: products"
-    };
-};
-
-// TODO:DELETE
-const onBrandFilterChanged = (state, action) => {
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: products, METHOD: onBrandFilterChanged()");
-    Bs.log("brandFilterEventData ==> ...");
-    Bs.log(action.brandFilterEventData);
-
-    const i = action.brandFilterEventData.brandFilterIndex;
-    let updatedBrands = state.brands;
-    let updatedBrandFilter = updatedBrands[i];
-    updatedBrandFilter.isSelected = updatedBrandFilter.isSelected ? false : true;
-    updatedBrands[i] = updatedBrandFilter;
-
-    return {
-        ...state,
-        brands: updatedBrands,
-        shouldRefreshProducts: true,
-        message: "Just executed METHOD:: onBrandFilterChanged() from REDUCER:: products"
-    };
-};
-
-
-
 /* AJAX */
 const onReadProductsOk = (state, action) => {
 
@@ -235,12 +175,11 @@ const onReadProductsOk = (state, action) => {
 
 
     const newlySelectedBrandIds = action.objs.brands;
-    const updatedBrands = markSelectedBrands(state.brands, newlySelectedBrandIds);   
-    
+    const updatedBrands = markSelectedBrands(state.brands, newlySelectedBrandIds);
+
     const newlySelectedTeamIds = action.objs.teams;
-    const updatedTeams = markSelectedTeams(state.teams, newlySelectedTeamIds);   
-    //ish
-    
+    const updatedTeams = markSelectedTeams(state.teams, newlySelectedTeamIds);
+
 
     return {
         ...state,
@@ -275,7 +214,7 @@ const onReadFiltersOk = (state, action) => {
 
     return {
         ...state,
-        brands:  brands,
+        brands: brands,
         categories: categories,
         teams: teams,
         shouldDoPostReadFiltersProcess: true

@@ -8,10 +8,6 @@ export const ON_BRAND_FILTER_CHANGED = "ON_BRAND_FILTER_CHANGED";
 export const ON_CATEGORY_FILTER_CHANGED = "ON_CATEGORY_FILTER_CHANGED";
 export const ON_PRODUCT_CLICKED_VIA_LISTING_REDUCER = "ON_PRODUCT_CLICKED_VIA_LISTING_REDUCER";
 export const ON_PRODUCT_LIKED = "ON_PRODUCT_LIKED";
-
-// TODO:DELETE
-export const SET_SELECTED_CATEGORY = "SET_SELECTED_CATEGORY";
-
 export const END_REFRESH_PRODUCTS_PROCESS = "END_REFRESH_PRODUCTS_PROCESS";
 export const END_READ_FILTERS_PROCESS = "END_READ_FILTERS_PROCESS";
 export const ON_URL_CHANGED = "ON_URL_CHANGED";
@@ -29,22 +25,11 @@ export const onProductLiked = (event) => ({
     type: ON_PRODUCT_LIKED,
     event: event
 });
-
-
-//ish
 export const endRefreshProductsProcess = () => ({ type: END_REFRESH_PRODUCTS_PROCESS });
 export const endReadFiltersProcess = () => ({ type: END_READ_FILTERS_PROCESS });
 export const onUrlChanged = () => ({ type: ON_URL_CHANGED });
 export const onReadProductsOk = (objs) => ({ type: ON_READ_PRODUCTS_OK, objs: objs });
 export const onReadFiltersOk = (objs) => ({ type: ON_READ_FILTERS_OK, objs: objs });
-
-
-//TODO:DELETE
-export const setSelectedCategory = (categoryFilterIndex) => ({ type: SET_SELECTED_CATEGORY, categoryFilterIndex: categoryFilterIndex });
-export const onCategoryFilterChanged = (categoryFilterEventData) => {
-    return { type: ON_CATEGORY_FILTER_CHANGED, categoryFilterEventData: categoryFilterEventData };
-};
-
 export const onBrandFilterChanged = (brandFilterEventData) => {
     return { type: ON_BRAND_FILTER_CHANGED, brandFilterEventData: brandFilterEventData };
 };

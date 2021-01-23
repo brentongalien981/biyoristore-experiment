@@ -36,7 +36,7 @@ class Listing extends React.Component {
     getUpdatedSelectedTeamIds(teamIdToChange) {
         let updatedSelectedTeamIds = [];
         const previouslySelectedTeamIds = this.getSelectedTeamIds();
-        //ish
+
         if (teamIdToChange) {
 
             // Set the new updatedSelectedTeamIds.
@@ -136,6 +136,7 @@ class Listing extends React.Component {
         };
 
 
+        // Set params.
         let urlQuery = "";
         let queryParams = [];
 
@@ -151,10 +152,10 @@ class Listing extends React.Component {
         if (updatedSelectedTeamIds.length > 0) {
             queryParams.push({ name: "teams", val: updatedSelectedTeamIds.toString() });
         }
-        //ish
 
 
 
+        // Build urlQuery.
         let i = 0;
         queryParams.forEach(qp => {
             if (i === 0) {
@@ -194,16 +195,18 @@ class Listing extends React.Component {
 
     /* MAIN FUNCS */
     componentDidMount() {
-        if (this.doPreReadFiltersProcess()) { this.doActualReadFiltersProcess(); }
-        this.doActualRefreshProductsProcess();
+        try {
+            if (this.doPreReadFiltersProcess()) { this.doActualReadFiltersProcess(); }
+            this.doActualRefreshProductsProcess();
+        } catch (e) {
+            Bs.log("e bro ==> " + e);
+        }
+
     }
 
 
 
     componentDidUpdate() {
-        // TODO:DELETE
-        // Bs.log("componentDidUpdate()");
-
         if (this.props.shouldDoPostReadFiltersProcess) {
             this.setState({ isReadingFilter: false });
             this.props.endReadFiltersProcess();
@@ -277,16 +280,12 @@ class Listing extends React.Component {
         if (newlySelectedTeamIds.length > 0) { finalizedUrlParams.teams = newlySelectedTeamIds; }
 
 
-        //ish
+        // Set urlQuery.
         let completeUrlQuery = this.buildCleanUrlQuery(finalizedUrlParams);
         completeUrlQuery = (completeUrlQuery == "" ? "all-products" : completeUrlQuery);
 
+
         const readParams = { ...finalizedUrlParams, completeUrlQuery: completeUrlQuery };
-
-        // TODO:DELETE
-        Bs.log("readParams ==> ...");
-        Bs.log(readParams);
-
         this.props.readProducts(readParams);
 
     }
@@ -317,29 +316,6 @@ class Listing extends React.Component {
 
 
 
-    // TODO:DELETE
-    checkHasPageNumberChanged() {
-        Bs.log("\n####################");
-        Bs.log("CLASS:: Listing, METHOD:: checkHasPageNumberChanged()");
-
-        const previousPageNum = this.props.paginationData.currentPageNum;
-
-        const acceptedParams = ["page", "search"];
-        const urlQuery = this.props.location.search;
-        const parsedQueryParams = Bs.getParsedQueryParams(urlQuery, acceptedParams);
-        const newPageNum = parsedQueryParams["page"] ? parsedQueryParams["page"] : 1;
-
-        Bs.log("####################");
-        Bs.log("previousPageNum ==> " + previousPageNum);
-        Bs.log("newPageNum ==> " + newPageNum);
-
-        if (previousPageNum != newPageNum) {
-            // this.props.readProducts(parsedQueryParams);
-            this.refreshProducts();
-        }
-    }
-
-
     /** EVENT FUNCS */
     onTeamFilterChange = (teamId) => {
         if (this.state.isReadingFilter) { return; }
@@ -351,7 +327,6 @@ class Listing extends React.Component {
             categoryId: this.props.selectedCategory.id
         };
         this.changeUrl(params);
-        //ish
     };
 
 
@@ -362,6 +337,7 @@ class Listing extends React.Component {
 
         if (this.state.isReadingFilter) { return; }
         if (this.state.isRefreshingProducts) { return; }
+        if (this.props.paginationData.currentPageNum == pageNum) { return; }
 
         // Set the new url.
         const params = { pageNumber: pageNum, categoryId: this.props.selectedCategory.id };
@@ -487,12 +463,9 @@ const mapDispatchToProps = (dispatch) => {
         readProducts: (params) => dispatch(productsActions.readProducts(params)),
         readFilters: () => dispatch(productsActions.readFilters()),
 
-        //TODO:DELETE
-        onBrandFilterChanged: (brandFilterEventData) => dispatch(productsActions.onBrandFilterChanged(brandFilterEventData)),
-        onCategoryClicked: (categoryFilterEventData) => dispatch(productsActions.onCategoryFilterChanged(categoryFilterEventData)),
-
-        setSelectedCategory: (categoryFilterIndex) => dispatch(productsActions.setSelectedCategory(categoryFilterIndex)),
-        onProductClickedViaListingReducer: (e, props, product) => dispatch(productsActions.onProductClickedViaListingReducer(e, props, product))
+        // TODO:DELETE
+        // setSelectedCategory: (categoryFilterIndex) => dispatch(productsActions.setSelectedCategory(categoryFilterIndex)),
+        // onProductClickedViaListingReducer: (e, props, product) => dispatch(productsActions.onProductClickedViaListingReducer(e, props, product))
     };
 };
 
