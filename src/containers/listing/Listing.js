@@ -16,6 +16,7 @@ import { withRouter } from 'react-router-dom';
 import BsAppSession from '../../bs-library/helpers/BsAppSession';
 import { onAddToCart } from '../../actions/cart';
 import FilterByTeam from './FilterByTeam';
+import { SORT_FILTER_CODES } from './helpers/constants';
 
 
 
@@ -28,7 +29,7 @@ class Listing extends React.Component {
         isRefreshingProducts: false,
         shouldRefreshProducts: false,
         selectedCategoryIndex: 0
-    }
+    };
 
 
 
@@ -132,7 +133,8 @@ class Listing extends React.Component {
             pageNumber: params.pageNumber ?? 1,
             categoryId: params.categoryId ?? 0,
             brandIdToChange: params.brandIdToChange,
-            teamIdToChange: params.teamIdToChange
+            teamIdToChange: params.teamIdToChange,
+            sortFilterCode: params.sortFilterCode ?? SORT_FILTER_CODES.NAME_ASC
         };
 
 
@@ -142,6 +144,7 @@ class Listing extends React.Component {
 
         if (params.pageNumber !== 1) { queryParams.push({ name: "page", val: params.pageNumber }); }
         if (params.categoryId !== 0) { queryParams.push({ name: "category", val: params.categoryId }); }
+        if (params.sortFilterCode.val !== 1) { queryParams.push({ name: "sort", val: params.sortFilterCode.val }); }
 
         let updatedSelectedBrandIds = this.getUpdatedSelectedBrandIds(params.brandIdToChange);
         if (updatedSelectedBrandIds.length > 0) {
@@ -226,7 +229,7 @@ class Listing extends React.Component {
 
     doActualRefreshProductsProcess() {
         const urlParams = this.props.location.search;
-        const acceptedParams = ["page", "search", "brands", "category", "teams"];
+        const acceptedParams = ["page", "search", "brands", "category", "teams", "sort"];
         const parsedCleanUrlParams = Bs.getParsedQueryParams(urlParams, acceptedParams);
 
         // Further clean param "page".
@@ -240,6 +243,13 @@ class Listing extends React.Component {
         let categoryId = null;
         if (parsedCleanUrlParams["category"] && parseInt(parsedCleanUrlParams["category"])) {
             categoryId = parseInt(parsedCleanUrlParams["category"]);
+        }
+
+
+        // Further clean param "sort".
+        let sortVal = null;
+        if (parsedCleanUrlParams["sort"] && parseInt(parsedCleanUrlParams["sort"])) {
+            sortVal = parseInt(parsedCleanUrlParams["sort"]);
         }
 
 
@@ -276,6 +286,7 @@ class Listing extends React.Component {
         // Finalize the url-params.
         let finalizedUrlParams = { page: pageNumber };
         if (categoryId) { finalizedUrlParams.category = categoryId; }
+        if (sortVal) { finalizedUrlParams.sort = sortVal; }
         if (newlySelectedBrandIds.length > 0) { finalizedUrlParams.brands = newlySelectedBrandIds; }
         if (newlySelectedTeamIds.length > 0) { finalizedUrlParams.teams = newlySelectedTeamIds; }
 
@@ -317,6 +328,22 @@ class Listing extends React.Component {
 
 
     /** EVENT FUNCS */
+    onSortFilterClick = (e, sortFilterCode) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        //ish
+        if (this.state.isReadingFilter) { return; }
+        if (this.state.isRefreshingProducts) { return; }
+        if (this.props.sortFilterCode.val == sortFilterCode.val) { return; }
+
+        // Set the new url.
+        const params = { categoryId: this.props.selectedCategory.id, sortFilterCode: sortFilterCode };
+        this.changeUrl(params);
+    };
+
+
+
     onTeamFilterChange = (teamId) => {
         if (this.state.isReadingFilter) { return; }
         if (this.state.isRefreshingProducts) { return; }
@@ -324,7 +351,8 @@ class Listing extends React.Component {
         // Set the new url.
         const params = {
             teamIdToChange: teamId,
-            categoryId: this.props.selectedCategory.id
+            categoryId: this.props.selectedCategory.id,
+            sortFilterCode: this.props.sortFilterCode
         };
         this.changeUrl(params);
     };
@@ -340,7 +368,7 @@ class Listing extends React.Component {
         if (this.props.paginationData.currentPageNum == pageNum) { return; }
 
         // Set the new url.
-        const params = { pageNumber: pageNum, categoryId: this.props.selectedCategory.id };
+        const params = { pageNumber: pageNum, categoryId: this.props.selectedCategory.id, sortFilterCode: this.props.sortFilterCode };
         this.changeUrl(params);
     };
 
@@ -353,7 +381,8 @@ class Listing extends React.Component {
         // Set the new url.
         const params = {
             brandIdToChange: brandFilterEventData.brandId,
-            categoryId: this.props.selectedCategory.id
+            categoryId: this.props.selectedCategory.id,
+            sortFilterCode: this.props.sortFilterCode
         };
         this.changeUrl(params);
     };
@@ -369,7 +398,7 @@ class Listing extends React.Component {
         if (this.props.selectedCategory.id == categoryId) { return; }
 
         // Set the new url.
-        const params = { categoryId: categoryId };
+        const params = { categoryId: categoryId, sortFilterCode: this.props.sortFilterCode };
         this.changeUrl(params);
 
     };
@@ -407,7 +436,7 @@ class Listing extends React.Component {
                 <section className="Listing">
                     <div className="container">
 
-                        <ListingHeader category={this.props.selectedCategory} />
+                        <ListingHeader category={this.props.selectedCategory} sortFilterCode={this.props.sortFilterCode} onSortFilterClick={this.onSortFilterClick} />
 
                         <div className="row gutter-4">
 
@@ -444,6 +473,7 @@ const mapStateToProps = (state) => {
         shouldRefreshProducts: state.products.shouldRefreshProducts,
         currentPageNum: state.products.currentPageNum,
         brands: state.products.brands,
+        sortFilterCode: state.products.sortFilterCode,
         selectedCategory: state.products.selectedCategory,
         teams: state.products.teams,
         categories: state.products.categories,

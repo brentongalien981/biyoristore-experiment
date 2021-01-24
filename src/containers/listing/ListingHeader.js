@@ -1,4 +1,5 @@
 import React from 'react';
+import { SORT_FILTER_CODES } from './helpers/constants';
 
 
 
@@ -16,10 +17,11 @@ function ListingHeader(props) {
                     </div>
                     <div className="col-md-6 text-md-right">
                         <div className="dropdown">
-                            <a className="btn btn-outline-secondary btn-sm dropdown-toggle" href="#!" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">What's New</a>
+                            <a className="btn btn-outline-secondary btn-sm dropdown-toggle" href="#!" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{props.sortFilterCode.description}</a>
 
                             <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a className="dropdown-item" href="#!">What's New</a>
+                                <a className="dropdown-item" href="#!" onClick={(e) => props.onSortFilterClick(e, SORT_FILTER_CODES.NAME_ASC)}>Sort A to Z</a>
+                                <a className="dropdown-item" href="#!" onClick={(e) => props.onSortFilterClick(e, SORT_FILTER_CODES.NAME_DESC)}>Sort Z to A</a>
                                 <a className="dropdown-item" href="#!">Price high to low</a>
                                 <a className="dropdown-item" href="#!">Price low to high</a>
                             </div>

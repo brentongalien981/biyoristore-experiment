@@ -1,6 +1,7 @@
 import * as productsActions from '../actions/products';
 import Bs from '../bs-library/helpers/Bs';
 import BsJLS from '../bs-library/helpers/BsJLS';
+import { SORT_FILTER_CODES } from '../containers/listing/helpers/constants';
 
 
 /** PROPERTIES */
@@ -14,6 +15,7 @@ const initialState = {
     brands: [],
     teams: [],
     selectedCategory: {},
+    sortFilterCode: SORT_FILTER_CODES.NAME_ASC,
     currentPageNum: 1,
     categories: [{ id: 1, name: "laptop" }, { id: 2, name: "phone" }, { id: 3, name: "tablet" }],
     products: [
@@ -96,6 +98,23 @@ const markSelectedBrands = (brandsToBeMarked, newlySelectedBrandIds) => {
 
     return brandsToBeMarked;
 };
+
+
+
+const getSortFilterCode = (val) => {
+    //ish
+    let setFilterCode = SORT_FILTER_CODES.NAME_ASC;
+
+    for (const key in SORT_FILTER_CODES) {
+        const obj = SORT_FILTER_CODES[key];
+        if (obj.val === parseInt(val)) {
+            setFilterCode = obj;
+            break;
+        }
+    }
+
+    return setFilterCode;
+}
 
 
 
@@ -186,6 +205,8 @@ const onReadProductsOk = (state, action) => {
         teams: updatedTeams,
         brands: updatedBrands,
         selectedCategory: getSelectedCategory(state, action.objs.category),
+        //ish
+        sortFilterCode: getSortFilterCode(action.objs.sort),
         products: BsJLS.get(completeUrlQuery)?.products ?? [],
         paginationData: BsJLS.get(completeUrlQuery)?.paginationData ?? {},
         shouldRefreshProducts: false,
