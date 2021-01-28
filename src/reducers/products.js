@@ -18,16 +18,7 @@ const initialState = {
     sortFilterCode: SORT_FILTER_CODES.NAME_ASC,
     currentPageNum: 1,
     categories: [{ id: 1, name: "laptop" }, { id: 2, name: "phone" }, { id: 3, name: "tablet" }],
-    products: [
-        // {
-        //     name: "Fawn Wool / Natural Mammoth Chair",
-        //     price: "2268",
-        //     productPhotoUrls: [
-        //         {url: "assets/images/iphone11.jpg"},
-        //         {url: "assets/images/iphone11b.jpg"},
-        //     ]
-        // }
-    ],
+    products: [],
     // FLAGS
     shouldDoPostReadFiltersProcess: false,
     shouldDoPostRefreshProductsProcess: false
@@ -41,6 +32,8 @@ const products = (state = initialState, action) => {
         case productsActions.END_REFRESH_PRODUCTS_PROCESS: return endRefreshProductsProcess(state, action);
         case productsActions.END_READ_FILTERS_PROCESS: return endReadFiltersProcess(state, action);
         case productsActions.ON_URL_CHANGED: return onUrlChanged(state, action);
+        
+        case productsActions.ON_READ_PRODUCTS_FAIL: return onReadProductsFail(state, action);
         case productsActions.ON_READ_PRODUCTS_OK: return onReadProductsOk(state, action);
         case productsActions.ON_READ_FILTERS_OK: return onReadFiltersOk(state, action);
 
@@ -102,7 +95,6 @@ const markSelectedBrands = (brandsToBeMarked, newlySelectedBrandIds) => {
 
 
 const getSortFilterCode = (val) => {
-    //ish
     let setFilterCode = SORT_FILTER_CODES.NAME_ASC;
 
     for (const key in SORT_FILTER_CODES) {
@@ -179,6 +171,17 @@ const onUrlChanged = (state, action) => {
 
 
 /* AJAX */
+const onReadProductsFail = (state, action) => {
+
+    alert("Oops! Something went wrong on our end. Please try again later.");
+
+    return {
+        ...state
+    };
+};
+
+
+
 const onReadProductsOk = (state, action) => {
 
     const completeUrlQuery = action.objs.completeUrlQuery;
@@ -205,7 +208,6 @@ const onReadProductsOk = (state, action) => {
         teams: updatedTeams,
         brands: updatedBrands,
         selectedCategory: getSelectedCategory(state, action.objs.category),
-        //ish
         sortFilterCode: getSortFilterCode(action.objs.sort),
         products: BsJLS.get(completeUrlQuery)?.products ?? [],
         paginationData: BsJLS.get(completeUrlQuery)?.paginationData ?? {},

@@ -332,7 +332,6 @@ class Listing extends React.Component {
         e.preventDefault();
         e.stopPropagation();
 
-        //ish
         if (this.state.isReadingFilter) { return; }
         if (this.state.isRefreshingProducts) { return; }
         if (this.props.sortFilterCode.val == sortFilterCode.val) { return; }
@@ -491,11 +490,7 @@ const mapDispatchToProps = (dispatch) => {
         onUrlChanged: () => dispatch(productsActions.onUrlChanged()),
         onAddToCart: (product) => dispatch(onAddToCart(product)),
         readProducts: (params) => dispatch(productsActions.readProducts(params)),
-        readFilters: () => dispatch(productsActions.readFilters()),
-
-        // TODO:DELETE
-        // setSelectedCategory: (categoryFilterIndex) => dispatch(productsActions.setSelectedCategory(categoryFilterIndex)),
-        // onProductClickedViaListingReducer: (e, props, product) => dispatch(productsActions.onProductClickedViaListingReducer(e, props, product))
+        readFilters: () => dispatch(productsActions.readFilters())
     };
 };
 

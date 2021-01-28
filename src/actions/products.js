@@ -11,6 +11,7 @@ export const ON_PRODUCT_LIKED = "ON_PRODUCT_LIKED";
 export const END_REFRESH_PRODUCTS_PROCESS = "END_REFRESH_PRODUCTS_PROCESS";
 export const END_READ_FILTERS_PROCESS = "END_READ_FILTERS_PROCESS";
 export const ON_URL_CHANGED = "ON_URL_CHANGED";
+export const ON_READ_PRODUCTS_FAIL = "ON_READ_PRODUCTS_FAIL";
 export const ON_READ_PRODUCTS_OK = "ON_READ_PRODUCTS_OK";
 export const ON_READ_FILTERS_OK = "ON_READ_FILTERS_OK";
 
@@ -28,6 +29,8 @@ export const onProductLiked = (event) => ({
 export const endRefreshProductsProcess = () => ({ type: END_REFRESH_PRODUCTS_PROCESS });
 export const endReadFiltersProcess = () => ({ type: END_READ_FILTERS_PROCESS });
 export const onUrlChanged = () => ({ type: ON_URL_CHANGED });
+
+export const onReadProductsFail = () => ({ type: ON_READ_PRODUCTS_FAIL });
 export const onReadProductsOk = (objs) => ({ type: ON_READ_PRODUCTS_OK, objs: objs });
 export const onReadFiltersOk = (objs) => ({ type: ON_READ_FILTERS_OK, objs: objs });
 export const onBrandFilterChanged = (brandFilterEventData) => {
@@ -51,7 +54,8 @@ export const readProducts = (params) => {
 
                     const objs = { ...params, ...json.objs }
                     dispatch(onReadProductsOk(objs));
-                }
+                },
+                errorCallBackFunc: (errors) => { dispatch(onReadProductsFail()); }
             });
         };
     }
