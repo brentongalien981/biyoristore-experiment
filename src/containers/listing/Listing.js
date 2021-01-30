@@ -336,7 +336,7 @@ class Listing extends React.Component {
         if (this.state.isRefreshingProducts) { return; }
         if (this.props.sortFilterCode.val == sortFilterCode.val) { return; }
 
-        // Set the new url.
+        // Set the new url..
         const params = { categoryId: this.props.selectedCategory.id, sortFilterCode: sortFilterCode };
         this.changeUrl(params);
     };
