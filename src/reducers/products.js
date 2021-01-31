@@ -6,6 +6,7 @@ import { SORT_FILTER_CODES } from '../containers/listing/helpers/constants';
 
 /** PROPERTIES */
 const DEFAULT_CATEGORY = { id: 0, name: "All Products" };
+const TEMPLATE_SELLER = { id: 0, name: "TEMPLATE_SELLER", productSeller: { sell_price: "999999.98", discount_sell_price: null } };
 
 const initialState = {
     message: "This is the initial state of products-store.",
@@ -17,7 +18,8 @@ const initialState = {
     selectedCategory: {},
     sortFilterCode: SORT_FILTER_CODES.NAME_ASC,
     currentPageNum: 1,
-    categories: [{ id: 1, name: "laptop" }, { id: 2, name: "phone" }, { id: 3, name: "tablet" }],
+    // categories: [{ id: 1, name: "laptop" }, { id: 2, name: "phone" }, { id: 3, name: "tablet" }],
+    categories: [],
     products: [],
     // FLAGS
     shouldDoPostReadFiltersProcess: false,
@@ -32,7 +34,7 @@ const products = (state = initialState, action) => {
         case productsActions.END_REFRESH_PRODUCTS_PROCESS: return endRefreshProductsProcess(state, action);
         case productsActions.END_READ_FILTERS_PROCESS: return endReadFiltersProcess(state, action);
         case productsActions.ON_URL_CHANGED: return onUrlChanged(state, action);
-        
+
         case productsActions.ON_READ_PRODUCTS_FAIL: return onReadProductsFail(state, action);
         case productsActions.ON_READ_PRODUCTS_OK: return onReadProductsOk(state, action);
         case productsActions.ON_READ_FILTERS_OK: return onReadFiltersOk(state, action);
@@ -46,6 +48,35 @@ const products = (state = initialState, action) => {
 
 
 /** HELPER FUNCS */
+const setMostEfficientSellerForProducts = (products) => {
+    const updatedProducts = [];
+
+    products.forEach(p => {
+        const updatedProduct = p;
+        let mostEfficientSeller = p.sellers?.[0] ?? {...TEMPLATE_SELLER};
+        let productDisplayPrice = 999999.99;
+
+        p.sellers.forEach(s => {
+            const sellPrice = parseFloat(s.productSeller.sell_price);
+            const discountSellPrice = parseFloat(s.productSeller.discount_sell_price);
+
+            if (sellPrice < productDisplayPrice || discountSellPrice < productDisplayPrice) {
+                mostEfficientSeller = s;
+                productDisplayPrice = (discountSellPrice < sellPrice ? discountSellPrice : sellPrice);
+                mostEfficientSeller.productSeller.display_price = productDisplayPrice;
+            };
+            
+        });
+
+        updatedProduct.mostEfficientSeller = mostEfficientSeller;
+        updatedProducts.push(updatedProduct);
+        //ish
+    });
+
+    return updatedProducts;
+};
+
+
 const endRefreshProductsProcess = (state, action) => {
     return {
         ...state,
@@ -187,8 +218,11 @@ const onReadProductsOk = (state, action) => {
     const completeUrlQuery = action.objs.completeUrlQuery;
     if (action.objs.retrievedDataFrom === "cache" || action.objs.retrievedDataFrom === "db") {
 
+        const products = setMostEfficientSellerForProducts(action.objs.products);
+        //ish
+
         const productListingData = {
-            products: action.objs.products,
+            products: products,
             paginationData: action.objs.paginationData
         };
 
