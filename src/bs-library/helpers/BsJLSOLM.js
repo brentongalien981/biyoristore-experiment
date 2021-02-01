@@ -1,7 +1,7 @@
 import BsJLS from "./BsJLS";
 
 /**
- * JLSOLM stands for JsonifiedLocalStorage Object LifespanManager
+ * JLSOLM stands for JsonifiedLocalStorage-Object-LifespanManager
  * var dateRefreshed: milliseconds after 1970
  * var lifespan: lifespan in min
  * 
