@@ -17,11 +17,6 @@ export const ON_READ_FILTERS_OK = "ON_READ_FILTERS_OK";
 
 
 
-
-export const onProductClickedViaListingReducer = (e, props, product) => {
-    return { type: ON_PRODUCT_CLICKED_VIA_LISTING_REDUCER, e: e, props: props, product: product };
-};
-
 export const onProductLiked = (event) => ({
     type: ON_PRODUCT_LIKED,
     event: event

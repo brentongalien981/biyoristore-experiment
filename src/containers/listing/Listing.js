@@ -328,6 +328,15 @@ class Listing extends React.Component {
 
 
     /** EVENT FUNCS */
+    onProductClicked = (e, productId) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.props.history.push('/product?productId=' + productId);
+    };
+
+
+
     onSortFilterClick = (e, sortFilterCode) => {
         e.preventDefault();
         e.stopPropagation();
@@ -426,7 +435,7 @@ class Listing extends React.Component {
                     <Product
                         product={p}
                         // onAddToCart={this.onAddToCart}
-                        onProductClicked={this.props.onProductClickedViaListingReducer} />
+                        onProductClicked={this.onProductClicked} />
                 </div>
             );
         });

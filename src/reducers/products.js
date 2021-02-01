@@ -39,7 +39,6 @@ const products = (state = initialState, action) => {
         case productsActions.ON_READ_PRODUCTS_OK: return onReadProductsOk(state, action);
         case productsActions.ON_READ_FILTERS_OK: return onReadFiltersOk(state, action);
 
-        case productsActions.ON_PRODUCT_CLICKED_VIA_LISTING_REDUCER: return onProductClickedViaListingReducer(state, action);
         case productsActions.ON_PRODUCT_LIKED: return onProductLiked(state, action);
         default: return state;
     }
@@ -172,24 +171,6 @@ const onProductLiked = (state, action) => {
 };
 
 
-
-const onProductClickedViaListingReducer = (state, action) => {
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: products, METHOD: onProductClickedViaListingReducer()");
-    Bs.log("action.props ==> ...");
-    Bs.log(action.props);
-    Bs.log("action.product ==> ...");
-    Bs.log(action.product);
-
-    action.e.preventDefault();
-    action.e.stopPropagation();
-
-    action.props.history.push("/product?productId=" + action.product.id);
-
-    return {
-        ...state,
-    };
-};
 
 const onUrlChanged = (state, action) => {
 
