@@ -15,14 +15,14 @@ function Product(props) {
         return (<img src={url} key={i} alt="Image" />);
     });
 
-    const discountSellPrice = props.product.mostEfficientSeller.productSeller.discount_sell_price;
-    const sellPrice = props.product.mostEfficientSeller.productSeller.sell_price;
+    const discountSellPrice = parseFloat(props.product.mostEfficientSeller.productSeller.discount_sell_price);
+    const sellPrice = parseFloat(props.product.mostEfficientSeller.productSeller.sell_price);
 
     let priceComponent = (<span>{"$" + parseFloat(sellPrice).toFixed(2)}</span>);
 
-    if (discountSellPrice) {
-        const discountPriceStyle = { marginRight: "15%" };
-        priceComponent = (<span><s style={discountPriceStyle} className="text-muted">{"$" + parseFloat(sellPrice).toFixed(2)}</s>{" $" + parseFloat(discountSellPrice).toFixed(2)}</span>);
+    if (discountSellPrice && discountSellPrice < sellPrice) {
+        const discountPriceStyle = { marginRight: "15%", color: "orangered", textDecoration: "line-through" };
+        priceComponent = (<span><s style={discountPriceStyle}>{"$" + sellPrice.toFixed(2)}</s>{"$" + discountSellPrice.toFixed(2)}</span>);
     }
 
 

@@ -407,6 +407,7 @@ class Listing extends React.Component {
     onAddToCart = (e, product) => {
         e.preventDefault();
         e.stopPropagation();
+        return;
 
         Bs.log("\n####################");
         Bs.log("CLASS:: Listing, METHOD:: onAddToCart()");
@@ -424,7 +425,7 @@ class Listing extends React.Component {
                 <div className="col-6 col-md-4" key={i}>
                     <Product
                         product={p}
-                        onAddToCart={this.onAddToCart}
+                        // onAddToCart={this.onAddToCart}
                         onProductClicked={this.props.onProductClickedViaListingReducer} />
                 </div>
             );
@@ -444,8 +445,8 @@ class Listing extends React.Component {
                                 <FilterByCategories categories={this.props.categories} onCategoryClicked={this.onCategoryClicked} />
                                 <FilterByBrand brands={this.props.brands} onBrandFilterChanged={this.onBrandFilterChanged} />
                                 <FilterByTeam teams={this.props.teams} onTeamFilterChange={this.onTeamFilterChange} />
-                                <FilterByColor />
-                                <FilterByPrice />
+                                {/* <FilterByColor /> */}
+                                {/* <FilterByPrice /> */}
                             </aside>
 
                             {/* content */}
@@ -488,7 +489,7 @@ const mapDispatchToProps = (dispatch) => {
         endRefreshProductsProcess: () => dispatch(productsActions.endRefreshProductsProcess()),
         endReadFiltersProcess: () => dispatch(productsActions.endReadFiltersProcess()),
         onUrlChanged: () => dispatch(productsActions.onUrlChanged()),
-        onAddToCart: (product) => dispatch(onAddToCart(product)),
+        // onAddToCart: (product) => dispatch(onAddToCart(product)),
         readProducts: (params) => dispatch(productsActions.readProducts(params)),
         readFilters: () => dispatch(productsActions.readFilters())
     };
