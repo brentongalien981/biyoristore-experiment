@@ -115,8 +115,6 @@ class ProductInDetails extends React.Component {
         Bs.log("product ==> ...");
         Bs.log(product);
 
-        alert("TODO: onAddToCart()");
-        return;
         this.props.onAddToCart(product);
         //ish
     };

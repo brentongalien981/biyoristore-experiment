@@ -160,9 +160,6 @@ const onAddToCartSuccess = (state, action) => {
     let updatedCart = state.cart;
     let product = action.obj;
 
-    // TODO: Modify this line.
-    product.mostEfficientSeller = product.sellers[0];
-
     if (!isAlreadyInCart(product, updatedCart)) { addProductToCart(product, updatedCart); }
 
     return {

@@ -14,7 +14,7 @@ function ProductGallery(props) {
     return (
 
         <ErrorBoundary productPhotoUrls={props.productPhotoUrls}>
-            <div className="col-lg-7">
+            <div className="col-lg-7 animate__animated animate__fadeIn">
                 <div className="row gutter-1 justify-content-between">
                     <div className="col-lg-10 order-lg-2">
                         <div className="owl-carousel gallery" data-slider-id="1" data-thumbs="true" data-nav="true">
@@ -61,7 +61,7 @@ function getGalleryItems(urls) {
         const urlAttribVal = "url(" + completeUrl + ")";
 
         return (
-            <figure key={i} className="equal">
+            <figure key={i} className="equal animate__animated animate__bounceIn">
                 <a className="image" href={completeUrl} style={{ backgroundImage: urlAttribVal }}></a>
             </figure>
         );

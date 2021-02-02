@@ -5,6 +5,7 @@ import Footer from './theme-components/Footer';
 import Search from './theme-components/Search';
 // import Cart from './theme-components/Cart';
 import Home from './containers/home/Home';
+import TestLoaderContainer from './containers/experiment/TestLoaderContainer';
 // import Listing from './containers/listing/Listing';
 // import ProductInDetails from './containers/product/ProductInDetails';
 
@@ -52,6 +53,7 @@ function App() {
 				<Route path="/predefined-payment-finalization" exact render={() => <Suspense fallback={<div>loading...</div>}><PredefinedPaymentFinalization /></Suspense>} />
 				<Route path="/navigation-blocker" exact render={() => <Suspense fallback={<div>loading...</div>}><TestPageWithHistoryNavigationBlocker /></Suspense>} />
 				<Route path="/order" exact render={() => <Suspense fallback={<div>loading...</div>}><Order /></Suspense>} />
+				<Route path="/test-loader" exact component={TestLoaderContainer} />
 				{/* <Route path="/product" exact component={ProductInDetails} /> */}
 			</Switch>
 

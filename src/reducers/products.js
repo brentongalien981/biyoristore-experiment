@@ -47,29 +47,39 @@ const products = (state = initialState, action) => {
 
 
 /** HELPER FUNCS */
+export const setMostEfficientSellerForProduct = (product) => {
+    const updatedProduct = product ?? {};
+
+    let mostEfficientSeller = updatedProduct.sellers?.[0] ?? {...TEMPLATE_SELLER};
+    let productDisplayPrice = 999999.99;
+
+    updatedProduct.sellers.forEach(s => {
+        const sellPrice = parseFloat(s.productSeller.sell_price);
+        const discountSellPrice = parseFloat(s.productSeller.discount_sell_price);
+
+        if (sellPrice < productDisplayPrice || discountSellPrice < productDisplayPrice) {
+            mostEfficientSeller = s;
+            productDisplayPrice = (discountSellPrice < sellPrice ? discountSellPrice : sellPrice);
+            productDisplayPrice = productDisplayPrice.toFixed(2);
+            mostEfficientSeller.productSeller.display_price = productDisplayPrice;
+        };
+        
+    });
+
+    updatedProduct.mostEfficientSeller = mostEfficientSeller;
+    //ish
+
+    return updatedProduct;
+};
+
+
+
 export const setMostEfficientSellerForProducts = (products) => {
     const updatedProducts = [];
 
     products.forEach(p => {
-        const updatedProduct = p;
-        let mostEfficientSeller = p.sellers?.[0] ?? {...TEMPLATE_SELLER};
-        let productDisplayPrice = 999999.99;
-
-        p.sellers.forEach(s => {
-            const sellPrice = parseFloat(s.productSeller.sell_price);
-            const discountSellPrice = parseFloat(s.productSeller.discount_sell_price);
-
-            if (sellPrice < productDisplayPrice || discountSellPrice < productDisplayPrice) {
-                mostEfficientSeller = s;
-                productDisplayPrice = (discountSellPrice < sellPrice ? discountSellPrice : sellPrice);
-                mostEfficientSeller.productSeller.display_price = productDisplayPrice;
-            };
-            
-        });
-
-        updatedProduct.mostEfficientSeller = mostEfficientSeller;
+        const updatedProduct = setMostEfficientSellerForProduct(p);
         updatedProducts.push(updatedProduct);
-        //ish
     });
 
     return updatedProducts;

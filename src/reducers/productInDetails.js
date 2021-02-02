@@ -2,7 +2,7 @@ import * as actions from '../actions/productInDetails';
 import Bs from '../bs-library/helpers/Bs';
 // import { biyoristoreVendorLaunch } from '../bs-library/custom/crafty';
 import $ from 'jquery';
-import { setMostEfficientSellerForProducts } from './products';
+import { setMostEfficientSellerForProduct, setMostEfficientSellerForProducts } from './products';
 
 
 
@@ -90,11 +90,13 @@ const showProduct = (state, action) => {
     Bs.log("In REDUCER: productInDetails, METHOD: showProduct()");
 
     
+    const product = setMostEfficientSellerForProduct(action.obj.product);
     const relatedProducts = setMostEfficientSellerForProducts(action.obj.relatedProducts);
+    // ish
 
     return {
         ...state,
-        product: action.obj.product,
+        product: product,
         relatedProducts: relatedProducts,
         shouldResetProduct: false,
         shouldRelaunchVendorScript: true,
