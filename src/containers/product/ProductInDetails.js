@@ -98,7 +98,6 @@ class ProductInDetails extends React.Component {
         this.props.history.push("/product?productId=" + productId);
 
         this.props.resetProduct();
-        //ish
 
     };
 
@@ -106,15 +105,20 @@ class ProductInDetails extends React.Component {
 
     onAddToCart = (e, product) => {
 
+        e.preventDefault();
+        e.stopPropagation();
+
         Bs.log("\n####################");
         Bs.log("Using React's Context!");
         Bs.log("In CLASS: ProductInDetails, METHOD: onAddToCart()");
 
-        e.preventDefault();
-        e.stopPropagation();
-        Bs.log("product ==> " + product);
+        Bs.log("product ==> ...");
+        Bs.log(product);
 
+        alert("TODO: onAddToCart()");
+        return;
         this.props.onAddToCart(product);
+        //ish
     };
 }
 
