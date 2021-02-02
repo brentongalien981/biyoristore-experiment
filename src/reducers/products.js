@@ -47,7 +47,7 @@ const products = (state = initialState, action) => {
 
 
 /** HELPER FUNCS */
-const setMostEfficientSellerForProducts = (products) => {
+export const setMostEfficientSellerForProducts = (products) => {
     const updatedProducts = [];
 
     products.forEach(p => {

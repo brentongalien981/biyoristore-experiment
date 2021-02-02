@@ -31,7 +31,6 @@ class ProductInDetails extends React.Component {
         // REQUIRED: Initialize contexts.
         this.setMyContext();
 
-
         this.refreshProduct();
     }
 
@@ -78,7 +77,7 @@ class ProductInDetails extends React.Component {
                 <button onClick={this.testReadNewProduct}>TEST READ NEW PRODUCT</button> */}
                 <ProductMainSection product={this.props.product} />
                 <ProductExtraInfo product={this.props.product} />
-                <SuggestedProducts relatedProducts={this.props.relatedProducts} onProductClicked={this.onProductClicked} onAddToCart={this.onAddToCart} />
+                <SuggestedProducts relatedProducts={this.props.relatedProducts} onProductClicked={this.onProductClicked} />
 
                 {/* TODO */}
                 <ProductReviews reviews={this.props.reviews} />
@@ -89,16 +88,17 @@ class ProductInDetails extends React.Component {
 
 
 
-    onProductClicked = (e, props, product) => {
-        Bs.log("\n###############");
-        Bs.log("In CLASS: ProductInDetails, METHOD: onProductClicked()");
-
+    onProductClicked = (e, productId) => {
         e.preventDefault();
         e.stopPropagation();
 
-        this.props.history.push("/product?productId=" + product.id);
+        Bs.log("\n###############");
+        Bs.log("In CLASS: ProductInDetails, METHOD: onProductClicked()");
+
+        this.props.history.push("/product?productId=" + productId);
 
         this.props.resetProduct();
+        //ish
 
     };
 
@@ -110,7 +110,6 @@ class ProductInDetails extends React.Component {
         Bs.log("Using React's Context!");
         Bs.log("In CLASS: ProductInDetails, METHOD: onAddToCart()");
 
-        //ish
         e.preventDefault();
         e.stopPropagation();
         Bs.log("product ==> " + product);
