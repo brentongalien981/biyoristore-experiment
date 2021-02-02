@@ -18,7 +18,7 @@ class Home extends React.Component {
 
     render() {
 
-        const content = "biyoristore.com doug!";
+        const content = "Feb 16 is a good date...";
         const featuredProductCategories = this.getFeaturedProductCategories();
 
         return (
