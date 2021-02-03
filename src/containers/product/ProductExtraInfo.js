@@ -15,8 +15,11 @@ function ProductExtraInfo(props) {
     });
 
 
-    const listingPageLinkWithBrand= "/products?brands=" + p.brand?.id;
+    const listingPageLinkWithBrand = "/products?brands=" + p.brand?.id;
     const brandExtraInfoItem = (<Link className="underline text-dark ProducExtraInfoItem" to={listingPageLinkWithBrand}>{p.brand?.name}</Link>);
+
+    const listingPageLinkWithTeam = "/products?teams=" + p.team?.id;
+    const teamExtraInfoItem = (<Link className="underline text-dark ProducExtraInfoItem" to={listingPageLinkWithTeam}>{p.team?.name}</Link>);
 
 
     return (
@@ -41,7 +44,7 @@ function ProductExtraInfo(props) {
                             <li className="list-group-item d-flex justify-content-between align-items-center">Categories<span className="text-dark">{categories}</span></li>
 
                             <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Tags<span className="text-dark"><a href="#" className="underline text-dark">gadget</a>, <a href="#" className="underline text-dark">tech</a></span>
+                                Team<span className="text-dark">{teamExtraInfoItem}</span>
                             </li>
                         </ul>
                     </div>
