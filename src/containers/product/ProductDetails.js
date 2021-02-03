@@ -7,6 +7,14 @@ import ProductActions from './ProductActions';
 function ProductDetails(props) {
 
     const p = props.product;
+    const sellPrice = p.mostEfficientSeller?.productSeller.sell_price;
+    const discountSellPrice = p.mostEfficientSeller?.productSeller.discount_sell_price;
+
+    let priceSectionElement = (<span className="item-price">${sellPrice}</span>);
+    if (parseFloat(discountSellPrice)) {
+        priceSectionElement = (<span className="item-price"><s className="text-muted">${discountSellPrice}</s> ${sellPrice}</span>);
+    }
+
 
     return (
         <div className="col-lg-5 mb-5 mb-lg-0">
@@ -15,8 +23,7 @@ function ProductDetails(props) {
                 <div className="col-12">
                     <span className="item-brand">{p?.brand?.name}</span>
                     <h1 className="item-title">{p?.name}</h1>
-                    {/* <span className="item-price"><s className="text-muted">$113</s> $99</span> */}
-                    <span className="item-price">${p?.price}</span>
+                    {priceSectionElement}
                 </div>
             </div>
 

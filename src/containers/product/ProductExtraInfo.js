@@ -1,5 +1,6 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import './ProductExtraInfo.css';
 
 
 
@@ -7,10 +8,16 @@ function ProductExtraInfo(props) {
     const p = props.product;
 
     const categories = p?.categories?.map((c, i) => {
+        const listingPageLinkWithCategory = "/products?category=" + c.id;
         return (
-            <a key={i} href="#" className="underline text-dark" onClick={() => alert("TODO")}>{c.name}, </a>
+            <Link key={i} className="underline text-dark ProducExtraInfoItem" to={listingPageLinkWithCategory}>{c.name}</Link>
         );
     });
+
+
+    const listingPageLinkWithBrand= "/products?brands=" + p.brand?.id;
+    const brandExtraInfoItem = (<Link className="underline text-dark ProducExtraInfoItem" to={listingPageLinkWithBrand}>{p.brand?.name}</Link>);
+
 
     return (
         <section className="separator-bottom">
@@ -25,13 +32,13 @@ function ProductExtraInfo(props) {
                     <div className="col-md-8 col-lg-6">
                         <p>{p?.description}</p>
                     </div>
-                    <div className="col-lg-4">
+                    <div className="col-lg-4 ExtraInfoItemsSection">
                         <ul className="list-group list-group-line">
                             <li className="list-group-item d-flex justify-content-between align-items-center">
-                                SKU<span className="text-dark">{"BS-" + p?.id}</span>
+                                Brand<span className="text-dark">{brandExtraInfoItem}</span>
                             </li>
 
-                            <li className="list-group-item d-flex justify-content-between align-items-center">Category<span className="text-dark">{categories}</span></li>
+                            <li className="list-group-item d-flex justify-content-between align-items-center">Categories<span className="text-dark">{categories}</span></li>
 
                             <li className="list-group-item d-flex justify-content-between align-items-center">
                                 Tags<span className="text-dark"><a href="#" className="underline text-dark">gadget</a>, <a href="#" className="underline text-dark">tech</a></span>
