@@ -1,6 +1,7 @@
 import React from 'react';
 import ProductColorFilter from './ProductColorFilter';
 import ProductActions from './ProductActions';
+import ProductSizeFilter from './ProductSizeFilter';
 
 
 
@@ -35,7 +36,9 @@ function ProductDetails(props) {
                 </div>
             </div>
 
-            {/* <ProductColorFilter /> */}
+            <div className="row mb-4">
+                <ProductSizeFilter product={p} />
+            </div>
             <ProductActions product={p} />
         </div>
     );
