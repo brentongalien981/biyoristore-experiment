@@ -47,27 +47,78 @@ const products = (state = initialState, action) => {
 
 
 /** HELPER FUNCS */
+const doesSellerHaveStocks = (product, seller) => {
+    let returnVal = false;
+
+    switch (product.packageItemTypeId) {
+        case 1: // shirt
+        case 2: // jersey
+        case 3: // shorts
+        case 4: // hoodie
+        case 5: // shoes
+            for (const size of seller.sizeAvailabilities) {
+                if (size.quantity > 0) { 
+                    returnVal = true; 
+                    break;
+                }
+            }
+            break;
+        case 6: // pctowercase
+            if (parseInt(seller.productSeller.quantity) > 0) { returnVal = true; }
+            break;
+    }
+
+    return returnVal;
+};
+
+
+
 export const setMostEfficientSellerForProduct = (product) => {
     const updatedProduct = product ?? {};
 
-    let mostEfficientSeller = updatedProduct.sellers?.[0] ?? {...TEMPLATE_SELLER};
     let productDisplayPrice = 999999.99;
+    let cheapestSellerWithAvailableStocks = null;
+    let cheapestSellerWithoutAvailableStocks = null;
 
+
+    // Set cheapestSellerWithAvailableStocks.
     updatedProduct.sellers.forEach(s => {
         const sellPrice = parseFloat(s.productSeller.sell_price);
         const discountSellPrice = parseFloat(s.productSeller.discount_sell_price);
 
-        if (sellPrice < productDisplayPrice || discountSellPrice < productDisplayPrice) {
-            mostEfficientSeller = s;
+        if (doesSellerHaveStocks(updatedProduct, s)
+            && (sellPrice < productDisplayPrice || discountSellPrice < productDisplayPrice)) {
+
+            cheapestSellerWithAvailableStocks = s;
             productDisplayPrice = (discountSellPrice < sellPrice ? discountSellPrice : sellPrice);
-            productDisplayPrice = productDisplayPrice.toFixed(2);
-            mostEfficientSeller.productSeller.display_price = productDisplayPrice;
         };
-        
+
     });
 
-    updatedProduct.mostEfficientSeller = mostEfficientSeller;
-    //ish
+
+    if (!cheapestSellerWithAvailableStocks) {
+
+        // Set cheapestSellerWithoutAvailableStocks.
+        productDisplayPrice = 999999.99;
+        updatedProduct.sellers.forEach(s => {
+            const sellPrice = parseFloat(s.productSeller.sell_price);
+            const discountSellPrice = parseFloat(s.productSeller.discount_sell_price);
+    
+            if (sellPrice < productDisplayPrice || discountSellPrice < productDisplayPrice) {
+                cheapestSellerWithoutAvailableStocks = s;
+                productDisplayPrice = (discountSellPrice < sellPrice ? discountSellPrice : sellPrice);
+            };
+    
+        });
+    }
+
+
+    // Ultimately, the most-efficient-seller is the one that has stocks, then is the cheapest.
+    // But if all the seller don't have stocks, then the most-efficient-seller is the cheapest.
+    if (cheapestSellerWithAvailableStocks) { updatedProduct.mostEfficientSeller = cheapestSellerWithAvailableStocks; }
+    else if (cheapestSellerWithoutAvailableStocks) { updatedProduct.mostEfficientSeller = cheapestSellerWithoutAvailableStocks; }
+    else { updatedProduct.mostEfficientSeller = { ...TEMPLATE_SELLER }; }
+
 
     return updatedProduct;
 };
@@ -210,7 +261,6 @@ const onReadProductsOk = (state, action) => {
     if (action.objs.retrievedDataFrom === "cache" || action.objs.retrievedDataFrom === "db") {
 
         const products = setMostEfficientSellerForProducts(action.objs.products);
-        //ish
 
         const productListingData = {
             products: products,
