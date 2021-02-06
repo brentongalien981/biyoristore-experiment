@@ -1,5 +1,7 @@
 import BsCore from "../bs-library/helpers/BsCore";
 import Bs from "../bs-library/helpers/Bs";
+import BsJLSOLM from "../bs-library/helpers/BsJLSOLM";
+import BsCore2 from "../bs-library/helpers/BsCore2";
 
 
 
@@ -23,9 +25,9 @@ export const relaunchVendorScript = () => ({
     type: RELAUNCH_VENDOR_SCRIPT
 });
 
-export const showProduct = (obj) => ({
+export const showProduct = (objs) => ({
     type: SHOW_PRODUCT,
-    obj: obj
+    objs: objs
 });
 
 
@@ -48,19 +50,28 @@ export const readRelatedProducts = (productId) => {
 };
 
 export const readProduct = (productId) => {
-    return (dispatch) => {
+    //ish
+    const requestUrlQ = '?productId=' + productId;
+    if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.searchQueryObjs[requestUrlQ])) {
+        return (dispatch) => {
 
-        BsCore.ajaxCrud({
-            url: '/products/show',
-            params: { productId: productId },
-            neededResponseParams: ["product", "relatedProducts"],
-            callBackFunc: (requestData, json) => {
-                Bs.log("\n#####################");
-                Bs.log("FILE: actions/productInDetails.js, METHOD: readProduct() => ajaxCrud() => callBackFunc()");
+            BsCore2.ajaxCrud({
+                url: '/products/show',
+                params: {
+                    productId: productId,
+                    requestUrlQ: requestUrlQ
+                },
+                callBackFunc: (requestData, json) => {
 
-                const obj = { product: json.product, relatedProducts: json.relatedProducts };
-                dispatch(showProduct(obj));
-            }
-        });
-    };
+                    BsJLSOLM.updateRefreshDateForSearchQuery(requestUrlQ);
+                    const objs = { ...json.objs, requestUrlQ: requestUrlQ };
+
+                    dispatch(showProduct(objs));
+                }
+            });
+        };
+    }
+
+    const objs = { retrievedDataFrom: "localStorage", requestUrlQ: requestUrlQ };
+    return showProduct(objs);
 };

@@ -3,6 +3,7 @@ import Bs from '../bs-library/helpers/Bs';
 // import { biyoristoreVendorLaunch } from '../bs-library/custom/crafty';
 import $ from 'jquery';
 import { setMostEfficientSellerForProduct, setMostEfficientSellerForProducts } from './products';
+import BsJLS from '../bs-library/helpers/BsJLS';
 
 
 
@@ -89,15 +90,29 @@ const showProduct = (state, action) => {
     Bs.log("\n###############");
     Bs.log("In REDUCER: productInDetails, METHOD: showProduct()");
 
+
+    const requestUrlQ = action.objs.requestUrlQ;
+
+    if (action.objs.retrievedDataFrom === "cache" || action.objs.retrievedDataFrom === "db") {
+
+        const product = setMostEfficientSellerForProduct(action.objs.product);
+        const relatedProducts = setMostEfficientSellerForProducts(action.objs.relatedProducts);
+
+        const data = {
+            product: product,
+            relatedProducts: relatedProducts
+        };
+
+        BsJLS.set(requestUrlQ, data);
+    }
+
     
-    const product = setMostEfficientSellerForProduct(action.obj.product);
-    const relatedProducts = setMostEfficientSellerForProducts(action.obj.relatedProducts);
     // ish
 
     return {
         ...state,
-        product: product,
-        relatedProducts: relatedProducts,
+        product: BsJLS.get(requestUrlQ)?.product ?? {...defaultProduct},
+        relatedProducts: BsJLS.get(requestUrlQ)?.relatedProducts ?? [],
         shouldResetProduct: false,
         shouldRelaunchVendorScript: true,
         message: "Just executed METHOD:: showProduct() from REDUCER:: productInDetails"
