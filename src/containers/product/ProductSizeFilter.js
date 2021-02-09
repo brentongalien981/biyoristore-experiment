@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Bs from '../../bs-library/helpers/Bs';
 import './ProductSizeFilter.css';
+import ProductInDetailsContext from '../../contexts/product/ProductInDetailsContext';
 
 
 
 function ProductSizeFilter(props) {
+
+    // React's thing for using contexts.
+    const context = useContext(ProductInDetailsContext);
 
     if (!isProductBoughtWithSizes(props.product.packageItemTypeId)) { return null; }
 
@@ -13,7 +17,7 @@ function ProductSizeFilter(props) {
             <div className="form-group">
                 <label>Size</label>
                 <div className="btn-group-toggle btn-group-square" data-toggle="buttons">
-                    {getSizeOptionComponents(props.product)}
+                    {getSizeOptionComponents(context, props.product)}
                 </div>
             </div>
         </div>
@@ -22,13 +26,13 @@ function ProductSizeFilter(props) {
 
 
 
-function getSizeOptionComponents(product) {
+function getSizeOptionComponents(context, product) {
 
 
     let possibleSizeOptions = ['S', 'M', 'L', 'XL', '2XL', '3XL'];
     if (product.packageItemTypeId == 5) {
         possibleSizeOptions = [];
-        for (let size = 6.0; size <= 16.0; size+=0.5) {
+        for (let size = 6.0; size <= 16.0; size += 0.5) {
             possibleSizeOptions.push(size.toFixed(1));
         }
     }
@@ -49,7 +53,12 @@ function getSizeOptionComponents(product) {
         }
 
         if (isPossibleSizeOptionAvailable) {
-            sizeOptionComponents.push(<label key={"option-" + possibleSize} className="btn AvailableSizeOption"><input type="radio" name="size-options" id={"size-option-" + possibleSize} />{possibleSize}</label>);
+            sizeOptionComponents.push(
+                <label key={"option-" + possibleSize} className="btn AvailableSizeOption" onClick={() => context.onSizeOptionClick(possibleSize)}>
+                    <input type="radio" name="size-options"
+                        id={"size-option-" + possibleSize} />
+                    {possibleSize}
+                </label>);
         } else {
             sizeOptionComponents.push(<label key={"option-" + possibleSize} className="btn UnavailableSizeOption"><input type="radio" name="size-options" id={"size-option-" + possibleSize} />{possibleSize}</label>);
         }

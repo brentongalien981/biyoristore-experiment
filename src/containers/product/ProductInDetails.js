@@ -39,6 +39,7 @@ class ProductInDetails extends React.Component {
 
     setMyContext() {
         this.context.onAddToCart = this.onAddToCart;
+        this.context.onSizeOptionClick = this.onSizeOptionClick;
     }
 
 
@@ -117,6 +118,13 @@ class ProductInDetails extends React.Component {
         Bs.log(product);
 
         this.props.onAddToCart(product);
+    };
+
+
+
+    onSizeOptionClick = (possibleSize) => {
+        Bs.log("TODO: onSizeOptionClick()");
+        Bs.log("possibleSize ==> " + possibleSize);
     };
 }
 
