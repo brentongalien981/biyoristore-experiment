@@ -54,6 +54,17 @@ const productInDetails = (state = initialState, action) => {
 
 
 /* NORMAL */
+const removeShownProductFromRelatedProducts = (productId, relatedProducts) => {
+    let updatedRelatedProducts = [];
+
+    for (const p of relatedProducts) {
+        if (productId === p.id) { continue; }
+        updatedRelatedProducts.push(p);
+    }
+
+    return updatedRelatedProducts;
+};
+
 const resetProduct = (state, action) => {
     return {
         ...state,
@@ -96,7 +107,8 @@ const showProduct = (state, action) => {
     if (action.objs.retrievedDataFrom === "cache" || action.objs.retrievedDataFrom === "db") {
 
         const product = setMostEfficientSellerForProduct(action.objs.product);
-        const relatedProducts = setMostEfficientSellerForProducts(action.objs.relatedProducts);
+        let relatedProducts = setMostEfficientSellerForProducts(action.objs.relatedProducts);
+        relatedProducts = removeShownProductFromRelatedProducts(product.id, relatedProducts);
 
         const data = {
             product: product,
@@ -107,7 +119,6 @@ const showProduct = (state, action) => {
     }
 
     
-    // ish
 
     return {
         ...state,

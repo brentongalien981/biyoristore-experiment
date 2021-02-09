@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions/productInDetails';
 import ProductInDetailsContext from '../../contexts/product/ProductInDetailsContext';
 import { onAddToCart } from '../../actions/cart';
+import './ProductInDetails.css';
 
 
 
@@ -116,7 +117,6 @@ class ProductInDetails extends React.Component {
         Bs.log(product);
 
         this.props.onAddToCart(product);
-        //ish
     };
 }
 

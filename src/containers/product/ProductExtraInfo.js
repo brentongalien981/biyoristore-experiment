@@ -33,7 +33,7 @@ function ProductExtraInfo(props) {
                         </div>
                     </div>
                     <div className="col-md-8 col-lg-6">
-                        <p>{p?.description}</p>
+                        <p id="ShownProductDescription">{p?.description}</p>
                     </div>
                     <div className="col-lg-4 ExtraInfoItemsSection">
                         <ul className="list-group list-group-line">

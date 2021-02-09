@@ -1,0 +1,5 @@
+#ShownProductBrandName,
+#ShownProductName,
+#ShownProductDescription {
+    overflow-wrap: break-word;
+}

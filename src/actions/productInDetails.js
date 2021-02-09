@@ -49,8 +49,10 @@ export const readRelatedProducts = (productId) => {
     };
 };
 
+
+
 export const readProduct = (productId) => {
-    //ish
+
     const requestUrlQ = '?productId=' + productId;
     if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.searchQueryObjs[requestUrlQ])) {
         return (dispatch) => {
@@ -67,6 +69,9 @@ export const readProduct = (productId) => {
                     const objs = { ...json.objs, requestUrlQ: requestUrlQ };
 
                     dispatch(showProduct(objs));
+                },
+                errorCallBackFunc: (errors) => {
+                    alert("Oops! Something went wrong on our end. Please try again.");
                 }
             });
         };

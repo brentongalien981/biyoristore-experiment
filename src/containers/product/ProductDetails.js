@@ -27,8 +27,8 @@ function ProductDetails(props) {
             {/* product main details */}
             <div className="row">
                 <div className="col-12">
-                    <span className="item-brand">{p?.brand?.name}</span>
-                    <h1 className="item-title">{p?.name}</h1>
+                    <span id="ShownProductBrandName" className="item-brand">{p?.brand?.name}</span>
+                    <h1 id="ShownProductName" className="item-title">{p?.name}</h1>
                     {priceSectionElement}
                     <br />
                     {outOfStockComponent}
