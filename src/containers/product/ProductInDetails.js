@@ -20,6 +20,11 @@ class ProductInDetails extends React.Component {
     // REQUIRED: React's context.
     static contextType = ProductInDetailsContext;
 
+    // PROPERTIES
+    state = {
+        isReadingReviews: false
+    };
+
 
     componentDidMount() {
         Bs.log("\n####################");
@@ -78,15 +83,42 @@ class ProductInDetails extends React.Component {
                 {/* <button onClick={this.testDeleteProduct}>TEST</button>
                 <button onClick={this.testReadNewProduct}>TEST READ NEW PRODUCT</button> */}
                 <ProductMainSection product={this.props.product} />
-                <ProductExtraInfo product={this.props.product} />
+                <ProductExtraInfo product={this.props.product} avgRating={this.props.avgRating} readReviews={this.readReviews} />
                 <SuggestedProducts relatedProducts={this.props.relatedProducts} onProductClicked={this.onProductClicked} />
 
                 {/* TODO */}
-                <ProductReviews reviews={this.props.reviews} />
+                <ProductReviews reviews={this.props.reviews} isReadingReviews={this.state.isReadingReviews} />
                 <CreateReview />
             </>
         );
     }
+
+
+
+    readReviews = () => {
+        if (this.doPreReadReviewProcess()) {
+            this.doActualReadReviewProcess();
+        }
+    };
+
+    doActualReadReviewProcess = () => {
+        const params = {
+            productId: this.props.product.id,
+            shownReviewsCount: this.props.reviews.length
+        };
+
+        this.props.readReviews(params);
+        //ish
+    };
+
+    doPreReadReviewProcess = () => {
+        if (this.state.isReadingReviews) { return false; }
+        this.setState({
+            isReadingReviews: true
+        });
+
+        return true;
+    };
 
 
 
@@ -132,6 +164,7 @@ class ProductInDetails extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+        avgRating: state.productInDetails.avgRating,
         breadCrumbLinks: state.productInDetails.breadCrumbLinks,
         product: state.productInDetails.product,
         shouldResetProduct: state.productInDetails.shouldResetProduct,
@@ -146,6 +179,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        readReviews: (params) => dispatch(actions.readReviews(params)),
         onAddToCart: (product) => dispatch(onAddToCart(product)),
         readProduct: (productId) => dispatch(actions.readProduct(productId)),
         readRelatedProducts: (productId) => dispatch(actions.readRelatedProducts(productId)),

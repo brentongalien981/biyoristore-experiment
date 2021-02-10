@@ -28,14 +28,18 @@ const initialState = {
     shouldRelaunchVendorScript: false,
     product: defaultProduct,
     relatedProducts: [],
+    avgRating: null,
     reviews: [
-        { id: 1, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019" },
-        { id: 2, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019" },
-        { id: 3, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019" },
-        { id: 4, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019" },
-        { id: 5, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019" },
-        { id: 6, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019" }
-    ]
+        // { id: 1, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019" },
+    ],
+    // Oldreviews: [
+    //     { id: 1, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019" },
+    //     { id: 2, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019" },
+    //     { id: 3, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019" },
+    //     { id: 4, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019" },
+    //     { id: 5, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019" },
+    //     { id: 6, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019" }
+    // ]
 };
 
 
@@ -43,6 +47,7 @@ const initialState = {
 /* REDUCER */
 const productInDetails = (state = initialState, action) => {
     switch (action.type) {
+        case actions.ON_READ_REVIEWS_OK: return onReadReviewsOk(state, action);
         case actions.SHOW_RELATED_PRODUCTS: return showRelatedProducts(state, action);
         case actions.SHOW_PRODUCT: return showProduct(state, action);
         case actions.RELAUNCH_VENDOR_SCRIPT: return relaunchVendorScript(state, action);
@@ -54,6 +59,16 @@ const productInDetails = (state = initialState, action) => {
 
 
 /* NORMAL */
+const onReadReviewsOk = (state, action) => {
+    return {
+        ...state,
+        reviews: action.objs.reviews,
+        avgRating: action.objs.avgRating
+    };
+};
+
+
+
 const removeShownProductFromRelatedProducts = (productId, relatedProducts) => {
     let updatedRelatedProducts = [];
 
@@ -118,11 +133,11 @@ const showProduct = (state, action) => {
         BsJLS.set(requestUrlQ, data);
     }
 
-    
+
 
     return {
         ...state,
-        product: BsJLS.get(requestUrlQ)?.product ?? {...defaultProduct},
+        product: BsJLS.get(requestUrlQ)?.product ?? { ...defaultProduct },
         relatedProducts: BsJLS.get(requestUrlQ)?.relatedProducts ?? [],
         shouldResetProduct: false,
         shouldRelaunchVendorScript: true,

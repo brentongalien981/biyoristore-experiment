@@ -1,21 +1,27 @@
 import React from 'react';
+import WaitLoader from '../../components/loader/WaitLoader';
 
 
 
 function ProductReviews(props) {
 
+    const loaderComponent = props.isReadingReviews ? <WaitLoader /> : null;
+
     const reviews = props.reviews.map((r, i) => {
-        const userAndDate = r.firstName + " " + r.lastName + " on " + r.date;
+        const userAndDate = r.reviewerName + " (" + r.createdAt + ")";
+
+        let ratingStarComponents = [];
+
+        for (let i = 0; i < r.rating; i++) {
+            ratingStarComponents.push(<span key={i} className="icon-ui-star"></span>);
+            
+        }
 
         return (
             <div className="col-12" key={i}>
                 <blockquote className="testimonial">
                     <div className="testimonial-rate">
-                        <span className="icon-ui-star"></span>
-                        <span className="icon-ui-star"></span>
-                        <span className="icon-ui-star"></span>
-                        <span className="icon-ui-star"></span>
-                        <span className="icon-ui-star"></span>
+                        {ratingStarComponents}
                     </div>
                     <p>{r.message}</p>
                     <footer>{userAndDate}</footer>
@@ -43,6 +49,7 @@ function ProductReviews(props) {
                     <div className="modal-body">
                         <div className="row gutter-3">
                             {reviews}
+                            {loaderComponent}
                         </div>
                     </div>
 

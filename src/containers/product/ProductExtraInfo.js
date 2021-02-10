@@ -22,14 +22,20 @@ function ProductExtraInfo(props) {
     const teamExtraInfoItem = (<Link className="underline text-dark ProducExtraInfoItem" to={listingPageLinkWithTeam}>{p.team?.name}</Link>);
 
 
+    let avgRating = parseFloat(props.avgRating);
+    if (avgRating) { avgRating = avgRating.toFixed(1); }
+    else { avgRating = 'n/a'; }
+
+
     return (
         <section className="separator-bottom">
             <div className="container">
                 <div className="row gutter-2 gutter-lg-4">
                     <div className="col-md-4 col-lg-2">
                         <div className="rate">
-                            <span>4.9</span>
-                            <a data-toggle="modal" data-target="#reviews" className="action eyebrow text-primary underline">View Reviews</a>
+                            <span>{avgRating}</span>
+                            <a data-toggle="modal" data-target="#reviews" className="action eyebrow text-primary underline"
+                                onClick={props.readReviews}>View Reviews</a>
                         </div>
                     </div>
                     <div className="col-md-8 col-lg-6">
