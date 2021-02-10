@@ -33,6 +33,7 @@ const initialState = {
         // { id: 1, firstName: "Michael", lastName: "Doe", message: defaultProductReviewMsg, date: "Jul 5, 2019" },
     ],
     // FLAGS
+    shouldDoInitialReadReviews: false,
     shouldDoPostReadReviewsProcess: false,
 };
 
@@ -62,12 +63,24 @@ const endReadReviewsProcess = (state, action) => ({
 
 
 const onReadReviewsOk = (state, action) => {
+    if (action.objs.isResultOk) {
+        return {
+            ...state,
+            shouldDoInitialReadReviews: false,
+            reviews: action.objs.reviews,
+            avgRating: action.objs.avgRating,
+            shouldDoPostReadReviewsProcess: true
+        };
+    }
+
+    alert("Oops! Something went wrong on our end. Please try again.");
+
     return {
         ...state,
-        reviews: action.objs.reviews,
-        avgRating: action.objs.avgRating,
+        shouldDoInitialReadReviews: false,
         shouldDoPostReadReviewsProcess: true
     };
+
 };
 
 
@@ -144,7 +157,7 @@ const showProduct = (state, action) => {
         relatedProducts: BsJLS.get(requestUrlQ)?.relatedProducts ?? [],
         shouldResetProduct: false,
         shouldRelaunchVendorScript: true,
-        message: "Just executed METHOD:: showProduct() from REDUCER:: productInDetails"
+        shouldDoInitialReadReviews: true,
     };
 };
 

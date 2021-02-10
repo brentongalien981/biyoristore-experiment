@@ -54,7 +54,7 @@ function isProductOutOfStock(product) {
         case 3: // shorts
         case 4: // hoodie
         case 5: // shoes
-            const sizeAvailabilities = product.mostEfficientSeller?.sizeAvailabilities;
+            const sizeAvailabilities = product.mostEfficientSeller?.sizeAvailabilities ?? [];
             for (const sizeAvailability of sizeAvailabilities) {
                 if (sizeAvailability.quantity > 0) { 
                     returnVal = false; 

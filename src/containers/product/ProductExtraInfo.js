@@ -34,8 +34,7 @@ function ProductExtraInfo(props) {
                     <div className="col-md-4 col-lg-2">
                         <div className="rate">
                             <span>{avgRating}</span>
-                            <a data-toggle="modal" data-target="#reviews" className="action eyebrow text-primary underline"
-                                onClick={props.readReviews}>View Reviews</a>
+                            <a data-toggle="modal" data-target="#reviews" className="action eyebrow text-primary underline">View Reviews</a>
                         </div>
                     </div>
                     <div className="col-md-8 col-lg-6">

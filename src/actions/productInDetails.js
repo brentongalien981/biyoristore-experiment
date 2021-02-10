@@ -93,7 +93,7 @@ export const readReviews = (params) => {
 
     const productId = params.productId;
     const numOfReviewsPerBatch = 15;
-    const batchNum = Math.ceil(params.shownReviewsCount/numOfReviewsPerBatch) + 1;
+    const batchNum = Math.ceil(params.shownReviewsCount / numOfReviewsPerBatch) + 1;
 
     let requestUrlQ = 'reviews?productId=' + productId;
     requestUrlQ += '&batchNum=' + batchNum;
@@ -103,24 +103,26 @@ export const readReviews = (params) => {
 
 
     // if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.searchQueryObjs[requestUrlQ])) {
-        return (dispatch) => {
+    return (dispatch) => {
 
-            BsCore2.ajaxCrud({
-                url: '/reviews/read',
-                params: {...params},
-                callBackFunc: (requestData, json) => {
+        BsCore2.ajaxCrud({
+            url: '/reviews/read',
+            params: { ...params },
+            callBackFunc: (requestData, json) => {
 
-                    // BsJLSOLM.updateRefreshDateForSearchQuery(requestUrlQ);
-                    const objs = { ...json.objs, ...params };
+                // BsJLSOLM.updateRefreshDateForSearchQuery(requestUrlQ);
+                const objs = { ...json.objs, ...params, isResultOk: true };
 
-                    dispatch(onReadReviewsOk(objs));
-                    //ish
-                },
-                errorCallBackFunc: (errors) => {
-                    alert("Oops! Something went wrong on our end. Please try again.");
-                }
-            });
-        };
+                dispatch(onReadReviewsOk(objs));
+                //ish
+            },
+            errorCallBackFunc: (errors) => {
+                const objs = { ...params, isResultOk: false };
+                dispatch(onReadReviewsOk(objs));
+
+            }
+        });
+    };
     // }
 
     const objs = { retrievedDataFrom: "localStorage", ...params };

@@ -41,16 +41,16 @@ class ProductInDetails extends React.Component {
         this.setState({
             isReadingReviews: false
         });
-        
+
         this.props.endReadReviewsProcess();
     }
 
 
 
-    doActualReadReviewProcess = () => {
+    doActualReadReviewProcess = (data) => {
         const params = {
             productId: this.props.product.id,
-            shownReviewsCount: this.props.reviews.length
+            shownReviewsCount: data.isInitialBatch ? 0 : this.props.reviews.length
         };
 
         this.props.readReviews(params);
@@ -98,6 +98,8 @@ class ProductInDetails extends React.Component {
 
         if (this.props.shouldRelaunchVendorScript) { this.props.relaunchVendorScript(); }
 
+        if (this.props.shouldDoInitialReadReviews) { this.readReviews({ isInitialBatch: true }); }
+
         if (this.props.shouldDoPostReadReviewsProcess) { this.doPostReadReviewsProcess(); }
         //ish
 
@@ -112,11 +114,11 @@ class ProductInDetails extends React.Component {
                 {/* <button onClick={this.testDeleteProduct}>TEST</button>
                 <button onClick={this.testReadNewProduct}>TEST READ NEW PRODUCT</button> */}
                 <ProductMainSection product={this.props.product} />
-                <ProductExtraInfo product={this.props.product} avgRating={this.props.avgRating} readReviews={this.readReviews} />
+                <ProductExtraInfo product={this.props.product} avgRating={this.props.avgRating} />
                 <SuggestedProducts relatedProducts={this.props.relatedProducts} onProductClicked={this.onProductClicked} />
 
                 {/* TODO */}
-                <ProductReviews reviews={this.props.reviews} isReadingReviews={this.state.isReadingReviews} />
+                <ProductReviews reviews={this.props.reviews} isReadingReviews={this.state.isReadingReviews} readReviews={this.readReviews} />
                 <CreateReview />
             </>
         );
@@ -125,9 +127,9 @@ class ProductInDetails extends React.Component {
 
 
     /** EVENT FUNCS */
-    readReviews = () => {
+    readReviews = (data) => {
         if (this.doPreReadReviewProcess()) {
-            this.doActualReadReviewProcess();
+            this.doActualReadReviewProcess(data);
         }
     };
 
@@ -175,6 +177,7 @@ class ProductInDetails extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+        shouldDoInitialReadReviews: state.productInDetails.shouldDoInitialReadReviews,
         shouldDoPostReadReviewsProcess: state.productInDetails.shouldDoPostReadReviewsProcess,
         avgRating: state.productInDetails.avgRating,
         breadCrumbLinks: state.productInDetails.breadCrumbLinks,
