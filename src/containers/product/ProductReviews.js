@@ -30,6 +30,8 @@ function ProductReviews(props) {
         );
     });
 
+    const showMoreReviewsBtn = (<button className="btn btn-lg btn-block btn-primary" onClick={props.readReviews}>show more</button>);
+
 
 
     return (
@@ -50,6 +52,7 @@ function ProductReviews(props) {
                         <div className="row gutter-3">
                             {reviews}
                             {loaderComponent}
+                            {showMoreReviewsBtn}
                         </div>
                     </div>
 
