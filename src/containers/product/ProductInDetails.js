@@ -17,15 +17,66 @@ import './ProductInDetails.css';
 
 class ProductInDetails extends React.Component {
 
-    // REQUIRED: React's context.
+    /** REQUIRED: React's context. */
     static contextType = ProductInDetailsContext;
 
-    // PROPERTIES
+
+
+    setMyContext() {
+        this.context.onAddToCart = this.onAddToCart;
+        this.context.onSizeOptionClick = this.onSizeOptionClick;
+    }
+
+
+
+    /** PROPERTIES */
     state = {
         isReadingReviews: false
     };
 
 
+
+    /** HELPER FUNCS */
+    doPostReadReviewsProcess() {
+        this.setState({
+            isReadingReviews: false
+        });
+        
+        this.props.endReadReviewsProcess();
+    }
+
+
+
+    doActualReadReviewProcess = () => {
+        const params = {
+            productId: this.props.product.id,
+            shownReviewsCount: this.props.reviews.length
+        };
+
+        this.props.readReviews(params);
+    };
+
+    doPreReadReviewProcess = () => {
+        if (this.state.isReadingReviews) { return false; }
+        this.setState({
+            isReadingReviews: true
+        });
+
+        return true;
+    };
+
+
+
+    refreshProduct() {
+        const urlParams = this.props.location.search;
+        const acceptedParams = ["productId"];
+        const parsedUrlParams = Bs.getParsedQueryParams(urlParams, acceptedParams);
+        this.props.readProduct(parsedUrlParams['productId']);
+    }
+
+
+
+    /** MAIN FUNCS */
     componentDidMount() {
         Bs.log("\n####################");
         Bs.log("In CLASS: ProductInDetails, METHOD: componentDidMount()");
@@ -42,35 +93,13 @@ class ProductInDetails extends React.Component {
 
 
 
-    setMyContext() {
-        this.context.onAddToCart = this.onAddToCart;
-        this.context.onSizeOptionClick = this.onSizeOptionClick;
-    }
-
-
-
-    refreshProduct() {
-        const urlParams = this.props.location.search;
-        const acceptedParams = ["productId"];
-        const parsedUrlParams = Bs.getParsedQueryParams(urlParams, acceptedParams);
-        this.props.readProduct(parsedUrlParams['productId']);
-    }
-
-
-
     componentDidUpdate() {
-        Bs.log("\n####################");
-        Bs.log("In CLASS: ProductInDetails, METHOD: componentDidUpdate()");
-
-        Bs.log("this.props ==> ...");
-        Bs.log(this.props);
-
         if (this.props.shouldResetProduct) { this.refreshProduct(); }
 
         if (this.props.shouldRelaunchVendorScript) { this.props.relaunchVendorScript(); }
 
-        Bs.log("End of METHOD: componentDidUpdate(), CLASS: ProductInDetails");
-        Bs.log("@@@@@@@@@@@@@@@@@@@@");
+        if (this.props.shouldDoPostReadReviewsProcess) { this.doPostReadReviewsProcess(); }
+        //ish
 
     }
 
@@ -95,29 +124,11 @@ class ProductInDetails extends React.Component {
 
 
 
+    /** EVENT FUNCS */
     readReviews = () => {
         if (this.doPreReadReviewProcess()) {
             this.doActualReadReviewProcess();
         }
-    };
-
-    doActualReadReviewProcess = () => {
-        const params = {
-            productId: this.props.product.id,
-            shownReviewsCount: this.props.reviews.length
-        };
-
-        this.props.readReviews(params);
-        //ish
-    };
-
-    doPreReadReviewProcess = () => {
-        if (this.state.isReadingReviews) { return false; }
-        this.setState({
-            isReadingReviews: true
-        });
-
-        return true;
     };
 
 
@@ -164,6 +175,7 @@ class ProductInDetails extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+        shouldDoPostReadReviewsProcess: state.productInDetails.shouldDoPostReadReviewsProcess,
         avgRating: state.productInDetails.avgRating,
         breadCrumbLinks: state.productInDetails.breadCrumbLinks,
         product: state.productInDetails.product,
@@ -179,6 +191,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        endReadReviewsProcess: () => dispatch(actions.endReadReviewsProcess()),
         readReviews: (params) => dispatch(actions.readReviews(params)),
         onAddToCart: (product) => dispatch(onAddToCart(product)),
         readProduct: (productId) => dispatch(actions.readProduct(productId)),

@@ -7,6 +7,7 @@ import { param } from "jquery";
 
 
 /* NAMES */
+export const END_READ_REVIEWS_PROCESS = "END_READ_REVIEWS_PROCESS";
 export const ON_READ_REVIEWS_OK = "ON_READ_REVIEWS_OK";
 export const RESET_PRODUCT = "RESET_PRODUCT";
 export const SHOW_RELATED_PRODUCTS = "SHOW_RELATED_PRODUCTS";
@@ -16,6 +17,7 @@ export const SHOW_PRODUCT = "SHOW_PRODUCT";
 
 
 /* FUNCS */
+export const endReadReviewsProcess = () => ({ type: END_READ_REVIEWS_PROCESS });
 export const onReadReviewsOk = (objs) => ({ type: ON_READ_REVIEWS_OK, objs: objs });
 
 export const resetProduct = () => ({ type: RESET_PRODUCT });

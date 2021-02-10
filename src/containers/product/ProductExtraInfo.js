@@ -24,7 +24,7 @@ function ProductExtraInfo(props) {
 
     let avgRating = parseFloat(props.avgRating);
     if (avgRating) { avgRating = avgRating.toFixed(1); }
-    else { avgRating = 'n/a'; }
+    else { avgRating = '∞'; }
 
 
     return (
