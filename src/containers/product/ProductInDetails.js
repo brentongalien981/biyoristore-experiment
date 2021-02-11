@@ -101,7 +101,6 @@ class ProductInDetails extends React.Component {
         if (this.props.shouldDoInitialReadReviews) { this.readReviews({ isInitialBatch: true }); }
 
         if (this.props.shouldDoPostReadReviewsProcess) { this.doPostReadReviewsProcess(); }
-        //ish
 
     }
 

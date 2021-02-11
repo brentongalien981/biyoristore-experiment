@@ -64,10 +64,13 @@ const endReadReviewsProcess = (state, action) => ({
 
 const onReadReviewsOk = (state, action) => {
     if (action.objs.isResultOk) {
+
+        const updatedReviews = [...state.reviews, ...action.objs.reviews];
+
         return {
             ...state,
             shouldDoInitialReadReviews: false,
-            reviews: action.objs.reviews,
+            reviews: updatedReviews,
             avgRating: action.objs.avgRating,
             shouldDoPostReadReviewsProcess: true
         };
