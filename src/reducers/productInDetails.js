@@ -66,12 +66,13 @@ const onReadReviewsOk = (state, action) => {
     if (action.objs.isResultOk) {
 
         const updatedReviews = [...state.reviews, ...action.objs.reviews];
+        const avgRating = action.objs.batchNum == 1 ? action.objs.avgRating : state.avgRating;
 
         return {
             ...state,
             shouldDoInitialReadReviews: false,
             reviews: updatedReviews,
-            avgRating: action.objs.avgRating,
+            avgRating: avgRating,
             shouldDoPostReadReviewsProcess: true
         };
     }
