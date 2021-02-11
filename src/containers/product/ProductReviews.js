@@ -14,7 +14,7 @@ function ProductReviews(props) {
 
         for (let i = 0; i < r.rating; i++) {
             ratingStarComponents.push(<span key={i} className="icon-ui-star"></span>);
-            
+
         }
 
         return (
@@ -41,7 +41,9 @@ function ProductReviews(props) {
 
 
                     <div className="modal-header">
-                        <h5 className="modal-title" id="reviewsLabel">Reviews</h5>
+                        <h5 className="modal-title" id="reviewsLabel">
+                            Reviews<button className="btn btn-sm btn-primary ml-1" data-toggle="modal" data-target="#writeReview" data-dismiss="modal">write review</button>
+                        </h5>
                         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -52,7 +54,6 @@ function ProductReviews(props) {
                         <div className="row gutter-3">
                             {reviews}
                             {loaderComponent}
-                            {showMoreReviewsBtn}
                         </div>
                     </div>
 
@@ -60,7 +61,7 @@ function ProductReviews(props) {
                         <div className="container-fluid">
                             <div className="row gutter-0">
                                 <div className="col">
-                                    <a href="#!" className="btn btn-lg btn-block btn-primary" data-toggle="modal" data-target="#writeReview" data-dismiss="modal">Write Review</a>
+                                    {showMoreReviewsBtn}
                                 </div>
                             </div>
                         </div>

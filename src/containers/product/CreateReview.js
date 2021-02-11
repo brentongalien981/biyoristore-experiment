@@ -2,7 +2,7 @@ import React from 'react';
 
 
 
-function CreateReview() {
+function CreateReview(props) {
     return (
         <div className="modal fade sidebar" id="writeReview" tabIndex="-1" role="dialog" aria-labelledby="writeReviewLabel" aria-hidden="true">
             <div className="modal-dialog" role="document">
@@ -21,24 +21,19 @@ function CreateReview() {
                         <form className="row gutter-2">
 
                             <div className="form-group col-12">
-                                <label htmlFor="exampleFormControlInput1">Email address</label>
-                                <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
-                            </div>
-
-                            <div className="form-group col-12">
-                                <label htmlFor="exampleFormControlSelect1">Rating</label>
-                                <select className="form-control custom-select" id="exampleFormControlSelect1">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
+                                <label>Rating</label>
+                                <select className="form-control custom-select" name="rating" value={props.newReview.rating} onChange={props.onNewReviewInputChange}>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
                                 </select>
                             </div>
 
                             <div className="form-group col-12">
-                                <label htmlFor="exampleFormControlTextarea1">Example textarea</label>
-                                <textarea className="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+                                <label>Message</label>
+                                <textarea className="form-control" name="message" rows="5" onChange={props.onNewReviewInputChange}></textarea>
                             </div>
                         </form>
                     </div>
@@ -48,7 +43,7 @@ function CreateReview() {
                         <div className="container-fluid">
                             <div className="row gutter-0">
                                 <div className="col">
-                                    <a href="#!" className="btn btn-lg btn-block btn-primary" data-dismiss="modal" onClick={() => alert("TODO")}>Publish Review</a>
+                                    <a href="#!" className="btn btn-lg btn-block btn-primary" data-dismiss="modal" onClick={(e) => props.onSaveReview(e)}>Publish Review</a>
                                 </div>
                             </div>
                         </div>

@@ -31,7 +31,8 @@ class ProductInDetails extends React.Component {
 
     /** PROPERTIES */
     state = {
-        isReadingReviews: false
+        isReadingReviews: false,
+        newReview: { rating: 1, message: "" }
     };
 
 
@@ -116,9 +117,8 @@ class ProductInDetails extends React.Component {
                 <ProductExtraInfo product={this.props.product} avgRating={this.props.avgRating} />
                 <SuggestedProducts relatedProducts={this.props.relatedProducts} onProductClicked={this.onProductClicked} />
 
-                {/* TODO */}
                 <ProductReviews reviews={this.props.reviews} isReadingReviews={this.state.isReadingReviews} readReviews={this.readReviews} />
-                <CreateReview />
+                <CreateReview newReview={this.state.newReview} onNewReviewInputChange={this.onNewReviewInputChange} onSaveReview={this.onSaveReview} />
             </>
         );
     }
@@ -126,6 +126,37 @@ class ProductInDetails extends React.Component {
 
 
     /** EVENT FUNCS */
+    onNewReviewInputChange = (e) => {
+        const target = e.target;
+        const value = target.value;
+        const name = target.name;
+
+        const updatedNewReview = {
+            ...this.state.newReview,
+            [name]: value
+        };
+
+        this.setState({
+            newReview: updatedNewReview
+        });
+    };
+
+
+
+    onSaveReview = () => {
+        Bs.log("In METHOD: onSaveReview()");
+        Bs.log("this.state.newReview ==> ...");
+        Bs.log(this.state.newReview);
+        return;
+
+        if (this.doPreReadReviewProcess()) {
+            this.doActualReadReviewProcess();
+        }
+    };
+    //ish
+
+
+
     readReviews = (data) => {
         if (this.doPreReadReviewProcess()) {
             this.doActualReadReviewProcess(data);
