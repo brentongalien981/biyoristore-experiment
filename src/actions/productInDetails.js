@@ -3,10 +3,13 @@ import Bs from "../bs-library/helpers/Bs";
 import BsJLSOLM from "../bs-library/helpers/BsJLSOLM";
 import BsCore2 from "../bs-library/helpers/BsCore2";
 import { param } from "jquery";
+import BsAppSession from "../bs-library/helpers/BsAppSession";
 
 
 
 /* NAMES */
+export const END_ON_SAVE_REVIEW_PROCESS = "END_ON_SAVE_REVIEW_PROCESS";
+export const ON_SAVE_REVIEW_RETURN = "ON_SAVE_REVIEW_RETURN";
 export const END_READ_REVIEWS_PROCESS = "END_READ_REVIEWS_PROCESS";
 export const ON_READ_REVIEWS_OK = "ON_READ_REVIEWS_OK";
 export const RESET_PRODUCT = "RESET_PRODUCT";
@@ -17,6 +20,8 @@ export const SHOW_PRODUCT = "SHOW_PRODUCT";
 
 
 /* FUNCS */
+export const endOnSaveReviewProcess = () => ({ type: END_ON_SAVE_REVIEW_PROCESS });
+export const onSaveReviewReturn = (objs = null) => ({ type: ON_SAVE_REVIEW_RETURN, objs: objs });
 export const endReadReviewsProcess = () => ({ type: END_READ_REVIEWS_PROCESS });
 export const onReadReviewsOk = (objs) => ({ type: ON_READ_REVIEWS_OK, objs: objs });
 
@@ -102,6 +107,7 @@ export const readReviews = (params) => {
     params.requestUrlQ = requestUrlQ;
 
 
+    // TODO:UNCOMMENT
     // if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.searchQueryObjs[requestUrlQ])) {
     return (dispatch) => {
 
@@ -127,4 +133,30 @@ export const readReviews = (params) => {
 
     const objs = { retrievedDataFrom: "localStorage", ...params };
     return onReadReviewsOk(objs);
+};
+
+
+
+export const saveReview = (data) => {
+
+    return (dispatch) => {
+
+        BsCore2.ajaxCrud({
+            url: '/reviews/save',
+            method: 'post',
+            params: {
+                api_token: BsAppSession.get('apiToken'),
+                ...data
+            },
+            callBackFunc: (requestData, json) => {
+                const objs = { ...json.objs, ...data, isResultOk: json.isResultOk };
+
+                dispatch(onSaveReviewReturn(objs));
+            },
+            errorCallBackFunc: (errors) => {
+                dispatch(onSaveReviewReturn());
+            }
+        });
+    };
+
 };

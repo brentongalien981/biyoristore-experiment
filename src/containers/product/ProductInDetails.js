@@ -12,6 +12,8 @@ import * as actions from '../../actions/productInDetails';
 import ProductInDetailsContext from '../../contexts/product/ProductInDetailsContext';
 import { onAddToCart } from '../../actions/cart';
 import './ProductInDetails.css';
+import BsAppSession from '../../bs-library/helpers/BsAppSession';
+
 
 
 
@@ -32,12 +34,54 @@ class ProductInDetails extends React.Component {
     /** PROPERTIES */
     state = {
         isReadingReviews: false,
+        isSavingReview: false,
         newReview: { rating: 1, message: "" }
     };
 
 
 
     /** HELPER FUNCS */
+    doPostOnSaveReviewProcess() {
+        this.setState({
+            isSavingReview: false,
+            newReview: { rating: 1, message: "" }
+        });
+
+        this.props.endOnSaveReviewProcess();
+    }
+
+
+
+    doActualOnSaveReviewProcess() {
+        const data = {
+            productId: this.props.product.id,
+            ...this.state.newReview
+        };
+
+        this.props.saveReview(data);
+    }
+
+
+
+    doPreOnSaveReviewProcess() {
+        if (!BsAppSession.isLoggedIn()) { alert("You have to be signed in to make a review..."); return false; }
+        if (this.state.isSavingReview) { return false; }
+        if (this.props.product.id == 1) { return false; }
+
+        const reviewMsg = this.state.newReview.message;
+        if (reviewMsg.trim().length == 0) { alert("Message can not be empty..."); return false; }
+
+        this.setState({
+            isSavingReview: true
+        });
+
+        // ish: Show message to user.
+
+        return true;
+    }
+
+
+
     doPostReadReviewsProcess() {
         this.setState({
             isReadingReviews: false
@@ -103,6 +147,7 @@ class ProductInDetails extends React.Component {
 
         if (this.props.shouldDoPostReadReviewsProcess) { this.doPostReadReviewsProcess(); }
 
+        if (this.props.shouldDoPostOnSaveReviewProcess) { this.doPostOnSaveReviewProcess(); }
     }
 
 
@@ -144,13 +189,8 @@ class ProductInDetails extends React.Component {
 
 
     onSaveReview = () => {
-        Bs.log("In METHOD: onSaveReview()");
-        Bs.log("this.state.newReview ==> ...");
-        Bs.log(this.state.newReview);
-        return;
-
-        if (this.doPreReadReviewProcess()) {
-            this.doActualReadReviewProcess();
+        if (this.doPreOnSaveReviewProcess()) {
+            this.doActualOnSaveReviewProcess();
         }
     };
     //ish
@@ -207,6 +247,7 @@ class ProductInDetails extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+        shouldDoPostOnSaveReviewProcess: state.productInDetails.shouldDoPostOnSaveReviewProcess,
         shouldDoInitialReadReviews: state.productInDetails.shouldDoInitialReadReviews,
         shouldDoPostReadReviewsProcess: state.productInDetails.shouldDoPostReadReviewsProcess,
         avgRating: state.productInDetails.avgRating,
@@ -224,6 +265,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        endOnSaveReviewProcess: () => dispatch(actions.endOnSaveReviewProcess()),
+        saveReview: (data) => dispatch(actions.saveReview(data)),
         endReadReviewsProcess: () => dispatch(actions.endReadReviewsProcess()),
         readReviews: (params) => dispatch(actions.readReviews(params)),
         onAddToCart: (product) => dispatch(onAddToCart(product)),

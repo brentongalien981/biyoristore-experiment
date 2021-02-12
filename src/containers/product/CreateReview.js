@@ -33,7 +33,7 @@ function CreateReview(props) {
 
                             <div className="form-group col-12">
                                 <label>Message</label>
-                                <textarea className="form-control" name="message" rows="5" onChange={props.onNewReviewInputChange}></textarea>
+                                <textarea className="form-control" name="message" rows="5" value={props.newReview.message} onChange={props.onNewReviewInputChange}></textarea>
                             </div>
                         </form>
                     </div>
