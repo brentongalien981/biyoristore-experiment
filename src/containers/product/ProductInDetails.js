@@ -13,7 +13,6 @@ import ProductInDetailsContext from '../../contexts/product/ProductInDetailsCont
 import { onAddToCart } from '../../actions/cart';
 import './ProductInDetails.css';
 import BsAppSession from '../../bs-library/helpers/BsAppSession';
-import { TemporaryAlertComponent } from '../../components/temporary-alert-system/TemporaryAlertSystem';
 
 
 
@@ -56,6 +55,7 @@ class ProductInDetails extends React.Component {
             //     shouldShowTemporaryAlert: false
             // });
         }, 5000);
+        //ish
     };
 
 
@@ -160,7 +160,6 @@ class ProductInDetails extends React.Component {
 
 
     render() {
-        const temporaryAlertComponent = this.state.shouldShowTemporaryAlert ? <TemporaryAlertComponent /> : null;
 
         return (
             <>
@@ -173,9 +172,6 @@ class ProductInDetails extends React.Component {
 
                 <ProductReviews reviews={this.props.reviews} isReadingReviews={this.state.isReadingReviews} readReviews={this.readReviews} />
                 <CreateReview newReview={this.state.newReview} onNewReviewInputChange={this.onNewReviewInputChange} onSaveReview={this.onSaveReview} />
-
-                {temporaryAlertComponent}
-
             </>
         );
     }

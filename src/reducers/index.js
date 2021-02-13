@@ -7,6 +7,7 @@ import join from './join';
 import profile from './profile';
 import checkout from './checkout';
 import order from './order';
+import temporaryAlerts from './temporaryAlerts';
 
 export default combineReducers({
     video,
@@ -16,5 +17,6 @@ export default combineReducers({
     join,
     profile,
     checkout,
-    order
+    order,
+    temporaryAlerts,
 });

@@ -6,6 +6,7 @@ import Search from './theme-components/Search';
 // import Cart from './theme-components/Cart';
 import Home from './containers/home/Home';
 import TestLoaderContainer from './containers/experiment/TestLoaderContainer';
+import TemporaryAlertSystem from './components/temporary-alert-system/TemporaryAlertSystem';
 // import Listing from './containers/listing/Listing';
 // import ProductInDetails from './containers/product/ProductInDetails';
 
@@ -37,6 +38,7 @@ function App() {
 	return (
 		<BrowserRouter>
 			<Header />
+			<TemporaryAlertSystem />
 
 			<Switch>
 				<Route path="/" exact component={Home} />

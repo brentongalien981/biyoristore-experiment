@@ -4,24 +4,24 @@ import React from 'react';
 
 class ContainerTemplate extends React.Component {
 
-    /* PROPERTIES */
+    /** PROPERTIES */
 
 
 
-    /* HELPER FUNCS */
+    /** HELPER FUNCS */
 
 
 
-    /* MAIN FUNCS */
+    /** MAIN FUNCS */
 
 
 
-    /* EVENT FUNCS */
+    /** EVENT FUNCS */
 }
 
 
 
-/* REACT-FUNCS */
+/** REACT-FUNCS */
 
 
 

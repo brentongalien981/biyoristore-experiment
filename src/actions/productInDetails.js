@@ -19,7 +19,7 @@ export const SHOW_PRODUCT = "SHOW_PRODUCT";
 
 
 /* FUNCS */
-export const onSaveReviewReturn = (objs = null) => ({ type: ON_SAVE_REVIEW_RETURN, objs: objs });
+export const onSaveReviewReturn = (objs) => ({ type: ON_SAVE_REVIEW_RETURN, objs: objs });
 export const endReadReviewsProcess = () => ({ type: END_READ_REVIEWS_PROCESS });
 export const onReadReviewsOk = (objs) => ({ type: ON_READ_REVIEWS_OK, objs: objs });
 
