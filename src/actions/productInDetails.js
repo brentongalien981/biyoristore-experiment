@@ -8,7 +8,6 @@ import BsAppSession from "../bs-library/helpers/BsAppSession";
 
 
 /* NAMES */
-export const END_ON_SAVE_REVIEW_PROCESS = "END_ON_SAVE_REVIEW_PROCESS";
 export const ON_SAVE_REVIEW_RETURN = "ON_SAVE_REVIEW_RETURN";
 export const END_READ_REVIEWS_PROCESS = "END_READ_REVIEWS_PROCESS";
 export const ON_READ_REVIEWS_OK = "ON_READ_REVIEWS_OK";
@@ -20,7 +19,6 @@ export const SHOW_PRODUCT = "SHOW_PRODUCT";
 
 
 /* FUNCS */
-export const endOnSaveReviewProcess = () => ({ type: END_ON_SAVE_REVIEW_PROCESS });
 export const onSaveReviewReturn = (objs = null) => ({ type: ON_SAVE_REVIEW_RETURN, objs: objs });
 export const endReadReviewsProcess = () => ({ type: END_READ_REVIEWS_PROCESS });
 export const onReadReviewsOk = (objs) => ({ type: ON_READ_REVIEWS_OK, objs: objs });
@@ -154,7 +152,7 @@ export const saveReview = (data) => {
                 dispatch(onSaveReviewReturn(objs));
             },
             errorCallBackFunc: (errors) => {
-                dispatch(onSaveReviewReturn());
+                dispatch(onSaveReviewReturn({...data}));
             }
         });
     };

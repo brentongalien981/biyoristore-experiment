@@ -13,6 +13,7 @@ import ProductInDetailsContext from '../../contexts/product/ProductInDetailsCont
 import { onAddToCart } from '../../actions/cart';
 import './ProductInDetails.css';
 import BsAppSession from '../../bs-library/helpers/BsAppSession';
+import { TemporaryAlertComponent } from '../../components/temporary-alert-system/TemporaryAlertSystem';
 
 
 
@@ -35,27 +36,35 @@ class ProductInDetails extends React.Component {
     state = {
         isReadingReviews: false,
         isSavingReview: false,
-        newReview: { rating: 1, message: "" }
+        newReview: { rating: 1, message: "" },
+        shouldShowTemporaryAlert: false,
     };
 
 
 
     /** HELPER FUNCS */
-    doPostOnSaveReviewProcess() {
+    doPostOnSaveReviewProcess = () => {
         this.setState({
             isSavingReview: false,
-            newReview: { rating: 1, message: "" }
+            newReview: { rating: 1, message: "" },
+            shouldShowTemporaryAlert: true
         });
 
-        this.props.endOnSaveReviewProcess();
-    }
+        setTimeout(() => {
+            Bs.log("deleting the alert...");
+            // this.setState({
+            //     shouldShowTemporaryAlert: false
+            // });
+        }, 5000);
+    };
 
 
 
     doActualOnSaveReviewProcess() {
         const data = {
             productId: this.props.product.id,
-            ...this.state.newReview
+            ...this.state.newReview,
+            doPostProcessCallback: this.doPostOnSaveReviewProcess
         };
 
         this.props.saveReview(data);
@@ -146,13 +155,13 @@ class ProductInDetails extends React.Component {
         if (this.props.shouldDoInitialReadReviews) { this.readReviews({ isInitialBatch: true }); }
 
         if (this.props.shouldDoPostReadReviewsProcess) { this.doPostReadReviewsProcess(); }
-
-        if (this.props.shouldDoPostOnSaveReviewProcess) { this.doPostOnSaveReviewProcess(); }
     }
 
 
 
     render() {
+        const temporaryAlertComponent = this.state.shouldShowTemporaryAlert ? <TemporaryAlertComponent /> : null;
+
         return (
             <>
                 <BreadcrumbsLight breadCrumbLinks={this.props.breadCrumbLinks} />
@@ -164,6 +173,9 @@ class ProductInDetails extends React.Component {
 
                 <ProductReviews reviews={this.props.reviews} isReadingReviews={this.state.isReadingReviews} readReviews={this.readReviews} />
                 <CreateReview newReview={this.state.newReview} onNewReviewInputChange={this.onNewReviewInputChange} onSaveReview={this.onSaveReview} />
+
+                {temporaryAlertComponent}
+
             </>
         );
     }
@@ -193,7 +205,6 @@ class ProductInDetails extends React.Component {
             this.doActualOnSaveReviewProcess();
         }
     };
-    //ish
 
 
 
@@ -247,7 +258,6 @@ class ProductInDetails extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        shouldDoPostOnSaveReviewProcess: state.productInDetails.shouldDoPostOnSaveReviewProcess,
         shouldDoInitialReadReviews: state.productInDetails.shouldDoInitialReadReviews,
         shouldDoPostReadReviewsProcess: state.productInDetails.shouldDoPostReadReviewsProcess,
         avgRating: state.productInDetails.avgRating,
@@ -265,7 +275,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        endOnSaveReviewProcess: () => dispatch(actions.endOnSaveReviewProcess()),
         saveReview: (data) => dispatch(actions.saveReview(data)),
         endReadReviewsProcess: () => dispatch(actions.endReadReviewsProcess()),
         readReviews: (params) => dispatch(actions.readReviews(params)),

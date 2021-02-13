@@ -35,7 +35,6 @@ const initialState = {
     // FLAGS
     shouldDoInitialReadReviews: false,
     shouldDoPostReadReviewsProcess: false,
-    shouldDoPostOnSaveReviewProcess: false,
 };
 
 
@@ -43,7 +42,6 @@ const initialState = {
 /* REDUCER */
 const productInDetails = (state = initialState, action) => {
     switch (action.type) {
-        case actions.END_ON_SAVE_REVIEW_PROCESS: return endOnSaveReviewProcess(state, action);
         case actions.ON_SAVE_REVIEW_RETURN: return onSaveReviewReturn(state, action);
         case actions.END_READ_REVIEWS_PROCESS: return endReadReviewsProcess(state, action);
         case actions.ON_READ_REVIEWS_OK: return onReadReviewsOk(state, action);
@@ -58,24 +56,18 @@ const productInDetails = (state = initialState, action) => {
 
 
 /* NORMAL */
-const endOnSaveReviewProcess = (state, action) => ({
-    ...state,
-    shouldDoPostOnSaveReviewProcess: false
-});
-
-
-
 const onSaveReviewReturn = (state, action) => {
 
     let returnState = {
         ...state,
-        shouldDoPostOnSaveReviewProcess: true,
     };
 
     if (!action.objs?.isResultOk) {
         alert("Oops! Something went wrong on our end. Please try again.");
     }
 
+
+    action.objs.doPostProcessCallback();
 
     return returnState;
 
