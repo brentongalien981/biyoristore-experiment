@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Bs from '../../bs-library/helpers/Bs';
 import './TemporaryAlertSystem.css';
+import * as actions from '../../actions/temporaryAlerts';
 
 
 
@@ -11,26 +13,48 @@ class TemporaryAlertSystem extends React.Component {
 
 
     /** HELPER FUNCS */
+    static createAlertObj(data) {
+        const alertId = 'temporary-alert-' + Bs.getRandomId(8);
+
+        return {
+            id: alertId,
+            msg: data.msg ?? ''
+        };
+    }
 
 
 
     /** MAIN FUNCS */
+    componentDidMount() {
+        this.props.tryResetSystem();
+    }
+
+
+
     render() {
 
-        const alerts = this.props.alerts.map((a, i) => {
-            return (
-                <div key={i} className="alert alert-primary alert-dismissible fade show AlertItem" role="alert">
+        const maxNumOfShownAlerts = 3;
+        const alerts = this.props.alerts;
+        let alertComponents = [];
+
+        for (let i = 0; i < alerts.length; i++) {
+            if (i >= maxNumOfShownAlerts) { break; }
+            const a = alerts[i];
+
+            alertComponents.push(
+                <div key={i} id={a.id} className="alert alert-primary alert-dismissible fade show AlertItem" role="alert">
                     {a.msg}
-                    <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                    <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={(e) => this.onAlertDismiss(a.id)}>
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
             );
-        });
+        }
+
 
         return (
             <div className="AlertsHolder">
-                {alerts}
+                {alertComponents}
             </div>
         );
     }
@@ -38,6 +62,10 @@ class TemporaryAlertSystem extends React.Component {
 
 
     /** EVENT FUNCS */
+    onAlertDismiss = (alertId) => {
+        Bs.log(alertId);
+        this.props.deleteAlert(alertId);
+    };
 }
 
 
@@ -50,4 +78,13 @@ const mapStateToProps = (state) => {
 };
 
 
-export default connect(mapStateToProps, null)(TemporaryAlertSystem);
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        tryResetSystem: () => dispatch(actions.tryResetSystem()),
+        deleteAlert: (alertId) => dispatch(actions.deleteAlert(alertId))
+    };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(TemporaryAlertSystem);

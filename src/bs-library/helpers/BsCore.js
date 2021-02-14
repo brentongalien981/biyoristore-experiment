@@ -9,12 +9,12 @@ class BsCore {
     static pubPhotoUrl = "https://s3.us-east-2.amazonaws.com/bs.s3.public/photos/";
 
     // FOR MAC
-    // static appBackendUrl = "http://biyoristoreexperiment.test:8000";
-    // static appApiUrl = "http://biyoristoreexperiment.test:8000/api";
+    static appBackendUrl = "http://biyoristoreexperiment.test:8000";
+    static appApiUrl = "http://biyoristoreexperiment.test:8000/api";
 
     // FOR WINDOWS
-    static appBackendUrl = "http://biyoristoreexperiment.test";
-    static appApiUrl = "http://biyoristoreexperiment.test/api";
+    // static appBackendUrl = "http://biyoristoreexperiment.test";
+    // static appApiUrl = "http://biyoristoreexperiment.test/api";
 
 
 

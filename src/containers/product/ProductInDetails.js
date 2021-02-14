@@ -13,6 +13,8 @@ import ProductInDetailsContext from '../../contexts/product/ProductInDetailsCont
 import { onAddToCart } from '../../actions/cart';
 import './ProductInDetails.css';
 import BsAppSession from '../../bs-library/helpers/BsAppSession';
+import { queueAlert } from '../../actions/temporaryAlerts';
+import TemporaryAlertSystem from '../../components/temporary-alert-system/TemporaryAlertSystem';
 
 
 
@@ -36,7 +38,6 @@ class ProductInDetails extends React.Component {
         isReadingReviews: false,
         isSavingReview: false,
         newReview: { rating: 1, message: "" },
-        shouldShowTemporaryAlert: false,
     };
 
 
@@ -46,16 +47,7 @@ class ProductInDetails extends React.Component {
         this.setState({
             isSavingReview: false,
             newReview: { rating: 1, message: "" },
-            shouldShowTemporaryAlert: true
         });
-
-        setTimeout(() => {
-            Bs.log("deleting the alert...");
-            // this.setState({
-            //     shouldShowTemporaryAlert: false
-            // });
-        }, 5000);
-        //ish
     };
 
 
@@ -84,7 +76,9 @@ class ProductInDetails extends React.Component {
             isSavingReview: true
         });
 
-        // ish: Show message to user.
+        // Show message to user.
+        const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: "Your review is now being saved. It should be posted shortly." });
+        this.props.queueAlert(newAlertObj);
 
         return true;
     }
@@ -271,6 +265,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        queueAlert: (obj) => dispatch(queueAlert(obj)),
         saveReview: (data) => dispatch(actions.saveReview(data)),
         endReadReviewsProcess: () => dispatch(actions.endReadReviewsProcess()),
         readReviews: (params) => dispatch(actions.readReviews(params)),

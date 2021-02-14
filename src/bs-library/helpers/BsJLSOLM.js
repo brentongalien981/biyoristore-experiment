@@ -17,7 +17,10 @@ export default class BsJLSOLM {
         },
         checkout: {},
         cart: {},
-        profile: {}
+        profile: {},
+        temporaryAlerts: {
+            alerts: { dateRefreshed: null, lifespan: 30, shouldForceReadDb: false },
+        },
     };
 
     static defaultSearchQueryObjs = {
