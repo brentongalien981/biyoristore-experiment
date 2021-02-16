@@ -126,13 +126,6 @@ class ProductInDetails extends React.Component {
 
     /** MAIN FUNCS */
     componentDidMount() {
-        Bs.log("\n####################");
-        Bs.log("In CLASS: ProductInDetails, METHOD: componentDidMount()");
-
-        Bs.log("this.props ==> ...");
-        Bs.log(this.props);
-        Bs.log("this.props.message ==> " + this.props.message);
-
         // REQUIRED: Initialize contexts.
         this.setMyContext();
 

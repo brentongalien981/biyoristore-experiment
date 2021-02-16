@@ -83,27 +83,49 @@ const endReadReviewsProcess = (state, action) => ({
 
 
 const onReadReviewsOk = (state, action) => {
-    if (action.objs.isResultOk) {
 
-        const updatedReviews = [...state.reviews, ...action.objs.reviews];
-        const avgRating = action.objs.batchNum == 1 ? action.objs.avgRating : state.avgRating;
-
-        return {
-            ...state,
-            shouldDoInitialReadReviews: false,
-            reviews: updatedReviews,
-            avgRating: avgRating,
-            shouldDoPostReadReviewsProcess: true
-        };
-    }
-
-    alert("Oops! Something went wrong on our end. Please try again.");
-
-    return {
+    let returnState = {
         ...state,
         shouldDoInitialReadReviews: false,
         shouldDoPostReadReviewsProcess: true
     };
+
+
+    if (action.objs.isResultOk) {
+
+        //ish
+        const requestUrlQ = action.objs.requestUrlQ;
+        const productRatingUrlQ = 'product-rating?productId=' + action.objs.productId;
+        let reviewsForCurrentBatchNum = [];
+
+        if (action.objs.retrievedDataFrom === "cache" || action.objs.retrievedDataFrom === "db") {
+
+            reviewsForCurrentBatchNum = action.objs.reviews;
+            BsJLS.set(requestUrlQ, reviewsForCurrentBatchNum);            
+
+
+            if (action.objs.batchNum == 1) {                
+                const avgRating = action.objs.avgRating;
+                BsJLS.set(productRatingUrlQ, avgRating);
+            }
+        }
+
+
+        reviewsForCurrentBatchNum = BsJLS.get(requestUrlQ) ?? [];
+        const updatedReviews = [...state.reviews, ...reviewsForCurrentBatchNum];
+        const avgRating = BsJLS.get(productRatingUrlQ);
+
+
+        return {
+            ...returnState,
+            reviews: updatedReviews,
+            avgRating: avgRating,
+        };
+    }
+
+    
+
+    return returnState;
 
 };
 

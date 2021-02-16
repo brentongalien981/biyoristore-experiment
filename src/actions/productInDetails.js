@@ -105,31 +105,29 @@ export const readReviews = (params) => {
     params.requestUrlQ = requestUrlQ;
 
 
-    // TODO:UNCOMMENT
-    // if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.searchQueryObjs[requestUrlQ])) {
-    return (dispatch) => {
+    if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.searchQueryObjs[requestUrlQ])) {
+        return (dispatch) => {
 
-        BsCore2.ajaxCrud({
-            url: '/reviews/read',
-            params: { ...params },
-            callBackFunc: (requestData, json) => {
+            BsCore2.ajaxCrud({
+                url: '/reviews/read',
+                params: { ...params },
+                callBackFunc: (requestData, json) => {
 
-                // BsJLSOLM.updateRefreshDateForSearchQuery(requestUrlQ);
-                const objs = { ...json.objs, ...params, isResultOk: true };
+                    BsJLSOLM.updateRefreshDateForSearchQuery(requestUrlQ);
+                    const objs = { ...json.objs, ...params, isResultOk: true };
 
-                dispatch(onReadReviewsOk(objs));
-                //ish
-            },
-            errorCallBackFunc: (errors) => {
-                const objs = { ...params, isResultOk: false };
-                dispatch(onReadReviewsOk(objs));
+                    dispatch(onReadReviewsOk(objs));
+                },
+                errorCallBackFunc: (errors) => {
+                    const objs = { ...params, isResultOk: false };
+                    dispatch(onReadReviewsOk(objs));
 
-            }
-        });
-    };
-    // }
+                }
+            });
+        };
+    }
 
-    const objs = { retrievedDataFrom: "localStorage", ...params };
+    const objs = { retrievedDataFrom: "localStorage", ...params, isResultOk: true };
     return onReadReviewsOk(objs);
 };
 
@@ -152,7 +150,7 @@ export const saveReview = (data) => {
                 dispatch(onSaveReviewReturn(objs));
             },
             errorCallBackFunc: (errors) => {
-                dispatch(onSaveReviewReturn({...data}));
+                dispatch(onSaveReviewReturn({ ...data }));
             }
         });
     };
