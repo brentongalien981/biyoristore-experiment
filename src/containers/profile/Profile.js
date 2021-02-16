@@ -66,7 +66,6 @@ class Profile extends React.Component {
 
 
     onOrderPageNumClick = (e, pageNum) => {
-        //ish
         e.preventDefault();
         Bs.log("TODO: onOrderPageNumClick()");
         Bs.log("pageNum ==> " + pageNum);

@@ -25,7 +25,7 @@ const PaymentFinalization = React.lazy(() => import('./containers/payment/Paymen
 const PredefinedPaymentFinalization = React.lazy(() => import('./containers/payment/PredefinedPaymentFinalization'));
 const Order = React.lazy(() => import('./containers/order-detail/Order'));
 
-// TODO: Delete this
+// TODO:DEPLOYMENT: Delete this
 const TestPageWithHistoryNavigationBlocker = React.lazy(() => import('./containers/experiment/TestPageWithHistoryNavigationBlocker'));
 
 

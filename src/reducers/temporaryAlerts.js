@@ -9,7 +9,6 @@ const DEFAULT_ALERT = { msg: "DEFAULT ALERT MSG!", };
 
 /** INITIAL STATE */
 const initialState = {
-    // TODO
     alerts: BsJLS.get('temporaryAlerts.alerts') ?? []
 };
 

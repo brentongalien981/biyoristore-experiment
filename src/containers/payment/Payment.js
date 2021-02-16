@@ -33,7 +33,7 @@ class Payment extends React.Component {
     }
 
 
-//ish
+
     doesCartHaveItem() {
         if (this.props.location.state.cartItems.length >= 1) { return true; }
         return false;

@@ -175,7 +175,6 @@ class PredefinedPaymentFinalization extends React.Component {
 
     componentDidMount() {
         
-        // ish
         if (!this.checkPageEntryCode()) { 
             alert("Please confirm your order first.");
             this.props.history.replace("/checkout");

@@ -22,7 +22,6 @@ class Order extends React.Component {
 
     /* MAIN FUNCS */
     componentDidMount() {
-        //ish
         const urlParams = this.props.location.search;
         const acceptedParams = ["id"];
         const parsedUrlParams = Bs.getParsedQueryParams(urlParams, acceptedParams);

@@ -93,7 +93,6 @@ const onReadReviewsOk = (state, action) => {
 
     if (action.objs.isResultOk) {
 
-        //ish
         const requestUrlQ = action.objs.requestUrlQ;
         const productRatingUrlQ = 'product-rating?productId=' + action.objs.productId;
         let reviewsForCurrentBatchNum = [];
@@ -123,7 +122,7 @@ const onReadReviewsOk = (state, action) => {
         };
     }
 
-    
+
 
     return returnState;
 

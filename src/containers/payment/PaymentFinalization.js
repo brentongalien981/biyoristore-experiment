@@ -136,7 +136,6 @@ class PaymentFinalization extends React.Component {
 
 
     componentDidMount() {
-        //ish
         if (!this.doPrePaymentFinalizationProcess()) { return; }
         this.doActualPaymentFinalizationProcess();
     }
@@ -161,8 +160,6 @@ class PaymentFinalization extends React.Component {
 
 
     constructor(props) {
-
-        //ish
         super(props);
         Bs.log("\n\n##############################");
         Bs.log("In CLASS: PaymentFinalization, METHOD: constructor()...");

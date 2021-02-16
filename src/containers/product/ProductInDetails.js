@@ -232,7 +232,7 @@ class ProductInDetails extends React.Component {
 
 
     onSizeOptionClick = (possibleSize) => {
-        Bs.log("TODO: onSizeOptionClick()");
+        Bs.log("onSizeOptionClick()");
         Bs.log("possibleSize ==> " + possibleSize);
     };
 }
