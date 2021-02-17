@@ -20,17 +20,6 @@ function ProductActions(props) {
                         <a className="nav-link" href="#" onClick={() => alert("TODO")}>Add to wishlist</a>
                     </li> */}
 
-                    <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Share this product</a>
-                        <ul className="dropdown-menu">
-                            <li>
-                                <a className="dropdown-item" href="#" onClick={() => alert("TODO")}>Facebook</a>
-                            </li>
-                            <li>
-                                <a className="dropdown-item" href="#" onClick={() => alert("TODO")}>Twitter</a>
-                            </li>
-                        </ul>
-                    </li>
                 </ul>
             </div>
         </div>
