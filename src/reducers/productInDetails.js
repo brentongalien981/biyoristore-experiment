@@ -110,8 +110,10 @@ const onReadReviewsOk = (state, action) => {
         }
 
 
+        const previousReviews = action.objs.batchNum === 1 ? [] : [...state.reviews];
         reviewsForCurrentBatchNum = BsJLS.get(requestUrlQ) ?? [];
-        const updatedReviews = [...state.reviews, ...reviewsForCurrentBatchNum];
+
+        const updatedReviews = [...previousReviews, ...reviewsForCurrentBatchNum];
         const avgRating = BsJLS.get(productRatingUrlQ);
 
 

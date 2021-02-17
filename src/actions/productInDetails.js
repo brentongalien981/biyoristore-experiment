@@ -105,7 +105,7 @@ export const readReviews = (params) => {
     params.requestUrlQ = requestUrlQ;
 
 
-    if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.searchQueryObjs[requestUrlQ])) {
+    // if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.searchQueryObjs[requestUrlQ])) {
         return (dispatch) => {
 
             BsCore2.ajaxCrud({
@@ -125,10 +125,10 @@ export const readReviews = (params) => {
                 }
             });
         };
-    }
+    // }
 
-    const objs = { retrievedDataFrom: "localStorage", ...params, isResultOk: true };
-    return onReadReviewsOk(objs);
+    // const objs = { retrievedDataFrom: "localStorage", ...params, isResultOk: true };
+    // return onReadReviewsOk(objs);
 };
 
 
