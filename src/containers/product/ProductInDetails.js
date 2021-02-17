@@ -15,6 +15,7 @@ import './ProductInDetails.css';
 import BsAppSession from '../../bs-library/helpers/BsAppSession';
 import { queueAlert } from '../../actions/temporaryAlerts';
 import TemporaryAlertSystem from '../../components/temporary-alert-system/TemporaryAlertSystem';
+import BlankBreadCrumbsSubstitute from '../../components/customized-spacers/BlankBreadCrumbsSubstitute';
 
 
 
@@ -150,9 +151,11 @@ class ProductInDetails extends React.Component {
 
         return (
             <>
-                <BreadcrumbsLight breadCrumbLinks={this.props.breadCrumbLinks} />
-                {/* <button onClick={this.testDeleteProduct}>TEST</button>
-                <button onClick={this.testReadNewProduct}>TEST READ NEW PRODUCT</button> */}
+                {/* FOR-DBUG: DON'T DELET: This is the workaround for the error that the vendor-theme-package produces. */}
+                {/* <button onClick={this.testDeleteProduct}>TEST</button> */}
+                {/* <button onClick={this.testReadNewProduct}>TEST READ NEW PRODUCT</button> */}
+
+                <BlankBreadCrumbsSubstitute />
                 <ProductMainSection product={this.props.product} />
                 <ProductExtraInfo product={this.props.product} avgRating={this.props.avgRating} />
                 <SuggestedProducts relatedProducts={this.props.relatedProducts} onProductClicked={this.onProductClicked} />
