@@ -58,12 +58,7 @@ export const login = (credentials) => {
 
 export const saveUser = (credentials) => {
 
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: join, METHOD: saveUser()");
-    Bs.log("credentials ==> ...");
-    Bs.log(credentials);
-
-
+    //ish
     return (dispatch) => {
 
         BsCore.ajaxCrud({

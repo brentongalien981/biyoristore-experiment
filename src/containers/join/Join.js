@@ -8,6 +8,7 @@ import BsAppSession from '../../bs-library/helpers/BsAppSession';
 import Bs from '../../bs-library/helpers/Bs';
 import { withRouter } from 'react-router-dom';
 import { showCart } from '../../actions/cart';
+import BsAppLocalStorage from '../../bs-library/helpers/BsAppLocalStorage';
 
 
 
@@ -17,10 +18,13 @@ class Join extends React.Component {
         super(props);
         this.state = {
             backgroundImageUrl: BsCore.pubPhotoUrl + "background-8.jpg",
-            email: BsAppSession.get("email"), passwordForCreateAccount: "", repeatedPassword: "", passwordForSignIn: ""
+            email: BsAppLocalStorage.get("email") ?? '', 
+            passwordForCreateAccount: "", 
+            repeatedPassword: "", 
+            passwordForSignIn: ""
         };
 
-        if (BsAppSession.get("isLoggedIn") == 1) { this.props.history.push("/"); }
+        if (BsAppLocalStorage.get("isLoggedIn")) { this.props.history.push("/"); }
 
         Bs.displaySeparator(3);
         Bs.log("this.props ==> ...");
@@ -80,6 +84,7 @@ class Join extends React.Component {
         };
 
         this.props.saveUser(credentials);
+        //ish
     };
 
 
@@ -103,7 +108,7 @@ class Join extends React.Component {
         const name = target.name;
 
         if (name === "email") {
-            BsAppSession.set("email", value);
+            BsAppLocalStorage.set("email", value);
         }
 
         this.setState({

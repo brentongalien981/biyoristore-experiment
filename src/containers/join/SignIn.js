@@ -1,4 +1,5 @@
 import React from 'react';
+import SocialMediaOptions from './SocialMediaOptions';
 
 
 
@@ -15,6 +16,13 @@ function SignIn(props) {
             <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                 <div className="card-body">
                     <div className="row mt-2">
+
+                        <SocialMediaOptions />
+
+                        <div className="form-group col-12 mt-2 d-flex justify-content-center">
+                            <label>- or -</label>
+                        </div>
+
                         <div className="form-group col-12">
                             <label htmlFor="exampleInputEmail1">Email address</label>
                             <input type="email" className="form-control" id="exampleInputEmail1" name="email" value={props.email} onChange={(e) => props.onCredentialChanged(e)} />

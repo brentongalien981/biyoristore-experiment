@@ -1,16 +1,16 @@
 import Bs from "./Bs";
 
-class BsAppSession {
+class BsAppLocalStorage {
 
     static clear() {
-        sessionStorage.clear();
+        localStorage.clear();
     }
 
     static set(key, val = '') {
         key = Bs.appName + "::" + key;
 
         try {
-            sessionStorage.setItem(key, val);
+            localStorage.setItem(key, val);
         } catch (e) {
             return false;
         }
@@ -22,15 +22,15 @@ class BsAppSession {
 
     static get(key) {
         key = Bs.appName + "::" + key;
-        let val = sessionStorage.getItem(key);
+        let val = localStorage.getItem(key);
         return val;
     }
 
     static isLoggedIn() {
-        return BsAppSession.get("isLoggedIn") == 1;
+        return BsAppLocalStorage.get("isLoggedIn") == 1;
     }
 }
 
 
 
-export default BsAppSession;
+export default BsAppLocalStorage;
