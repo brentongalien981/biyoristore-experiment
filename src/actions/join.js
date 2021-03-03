@@ -1,5 +1,6 @@
 import BsCore from "../bs-library/helpers/BsCore";
 import Bs from "../bs-library/helpers/Bs";
+import BsCore2 from "../bs-library/helpers/BsCore2";
 
 
 
@@ -56,25 +57,27 @@ export const login = (credentials) => {
     };
 };
 
-export const saveUser = (credentials) => {
+export const saveUser = (data) => {
 
     //ish
     return (dispatch) => {
 
-        BsCore.ajaxCrud({
+        BsCore2.ajaxCrud({
             url: '/join/save',
             method: "post",
-            params: { email: credentials.email, password: credentials.password },
-            neededResponseParams: ["errors", "userId", "email", "apiToken"],
+            params: { email: data.email, password: data.password },
+            // neededResponseParams: ["errors", "userId", "email", "apiToken"],
             callBackFunc: (requestData, json) => {
                 Bs.log("\n#####################");
                 Bs.log("FILE: actions/join.js, METHOD: saveUser() => ajaxCrud() => callBackFunc()");
 
-                if (json.errors) {
-                    dispatch(onCreateAccountFail(json.errors));
-                } else {
-                    dispatch(onCreateAccountSuccess(json));
-                }
+
+                // TODO
+                // if (json.errors) {
+                //     dispatch(onCreateAccountFail(json.errors));
+                // } else {
+                //     dispatch(onCreateAccountSuccess(json));
+                // }
             }
         });
     };

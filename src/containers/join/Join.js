@@ -14,23 +14,52 @@ import BsAppLocalStorage from '../../bs-library/helpers/BsAppLocalStorage';
 
 class Join extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            backgroundImageUrl: BsCore.pubPhotoUrl + "background-8.jpg",
-            email: BsAppLocalStorage.get("email") ?? '', 
-            passwordForCreateAccount: "", 
-            repeatedPassword: "", 
-            passwordForSignIn: ""
+    /** PROPERTIES */
+    state = {
+        isJoining: false,
+        backgroundImageUrl: BsCore.pubPhotoUrl + "background-8.jpg",
+        email: BsAppLocalStorage.get("email") ?? '',
+        passwordForCreateAccount: "",
+        repeatedPassword: "",
+        passwordForSignIn: ""
+    };
+
+
+
+    /** HELPER-FUNCS */
+    doPostOnRegisterProcess = () => {
+        Bs.log("TODO: METHOD: doPostOnRegisterProcess()");
+    };
+
+
+
+    doActualOnRegisterProcess() {
+        //ish
+        const data = {
+            email: this.state.email,
+            password: this.state.passwordForCreateAccount,
+            doPostProcessCallBack: this.doPostOnRegisterProcess
         };
 
-        if (BsAppLocalStorage.get("isLoggedIn")) { this.props.history.push("/"); }
-
-        Bs.displaySeparator(3);
-        Bs.log("this.props ==> ...");
-        Bs.log(this.props);
+        this.props.saveUser(data);
     }
 
+
+    doPreOnRegisterProcess(e) {
+        e.preventDefault();
+
+        if (this.state.isJoining) { return false; }
+
+        // Check passwords.
+        if (this.state.passwordForCreateAccount !== this.state.repeatedPassword) {
+            alert("Passwords don't match...");
+            return false;
+        }
+
+        // ish
+        // this.setState({ isJoining: true });
+        return true;
+    }
 
 
     getRedirectToUrl() {
@@ -40,6 +69,13 @@ class Join extends React.Component {
         let redirectToUrl = "/";
         redirectToUrl += parsedQueryParams["redirectTo"] ? parsedQueryParams["redirectTo"] : "";
         return redirectToUrl;
+    }
+
+
+
+    /** MAIN-FUNCS */
+    componentDidMount() {
+        if (BsAppLocalStorage.get("isLoggedIn")) { this.props.history.push("/"); }
     }
 
 
@@ -68,22 +104,41 @@ class Join extends React.Component {
 
 
 
-    onRegister = (e) => {
-        e.preventDefault();
+    render() {
 
-        // Check passwords.
-        if (this.state.passwordForCreateAccount !== this.state.repeatedPassword) {
-            alert("Passwords don't match...");
-            return;
-        }
-
-
-        const credentials = {
-            email: this.state.email,
-            password: this.state.passwordForCreateAccount
+        const styleAttribVal = {
+            backgroundImage: "url(" + this.state.backgroundImageUrl + ")"
         };
 
-        this.props.saveUser(credentials);
+        return (
+            <section className="py-md-0">
+                <div className="image image-overlay" style={styleAttribVal}></div>
+                <div className="container">
+                    <div className="row justify-content-center align-items-center vh-md-100">
+                        <div className="col-md-10 col-lg-5">
+                            <div className="accordion accordion-portal" id="accordionExample">
+                                <SignIn email={this.state.email}
+                                    onCredentialChanged={this.onCredentialChanged}
+                                    onLogin={this.onLogin} />
+                                <CreateAccount email={this.state.email}
+                                    onCredentialChanged={this.onCredentialChanged}
+                                    onRegister={this.onRegister} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+
+    }
+
+
+
+    /** EVENT-FUNCS */
+    onRegister = (e) => {
+        if (this.doPreOnRegisterProcess(e)) {
+            this.doActualOnRegisterProcess();
+        }
         //ish
     };
 
@@ -116,40 +171,12 @@ class Join extends React.Component {
         });
     }
 
-
-
-    render() {
-
-        const styleAttribVal = {
-            backgroundImage: "url(" + this.state.backgroundImageUrl + ")"
-        };
-
-        return (
-            <section className="py-md-0">
-                <div className="image image-overlay" style={styleAttribVal}></div>
-                <div className="container">
-                    <div className="row justify-content-center align-items-center vh-md-100">
-                        <div className="col-md-10 col-lg-5">
-                            <div className="accordion accordion-portal" id="accordionExample">
-                                <SignIn email={this.state.email}
-                                    onCredentialChanged={this.onCredentialChanged}
-                                    onLogin={this.onLogin} />
-                                <CreateAccount email={this.state.email}
-                                    onCredentialChanged={this.onCredentialChanged}
-                                    onRegister={this.onRegister} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        );
-
-    }
 }
 
 
 
 
+/** REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
         isThereJoinError: state.join.isThereJoinError,
@@ -164,7 +191,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onRedirectHomeSuccess: () => dispatch(actions.onRedirectHomeSuccess()),
         showCart: () => dispatch(showCart()),
-        saveUser: (credentials) => dispatch(actions.saveUser(credentials)),
+        saveUser: (data) => dispatch(actions.saveUser(data)),
         login: (credentials) => dispatch(actions.login(credentials)),
         resetErrors: () => dispatch(actions.resetErrors())
     };
