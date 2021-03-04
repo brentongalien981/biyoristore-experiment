@@ -22,14 +22,14 @@ class Join extends React.Component {
         email: BsAppLocalStorage.get("email") ?? '',
         passwordForCreateAccount: "",
         repeatedPassword: "",
-        passwordForSignIn: ""
+        passwordForSignIn: "",
     };
 
 
 
     /** HELPER-FUNCS */
     doPostOnRegisterProcess = () => {
-        this.setState({ isJoining: false });
+        this.setState({ isJoining: false, });
     };
 
 
@@ -38,7 +38,7 @@ class Join extends React.Component {
         const data = {
             email: this.state.email,
             password: this.state.passwordForCreateAccount,
-            doPostProcessCallBack: this.doPostOnRegisterProcess
+            doPostProcessCallBack: this.doPostOnRegisterProcess,
         };
 
         this.props.saveUser(data);
@@ -75,26 +75,20 @@ class Join extends React.Component {
     /** MAIN-FUNCS */
     componentDidMount() {
         if (BsAppLocalStorage.get("isLoggedIn")) { this.props.history.push("/"); }
+        this.props.resetFlags();
     }
 
 
 
     componentDidUpdate() {
         //ish
-
-        if (this.props.shouldRedirectHome) {
-
-            // This means the user successfully signed-up.
-            Bs.log("shouldRedirectHome");
-
+        if (this.props.shouldDoOnRegisterProcessFinalization) {
             // Refresh the cart.
             this.props.showCart();
 
-            this.props.onRedirectHomeSuccess();
-
-            // 
             const redirectTo = this.getRedirectToUrl();
             this.props.history.push(redirectTo);
+
         }
     }
 
@@ -177,6 +171,7 @@ class Join extends React.Component {
 /** REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
+        shouldDoOnRegisterProcessFinalization: state.join.shouldDoOnRegisterProcessFinalization,
         isThereJoinError: state.join.isThereJoinError,
         errorMsg: state.join.errorMsg,
         shouldRedirectHome: state.join.shouldRedirectHome
@@ -187,6 +182,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        resetFlags: () => dispatch(actions.resetFlags()),
         onRedirectHomeSuccess: () => dispatch(actions.onRedirectHomeSuccess()),
         showCart: () => dispatch(showCart()),
         saveUser: (data) => dispatch(actions.saveUser(data)),

@@ -7,6 +7,7 @@ import Search from './theme-components/Search';
 import Home from './containers/home/Home';
 import TestLoaderContainer from './containers/experiment/TestLoaderContainer';
 import TemporaryAlertSystem from './components/temporary-alert-system/TemporaryAlertSystem';
+import AppStateManager from './bs-helper-classes/AppStateManager';
 // import Listing from './containers/listing/Listing';
 // import ProductInDetails from './containers/product/ProductInDetails';
 
@@ -37,6 +38,7 @@ function App() {
 
 	return (
 		<BrowserRouter>
+			<AppStateManager />
 			<Header />
 			<TemporaryAlertSystem />
 

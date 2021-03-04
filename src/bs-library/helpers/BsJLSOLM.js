@@ -9,7 +9,18 @@ import BsJLS from "./BsJLS";
  */
 export default class BsJLSOLM {
 
+    static SEARCH_QUERY_LIFESPAN = 120;
+
+    static objs = BsJLS.get("BsJLSOLM-objs") ?? BsJLSOLM.defaultObjs;
+    static searchQueryObjs = BsJLS.get("BsJLSOLM-searchQueryObjs") ?? BsJLSOLM.defaultSearchQueryObjs;
+
+
+
     static defaultObjs = {
+        auth: {
+            currentAccount: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
+            accounts: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
+        },
         products: {
             brands: { dateRefreshed: null, lifespan: 10080, shouldForceReadDb: false },
             categories: { dateRefreshed: null, lifespan: 10080, shouldForceReadDb: false },
@@ -28,14 +39,15 @@ export default class BsJLSOLM {
         'teamId=8&categoryId=2': { dateRefreshed: null, lifespan: 120, shouldForceReadDb: false },
     };
 
-    static SEARCH_QUERY_LIFESPAN = 120;
 
 
-    static objs = BsJLS.get("BsJLSOLM-objs") ?? BsJLSOLM.defaultObjs;
-    static searchQueryObjs = BsJLS.get("BsJLSOLM-searchQueryObjs") ?? BsJLSOLM.defaultSearchQueryObjs;
+    static init() {
+        BsJLSOLM.objs = BsJLS.get("BsJLSOLM-objs") ?? BsJLSOLM.defaultObjs;
+        BsJLSOLM.searchQueryObjs = BsJLS.get("BsJLSOLM-searchQueryObjs") ?? BsJLSOLM.defaultSearchQueryObjs;
+    }
+
 
      
-
     /**
      * @deprecated
      * TODO:DELETE

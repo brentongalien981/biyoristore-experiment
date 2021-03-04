@@ -5,6 +5,7 @@ import BsCore2 from "../bs-library/helpers/BsCore2";
 
 
 /* NAMES */
+export const RESET_FLAGS = "RESET_FLAGS";
 export const ON_REDIRECT_HOME_SUCCESS = "ON_REDIRECT_HOME_SUCCESS";
 export const RESET_ERRORS = "RESET_ERRORS";
 export const SAVE_USER = "SAVE_USER";
@@ -14,11 +15,12 @@ export const ON_CREATE_ACCOUNT_FAIL = "ON_CREATE_ACCOUNT_FAIL";
 
 
 /* FUNCS */
+export const resetFlags = () => ({ type: RESET_FLAGS });
 export const onRedirectHomeSuccess = () => ({ type: ON_REDIRECT_HOME_SUCCESS });
 export const resetErrors = () => ({ type: RESET_ERRORS });
-export const onCreateAccountSuccess = (returndData) => ({
+export const onCreateAccountSuccess = (returnData) => ({
     type: ON_CREATE_ACCOUNT_SUCCESS,
-    returndData: returndData
+    returnData: returnData
 });
 export const onCreateAccountFail = (objs) => ({ type: ON_CREATE_ACCOUNT_FAIL, objs: objs });
 
@@ -60,7 +62,6 @@ export const login = (credentials) => {
 export const saveUser = (data) => {
 
     //ish
-    // TODO: User BsJLS.
     return (dispatch) => {
 
         BsCore2.ajaxCrud({
@@ -68,7 +69,6 @@ export const saveUser = (data) => {
             method: "post",
             params: { email: data.email, password: data.password },
             callBackFunc: (requestData, json) => {
-                // TODO: Update BsJLS.
                 const returnData = { ...data, ...json };
                 dispatch(onCreateAccountSuccess(returnData));
             },

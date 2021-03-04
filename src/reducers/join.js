@@ -3,6 +3,8 @@ import Bs from '../bs-library/helpers/Bs';
 import BsAppLocalStorage from '../bs-library/helpers/BsAppLocalStorage';
 import BsAppSession from '../bs-library/helpers/BsAppSession';
 import BsCore2 from '../bs-library/helpers/BsCore2';
+import BsJLS from '../bs-library/helpers/BsJLS';
+import BsJLSOLM from '../bs-library/helpers/BsJLSOLM';
 
 /** */
 const initialState = {
@@ -13,7 +15,9 @@ const initialState = {
     },
     isThereJoinError: false,
     errorMsg: "",
-    shouldRedirectHome: false
+    shouldRedirectHome: false,
+    // FLAGS
+    shouldDoOnRegisterProcessFinalization: false,
 };
 
 
@@ -21,6 +25,7 @@ const initialState = {
 /* REDUCER */
 const join = (state = initialState, action) => {
     switch (action.type) {
+        case actions.RESET_FLAGS: return resetFlags(state, action);
         case actions.ON_REDIRECT_HOME_SUCCESS: return onRedirectHomeSuccess(state, action);
         case actions.RESET_ERRORS: return resetErrors(state, action);
         case actions.ON_CREATE_ACCOUNT_SUCCESS: return onCreateAccountSuccess(state, action);
@@ -37,6 +42,16 @@ const onRedirectHomeSuccess = (state, action) => {
     return {
         ...state,
         shouldRedirectHome: false
+    };
+};
+
+
+
+const resetFlags = (state, action) => {
+
+    return {
+        ...state,
+        shouldDoOnRegisterProcessFinalization: false,
     };
 };
 
@@ -62,19 +77,29 @@ const onCreateAccountFail = (state, action) => {
 
 const onCreateAccountSuccess = (state, action) => {
 
-    // Bs.log("\n###############");
-    // Bs.log("In REDUCER: join, METHOD: onCreateAccountSuccess()");
+    action.returnData.doPostProcessCallBack();
+    let shouldDoOnRegisterProcessFinalization = false;
 
 
-    // BsAppSession.set("userId", action.json.userId);
-    // BsAppSession.set("email", action.json.email);
-    // BsAppSession.set("apiToken", action.json.apiToken);
-    // BsAppSession.set("isLoggedIn", 1);
+    if (action.returnData.isResultOk) {
 
-    action.returndData.doPostProcessCallBack();
+        const currentAuthUserData = {
+            email: action.returnData.objs.email,
+            bmdToken: action.returnData.objs.bmdToken,
+            authProviderId: action.returnData.objs.authProviderId,
+            expiresIn: action.returnData.objs.expiresIn,
+            isKeptLoggedIn: false,
+        };
 
-    if (action.returndData.isResultOk) {
-        alert("hell yeah!");
+        BsJLS.set('auth.currentAccount', currentAuthUserData);
+        BsAppLocalStorage.set('isLoggedIn', 1);
+        BsAppLocalStorage.set('email', currentAuthUserData.email);
+
+
+        BsJLSOLM.updateRefreshDate('auth.currentAccount');
+
+        shouldDoOnRegisterProcessFinalization = true;
+
     } else {
         BsCore2.alertForGeneralError();
     }
@@ -83,9 +108,7 @@ const onCreateAccountSuccess = (state, action) => {
 
     return {
         ...state,
-        // isThereJoinError: false,
-        // shouldRedirectHome: true,
-        // message: "Just executed METHOD: onCreateAccountSuccess() from REDUCER: join"
+        shouldDoOnRegisterProcessFinalization: shouldDoOnRegisterProcessFinalization,
     };
 };
 
