@@ -16,11 +16,11 @@ export const ON_CREATE_ACCOUNT_FAIL = "ON_CREATE_ACCOUNT_FAIL";
 /* FUNCS */
 export const onRedirectHomeSuccess = () => ({ type: ON_REDIRECT_HOME_SUCCESS });
 export const resetErrors = () => ({ type: RESET_ERRORS });
-export const onCreateAccountSuccess = (json) => ({
+export const onCreateAccountSuccess = (returndData) => ({
     type: ON_CREATE_ACCOUNT_SUCCESS,
-    json: json
+    returndData: returndData
 });
-export const onCreateAccountFail = (errors) => ({ type: ON_CREATE_ACCOUNT_FAIL, errors: errors });
+export const onCreateAccountFail = (objs) => ({ type: ON_CREATE_ACCOUNT_FAIL, objs: objs });
 
 
 
@@ -60,25 +60,23 @@ export const login = (credentials) => {
 export const saveUser = (data) => {
 
     //ish
+    // TODO: User BsJLS.
     return (dispatch) => {
 
         BsCore2.ajaxCrud({
             url: '/join/save',
             method: "post",
             params: { email: data.email, password: data.password },
-            // neededResponseParams: ["errors", "userId", "email", "apiToken"],
             callBackFunc: (requestData, json) => {
-                Bs.log("\n#####################");
-                Bs.log("FILE: actions/join.js, METHOD: saveUser() => ajaxCrud() => callBackFunc()");
+                // TODO: Update BsJLS.
+                const returnData = { ...data, ...json };
+                dispatch(onCreateAccountSuccess(returnData));
+            },
+            errorCallBackFunc: (errors) => {
+                const objs = { ...data, errors: errors };
+                dispatch(onCreateAccountFail(objs));
 
-
-                // TODO
-                // if (json.errors) {
-                //     dispatch(onCreateAccountFail(json.errors));
-                // } else {
-                //     dispatch(onCreateAccountSuccess(json));
-                // }
-            }
+            },
         });
     };
 };

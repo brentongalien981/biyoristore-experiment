@@ -18,6 +18,12 @@ class BsCore2 {
 
 
 
+    static alertForGeneralError() {
+        alert("Oops, there's an error on our end. Please try again.");
+    }
+
+
+
     static alertForGeneralErrors(errors) {
         let errorMsg = "";
 
@@ -58,7 +64,9 @@ class BsCore2 {
             // isViewingOwnAccount: false,
             errors: {},
             customErrors: null,
-            customeError: null
+            customError: null,
+            caughtCustomErrors: null,
+            caughtCustomError: null,
         };
 
 
@@ -94,6 +102,8 @@ class BsCore2 {
                 json.isViewingOwnAccount = jsonData["isViewingOwnAccount"];
                 json.customErrors = jsonData["customErrors"];
                 json.customError = jsonData["customError"];
+                json.caughtCustomErrors = jsonData["caughtCustomErrors"];
+                json.caughtCustomError = jsonData["caughtCustomError"];
 
 
                 const neededResponseParams = defaultCrudData.neededResponseParams;
@@ -170,7 +180,7 @@ class BsCore2 {
     static defaultErrorCallBackFunc(errors) {
         Bs.displaySeparator(3);
         Bs.log("In method: defaultErrorCallBackFunc()");
-        Bs.log("NOTICE: There's error with your AJAX request.");
+        Bs.log("NOTICE: There's error with your AJAX request bro.");
         Bs.log("NOTE: Override this error callback func.");
         Bs.displaySeparator();
     }

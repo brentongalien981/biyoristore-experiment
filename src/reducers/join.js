@@ -1,13 +1,15 @@
 import * as actions from '../actions/join';
 import Bs from '../bs-library/helpers/Bs';
+import BsAppLocalStorage from '../bs-library/helpers/BsAppLocalStorage';
 import BsAppSession from '../bs-library/helpers/BsAppSession';
+import BsCore2 from '../bs-library/helpers/BsCore2';
 
 /** */
 const initialState = {
     message: "This is the initial state of STORE: join.",
     credentials: {
-        signIn: { email: BsAppSession.get("email"), password: "" },
-        createAccount: { email: BsAppSession.get("email"), password: "", repeatedPassword: "" },
+        signIn: { email: BsAppLocalStorage.get("email"), password: "" },
+        createAccount: { email: BsAppLocalStorage.get("email"), password: "", repeatedPassword: "" },
     },
     isThereJoinError: false,
     errorMsg: "",
@@ -50,48 +52,40 @@ const resetErrors = (state, action) => {
 
 const onCreateAccountFail = (state, action) => {
 
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: join, METHOD: onCreateAccountFail()");
-    Bs.log("action.errors ==> ...");
-    Bs.log(action.errors);
-
-    let errorMsg = "";
-
-    for (const field in action.errors) {
-        if (action.errors.hasOwnProperty(field)) {
-            const fieldErrors = action.errors[field];
-
-            errorMsg += fieldErrors[0] + "\n";
-            
-        }
-    }
-
-    // alert(errorMsg);
+    action.objs.doPostProcessCallBack();
+    BsCore2.alertForGeneralErrors(action.objs.errors);
 
     return {
         ...state,
-        isThereJoinError: true,
-        errorMsg: errorMsg,
-        message: "Just executed METHOD: onCreateAccountFail() from REDUCER: join"
     };
 };
 
 const onCreateAccountSuccess = (state, action) => {
 
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: join, METHOD: onCreateAccountSuccess()");
+    // Bs.log("\n###############");
+    // Bs.log("In REDUCER: join, METHOD: onCreateAccountSuccess()");
 
 
-    BsAppSession.set("userId", action.json.userId);
-    BsAppSession.set("email", action.json.email);
-    BsAppSession.set("apiToken", action.json.apiToken);
-    BsAppSession.set("isLoggedIn", 1);
+    // BsAppSession.set("userId", action.json.userId);
+    // BsAppSession.set("email", action.json.email);
+    // BsAppSession.set("apiToken", action.json.apiToken);
+    // BsAppSession.set("isLoggedIn", 1);
+
+    action.returndData.doPostProcessCallBack();
+
+    if (action.returndData.isResultOk) {
+        alert("hell yeah!");
+    } else {
+        BsCore2.alertForGeneralError();
+    }
+
+
 
     return {
         ...state,
-        isThereJoinError: false,
-        shouldRedirectHome: true,
-        message: "Just executed METHOD: onCreateAccountSuccess() from REDUCER: join"
+        // isThereJoinError: false,
+        // shouldRedirectHome: true,
+        // message: "Just executed METHOD: onCreateAccountSuccess() from REDUCER: join"
     };
 };
 

@@ -9,6 +9,7 @@ import Bs from '../../bs-library/helpers/Bs';
 import { withRouter } from 'react-router-dom';
 import { showCart } from '../../actions/cart';
 import BsAppLocalStorage from '../../bs-library/helpers/BsAppLocalStorage';
+import WaitLoader from '../../components/loader/WaitLoader';
 
 
 
@@ -28,13 +29,12 @@ class Join extends React.Component {
 
     /** HELPER-FUNCS */
     doPostOnRegisterProcess = () => {
-        Bs.log("TODO: METHOD: doPostOnRegisterProcess()");
+        this.setState({ isJoining: false });
     };
 
 
 
     doActualOnRegisterProcess() {
-        //ish
         const data = {
             email: this.state.email,
             password: this.state.passwordForCreateAccount,
@@ -56,8 +56,7 @@ class Join extends React.Component {
             return false;
         }
 
-        // ish
-        // this.setState({ isJoining: true });
+        this.setState({ isJoining: true });
         return true;
     }
 
@@ -81,10 +80,7 @@ class Join extends React.Component {
 
 
     componentDidUpdate() {
-        if (this.props.isThereJoinError) {
-            alert(this.props.errorMsg);
-            this.props.resetErrors();
-        }
+        //ish
 
         if (this.props.shouldRedirectHome) {
 
@@ -110,6 +106,7 @@ class Join extends React.Component {
             backgroundImage: "url(" + this.state.backgroundImageUrl + ")"
         };
 
+
         return (
             <section className="py-md-0">
                 <div className="image image-overlay" style={styleAttribVal}></div>
@@ -120,9 +117,11 @@ class Join extends React.Component {
                                 <SignIn email={this.state.email}
                                     onCredentialChanged={this.onCredentialChanged}
                                     onLogin={this.onLogin} />
+
                                 <CreateAccount email={this.state.email}
                                     onCredentialChanged={this.onCredentialChanged}
-                                    onRegister={this.onRegister} />
+                                    onRegister={this.onRegister}
+                                    isJoining={this.state.isJoining} />
                             </div>
                         </div>
                     </div>
@@ -139,7 +138,6 @@ class Join extends React.Component {
         if (this.doPreOnRegisterProcess(e)) {
             this.doActualOnRegisterProcess();
         }
-        //ish
     };
 
 
