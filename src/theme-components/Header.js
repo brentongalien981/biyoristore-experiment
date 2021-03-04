@@ -6,6 +6,7 @@ import HeaderDark from './HeaderDark';
 import BsAppSession from '../bs-library/helpers/BsAppSession';
 import { connect } from 'react-redux';
 import { resetCart } from '../actions/cart';
+import BsAppLocalStorage from '../bs-library/helpers/BsAppLocalStorage';
 
 
 
@@ -26,10 +27,10 @@ class Header extends React.Component {
 
     onLogout = (e) => {
         e.preventDefault();
-        const userEmail = BsAppSession.get("email");
-        BsAppSession.clear();
-        BsAppSession.set("email", userEmail);
-        BsAppSession.set("isLoggedIn", 0);
+        const userEmail = BsAppLocalStorage.get("email");
+        BsAppLocalStorage.clear();
+        BsAppLocalStorage.set("email", userEmail);
+        BsAppLocalStorage.set("isLoggedIn", 0);
         this.props.resetCart();
         this.props.history.push("/");
     };

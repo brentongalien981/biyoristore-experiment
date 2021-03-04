@@ -10,12 +10,16 @@ import { withRouter } from 'react-router-dom';
 import { showCart } from '../../actions/cart';
 import BsAppLocalStorage from '../../bs-library/helpers/BsAppLocalStorage';
 import WaitLoader from '../../components/loader/WaitLoader';
+import TemporaryAlertSystem from '../../components/temporary-alert-system/TemporaryAlertSystem';
+import { queueAlert } from '../../actions/temporaryAlerts';
 
 
 
 class Join extends React.Component {
 
     /** PROPERTIES */
+    static unblockNavBlocker = null;
+
     state = {
         isJoining: false,
         backgroundImageUrl: BsCore.pubPhotoUrl + "background-8.jpg",
@@ -29,6 +33,7 @@ class Join extends React.Component {
 
     /** HELPER-FUNCS */
     doPostOnRegisterProcess = () => {
+        Join.unblockNavBlocker();
         this.setState({ isJoining: false, });
     };
 
@@ -57,7 +62,18 @@ class Join extends React.Component {
         }
 
         this.setState({ isJoining: true });
+        this.enableNavBlocker();
         return true;
+    }
+
+
+
+    enableNavBlocker() {
+        // 2 WARNINGS: Warn user from moving away from the page when the process has already been dispatched.
+        Join.unblockNavBlocker = this.props.history.block(() => {
+            alert("Please wait, we're creating your account...");
+            return false;
+        });
     }
 
 
@@ -74,7 +90,10 @@ class Join extends React.Component {
 
     /** MAIN-FUNCS */
     componentDidMount() {
-        if (BsAppLocalStorage.get("isLoggedIn")) { this.props.history.push("/"); }
+        if (BsAppLocalStorage.isLoggedIn()) {
+            this.props.history.push("/");
+            return;
+        }
         this.props.resetFlags();
     }
 
@@ -83,6 +102,11 @@ class Join extends React.Component {
     componentDidUpdate() {
         //ish
         if (this.props.shouldDoOnRegisterProcessFinalization) {
+
+            // Show message to user.
+            const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: "Sign-up successful. Welcome " + this.state.email + "!" });
+            this.props.queueAlert(newAlertObj);
+
             // Refresh the cart.
             this.props.showCart();
 
@@ -182,6 +206,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        queueAlert: (obj) => dispatch(queueAlert(obj)),
         resetFlags: () => dispatch(actions.resetFlags()),
         onRedirectHomeSuccess: () => dispatch(actions.onRedirectHomeSuccess()),
         showCart: () => dispatch(showCart()),

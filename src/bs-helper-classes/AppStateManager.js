@@ -14,12 +14,6 @@ class AppStateManager extends React.Component {
 
 
     /** MAIN FUNCS */
-    componentWillUnmount() {
-        // alert('TODO: In CLASS: AppStateManager, METHOD: componentWillUnmount(). Do something about the cart.');
-    }
-
-
-
     componentDidMount() {
         BsJLSOLM.init();
     }

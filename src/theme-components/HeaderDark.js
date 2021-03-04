@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import BsAppLocalStorage from '../bs-library/helpers/BsAppLocalStorage';
 import BsAppSession from '../bs-library/helpers/BsAppSession';
 
 function HeaderDark(props) {
@@ -114,12 +115,12 @@ function HeaderDark(props) {
 
 
 function getProfileLinks(props) {
-    const isLoggedIn = BsAppSession.get("isLoggedIn");
+    const isLoggedIn = BsAppLocalStorage.get("isLoggedIn");
 
     if (isLoggedIn == 1) {
         return (
             <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#!" id="navbarDropdown-10" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{BsAppSession.get("email")}</a>
+                <a className="nav-link dropdown-toggle" href="#!" id="navbarDropdown-10" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{BsAppLocalStorage.get("email")}</a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown-10">
                     <li><Link className="dropdown-item" to="/profile">Profile</Link></li>
                     <li><a className="dropdown-item" href="#" onClick={(e) => props.onLogout(e)}>Log out</a></li>
