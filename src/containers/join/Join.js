@@ -162,13 +162,13 @@ class Join extends React.Component {
 
         // let redirectLink = 'https://asbdev.com/test-socialite/auth-providers';
         //ish
-        let redirectLink = BsCore2.appBackendUrl + '';
+        let redirectLink = BsCore2.appBackendUrl + '/bmd-socialite/signup-with-auth-provider';
 
         if (isForSignup) {
             switch (provider) {
                 case 'facebook':
                 case 'google':
-                    redirectLink += '?providers=' + provider;
+                    redirectLink += '?provider=' + provider;
                     break;
             }
         }
