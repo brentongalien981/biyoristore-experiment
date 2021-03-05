@@ -12,6 +12,7 @@ import BsAppLocalStorage from '../../bs-library/helpers/BsAppLocalStorage';
 import WaitLoader from '../../components/loader/WaitLoader';
 import TemporaryAlertSystem from '../../components/temporary-alert-system/TemporaryAlertSystem';
 import { queueAlert } from '../../actions/temporaryAlerts';
+import BsCore2 from '../../bs-library/helpers/BsCore2';
 
 
 
@@ -133,10 +134,12 @@ class Join extends React.Component {
                         <div className="col-md-10 col-lg-5">
                             <div className="accordion accordion-portal" id="accordionExample">
                                 <SignIn email={this.state.email}
+                                    onSocialMediaOptionClick={this.onSocialMediaOptionClick}
                                     onCredentialChanged={this.onCredentialChanged}
                                     onLogin={this.onLogin} />
 
                                 <CreateAccount email={this.state.email}
+                                    onSocialMediaOptionClick={this.onSocialMediaOptionClick}
                                     onCredentialChanged={this.onCredentialChanged}
                                     onRegister={this.onRegister}
                                     isJoining={this.state.isJoining} />
@@ -152,6 +155,29 @@ class Join extends React.Component {
 
 
     /** EVENT-FUNCS */
+    onSocialMediaOptionClick = (e, isForSignup, provider) => {
+        // TODO:ON-ITERATION-003: Use a bmd-signup-hash-code for this workflow to allow only legit signups.
+
+        e.preventDefault();
+
+        // let redirectLink = 'https://asbdev.com/test-socialite/auth-providers';
+        //ish
+        let redirectLink = BsCore2.appBackendUrl + '';
+
+        if (isForSignup) {
+            switch (provider) {
+                case 'facebook':
+                case 'google':
+                    redirectLink += '?providers=' + provider;
+                    break;
+            }
+        }
+
+        window.location.replace(redirectLink);
+    };
+
+
+    
     onRegister = (e) => {
         if (this.doPreOnRegisterProcess(e)) {
             this.doActualOnRegisterProcess();

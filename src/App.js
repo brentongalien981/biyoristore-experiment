@@ -16,6 +16,7 @@ import AppStateManager from './bs-helper-classes/AppStateManager';
 const Listing = React.lazy(() => import('./containers/listing/Listing'));
 const ProductInDetails = React.lazy(() => import('./containers/product/ProductInDetails'));
 const Join = React.lazy(() => import('./containers/join/Join'));
+const BmdSocialiteSignupResult = React.lazy(() => import('./containers/join/BmdSocialiteSignupResult'));
 const Profile = React.lazy(() => import('./containers/profile/Profile'));
 const CartPage = React.lazy(() => import('./containers/cart/CartPage'));
 const Checkout = React.lazy(() => import('./containers/checkout/Checkout'));
@@ -47,6 +48,7 @@ function App() {
 				<Route path="/products" exact render={() => <Suspense fallback={<div>loading...</div>}><Listing /></Suspense>} />
 				<Route path="/product" exact render={() => <Suspense fallback={<div>loading...</div>}><ProductInDetails /></Suspense>} />
 				<Route path="/join" exact render={() => <Suspense fallback={<div>loading...</div>}><Join /></Suspense>} />
+				<Route path="/bmd-socialite-signup-result" exact render={() => <Suspense fallback={<div>loading...</div>}><BmdSocialiteSignupResult /></Suspense>} />
 				<Route path="/profile" exact render={() => <Suspense fallback={<div>loading...</div>}><Profile /></Suspense>} />
 				<Route path="/cart" exact render={() => <Suspense fallback={<div>loading...</div>}><CartPage /></Suspense>} />
 				<Route path="/checkout" exact render={() => <Suspense fallback={<div>loading...</div>}><Checkout /></Suspense>} />

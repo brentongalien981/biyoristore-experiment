@@ -17,7 +17,7 @@ function SignIn(props) {
                 <div className="card-body">
                     <div className="row mt-2">
 
-                        <SocialMediaOptions />
+                        <SocialMediaOptions onSocialMediaOptionClick={props.onSocialMediaOptionClick} />
 
                         <div className="form-group col-12 mt-2 d-flex justify-content-center">
                             <label>- or -</label>
