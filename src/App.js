@@ -8,6 +8,9 @@ import Home from './containers/home/Home';
 import TestLoaderContainer from './containers/experiment/TestLoaderContainer';
 import TemporaryAlertSystem from './components/temporary-alert-system/TemporaryAlertSystem';
 import AppStateManager from './bs-helper-classes/AppStateManager';
+import TestPageA from './containers/experiment/TestPageA';
+import TestPageB from './containers/experiment/TestPageB';
+import TestPageC from './containers/experiment/TestPageC';
 // import Listing from './containers/listing/Listing';
 // import ProductInDetails from './containers/product/ProductInDetails';
 
@@ -61,6 +64,11 @@ function App() {
 				<Route path="/order" exact render={() => <Suspense fallback={<div>loading...</div>}><Order /></Suspense>} />
 				<Route path="/test-loader" exact component={TestLoaderContainer} />
 				{/* <Route path="/product" exact component={ProductInDetails} /> */}
+
+				{/* TODO:ON-DEPLOYMENT COMMENT-OUT */}
+				<Route path="/test-page-a" component={TestPageA} />
+				<Route path="/test-page-b" component={TestPageB} />
+				<Route path="/test-page-c" component={TestPageC} />
 			</Switch>
 
 			<Switch>

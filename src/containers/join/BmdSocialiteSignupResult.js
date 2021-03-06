@@ -7,9 +7,6 @@ class BmdSocialiteSignupResult extends React.Component {
 
     componentDidMount() {
 
-        // TODO: Check bmd-legit-signup-code.
-
-
         const urlParams = this.props.history.location.search;
         const acceptedParamKeys = [
             'accessToken',
