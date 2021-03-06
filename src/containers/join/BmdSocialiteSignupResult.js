@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import Bs from '../../bs-library/helpers/Bs';
+import BsCore2 from '../../bs-library/helpers/BsCore2';
 
 class BmdSocialiteSignupResult extends React.Component {
 
