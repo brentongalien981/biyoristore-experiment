@@ -80,3 +80,26 @@ export const saveUser = (data) => {
         });
     };
 };
+
+
+
+export const verifyAuthData = (data) => {
+
+    //ish
+    return (dispatch) => {
+
+        BsCore2.ajaxCrud({
+            url: '/join/verify',
+            method: "post",
+            params: { ...data },
+            callBackFunc: (requestData, json) => {
+                const returnData = { ...data, ...json };
+                dispatch(onCreateAccountSuccess(returnData));
+            },
+            errorCallBackFunc: (errors) => {
+                const objs = { ...data, errors: errors };
+                dispatch(onCreateAccountFail(objs));
+            },
+        });
+    };
+};

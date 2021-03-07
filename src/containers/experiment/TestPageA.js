@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import BsCore2 from '../../bs-library/helpers/BsCore2';
 
 class TestPageA extends React.Component {
 
@@ -16,6 +17,20 @@ class TestPageA extends React.Component {
     };
 
 
+    getHttpInfo = () => {
+        BsCore2.ajaxCrud({
+            url: '/mytest/get-http-info',
+        });
+    };
+
+
+
+    redirect = () => {
+        const url = 'http://biyoristoreexperiment.test:8000/mytest/get-http-info';
+        window.location.replace(url);
+    };
+
+
 
     render() {
         return (
@@ -25,6 +40,10 @@ class TestPageA extends React.Component {
                 <button onClick={() => this.goTo('a')}>go-to-A</button>
                 <button onClick={() => this.goTo('b')}>go-to-B</button>
                 <button onClick={() => this.goTo('c')}>go-to-C</button>
+
+                <br />
+                <button onClick={this.redirect}>redirect</button>
+                <button onClick={this.getHttpInfo}>get-http-info</button>
             </div>
         );
     }

@@ -35,7 +35,12 @@ class Join extends React.Component {
     /** HELPER-FUNCS */
     doPostOnRegisterProcess = () => {
         Join.unblockNavBlocker();
-        this.setState({ isJoining: false, });
+        this.setState({
+            isJoining: false,
+            passwordForCreateAccount: '',
+            repeatedPassword: '',
+            passwordForSignIn: '',
+        });
     };
 
 
@@ -92,7 +97,7 @@ class Join extends React.Component {
     /** MAIN-FUNCS */
     componentDidMount() {
         if (BsAppLocalStorage.isLoggedIn()) {
-            this.props.history.push("/");
+            this.props.history.replace("/");
             return;
         }
         this.props.resetFlags();
@@ -112,7 +117,7 @@ class Join extends React.Component {
             this.props.showCart();
 
             const redirectTo = this.getRedirectToUrl();
-            this.props.history.push(redirectTo);
+            this.props.history.replace(redirectTo);
 
         }
     }
@@ -177,7 +182,7 @@ class Join extends React.Component {
     };
 
 
-    
+
     onRegister = (e) => {
         if (this.doPreOnRegisterProcess(e)) {
             this.doActualOnRegisterProcess();

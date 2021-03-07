@@ -68,7 +68,8 @@ const resetErrors = (state, action) => {
 const onCreateAccountFail = (state, action) => {
 
     action.objs.doPostProcessCallBack();
-    BsCore2.alertForGeneralErrors(action.objs.errors);
+    action.objs.doOnReturnFailCallBack();
+    BsCore2.alertForGeneralErrors(action.objs?.errors);
 
     return {
         ...state,
@@ -101,7 +102,9 @@ const onCreateAccountSuccess = (state, action) => {
         shouldDoOnRegisterProcessFinalization = true;
 
     } else {
+        action.returnData.doOnReturnFailCallBack();
         BsCore2.alertForGeneralError();
+        
     }
 
 
