@@ -106,7 +106,6 @@ class Join extends React.Component {
 
 
     componentDidUpdate() {
-        //ish
         if (this.props.shouldDoOnRegisterProcessFinalization) {
 
             // Show message to user.
@@ -161,12 +160,9 @@ class Join extends React.Component {
 
     /** EVENT-FUNCS */
     onSocialMediaOptionClick = (e, isForSignup, provider) => {
-        // TODO:ON-ITERATION-003: Use a bmd-signup-hash-code for this workflow to allow only legit signups.
-
         e.preventDefault();
 
         // let redirectLink = 'https://asbdev.com/test-socialite/auth-providers';
-        //ish
         let redirectLink = BsCore2.appBackendUrl + '/bmd-socialite/signup-with-auth-provider';
 
         if (isForSignup) {
