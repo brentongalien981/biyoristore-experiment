@@ -11,6 +11,12 @@ import { showCart } from '../../actions/cart';
 
 class BmdSocialiteSignupResult extends React.Component {
 
+    /** CONSTS */
+    AUTH_RESULT_FOR_EXISTING_SOCIALITE_USER = 1;
+    AUTH_RESULT_FOR_OK_SOCIALITE_SIGNUP = 2;
+    AUTH_RESULT_FOR_FAIL_SOCIALITE_SIGNUP = 3;
+
+
     /** PROPERTIES */
     static unblockNavBlocker = null;
 
@@ -33,12 +39,14 @@ class BmdSocialiteSignupResult extends React.Component {
 
         const urlParams = this.props.history.location.search;
         const acceptedParamKeys = [
+            'authResult',
             'email',
             'bmdToken',
             'refreshToken',
             'expiresIn',
             'authProviderId',
-            // 'customError',
+            'overallProcessLogs',
+            'caughtCustomError'
             // 'exception'
         ];
 
@@ -56,7 +64,15 @@ class BmdSocialiteSignupResult extends React.Component {
             doOnReturnFailCallBack: this.doOnVerifyAuthDataCallBack,
         };
 
-        this.props.verifyAuthData(data);
+
+        // TODO: Test this workflow.
+        if (parsedParams['authResult'] === BmdSocialiteSignupResult.AUTH_RESULT_FOR_FAIL_SOCIALITE_SIGNUP) {
+            const objs = { ...data };
+            this.props.onCreateAccountFail(objs);
+        } else {
+            this.props.verifyAuthData(data);
+        }
+        
     }
 
 
@@ -155,6 +171,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        onCreateAccountFail: (objs) => dispatch(actions.onCreateAccountFail(objs)),
         showCart: () => dispatch(showCart()),
         verifyAuthData: (data) => dispatch(actions.verifyAuthData(data)),
         queueAlert: (obj) => dispatch(queueAlert(obj)),
