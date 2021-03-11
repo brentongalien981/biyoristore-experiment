@@ -66,7 +66,11 @@ class BmdSocialiteSignupResult extends React.Component {
 
 
         // TODO: Test this workflow.
-        if (parsedParams['authResult'] === BmdSocialiteSignupResult.AUTH_RESULT_FOR_FAIL_SOCIALITE_SIGNUP) {
+        if (parsedParams['authResult'] == BmdSocialiteSignupResult.AUTH_RESULT_FOR_FAIL_SOCIALITE_SIGNUP) {
+            Bs.log('SOCIALITE SIGNUP FAILED BRUH');
+            Bs.log('overallProcessLogs ==> ...');
+            Bs.log(parsedParams['overallProcessLogs']?.split(':::'));
+
             const objs = { ...data };
             this.props.onCreateAccountFail(objs);
         } else {

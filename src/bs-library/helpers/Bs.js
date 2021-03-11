@@ -41,8 +41,8 @@ class Bs {
         if (q) {
             keyValuePairs.forEach(pair => {
                 const splitPair = pair.split('=');
-                const key = splitPair[0].trim();
-                const value = splitPair[1].trim();
+                const key = splitPair[0]?.trim();
+                const value = splitPair[1]?.trim();
 
                 if (acceptedParams.includes(key)) {
                     parsedParams[key] = value;
