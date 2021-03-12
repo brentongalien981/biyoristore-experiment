@@ -12,9 +12,9 @@ import { showCart } from '../../actions/cart';
 class BmdSocialiteSignupResult extends React.Component {
 
     /** CONSTS */
-    AUTH_RESULT_FOR_EXISTING_SOCIALITE_USER = 1;
-    AUTH_RESULT_FOR_OK_SOCIALITE_SIGNUP = 2;
-    AUTH_RESULT_FOR_FAIL_SOCIALITE_SIGNUP = 3;
+    static AUTH_RESULT_FOR_EXISTING_SOCIALITE_USER = 1;
+    static AUTH_RESULT_FOR_OK_SOCIALITE_SIGNUP = 2;
+    static AUTH_RESULT_FOR_FAIL_SOCIALITE_SIGNUP = 3;
 
 
     /** PROPERTIES */
@@ -65,12 +65,7 @@ class BmdSocialiteSignupResult extends React.Component {
         };
 
 
-        // TODO: Test this workflow.
         if (parsedParams['authResult'] == BmdSocialiteSignupResult.AUTH_RESULT_FOR_FAIL_SOCIALITE_SIGNUP) {
-            Bs.log('SOCIALITE SIGNUP FAILED BRUH');
-            Bs.log('overallProcessLogs ==> ...');
-            Bs.log(parsedParams['overallProcessLogs']?.split(':::'));
-
             const objs = { ...data };
             this.props.onCreateAccountFail(objs);
         } else {
