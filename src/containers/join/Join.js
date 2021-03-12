@@ -162,6 +162,9 @@ class Join extends React.Component {
     onSocialMediaOptionClick = (e, isForSignup, provider) => {
         e.preventDefault();
 
+        if (this.state.isJoining) { return false; }
+        this.setState({ isJoining: true });
+
         // let redirectLink = 'https://asbdev.com/test-socialite/auth-providers';
         let redirectLink = BsCore2.appBackendUrl + '/bmd-socialite/signup-with-auth-provider';
 
