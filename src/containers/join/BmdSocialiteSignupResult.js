@@ -53,11 +53,6 @@ class BmdSocialiteSignupResult extends React.Component {
         const parsedParams = Bs.getParsedQueryParams(urlParams, acceptedParamKeys);
 
 
-        // TODO:DELETE
-        Bs.log('parsedParams ==> ...');
-        Bs.log(parsedParams);
-
-
         const data = {
             ...parsedParams,
             doPostProcessCallBack: this.doPostVerifyAuthDataProcess,

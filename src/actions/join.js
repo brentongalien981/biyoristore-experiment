@@ -61,7 +61,6 @@ export const login = (credentials) => {
 
 export const saveUser = (data) => {
 
-    //ish
     return (dispatch) => {
 
         BsCore2.ajaxCrud({
@@ -85,7 +84,6 @@ export const saveUser = (data) => {
 
 export const verifyAuthData = (data) => {
 
-    //ish
     return (dispatch) => {
 
         BsCore2.ajaxCrud({
