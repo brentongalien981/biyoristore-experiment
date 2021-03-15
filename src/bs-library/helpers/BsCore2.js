@@ -60,6 +60,7 @@ class BsCore2 {
         let json = {
             originalResultData: null,
             isResultOk: false,
+            resultCode: 0,
             objs: {},
             // isViewingOwnAccount: false,
             errors: {},
@@ -97,6 +98,7 @@ class BsCore2 {
 
                 json.originalResultData = jsonData;
                 json.isResultOk = jsonData["isResultOk"];
+                json.resultCode = jsonData["resultCode"];
                 json.objs = jsonData["objs"];
                 json.obj = jsonData["obj"];
                 json.isViewingOwnAccount = jsonData["isViewingOwnAccount"];

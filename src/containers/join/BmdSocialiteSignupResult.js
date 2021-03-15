@@ -42,7 +42,7 @@ class BmdSocialiteSignupResult extends React.Component {
             'authResult',
             'email',
             'bmdToken',
-            'refreshToken',
+            'bmdRefreshToken',
             'expiresIn',
             'authProviderId',
             'overallProcessLogs',

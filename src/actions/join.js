@@ -36,7 +36,7 @@ export const login = (data) => {
 
     return (dispatch) => {
 
-        BsCore.ajaxCrud({
+        BsCore2.ajaxCrud({
             url: '/join/login',
             method: "post",
             params: { email: data.email, password: data.password },

@@ -18,6 +18,13 @@ import BsCore2 from '../../bs-library/helpers/BsCore2';
 
 class Join extends React.Component {
 
+    /** CONSTS */
+    static LOGIN_RESULT_CODE_INVALID_PASSWORD = -1;
+    static LOGIN_RESULT_CODE_INVALID_BMD_AUTH_PROVIDER = -2;
+    static LOGIN_RESULT_CODE_SUCCESS = 1;
+
+
+
     /** PROPERTIES */
     static unblockNavBlocker = null;
 
@@ -36,10 +43,10 @@ class Join extends React.Component {
     /** HELPER-FUNCS */
     doPostOnLoginProcess = (isProcessSuccessful) => {
 
-        Bs.log('isProcessSuccessful ==> ' + isProcessSuccessful);
         this.setState({
             isLoggingIn: false,
             passwordForSignIn: isProcessSuccessful ? '' : this.state.passwordForSignIn,
+
         });
 
         Join.unblockNavBlocker();
@@ -61,7 +68,6 @@ class Join extends React.Component {
 
 
     doPreOnLoginProcess() {
-        //ish
         if (this.state.isJoining || this.state.isLoggingIn) { return false; }
 
         // Check passwords.
@@ -78,14 +84,24 @@ class Join extends React.Component {
 
 
 
-    doPostOnRegisterProcess = () => {
+    doPostOnRegisterProcess = (isProcessSuccessful) => {
         Join.unblockNavBlocker();
-        this.setState({
-            isJoining: false,
-            passwordForCreateAccount: '',
-            repeatedPassword: '',
-            passwordForSignIn: '',
-        });
+
+        if (isProcessSuccessful) {
+
+            this.setState({
+                isJoining: false,
+                passwordForCreateAccount: '',
+                repeatedPassword: '',
+                passwordForSignIn: '',
+            });
+
+            return;
+        }
+
+        this.setState({ isJoining: false, });
+
+
     };
 
 
@@ -151,10 +167,16 @@ class Join extends React.Component {
 
 
     componentDidUpdate() {
-        if (this.props.shouldDoOnRegisterProcessFinalization) {
+        if (this.props.shouldDoOnRegisterProcessFinalization
+            || this.props.shouldDoOnLoginProcessFinalization) {
+            //ish
 
             // Show message to user.
-            const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: "Sign-up successful. Welcome " + this.state.email + "!" });
+            let msg = 'Sign-up successful. Welcome ' + this.state.email + '!';
+            if (this.props.shouldDoOnLoginProcessFinalization) {
+                msg = 'Welcome back ' + this.state.email;
+            }
+            const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: msg });
             this.props.queueAlert(newAlertObj);
 
             // Refresh the cart.
@@ -185,10 +207,13 @@ class Join extends React.Component {
                                 <SignIn email={this.state.email}
                                     onSocialMediaOptionClick={this.onSocialMediaOptionClick}
                                     onCredentialChanged={this.onCredentialChanged}
+                                    passwordForSignIn={this.state.passwordForSignIn}
                                     isLoggingIn={this.state.isLoggingIn}
                                     onLogin={this.onLogin} />
 
                                 <CreateAccount email={this.state.email}
+                                    passwordForCreateAccount={this.state.passwordForCreateAccount}
+                                    repeatedPassword={this.state.repeatedPassword}
                                     onSocialMediaOptionClick={this.onSocialMediaOptionClick}
                                     onCredentialChanged={this.onCredentialChanged}
                                     onRegister={this.onRegister}
@@ -236,7 +261,6 @@ class Join extends React.Component {
 
 
 
-    //ish
     onLogin = (e) => {
         e.preventDefault();
 
@@ -269,6 +293,7 @@ class Join extends React.Component {
 /** REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
+        shouldDoOnLoginProcessFinalization: state.join.shouldDoOnLoginProcessFinalization,
         shouldDoOnRegisterProcessFinalization: state.join.shouldDoOnRegisterProcessFinalization,
         isThereJoinError: state.join.isThereJoinError,
         errorMsg: state.join.errorMsg,

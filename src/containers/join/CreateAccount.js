@@ -20,11 +20,11 @@ function CreateAccount(props) {
             </div>
             <div className="form-group col-12 mt-1">
                 <label htmlFor="exampleInputPassword3">Password</label>
-                <input type="password" className="form-control" name="passwordForCreateAccount" onChange={(e) => props.onCredentialChanged(e)} />
+                <input type="password" className="form-control" value={props.passwordForCreateAccount} name="passwordForCreateAccount" onChange={(e) => props.onCredentialChanged(e)} />
             </div>
             <div className="form-group col-12 mt-1">
                 <label htmlFor="exampleInputPassword4">Repeat Password</label>
-                <input type="password" className="form-control" name="repeatedPassword" onChange={(e) => props.onCredentialChanged(e)} />
+                <input type="password" className="form-control" value={props.repeatedPassword} name="repeatedPassword" onChange={(e) => props.onCredentialChanged(e)} />
             </div>
             <div className="col-12 mt-2">
                 <a href="#!" className="btn btn-block btn-primary" onClick={(e) => props.onRegister(e)}>Register</a>

@@ -16,11 +16,11 @@ function SignIn(props) {
 
             <div className="form-group col-12">
                 <label htmlFor="exampleInputEmail1">Email address</label>
-                <input type="email" className="form-control" id="exampleInputEmail1" name="email" value={props.email} onChange={(e) => props.onCredentialChanged(e)} />
+                <input type="email" className="form-control" name="email" value={props.email} onChange={(e) => props.onCredentialChanged(e)} />
             </div>
             <div className="form-group col-12 mt-1">
-                <label htmlFor="exampleInputPassword1">Password</label>
-                <input type="password" className="form-control" id="exampleInputPassword1" name="passwordForSignIn" onChange={(e) => props.onCredentialChanged(e)} />
+                <label>Password</label>
+                <input type="password" className="form-control" value={props.passwordForSignIn} name="passwordForSignIn" onChange={(e) => props.onCredentialChanged(e)} />
             </div>
 
             {/* <div className="col-12 mt-1">
