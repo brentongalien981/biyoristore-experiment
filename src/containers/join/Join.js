@@ -23,6 +23,7 @@ class Join extends React.Component {
 
     state = {
         isJoining: false,
+        isLoggingIn: false,
         backgroundImageUrl: BsCore.pubPhotoUrl + "background-8.jpg",
         email: BsAppLocalStorage.get("email") ?? '',
         passwordForCreateAccount: "",
@@ -33,6 +34,50 @@ class Join extends React.Component {
 
 
     /** HELPER-FUNCS */
+    doPostOnLoginProcess = (isProcessSuccessful) => {
+
+        Bs.log('isProcessSuccessful ==> ' + isProcessSuccessful);
+        this.setState({
+            isLoggingIn: false,
+            passwordForSignIn: isProcessSuccessful ? '' : this.state.passwordForSignIn,
+        });
+
+        Join.unblockNavBlocker();
+    };
+
+
+
+    doActualOnLoginProcess() {
+
+        const data = {
+            email: this.state.email,
+            password: this.state.passwordForSignIn,
+            doPostProcessCallBack: this.doPostOnLoginProcess,
+        };
+
+        this.props.login(data);
+    }
+
+
+
+    doPreOnLoginProcess() {
+        //ish
+        if (this.state.isJoining || this.state.isLoggingIn) { return false; }
+
+        // Check passwords.
+        if (this.state.email.length === 0
+            || this.state.passwordForSignIn.length === 0) {
+            alert("Please fill-in your credentials.");
+            return false;
+        }
+
+        this.setState({ isLoggingIn: true });
+        this.enableNavBlocker();
+        return true;
+    }
+
+
+
     doPostOnRegisterProcess = () => {
         Join.unblockNavBlocker();
         this.setState({
@@ -59,7 +104,7 @@ class Join extends React.Component {
     doPreOnRegisterProcess(e) {
         e.preventDefault();
 
-        if (this.state.isJoining) { return false; }
+        if (this.state.isJoining || this.state.isLoggingIn) { return false; }
 
         // Check passwords.
         if (this.state.passwordForCreateAccount !== this.state.repeatedPassword) {
@@ -140,6 +185,7 @@ class Join extends React.Component {
                                 <SignIn email={this.state.email}
                                     onSocialMediaOptionClick={this.onSocialMediaOptionClick}
                                     onCredentialChanged={this.onCredentialChanged}
+                                    isLoggingIn={this.state.isLoggingIn}
                                     onLogin={this.onLogin} />
 
                                 <CreateAccount email={this.state.email}
@@ -190,15 +236,13 @@ class Join extends React.Component {
 
 
 
+    //ish
     onLogin = (e) => {
         e.preventDefault();
 
-        const credentials = {
-            email: this.state.email,
-            password: this.state.passwordForSignIn
-        };
-
-        this.props.login(credentials);
+        if (this.doPreOnLoginProcess()) {
+            this.doActualOnLoginProcess();
+        }
     };
 
 

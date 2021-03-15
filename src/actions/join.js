@@ -5,6 +5,8 @@ import BsCore2 from "../bs-library/helpers/BsCore2";
 
 
 /* NAMES */
+export const ON_LOGIN_SUCCESS = "ON_LOGIN_SUCCESS";
+export const ON_LOGIN_FAIL = "ON_LOGIN_FAIL";
 export const RESET_FLAGS = "RESET_FLAGS";
 export const ON_REDIRECT_HOME_SUCCESS = "ON_REDIRECT_HOME_SUCCESS";
 export const RESET_ERRORS = "RESET_ERRORS";
@@ -15,6 +17,8 @@ export const ON_CREATE_ACCOUNT_FAIL = "ON_CREATE_ACCOUNT_FAIL";
 
 
 /* FUNCS */
+export const onLoginSuccess = (callBackData) => ({ type: ON_LOGIN_SUCCESS, callBackData: callBackData });
+export const onLoginFail = (callBackData) => ({ type: ON_LOGIN_FAIL, callBackData: callBackData });
 export const resetFlags = () => ({ type: RESET_FLAGS });
 export const onRedirectHomeSuccess = () => ({ type: ON_REDIRECT_HOME_SUCCESS });
 export const resetErrors = () => ({ type: RESET_ERRORS });
@@ -27,34 +31,24 @@ export const onCreateAccountFail = (objs) => ({ type: ON_CREATE_ACCOUNT_FAIL, ob
 
 
 /* AJAX FUNCS */
-export const login = (credentials) => {
-
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: join, METHOD: login()");
-
+//ish
+export const login = (data) => {
 
     return (dispatch) => {
 
         BsCore.ajaxCrud({
             url: '/join/login',
             method: "post",
-            params: { email: credentials.email, password: credentials.password },
-            neededResponseParams: ["errors", "userId", "email", "apiToken", "doesPasswordMatch"],
+            params: { email: data.email, password: data.password },
             callBackFunc: (requestData, json) => {
-                Bs.log("\n#####################");
-                Bs.log("FILE: actions/join.js, METHOD: login() => ajaxCrud() => callBackFunc()");
+                const callBackData = { ...data, ...json };
+                dispatch(onLoginSuccess(callBackData));
+            },
+            errorCallBackFunc: (errors) => {
+                const callBackData = { ...data, errors: errors };
+                dispatch(onLoginFail(callBackData));
 
-                if (json.errors) {
-                    dispatch(onCreateAccountFail(json.errors));
-                } else if (!json.doesPasswordMatch) {
-
-                    const errors = { password: ["Invalid password"] };
-                    dispatch(onCreateAccountFail(errors));
-                }
-                else {
-                    dispatch(onCreateAccountSuccess(json));
-                }
-            }
+            },
         });
     };
 };

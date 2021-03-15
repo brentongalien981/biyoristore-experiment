@@ -25,6 +25,8 @@ const initialState = {
 /* REDUCER */
 const join = (state = initialState, action) => {
     switch (action.type) {
+        case actions.ON_LOGIN_SUCCESS: return onLoginSuccess(state, action);
+        case actions.ON_LOGIN_FAIL: return onLoginFail(state, action);
         case actions.RESET_FLAGS: return resetFlags(state, action);
         case actions.ON_REDIRECT_HOME_SUCCESS: return onRedirectHomeSuccess(state, action);
         case actions.RESET_ERRORS: return resetErrors(state, action);
@@ -75,6 +77,7 @@ const onCreateAccountFail = (state, action) => {
         ...state,
     };
 };
+//ish
 
 const onCreateAccountSuccess = (state, action) => {
 
@@ -112,6 +115,32 @@ const onCreateAccountSuccess = (state, action) => {
     return {
         ...state,
         shouldDoOnRegisterProcessFinalization: shouldDoOnRegisterProcessFinalization,
+    };
+};
+
+
+//ish
+const onLoginFail = (state, action) => {
+
+    const isProcessSuccessful = false;
+    action.callBackData.doPostProcessCallBack(isProcessSuccessful);
+    BsCore2.alertForGeneralErrors(action.callBackData.errors);
+
+    return {
+        ...state,
+    };
+};
+
+
+
+const onLoginSuccess = (state, action) => {
+
+    const isProcessSuccessful = action.callBackData.isResultOk ? true : false;
+
+    action.callBackData.doPostProcessCallBack(isProcessSuccessful);
+
+    return {
+        ...state,
     };
 };
 
