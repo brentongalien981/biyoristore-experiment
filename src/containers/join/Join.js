@@ -31,6 +31,7 @@ class Join extends React.Component {
     state = {
         isJoining: false,
         isLoggingIn: false,
+        stayLoggedIn: false,
         backgroundImageUrl: BsCore.pubPhotoUrl + "background-8.jpg",
         email: BsAppLocalStorage.get("email") ?? '',
         passwordForCreateAccount: "",
@@ -169,7 +170,6 @@ class Join extends React.Component {
     componentDidUpdate() {
         if (this.props.shouldDoOnRegisterProcessFinalization
             || this.props.shouldDoOnLoginProcessFinalization) {
-            //ish
 
             // Show message to user.
             let msg = 'Sign-up successful. Welcome ' + this.state.email + '!';

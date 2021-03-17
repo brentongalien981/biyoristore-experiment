@@ -23,12 +23,12 @@ function SignIn(props) {
                 <input type="password" className="form-control" value={props.passwordForSignIn} name="passwordForSignIn" onChange={(e) => props.onCredentialChanged(e)} />
             </div>
 
-            {/* <div className="col-12 mt-1">
+            <div className="col-12 mt-1">
                 <div className="custom-control custom-switch mb-2">
-                    <input type="checkbox" className="custom-control-input" id="customSwitch1" />
-                    <label className="custom-control-label" htmlFor="customSwitch1">Toggle this switch element</label>
+                    <input type="checkbox" name="stayLoggedIn" id="stayLoggedInSwitch" onChange={(e) => props.onCredentialChanged(e)} className="custom-control-input" />
+                    <label className="custom-control-label" htmlFor="stayLoggedInSwitch">Keep me logged-in</label>
                 </div>
-            </div> */}
+            </div>
 
             <div className="col-12 mt-2">
                 <a href="#!" className="btn btn-block btn-primary" onClick={(e) => props.onLogin(e)}>Log In</a>
