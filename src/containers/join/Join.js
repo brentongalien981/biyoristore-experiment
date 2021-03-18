@@ -231,7 +231,6 @@ class Join extends React.Component {
 
 
     /** EVENT-FUNCS */
-    //ish
     onSocialMediaOptionClick = (e, isForSignup, provider) => {
         e.preventDefault();
 

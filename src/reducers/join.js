@@ -96,7 +96,7 @@ const onCreateAccountSuccess = (state, action) => {
             bmdRefreshToken: action.returnData.objs.bmdRefreshToken,
             authProviderId: action.returnData.objs.authProviderId,
             expiresIn: action.returnData.objs.expiresIn,
-            isKeptLoggedIn: false,
+            stayLoggedIn: false,
         };
 
         BsJLS.set('auth.currentAccount', currentAuthUserData);
@@ -144,9 +144,9 @@ const onLoginSuccess = (state, action) => {
     action.callBackData.doPostProcessCallBack(isProcessSuccessful);
 
     let shouldDoOnLoginProcessFinalization = false;
+    
 
-
-    switch (action.callBackData.resultCode) {
+    switch (parseInt(action.callBackData.resultCode)) {
         case Join.LOGIN_RESULT_CODE_INVALID_PASSWORD:
         case Join.LOGIN_RESULT_CODE_INVALID_BMD_AUTH_PROVIDER:
             alert('Invalid credentials.');

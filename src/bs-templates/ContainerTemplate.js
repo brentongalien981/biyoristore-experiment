@@ -4,6 +4,8 @@ import React from 'react';
 
 class ContainerTemplate extends React.Component {
 
+    /** CONSTS */
+
     /** PROPERTIES */
 
 

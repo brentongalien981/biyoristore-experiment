@@ -86,7 +86,7 @@ class BmdSocialiteSignupResult extends React.Component {
 
 
     enableNavBlocker() {
-        // 2 WARNINGS: Warn user from moving away from the page when the process has already been dispatched.
+        // NOTE: Warn user from moving away from the page when the process has already been dispatched.
         BmdSocialiteSignupResult.unblockNavBlocker = this.props.history.block(() => {
             alert("Please wait, we're creating your account...");
             return false;
@@ -144,7 +144,7 @@ class BmdSocialiteSignupResult extends React.Component {
 
     render() {
         return (
-            <div style={{ marginTop: '100px' }}>
+            <div className="container" style={{ marginTop: '100px' }}>
                 <h6>Please wait. We're creating your account...</h6>
                 <div style={{ marginTop: '500px' }}></div>
             </div>
