@@ -39,7 +39,7 @@ export const login = (data) => {
         BsCore2.ajaxCrud({
             url: '/join/login',
             method: "post",
-            params: { email: data.email, password: data.password },
+            params: { email: data.email, password: data.password, stayLoggedIn: data.stayLoggedIn, },
             callBackFunc: (requestData, json) => {
                 const callBackData = { ...data, ...json };
                 dispatch(onLoginSuccess(callBackData));

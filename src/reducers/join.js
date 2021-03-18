@@ -159,7 +159,7 @@ const onLoginSuccess = (state, action) => {
                 bmdRefreshToken: action.callBackData.objs.bmdRefreshToken,
                 authProviderId: action.callBackData.objs.authProviderId,
                 expiresIn: action.callBackData.objs.expiresIn,
-                isKeptLoggedIn: false,
+                stayLoggedIn: action.callBackData.stayLoggedIn,
             };
 
             BsJLS.set('auth.currentAccount', currentAuthUserData);

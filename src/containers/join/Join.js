@@ -54,12 +54,13 @@ class Join extends React.Component {
     };
 
 
-
+    //ish
     doActualOnLoginProcess() {
 
         const data = {
             email: this.state.email,
             password: this.state.passwordForSignIn,
+            stayLoggedIn: this.state.stayLoggedIn ? 1 : 0,
             doPostProcessCallBack: this.doPostOnLoginProcess,
         };
 
