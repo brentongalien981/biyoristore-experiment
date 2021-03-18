@@ -54,7 +54,7 @@ class Join extends React.Component {
     };
 
 
-    //ish
+
     doActualOnLoginProcess() {
 
         const data = {
@@ -231,23 +231,30 @@ class Join extends React.Component {
 
 
     /** EVENT-FUNCS */
+    //ish
     onSocialMediaOptionClick = (e, isForSignup, provider) => {
         e.preventDefault();
 
-        if (this.state.isJoining) { return false; }
-        this.setState({ isJoining: true });
+        if (this.state.isJoining || this.state.isLoggingIn) { return false; }
 
         // let redirectLink = 'https://asbdev.com/test-socialite/auth-providers';
         let redirectLink = BsCore2.appBackendUrl + '/bmd-socialite/signup-with-auth-provider';
 
         if (isForSignup) {
-            switch (provider) {
-                case 'facebook':
-                case 'google':
-                    redirectLink += '?provider=' + provider;
-                    break;
-            }
+            this.setState({ isJoining: true });
+        } else {
+            this.setState({ isLoggingIn: true });
+            redirectLink = BsCore2.appBackendUrl + '/bmd-socialite/login-with-auth-provider';
         }
+
+        switch (provider) {
+            case 'facebook':
+            case 'google':
+                redirectLink += '?provider=' + provider;
+                break;
+        }
+
+        redirectLink += '&stayLoggedIn=' + (this.state.stayLoggedIn ? 1 : 0);
 
         window.location.replace(redirectLink);
     };
