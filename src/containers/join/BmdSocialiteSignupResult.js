@@ -66,7 +66,7 @@ class BmdSocialiteSignupResult extends React.Component {
         } else {
             this.props.verifyAuthData(data);
         }
-        
+
     }
 
 
@@ -99,7 +99,7 @@ class BmdSocialiteSignupResult extends React.Component {
 
         // Show message to user.
         const email = BsAppLocalStorage.get('email');
-        const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: "Sign-up successful. Welcome " + email+ "!" });
+        const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: "Sign-up successful. Welcome " + email + "!" });
         this.props.queueAlert(newAlertObj);
 
         // Refresh the cart.
@@ -136,7 +136,7 @@ class BmdSocialiteSignupResult extends React.Component {
             this.props.history.replace("/");
             return;
         }
-        
+
         this.verifyAuthData();
     }
 

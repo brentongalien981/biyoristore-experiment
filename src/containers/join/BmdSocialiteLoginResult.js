@@ -58,6 +58,7 @@ class BmdSocialiteLoginResult extends React.Component {
         };
 
 
+
         if (parsedParams['authResult'] == BmdSocialiteLoginResult.AUTH_RESULT_FOR_OK_SOCIALITE_LOGIN) {
             callBackData = { ...callBackData, isResultOk: true };
             this.props.onLoginSuccess(callBackData);
