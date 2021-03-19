@@ -80,7 +80,7 @@ const onCreateAccountFail = (state, action) => {
         ...state,
     };
 };
-//ish
+
 
 const onCreateAccountSuccess = (state, action) => {
 
@@ -96,7 +96,7 @@ const onCreateAccountSuccess = (state, action) => {
             bmdRefreshToken: action.returnData.objs.bmdRefreshToken,
             authProviderId: action.returnData.objs.authProviderId,
             expiresIn: action.returnData.objs.expiresIn,
-            stayLoggedIn: false,
+            stayLoggedIn: 0,
         };
 
         BsJLS.set('auth.currentAccount', currentAuthUserData);
@@ -123,7 +123,7 @@ const onCreateAccountSuccess = (state, action) => {
 };
 
 
-//ish
+
 const onLoginFail = (state, action) => {
 
     const isProcessSuccessful = false;

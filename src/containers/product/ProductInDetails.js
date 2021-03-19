@@ -16,6 +16,8 @@ import BsAppSession from '../../bs-library/helpers/BsAppSession';
 import { queueAlert } from '../../actions/temporaryAlerts';
 import TemporaryAlertSystem from '../../components/temporary-alert-system/TemporaryAlertSystem';
 import BlankBreadCrumbsSubstitute from '../../components/customized-spacers/BlankBreadCrumbsSubstitute';
+import BsCore2 from '../../bs-library/helpers/BsCore2';
+import BsJLS from '../../bs-library/helpers/BsJLS';
 
 
 

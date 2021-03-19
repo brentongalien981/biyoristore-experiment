@@ -31,7 +31,6 @@ export const onCreateAccountFail = (objs) => ({ type: ON_CREATE_ACCOUNT_FAIL, ob
 
 
 /* AJAX FUNCS */
-//ish
 export const login = (data) => {
 
     return (dispatch) => {
