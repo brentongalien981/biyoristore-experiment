@@ -4,11 +4,13 @@ import BsCore2 from "../bs-library/helpers/BsCore2";
 
 
 /* NAMES */
+export const ON_CHECK_BMD_AUTH_VALIDITY_OK = 'ON_CHECK_BMD_AUTH_VALIDITY_OK';
 export const ON_CHECK_BMD_AUTH_VALIDITY_FAIL = 'ON_CHECK_BMD_AUTH_VALIDITY_FAIL';
 
 
 
 /* FUNCS */
+export const onCheckBmdAuthValidityOk = (callBackData) => ({ type: ON_CHECK_BMD_AUTH_VALIDITY_OK, callBackData: callBackData });
 export const onCheckBmdAuthValidityFail = (callBackData) => ({ type: ON_CHECK_BMD_AUTH_VALIDITY_FAIL, callBackData: callBackData });
 
 
@@ -27,8 +29,8 @@ export const checkBmdAuthValidity = (data) => {
                 authProviderId: data.authProviderId,
             },
             callBackFunc: (requestData, json) => {
-                // const callBackData = { ...data, ...json };
-                // dispatch(onLoginSuccess(callBackData));
+                const callBackData = { ...data, ...json };
+                dispatch(onCheckBmdAuthValidityOk(callBackData));
             },
             errorCallBackFunc: (errors) => {
                 const callBackData = { ...data, errors: errors };

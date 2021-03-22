@@ -40,7 +40,6 @@ class AppStateManager extends React.Component {
     /** MAIN FUNCS */
     componentDidMount() {
 
-        // TODO: Check validity of user's bmd-auth cache-record.
         this.checkBmdAuthValidity();
 
         window.addEventListener("beforeunload", (e) => {
