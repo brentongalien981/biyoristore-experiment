@@ -1,12 +1,39 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import BsAppLocalStorage from '../../bs-library/helpers/BsAppLocalStorage';
 import BsCore2 from '../../bs-library/helpers/BsCore2';
 
 class TestPageA extends React.Component {
 
+    state = {
+        endSessionMsg: '',
+    };
+
     componentDidMount() {
+        window.addEventListener("beforeunload", (e) => {
+            BsAppLocalStorage.set('tight-pink', this.state.endSessionMsg);
+            // e.preventDefault();
+            // return e.returnValue = 'Are you sure you want to close?';
+        });
+    }
+
+
+
+    componentWillUnmount() {
 
     }
+
+
+
+    onInputChange = (e) => {
+        const target = e.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        });
+    };
 
 
 
@@ -44,6 +71,11 @@ class TestPageA extends React.Component {
                 <br />
                 <button onClick={this.redirect}>redirect</button>
                 <button onClick={this.getHttpInfo}>get-http-info</button>
+
+                <div>
+                    <label>end-session-msg</label>
+                    <input name="endSessionMsg" onChange={this.onInputChange} value={this.state.endSessionMsg} />
+                </div>
             </div>
         );
     }

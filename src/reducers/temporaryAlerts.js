@@ -31,7 +31,7 @@ const tryResetSystem = (state, action) => {
 
     let updatedAlerts = state.alerts;
 
-    if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.temporaryAlerts.alerts)) {
+    if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs?.temporaryAlerts?.alerts)) {
         updatedAlerts = [];
     }
 

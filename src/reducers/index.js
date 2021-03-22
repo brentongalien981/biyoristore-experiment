@@ -8,6 +8,7 @@ import profile from './profile';
 import checkout from './checkout';
 import order from './order';
 import temporaryAlerts from './temporaryAlerts';
+import appStateManager from './appStateManager';
 
 export default combineReducers({
     video,
@@ -19,4 +20,5 @@ export default combineReducers({
     checkout,
     order,
     temporaryAlerts,
+    appStateManager,
 });
