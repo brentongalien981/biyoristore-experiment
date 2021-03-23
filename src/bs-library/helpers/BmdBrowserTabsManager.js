@@ -5,10 +5,20 @@ export default class BmdBrowserTabsManager {
 
 
     // 3min in milliseconds
-    static BMD_TAB_VALIDITY_LIFESPAN = 3 * 60 * 1000;
+    // static BMD_TAB_VALIDITY_LIFESPAN = 3 * 60 * 1000;
     static MAX_ACCEPTABLE_NUM_OF_OPEN_TABS = 100;
-    static BMD_TAB_EXPIRY_DATE_REFRESH_INTERVAL = BmdBrowserTabsManager.BMD_TAB_VALIDITY_LIFESPAN - (15 * 1000);
+    // static BMD_TAB_EXPIRY_DATE_REFRESH_INTERVAL = BmdBrowserTabsManager.BMD_TAB_VALIDITY_LIFESPAN - (15 * 1000);
     static TAB_ID = null;
+
+
+    // 
+    static PSEUDO_SESSION_STATUS_FLAGGED_EXPIRING = 9001;
+    static PSEUDO_SESSION_STATUS_TRYING_SALVAGE_TOKEN = 9002;
+
+
+    /** TODO: FOR-DEBUG */
+    static BMD_TAB_VALIDITY_LIFESPAN = 10 * 1000;
+    static BMD_TAB_EXPIRY_DATE_REFRESH_INTERVAL = 5 * 1000;
 
 
 
@@ -19,8 +29,11 @@ export default class BmdBrowserTabsManager {
         BmdBrowserTabsManager.TAB_ID = tabId;
 
 
+        // TODO: Close all expired tabs.
+
+
         setInterval(BmdBrowserTabsManager.doIntervalUpdates, BmdBrowserTabsManager.BMD_TAB_EXPIRY_DATE_REFRESH_INTERVAL);
-        // TODO: FOR-DEBUG
+
         // setInterval(BmdBrowserTabsManager.doIntervalUpdates, 5000);
 
         return tabId;
@@ -50,25 +63,33 @@ export default class BmdBrowserTabsManager {
 
 
         BsJLS.set('bmdBrowserTabs', updatedValidTabs);
+
+
+
+        // If it's been flagged "expiring", salvage it cause the user is using a session within
+        // the grace-period of BMD_TAB_EXPIRY_DATE_REFRESH_INTERVAL.
+        // TODO: Also, if the process of PSEUDO_SESSION_STATUS_TRYING_SALVAGE_TOKEN has taken 3 mins, try another salvaging process.
+        if (BsJLS.get('pseudoSessionStatusOnCache') == BmdBrowserTabsManager.PSEUDO_SESSION_STATUS_FLAGGED_EXPIRING) {
+            // TODO: Dispatch method for PSEUDO_SESSION_STATUS_TRYING_SALVAGE_TOKEN.
+
+            //ish
+            BsJLS.set('pseudoSessionStatusOnCache', BmdBrowserTabsManager.PSEUDO_SESSION_STATUS_TRYING_SALVAGE_TOKEN);
+        }
     };
 
 
 
     static removeTabObj(tabId) {
-        let allTabs = BmdBrowserTabsManager.getOrCreateAllBmdTabs();
 
-        let updatedTabs = [];
-        for (const t of allTabs) {
-            if (t.id == tabId) {
-                const key = 'REMOVED-TAB::' + tabId.substring(0, 4);
-                const val = tabId;
-                BsJLS.set(key, val);
-                continue;
-            }
-            updatedTabs.push(t);
+        switch (BsJLS.get('pseudoSessionStatusOnCache')) {
+            case BmdBrowserTabsManager.PSEUDO_SESSION_STATUS_FLAGGED_EXPIRING:
+            case BmdBrowserTabsManager.PSEUDO_SESSION_STATUS_TRYING_SALVAGE_TOKEN:
+                return;
         }
 
-        BsJLS.set('bmdBrowserTabs', updatedTabs);
+        // TODO: Dispatch method for PSEUDO_SESSION_STATUS_FLAGGED_EXPIRING.
+        BsJLS.set('pseudoSessionStatusOnCache', BmdBrowserTabsManager.PSEUDO_SESSION_STATUS_FLAGGED_EXPIRING);
+        //ish
     }
 
 
@@ -121,7 +142,7 @@ export default class BmdBrowserTabsManager {
             updatedTabs.push(newTab);
         }
 
-        
+
         BsJLS.set('bmdBrowserTabs', updatedTabs);
 
     }

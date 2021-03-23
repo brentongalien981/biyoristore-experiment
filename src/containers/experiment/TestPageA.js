@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import Bs from '../../bs-library/helpers/Bs';
 import BsAppLocalStorage from '../../bs-library/helpers/BsAppLocalStorage';
 import BsCore2 from '../../bs-library/helpers/BsCore2';
 
@@ -7,6 +8,7 @@ class TestPageA extends React.Component {
 
     state = {
         endSessionMsg: '',
+        theMsg: '',
     };
 
     componentDidMount() {
@@ -59,6 +61,26 @@ class TestPageA extends React.Component {
 
 
 
+    saveTheMsg = async () => {
+        const response = await this.generateRandomResultId();
+        Bs.log('response ==> ...');
+        Bs.log(response);
+    };
+
+
+
+    generateRandomResultId() {
+        return new Promise(resolve => setTimeout(() => {
+            this.setState({
+                theMsg: Bs.getRandomId(32),
+            });
+            resolve('done bitch');
+        }, 2000));
+    }
+
+
+
+
     render() {
         return (
             <div style={{ marginTop: '100px' }}>
@@ -75,6 +97,11 @@ class TestPageA extends React.Component {
                 <div>
                     <label>end-session-msg</label>
                     <input name="endSessionMsg" onChange={this.onInputChange} value={this.state.endSessionMsg} />
+                </div>
+
+                <div>
+                    <label>{'msg ==> ' + this.state.theMsg}</label><br />
+                    <button onClick={this.saveTheMsg}>save the-msg</button>
                 </div>
             </div>
         );

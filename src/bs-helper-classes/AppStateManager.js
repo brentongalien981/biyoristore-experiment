@@ -49,10 +49,12 @@ class AppStateManager extends React.Component {
 
         window.addEventListener("beforeunload", (e) => {
 
-            // TODO: 
             BmdBrowserTabsManager.removeTabObj(tabId);
 
             // TODO: Update user's bmd-auth cache-record.
+
+            
+            
         });
 
         BsJLSOLM.init();
