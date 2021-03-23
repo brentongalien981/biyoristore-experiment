@@ -5,6 +5,7 @@ import * as actions from '../actions/appStateManager';
 import BsJLS from '../bs-library/helpers/BsJLS';
 import Bs from '../bs-library/helpers/Bs';
 import BsAppLocalStorage from '../bs-library/helpers/BsAppLocalStorage';
+import BmdBrowserTabsManager from '../bs-library/helpers/BmdBrowserTabsManager';
 
 
 
@@ -40,9 +41,16 @@ class AppStateManager extends React.Component {
     /** MAIN FUNCS */
     componentDidMount() {
 
+        // TODO:
+        const tabId = BmdBrowserTabsManager.initNewTab();
+
+        // TODO
         this.checkBmdAuthValidity();
 
         window.addEventListener("beforeunload", (e) => {
+
+            // TODO: 
+            BmdBrowserTabsManager.removeTabObj(tabId);
 
             // TODO: Update user's bmd-auth cache-record.
         });
