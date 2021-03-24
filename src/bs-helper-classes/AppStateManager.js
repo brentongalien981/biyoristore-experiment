@@ -49,7 +49,7 @@ class AppStateManager extends React.Component {
 
         window.addEventListener("beforeunload", (e) => {
 
-            BmdBrowserTabsManager.removeTabObj(tabId);
+            BmdBrowserTabsManager.onTabClose(tabId);
 
             // TODO: Update user's bmd-auth cache-record.
 
@@ -76,6 +76,7 @@ class AppStateManager extends React.Component {
 /** REACT-FUNCS */
 const mapDispatchToProps = (dispatch) => {
     return {
+        // flagCacehBmdAuthExpiring: () => dispatch(actions.flagCacehBmdAuthExpiring()),
         checkBmdAuthValidity: (data) => dispatch(actions.checkBmdAuthValidity(data)),
         // queueAlert: (obj) => dispatch(queueAlert(obj)),
     };
