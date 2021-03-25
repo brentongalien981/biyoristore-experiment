@@ -65,9 +65,9 @@ export default class BmdBrowserTabsManager {
 
     static initNewTab() {
         window.addEventListener("beforeunload", (e) => {
-            BmdBrowserTabsManager.onTabClose();           
+            BmdBrowserTabsManager.onTabClose();
         });
-        
+
         BmdBrowserTabsManager.respondToPseudoSessionStatus();
         setInterval(BmdBrowserTabsManager.respondToPseudoSessionStatus, BmdBrowserTabsManager.TAB_PSEUDO_SESSION_UPDATE_INTERVAL_TIME * 1000);
     }
@@ -96,7 +96,6 @@ export default class BmdBrowserTabsManager {
 
 
     static onTabClose() {
-
         switch (BsJLS.get('BmdBrowserTabsManager-pseudoSessionStatusOnCache')) {
             case BmdBrowserTabsManager.PSEUDO_SESSION_STATUS_IDLE:
                 BmdBrowserTabsManager.flagCacheBmdAuthExpiring();
@@ -131,13 +130,12 @@ export default class BmdBrowserTabsManager {
         const numOfSalvageAttempts = BmdBrowserTabsManager.getNumOfTokenSalvageAttemps();
 
 
-        if (
-            BmdAuth.isLoggedIn()
-            && BmdAuth.isTransientUser()
-            && BmdBrowserTabsManager.isNowValidTimeToSalvage()
-        ) {
+        if (BmdBrowserTabsManager.isNowValidTimeToSalvage()) {
 
-            if (numOfSalvageAttempts >= BmdBrowserTabsManager.MAX_NUM_OF_TOKEN_SALVAGE_ATTEMPTS) {
+            if (
+                !BmdAuth.isTransientUser()
+                || numOfSalvageAttempts >= BmdBrowserTabsManager.MAX_NUM_OF_TOKEN_SALVAGE_ATTEMPTS
+            ) {
                 BmdBrowserTabsManager.onTrySalvageTokenReturn(false);
             } else {
                 shouldProceed = true;
@@ -182,8 +180,7 @@ export default class BmdBrowserTabsManager {
 
         const updatedNumOfSalvageAttempts = parseInt(numOfSalvageAttempts) + 1;
 
-        // TODO: ON-DEPLOYMENT: Comment out.
-        BmdBrowserTabsManager.doSalvageTokenProcessDebugStats(updatedNumOfSalvageAttempts);
+        // BmdBrowserTabsManager.doSalvageTokenProcessDebugStats(updatedNumOfSalvageAttempts);
 
         BmdBrowserTabsManager.setLatestTokenSalvageAttemptInSec();
         BmdBrowserTabsManager.setNumOfTokenSalvageAttemps(updatedNumOfSalvageAttempts);
@@ -223,8 +220,8 @@ export default class BmdBrowserTabsManager {
 
     static flagCacheBmdAuthExpiring() {
 
-        if (!BsAppLocalStorage.isLoggedIn()) { return; }
-        const auth = BsJLS.get('auth.currentAccount');
+        if (!BmdAuth.isTransientUser()) { return; }
+        const auth = BmdAuth.getInstance();
 
         BsCore2.ajaxCrud({
             url: '/bmd-auth/flagAsExpiring',

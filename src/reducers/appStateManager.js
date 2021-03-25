@@ -10,7 +10,7 @@ import BsJLSOLM from '../bs-library/helpers/BsJLSOLM';
 
 /** INITIAL STATE */
 const initialState = {
-    numOfOpenBmdTabs: 0,
+    //
 };
 
 

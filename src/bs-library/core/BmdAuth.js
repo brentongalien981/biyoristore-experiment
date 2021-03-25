@@ -14,7 +14,13 @@ class BmdAuth {
 
     /** HELPER FUNCS */
     static isTransientUser() {
-        return BmdAuth.getInstance().stayLoggedIn == 0;
+        return BsAppLocalStorage.isLoggedIn() && BmdAuth.getInstance().stayLoggedIn == 0;
+    }
+
+
+
+    static isPersistentUser() {
+        return BsAppLocalStorage.isLoggedIn() && BmdAuth.getInstance().stayLoggedIn == 1;
     }
 
 
@@ -58,10 +64,6 @@ class BmdAuth {
 
     /** EVENT FUNCS */
 }
-
-
-
-/** REACT-FUNCS */
 
 
 

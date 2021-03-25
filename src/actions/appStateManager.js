@@ -1,3 +1,4 @@
+import BmdAuth from "../bs-library/core/BmdAuth";
 import Bs from "../bs-library/helpers/Bs";
 import BsCore2 from "../bs-library/helpers/BsCore2";
 import BsJLS from "../bs-library/helpers/BsJLS";
@@ -17,8 +18,9 @@ export const onCheckBmdAuthValidityFail = (callBackData) => ({ type: ON_CHECK_BM
 
 
 /* AJAX FUNCS */
-export const checkBmdAuthValidity = (data) => {
+export const checkBmdAuthValidity = () => {
 
+    const data = BmdAuth.getInstance();
 
     return (dispatch) => {
 

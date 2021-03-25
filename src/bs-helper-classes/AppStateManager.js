@@ -17,28 +17,13 @@ class AppStateManager extends React.Component {
 
 
     /** HELPER FUNCS */
-    checkBmdAuthValidity() {
-
-        if (!BmdAuth.isLoggedIn()) { return; }
-
-        const auth = BmdAuth.getInstance();
-
-        if (auth) {
-            const data = {
-                ...auth,
-            };
-
-            this.props.checkBmdAuthValidity(data);
-        }
-
-    }
 
 
 
     /** MAIN FUNCS */
     componentDidMount() {
 
-        this.checkBmdAuthValidity();
+        if (BmdAuth.isLoggedIn()) { this.props.checkBmdAuthValidity() }
         BmdBrowserTabsManager.initNewTab();
         BsJLSOLM.init();
     }
@@ -59,9 +44,7 @@ class AppStateManager extends React.Component {
 /** REACT-FUNCS */
 const mapDispatchToProps = (dispatch) => {
     return {
-        // flagCacehBmdAuthExpiring: () => dispatch(actions.flagCacehBmdAuthExpiring()),
-        checkBmdAuthValidity: (data) => dispatch(actions.checkBmdAuthValidity(data)),
-        // queueAlert: (obj) => dispatch(queueAlert(obj)),
+        checkBmdAuthValidity: () => dispatch(actions.checkBmdAuthValidity()),
     };
 };
 
