@@ -180,6 +180,7 @@ export default class BmdBrowserTabsManager {
 
         const updatedNumOfSalvageAttempts = parseInt(numOfSalvageAttempts) + 1;
 
+        // NOTE: FOR DEBUG
         // BmdBrowserTabsManager.doSalvageTokenProcessDebugStats(updatedNumOfSalvageAttempts);
 
         BmdBrowserTabsManager.setLatestTokenSalvageAttemptInSec();

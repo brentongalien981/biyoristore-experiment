@@ -7,6 +7,10 @@ import BsAppSession from '../bs-library/helpers/BsAppSession';
 import { connect } from 'react-redux';
 import { resetCart } from '../actions/cart';
 import BsAppLocalStorage from '../bs-library/helpers/BsAppLocalStorage';
+import BmdAuth from '../bs-library/core/BmdAuth';
+import TemporaryAlertSystem from '../components/temporary-alert-system/TemporaryAlertSystem';
+import { queueAlert } from '../actions/temporaryAlerts';
+
 
 
 
@@ -27,11 +31,13 @@ class Header extends React.Component {
 
     onLogout = (e) => {
         e.preventDefault();
-        const userEmail = BsAppLocalStorage.get("email");
-        BsAppLocalStorage.clear();
-        BsAppLocalStorage.set("email", userEmail);
-        BsAppLocalStorage.set("isLoggedIn", 0);
+        BmdAuth.clearAuth();
         this.props.resetCart();
+
+        const msg = 'See yah later!';
+        const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: msg });
+        this.props.queueAlert(newAlertObj);
+
         this.props.history.push("/");
     };
 }
@@ -48,7 +54,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        resetCart: () => dispatch(resetCart())
+        queueAlert: (obj) => dispatch(queueAlert(obj)),
+        resetCart: () => dispatch(resetCart()),
     };
 };
 
