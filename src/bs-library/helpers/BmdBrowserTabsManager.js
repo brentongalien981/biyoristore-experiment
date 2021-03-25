@@ -1,23 +1,18 @@
+import BmdAuth from "../core/BmdAuth";
 import Bs from "./Bs";
 import BsAppLocalStorage from "./BsAppLocalStorage";
 import BsCore2 from "./BsCore2";
 import BsJLS from "./BsJLS";
 
 export default class BmdBrowserTabsManager {
-    // 3min in milliseconds
-    // static BMD_TAB_VALIDITY_LIFESPAN = 3 * 60 * 1000;
-    // static BMD_TAB_EXPIRY_DATE_REFRESH_INTERVAL = BmdBrowserTabsManager.BMD_TAB_VALIDITY_LIFESPAN - (15 * 1000);
-    // NOTE: FOR-DEBUG
-    static BMD_TAB_VALIDITY_LIFESPAN = 10 * 1000;
-    static BMD_TAB_EXPIRY_DATE_REFRESH_INTERVAL = 5 * 1000;
-    static TIME_INTERVAL_OF_TOKEN_SALVAGE_IN_SEC = 10;
 
-    static MAX_ACCEPTABLE_NUM_OF_OPEN_TABS = 100;
-    static MAX_NUM_OF_TOKEN_SALVAGE_ATTEMPTS = 4;
-    static TAB_ID = null;
+    // In seconds.
+    static TAB_PSEUDO_SESSION_UPDATE_INTERVAL_TIME = 60;
+    static TIME_INTERVAL_OF_TOKEN_SALVAGE_IN_SEC = 25;
+
+    static MAX_NUM_OF_TOKEN_SALVAGE_ATTEMPTS = 5;
 
     static PSEUDO_SESSION_STATUS_IDLE = 9000;
-    static PSEUDO_SESSION_STATUS_A_TAB_CLOSED = 9001;
     static PSEUDO_SESSION_STATUS_FLAGGED_EXPIRING = 9002;
     static PSEUDO_SESSION_STATUS_TRYING_SALVAGE_TOKEN = 9003;
 
@@ -69,33 +64,12 @@ export default class BmdBrowserTabsManager {
 
 
     static initNewTab() {
-
-        // TODO:MAYBE-DELETE
-        const tabId = Bs.getRandomId(32);
-        BmdBrowserTabsManager.TAB_ID = tabId;
-
-        // TODO: Maybe do the same stuffs initially as what you do on intervals.
-
-        BmdBrowserTabsManager.initPseudoSessionStatus();
-
-        setInterval(BmdBrowserTabsManager.doIntervalUpdates, BmdBrowserTabsManager.BMD_TAB_EXPIRY_DATE_REFRESH_INTERVAL);
-    }
-
-
-    // TODO: Work on other cases.
-    static initPseudoSessionStatus() {
-        const currentStatus = BsJLS.get('BmdBrowserTabsManager-pseudoSessionStatusOnCache');
-
-        switch (currentStatus) {
-            case BmdBrowserTabsManager.PSEUDO_SESSION_STATUS_IDLE:
-            case BmdBrowserTabsManager.PSEUDO_SESSION_STATUS_A_TAB_CLOSED:
-            case BmdBrowserTabsManager.PSEUDO_SESSION_STATUS_FLAGGED_EXPIRING:
-            case BmdBrowserTabsManager.PSEUDO_SESSION_STATUS_TRYING_SALVAGE_TOKEN:
-                break;
-            default:
-                BsJLS.set('BmdBrowserTabsManager-pseudoSessionStatusOnCache', BmdBrowserTabsManager.PSEUDO_SESSION_STATUS_IDLE);
-                break;
-        }
+        window.addEventListener("beforeunload", (e) => {
+            BmdBrowserTabsManager.onTabClose();           
+        });
+        
+        BmdBrowserTabsManager.respondToPseudoSessionStatus();
+        setInterval(BmdBrowserTabsManager.respondToPseudoSessionStatus, BmdBrowserTabsManager.TAB_PSEUDO_SESSION_UPDATE_INTERVAL_TIME * 1000);
     }
 
 
@@ -121,13 +95,7 @@ export default class BmdBrowserTabsManager {
 
 
 
-    static doIntervalUpdates = () => {
-        BmdBrowserTabsManager.respondToPseudoSessionStatus();
-    };
-
-
-
-    static onTabClose(tabId) {
+    static onTabClose() {
 
         switch (BsJLS.get('BmdBrowserTabsManager-pseudoSessionStatusOnCache')) {
             case BmdBrowserTabsManager.PSEUDO_SESSION_STATUS_IDLE:
@@ -138,7 +106,6 @@ export default class BmdBrowserTabsManager {
 
 
 
-    // TODO: Work on other cases
     static respondToPseudoSessionStatus() {
         const currentStatus = BsJLS.get('BmdBrowserTabsManager-pseudoSessionStatusOnCache');
 
@@ -147,7 +114,10 @@ export default class BmdBrowserTabsManager {
             case BmdBrowserTabsManager.PSEUDO_SESSION_STATUS_TRYING_SALVAGE_TOKEN:
                 BmdBrowserTabsManager.trySalvageToken();
                 break;
+            case BmdBrowserTabsManager.PSEUDO_SESSION_STATUS_IDLE:
+                break;
             default:
+                BsJLS.set('BmdBrowserTabsManager-pseudoSessionStatusOnCache', BmdBrowserTabsManager.PSEUDO_SESSION_STATUS_IDLE);
                 break;
 
         }
@@ -156,36 +126,41 @@ export default class BmdBrowserTabsManager {
 
 
 
-    /**
-     * Also, if the process of PSEUDO_SESSION_STATUS_TRYING_SALVAGE_TOKEN has taken 30 sec, try another salvaging process until
-     * you exceed the MAX_NUM_OF_TOKEN_SALVAGE_ATTEMPTS.
-     */
-    static trySalvageToken() {
-
-        if (!BsAppLocalStorage.isLoggedIn()) { return; }
-
-        if (!BmdBrowserTabsManager.isNowValidTimeToSalvage()) { return; }
-
+    static doPreTrySalvageTokenProcess() {
+        let shouldProceed = false;
         const numOfSalvageAttempts = BmdBrowserTabsManager.getNumOfTokenSalvageAttemps();
-        if (numOfSalvageAttempts >= BmdBrowserTabsManager.MAX_NUM_OF_TOKEN_SALVAGE_ATTEMPTS) {
 
-            BmdBrowserTabsManager.onTrySalvageTokenReturn(false);
-            return;
+
+        if (
+            BmdAuth.isLoggedIn()
+            && BmdAuth.isTransientUser()
+            && BmdBrowserTabsManager.isNowValidTimeToSalvage()
+        ) {
+
+            if (numOfSalvageAttempts >= BmdBrowserTabsManager.MAX_NUM_OF_TOKEN_SALVAGE_ATTEMPTS) {
+                BmdBrowserTabsManager.onTrySalvageTokenReturn(false);
+            } else {
+                shouldProceed = true;
+            }
         }
 
-        // TODO: Allow this only if the logged-in user didn't want to stay logged-in.
-        // TODO: Check that the user (auth) is a transient-user.
-        const auth = BsJLS.get('auth.currentAccount');
+
+        return {
+            shouldProceed: shouldProceed,
+            numOfSalvageAttempts: numOfSalvageAttempts,
+        };
+    }
 
 
-        const updatedNumOfSalvageAttempts = parseInt(numOfSalvageAttempts) + 1;
 
-        // NOTE: FOR-DEBUG
+    /** NOTE: FOR-DEBUG */
+    static doSalvageTokenProcessDebugStats(updatedNumOfSalvageAttempts) {
+
         BsJLS.set('BmdBrowserTabsManager-numOfSalvageAttempts', '#: ' + updatedNumOfSalvageAttempts);
         const elapsedTimeSinceLastSalvageAttempt = BmdBrowserTabsManager.getNowInSec() - BmdBrowserTabsManager.getLatestTokenSalvageAttemptInSec();
         BsJLS.set('BmdBrowserTabsManager-elapsedTimeSinceLastSalvageAttempt', elapsedTimeSinceLastSalvageAttempt + 's');
 
-        // NOTE: FOR-DEBUG
+
         BsJLS.set('BmdBrowserTabsManager-salvageAttemptTime', 0);
         let intervalHandler = setInterval(() => {
             const salvageAttemptTime = BsJLS.get('BmdBrowserTabsManager-salvageAttemptTime');
@@ -195,14 +170,27 @@ export default class BmdBrowserTabsManager {
                 clearInterval(intervalHandler);
             }
         }, 1000);
+    }
 
 
+
+    static trySalvageToken() {
+
+        const preProcessData = BmdBrowserTabsManager.doPreTrySalvageTokenProcess();
+        if (!preProcessData.shouldProceed) { return; }
+        const numOfSalvageAttempts = preProcessData.numOfSalvageAttempts;
+
+        const updatedNumOfSalvageAttempts = parseInt(numOfSalvageAttempts) + 1;
+
+        // TODO: ON-DEPLOYMENT: Comment out.
+        BmdBrowserTabsManager.doSalvageTokenProcessDebugStats(updatedNumOfSalvageAttempts);
 
         BmdBrowserTabsManager.setLatestTokenSalvageAttemptInSec();
         BmdBrowserTabsManager.setNumOfTokenSalvageAttemps(updatedNumOfSalvageAttempts);
         BsJLS.set('BmdBrowserTabsManager-pseudoSessionStatusOnCache', BmdBrowserTabsManager.PSEUDO_SESSION_STATUS_TRYING_SALVAGE_TOKEN);
 
 
+        const auth = BmdAuth.getInstance();
         BsCore2.ajaxCrud({
             url: '/bmd-auth/trySalvageToken',
             method: 'post',
@@ -224,8 +212,7 @@ export default class BmdBrowserTabsManager {
     static onTrySalvageTokenReturn(isResultOk = false) {
 
         if (!isResultOk) {
-            BsJLS.set('auth.currentAccount', null);
-            BsAppLocalStorage.set("isLoggedIn", 0);
+            BmdAuth.clearAuth();
         }
 
         BmdBrowserTabsManager.setNumOfTokenSalvageAttemps(0);

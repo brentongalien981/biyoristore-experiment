@@ -6,6 +6,7 @@ import BsJLS from '../bs-library/helpers/BsJLS';
 import Bs from '../bs-library/helpers/Bs';
 import BsAppLocalStorage from '../bs-library/helpers/BsAppLocalStorage';
 import BmdBrowserTabsManager from '../bs-library/helpers/BmdBrowserTabsManager';
+import BmdAuth from '../bs-library/core/BmdAuth';
 
 
 
@@ -18,17 +19,13 @@ class AppStateManager extends React.Component {
     /** HELPER FUNCS */
     checkBmdAuthValidity() {
 
-        if (!BsAppLocalStorage.isLoggedIn()) { return; }
+        if (!BmdAuth.isLoggedIn()) { return; }
 
-        // TODO:DELETE
-        const currentAuth = BsJLS.get('auth.currentAccount');
-        Bs.log('currentAuth ==> ...');
-        Bs.log(currentAuth);
+        const auth = BmdAuth.getInstance();
 
-        if (currentAuth
-            && currentAuth.stayLoggedIn == 1) {
+        if (auth) {
             const data = {
-                ...currentAuth,
+                ...auth,
             };
 
             this.props.checkBmdAuthValidity(data);
@@ -41,22 +38,8 @@ class AppStateManager extends React.Component {
     /** MAIN FUNCS */
     componentDidMount() {
 
-        // TODO:
-        const tabId = BmdBrowserTabsManager.initNewTab();
-
-        // TODO
         this.checkBmdAuthValidity();
-
-        window.addEventListener("beforeunload", (e) => {
-
-            BmdBrowserTabsManager.onTabClose(tabId);
-
-            // TODO: Update user's bmd-auth cache-record.
-
-            
-            
-        });
-
+        BmdBrowserTabsManager.initNewTab();
         BsJLSOLM.init();
     }
 

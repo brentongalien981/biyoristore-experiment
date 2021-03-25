@@ -1,4 +1,5 @@
 import * as actions from '../actions/appStateManager';
+import BmdAuth from '../bs-library/core/BmdAuth';
 import BsAppLocalStorage from '../bs-library/helpers/BsAppLocalStorage';
 import BsJLS from '../bs-library/helpers/BsJLS';
 import BsJLSOLM from '../bs-library/helpers/BsJLSOLM';
@@ -29,8 +30,7 @@ const appStateManager = (state = initialState, action) => {
 const onCheckBmdAuthValidityOk = (state, action) => {
 
     if (!action.callBackData.isResultOk) {
-        BsJLS.set('auth.currentAccount', null);
-        BsAppLocalStorage.set("isLoggedIn", 0);
+        BmdAuth.clearAuth();
     }
 
     return {
@@ -42,9 +42,7 @@ const onCheckBmdAuthValidityOk = (state, action) => {
 
 const onCheckBmdAuthValidityFail = (state, action) => {
 
-    BsJLS.set('auth.currentAccount', null);
-    BsAppLocalStorage.set("isLoggedIn", 0);
-
+    BmdAuth.clearAuth();
 
     return {
         ...state,

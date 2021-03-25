@@ -1,4 +1,5 @@
 import * as actions from '../actions/join';
+import BmdAuth from '../bs-library/core/BmdAuth';
 import Bs from '../bs-library/helpers/Bs';
 import BsAppLocalStorage from '../bs-library/helpers/BsAppLocalStorage';
 import BsAppSession from '../bs-library/helpers/BsAppSession';
@@ -99,12 +100,7 @@ const onCreateAccountSuccess = (state, action) => {
             stayLoggedIn: 0,
         };
 
-        BsJLS.set('auth.currentAccount', currentAuthUserData);
-        BsAppLocalStorage.set('isLoggedIn', 1);
-        BsAppLocalStorage.set('email', currentAuthUserData.email);
-
-
-        BsJLSOLM.updateRefreshDate('auth.currentAccount');
+        BmdAuth.set(currentAuthUserData);
 
         shouldDoOnRegisterProcessFinalization = true;
 
@@ -162,12 +158,7 @@ const onLoginSuccess = (state, action) => {
                 stayLoggedIn: action.callBackData.stayLoggedIn,
             };
 
-            BsJLS.set('auth.currentAccount', currentAuthUserData);
-            BsAppLocalStorage.set('isLoggedIn', 1);
-            BsAppLocalStorage.set('email', currentAuthUserData.email);
-
-
-            BsJLSOLM.updateRefreshDate('auth.currentAccount');
+            BmdAuth.set(currentAuthUserData);
 
             shouldDoOnLoginProcessFinalization = true;
             break;
