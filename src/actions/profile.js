@@ -3,6 +3,7 @@ import Bs from "../bs-library/helpers/Bs";
 import BsAppSession from "../bs-library/helpers/BsAppSession";
 import BsCore2 from "../bs-library/helpers/BsCore2";
 import BmdAuth from "../bs-library/core/BmdAuth";
+import BsJLSOLM from "../bs-library/helpers/BsJLSOLM";
 
 
 
@@ -59,8 +60,8 @@ export const saveAccount = (data) => {
         BsCore2.ajaxCrud({
             url: '/users/update',
             method: 'post',
-            params: { 
-                bmdToken: bmdAuth.bmdToken, authProviderId: bmdAuth.authProviderId, 
+            params: {
+                bmdToken: bmdAuth.bmdToken, authProviderId: bmdAuth.authProviderId,
                 oldPassword: data.oldPassword,
                 newPassword: data.newPassword,
             },
@@ -186,6 +187,9 @@ export const savePayment = (newPayment, paymentFormCrudMethod) => {
 
 export const saveProfile = (profile) => {
 
+    // TODO: When there's an attempt to save-profile, update the BsJLSOLM-obj to 
+    // force-read-db next time.
+
     return (dispatch) => {
 
         BsCore.ajaxCrud({
@@ -212,11 +216,15 @@ export const saveProfile = (profile) => {
 
 export const readProfile = () => {
 
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: join, METHOD: readProfile()");
+    if (
+        !BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.profile.personalData)
+        && !BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.profile.stripePaymentInfos)
+        && !BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.profile.stripePaymentInfos)
+    ) {
+        // TODO;
+    }
 
     const bmdAuth = BmdAuth.getInstance();
-
 
     return (dispatch) => {
 
@@ -226,10 +234,6 @@ export const readProfile = () => {
             params: { bmdToken: bmdAuth.bmdToken, authProviderId: bmdAuth.authProviderId, },
             neededResponseParams: ["profile", "paymentInfos", "addresses", "orders", "ordersMetaData"],
             callBackFunc: (requestData, json) => {
-                Bs.log("\n#####################");
-                Bs.log("FILE: actions/join.js, METHOD: readProfile() => ajaxCrud() => callBackFunc()");
-
-
                 dispatch(setProfile(json.profile, json.paymentInfos, json.addresses, json.orders, json.ordersMetaData));
             }
         });

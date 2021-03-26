@@ -28,7 +28,14 @@ export default class BsJLSOLM {
         },
         checkout: {},
         cart: {},
-        profile: {},
+        profile: {
+            personalData: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
+            stripePaymentInfos: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
+            addresses: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
+        },
+        orders: {
+            orders: { dateRefreshed: null, lifespan: 5, shouldForceReadDb: false },
+        },
         temporaryAlerts: {
             alerts: { dateRefreshed: null, lifespan: 30, shouldForceReadDb: false },
         },
