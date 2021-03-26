@@ -2,6 +2,7 @@ import BsCore from "../bs-library/helpers/BsCore";
 import Bs from "../bs-library/helpers/Bs";
 import BsAppSession from "../bs-library/helpers/BsAppSession";
 import BsCore2 from "../bs-library/helpers/BsCore2";
+import BmdAuth from "../bs-library/core/BmdAuth";
 
 
 
@@ -175,25 +176,29 @@ export const saveProfile = (profile) => {
     };
 };
 
+
+
 export const readProfile = () => {
 
     Bs.log("\n###############");
     Bs.log("In REDUCER: join, METHOD: readProfile()");
+
+    const bmdAuth = BmdAuth.getInstance();
 
 
     return (dispatch) => {
 
         BsCore.ajaxCrud({
             url: '/profile/show',
-            params: { api_token: BsAppSession.get("apiToken") },
+            method: 'post',
+            params: { bmdToken: bmdAuth.bmdToken, authProviderId: bmdAuth.authProviderId, },
             neededResponseParams: ["profile", "paymentInfos", "addresses", "orders", "ordersMetaData"],
             callBackFunc: (requestData, json) => {
                 Bs.log("\n#####################");
                 Bs.log("FILE: actions/join.js, METHOD: readProfile() => ajaxCrud() => callBackFunc()");
 
-                
-                dispatch(setProfile(json.profile, json.paymentInfos, json.addresses, json.orders, json.ordersMetaData));
 
+                dispatch(setProfile(json.profile, json.paymentInfos, json.addresses, json.orders, json.ordersMetaData));
             }
         });
     };

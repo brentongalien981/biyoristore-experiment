@@ -13,29 +13,26 @@ import PaymentForm from './PaymentForm';
 import Addresses from './Addresses';
 import AddressForm from './AddressForm';
 import Orders from './Orders';
+import BmdAuth from '../../bs-library/core/BmdAuth';
 
 
 
 class Profile extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            profile: {},
-            newPayment: { cardNumber: "", expirationMonth: "01", expirationYear: "2022", cvc: "", postalCode: "" },
-            isPaymentFormCruding: false,
-            paymentFormCrudMethod: "create",
+    state = {
+        profile: {},
+        newPayment: { cardNumber: "", expirationMonth: "01", expirationYear: "2022", cvc: "", postalCode: "" },
+        isPaymentFormCruding: false,
+        paymentFormCrudMethod: "create",
 
-            editedAddress: { street: "", city: "", province: "ON", country: "Canada", postalCode: "" },
-            addressFormCrudMethod: "create"
-        };
-
-        if (BsAppSession.get("isLoggedIn") == 0) { this.props.history.push("/"); }
-    }
+        editedAddress: { street: "", city: "", province: "ON", country: "Canada", postalCode: "" },
+        addressFormCrudMethod: "create"
+    };
 
 
 
     componentDidMount() {
+        if (!BmdAuth.isLoggedIn()) { this.props.history.push("/"); }
         this.props.readProfile();
     }
 
@@ -248,6 +245,7 @@ class Profile extends React.Component {
                                     <div className="col">
                                         <div className="tab-content" id="myTabContent">
                                             <PersonalData profile={this.state.profile} onPersonalDataChanged={this.onPersonalDataChanged} saveProfile={this.saveProfile} />
+                                            {/* ish */}
                                             <Orders orders={this.props.orders} ordersMetaData={this.props.ordersMetaData} onOrderPageNumClick={this.onOrderPageNumClick} selectedPageNum={this.props.selectedOrderPageNum} />
                                             <Addresses addresses={this.props.addresses} onAddressFormShown={this.onAddressFormShown} onDelete={this.onAddressDelete} />
                                             <Payments paymentInfos={this.props.paymentInfos} onPaymenFormShown={this.onPaymenFormShown} />
