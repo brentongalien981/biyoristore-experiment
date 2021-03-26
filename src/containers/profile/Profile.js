@@ -33,7 +33,7 @@ class Profile extends React.Component {
         addressFormCrudMethod: "create",
 
         account: {
-            email: '',
+            email: BmdAuth.getInstance().email,
             oldPassword: '',
             newPassword: '',
             newPasswordCopy: '',
@@ -253,7 +253,7 @@ class Profile extends React.Component {
     };
 
 
-    //ish
+    
     onSaveAccount = () => {
         if (this.doOnPreSaveAccountProcess()) { this.doOnActualSaveAccountProcess(); }
     };
@@ -344,7 +344,6 @@ class Profile extends React.Component {
                                             <Addresses addresses={this.props.addresses} onAddressFormShown={this.onAddressFormShown} onDelete={this.onAddressDelete} />
                                             <Payments paymentInfos={this.props.paymentInfos} onPaymenFormShown={this.onPaymenFormShown} />
                                             <Account account={this.state.account} onAccountInputChange={this.onAccountInputChange} onSaveAccount={this.onSaveAccount} isSavingAccount={this.state.isSavingAccount} />
-                                            {/* ish */}
                                         </div>
                                     </div>
                                 </div>

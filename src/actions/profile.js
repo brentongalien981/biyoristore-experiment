@@ -67,7 +67,6 @@ export const saveAccount = (data) => {
             callBackFunc: (requestData, json) => {
                 const callBackData = { ...data, ...json };
                 dispatch(onSaveAccountReturn(callBackData));
-                //ish
             },
             errorCallBackFunc: (errors) => {
                 const callBackData = { ...data, errors: errors };
