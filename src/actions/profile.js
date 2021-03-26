@@ -46,7 +46,7 @@ export const doPostSavePaymentFinalization = () => ({ type: DO_POST_SAVE_PAYMENT
 export const onSaveProfileFail = (errors) => ({ type: ON_SAVE_PROFILE_FAIL, errors: errors });
 export const onSaveProfileSuccess = (profile) => ({ type: ON_SAVE_PROFILE_SUCCESS, profile: profile });
 export const onProfileDisplayedSuccess = () => ({ type: ON_PROFILE_DISPLAYED_SUCCESS });
-export const setProfile = (profile, paymentInfos, addresses, orders, ordersMetaData) => ({ type: SET_PROFILE, profile: profile, paymentInfos: paymentInfos, addresses: addresses, orders: orders, ordersMetaData: ordersMetaData });
+export const setProfile = (callBackData) => ({ type: SET_PROFILE, callBackData: callBackData, });
 
 
 
@@ -79,27 +79,26 @@ export const saveAccount = (data) => {
 
 
 
-export const readOrders = (objs) => {
+export const readOrders = (data) => {
 
-    Bs.log("\n###############");
-    Bs.log("In ACTION: profile, METHOD: readOrders()");
-
+    const bmdAuth = BmdAuth.getInstance();
 
     return (dispatch) => {
 
         BsCore2.ajaxCrud({
-            url: '/orders',
-            params: { api_token: BsAppSession.get("apiToken"), pageNum: objs.pageNum },
+            url: '/orders/read',
+            method: 'post',
+            params: {
+                bmdToken: bmdAuth.bmdToken, authProviderId: bmdAuth.authProviderId,
+                pageNum: data.pageNum
+            },
             callBackFunc: (requestData, json) => {
-                Bs.log("\n#####################");
-                Bs.log("FILE: actions/profile.js, METHOD: readOrders() => ajaxCrud() => callBackFunc()");
-
-                json.objs.pageNum = objs.pageNum;
-
+                json.objs.isResultOk = json.isResultOk;
+                json.objs.pageNum = data.pageNum;
                 dispatch(onReadOrdersReturn(json.objs));
             },
             errorCallBackFunc: (errors) => {
-                dispatch(onReadOrdersReturn());
+                dispatch(onReadOrdersReturn({ errors: errors }));
             }
         });
     };
@@ -216,26 +215,32 @@ export const saveProfile = (profile) => {
 
 export const readProfile = () => {
 
+    // Read from the backend.
     if (
-        !BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.profile.personalData)
-        && !BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.profile.stripePaymentInfos)
-        && !BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.profile.stripePaymentInfos)
+        BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.profile.personalData)
+        || BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.profile.stripePaymentInfos)
+        || BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.profile.addresses)
     ) {
-        // TODO;
+        const bmdAuth = BmdAuth.getInstance();
+
+        return (dispatch) => {
+
+            BsCore.ajaxCrud({
+                url: '/profile/show',
+                method: 'post',
+                params: { bmdToken: bmdAuth.bmdToken, authProviderId: bmdAuth.authProviderId, },
+                callBackFunc: (requestData, json) => {
+                    const callBackData = { ...json };
+                    dispatch(setProfile(callBackData));
+                    //ish
+                }
+            });
+        };
     }
 
-    const bmdAuth = BmdAuth.getInstance();
 
-    return (dispatch) => {
+    // TODO: Read from local-storage.
 
-        BsCore.ajaxCrud({
-            url: '/profile/show',
-            method: 'post',
-            params: { bmdToken: bmdAuth.bmdToken, authProviderId: bmdAuth.authProviderId, },
-            neededResponseParams: ["profile", "paymentInfos", "addresses", "orders", "ordersMetaData"],
-            callBackFunc: (requestData, json) => {
-                dispatch(setProfile(json.profile, json.paymentInfos, json.addresses, json.orders, json.ordersMetaData));
-            }
-        });
-    };
+
+
 };

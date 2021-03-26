@@ -45,6 +45,8 @@ class Profile extends React.Component {
     componentDidMount() {
         if (!BmdAuth.isLoggedIn()) { this.props.history.push("/"); }
         this.props.readProfile();
+        this.props.readOrders({ pageNum: 1 });
+        //ish
     }
 
 
@@ -393,7 +395,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         saveAccount: (data) => dispatch(actions.saveAccount(data)),
-        readOrders: (objs) => dispatch(actions.readOrders(objs)),
+        readOrders: (data) => dispatch(actions.readOrders(data)),
         readProfile: () => dispatch(actions.readProfile()),
         onProfileDisplayedSuccess: () => dispatch(actions.onProfileDisplayedSuccess()),
         saveProfile: (profile) => dispatch(actions.saveProfile(profile)),

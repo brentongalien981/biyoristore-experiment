@@ -33,9 +33,6 @@ export default class BsJLSOLM {
             stripePaymentInfos: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
             addresses: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
         },
-        orders: {
-            orders: { dateRefreshed: null, lifespan: 5, shouldForceReadDb: false },
-        },
         temporaryAlerts: {
             alerts: { dateRefreshed: null, lifespan: 30, shouldForceReadDb: false },
         },
@@ -87,7 +84,7 @@ export default class BsJLSOLM {
 
 
 
-    static updateRefreshDateForSearchQuery(q) {
+    static updateRefreshDateForSearchQuery(q, lifespanInMin = BsJLSOLM.SEARCH_QUERY_LIFESPAN) {
         if (!q) { return; }
 
         const updatedSearchQueryObjs = BsJLSOLM.searchQueryObjs;
@@ -100,7 +97,7 @@ export default class BsJLSOLM {
         // updatedSearchQueryObj.readableDateRefreshed = dateTimeNowObj.getHours() + ":" + dateTimeNowObj.getMinutes() + ":" + dateTimeNowObj.getSeconds();
         updatedSearchQueryObj.readableDateRefreshed = (dateTimeNowObj.getMonth()+1) + "/" + (dateTimeNowObj.getDate()) + "/" + (dateTimeNowObj.getFullYear()) + " " + dateTimeNowObj.getHours() + ":" + dateTimeNowObj.getMinutes() + ":" + dateTimeNowObj.getSeconds();
         updatedSearchQueryObj.shouldForceReadDb = false;
-        updatedSearchQueryObj.lifespan = BsJLSOLM.SEARCH_QUERY_LIFESPAN;
+        updatedSearchQueryObj.lifespan = lifespanInMin;
 
         updatedSearchQueryObjs[q] = updatedSearchQueryObj;
 

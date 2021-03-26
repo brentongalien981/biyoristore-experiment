@@ -64,20 +64,26 @@ const onSaveAccountReturn = (state, action) => {
 
 const onReadOrdersReturn = (state, action) => {
 
+    if (action.objs.errors) {
+        return {
+            ...state,
+        };
+    }
+
+
     let updatedOrders = state.orders;
     let updatedPageNum = state.selectedOrderPageNum;
 
     if (action.objs?.orders?.length > 0) {
         updatedOrders = action.objs.orders;
         updatedPageNum = action.objs.pageNum
-    } else {
-        alert("No orders to view there...");
-    }
+    } 
 
     return {
         ...state,
         orders: updatedOrders,
-        selectedOrderPageNum: updatedPageNum
+        selectedOrderPageNum: updatedPageNum,
+        ordersMetaData: action.objs.ordersMetaData
     };
 };
 
@@ -313,11 +319,9 @@ const onProfileDisplayedSuccess = (state, action) => {
 const setProfile = (state, action) => {
     return {
         ...state,
-        profile: action.profile,
-        paymentInfos: action.paymentInfos,
-        addresses: action.addresses,
-        orders: action.orders,
-        ordersMetaData: action.ordersMetaData,
+        profile: action.callBackData.objs.profile,
+        paymentInfos: action.callBackData.objs.paymentInfos,
+        addresses: action.callBackData.objs.addresses,
         shouldDisplayProfile: true
     };
 };
