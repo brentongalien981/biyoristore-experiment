@@ -25,6 +25,9 @@ const initialState = {
 /* REDUCER */
 const profile = (state = initialState, action) => {
     switch (action.type) {
+        
+        case actions.ON_SAVE_ACCOUNT_RETURN: return onSaveAccountReturn(state, action);
+
         case actions.ON_READ_ORDERS_RETURN: return onReadOrdersReturn(state, action);
         case actions.ON_ADDRESS_DELETE_FAIL: return onAddressDeleteFail(state, action);
         case actions.ON_ADDRESS_DELETE_SUCCESS: return onAddressDeleteSuccess(state, action);
@@ -48,6 +51,17 @@ const profile = (state = initialState, action) => {
 
 
 /* NORMAL */
+const onSaveAccountReturn = (state, action) => {
+
+    action.callBackData.doCallBackFunc(action.callBackData);
+
+    return {
+        ...state,
+    };
+};
+
+
+
 const onReadOrdersReturn = (state, action) => {
 
     let updatedOrders = state.orders;

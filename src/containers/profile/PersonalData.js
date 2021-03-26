@@ -36,12 +36,15 @@ function PersonalData(props) {
                         <input id="exampleInput6" type="text" className="form-control" placeholder="Telephone" name="phone" value={phone} onChange={props.onPersonalDataChanged} />
                     </div>
                 </div>
+
+                {/* TODO: DELETE */}
                 <div className="col-md-6">
                     <div className="form-group">
                         <label htmlFor="exampleInput7">Email</label>
                         <input id="exampleInput7" type="text" className="form-control" placeholder="Email" name="email" value={email} onChange={props.onPersonalDataChanged} />
                     </div>
                 </div>
+                
             </div>
 
 

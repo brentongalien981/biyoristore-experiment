@@ -60,7 +60,7 @@ class BsCore2 {
         let json = {
             originalResultData: null,
             isResultOk: false,
-            resultCode: 0,
+            resultCode: null,
             objs: {},
             // isViewingOwnAccount: false,
             errors: {},

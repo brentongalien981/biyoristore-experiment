@@ -6,6 +6,7 @@ import BsAppSession from '../../bs-library/helpers/BsAppSession';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/profile';
+import * as myConstants from './constants/consts';
 import Bs from '../../bs-library/helpers/Bs';
 import Payments from './Payments';
 import PaymentModal from './PaymentModal';
@@ -14,6 +15,8 @@ import Addresses from './Addresses';
 import AddressForm from './AddressForm';
 import Orders from './Orders';
 import BmdAuth from '../../bs-library/core/BmdAuth';
+import Account from './Account';
+import BsCore2 from '../../bs-library/helpers/BsCore2';
 
 
 
@@ -23,10 +26,18 @@ class Profile extends React.Component {
         profile: {},
         newPayment: { cardNumber: "", expirationMonth: "01", expirationYear: "2022", cvc: "", postalCode: "" },
         isPaymentFormCruding: false,
+        isSavingAccount: false,
         paymentFormCrudMethod: "create",
 
         editedAddress: { street: "", city: "", province: "ON", country: "Canada", postalCode: "" },
-        addressFormCrudMethod: "create"
+        addressFormCrudMethod: "create",
+
+        account: {
+            email: '',
+            oldPassword: '',
+            newPassword: '',
+            newPasswordCopy: '',
+        },
     };
 
 
@@ -229,6 +240,90 @@ class Profile extends React.Component {
 
 
 
+    onAccountInputChange = (e) => {
+
+        const target = e.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        let updatedAccount = this.state.account;
+        updatedAccount[name] = value;
+
+        this.setState({ account: updatedAccount });
+    };
+
+
+    //ish
+    onSaveAccount = () => {
+        if (this.doOnPreSaveAccountProcess()) { this.doOnActualSaveAccountProcess(); }
+    };
+
+
+
+    doOnActualSaveAccountProcess() {
+        const data = {
+            oldPassword: this.state.account.oldPassword,
+            newPassword: this.state.account.newPassword,
+            doCallBackFunc: this.doOnPostSaveAccountProcess,
+        };
+
+
+        this.props.saveAccount(data);
+    }
+
+
+
+    doOnPostSaveAccountProcess = (callBackData) => {
+
+        switch (callBackData.resultCode) {
+            case myConstants.RESULT_CODE_OLD_PASSWORD_WRONG.code:
+                alert(myConstants.RESULT_CODE_OLD_PASSWORD_WRONG.msg);
+                break;
+            case 1:
+
+                // Reset password-displays.
+                const updatedAccount = {
+                    ...this.state.account,
+                    oldPassword: '',
+                    newPassword: '',
+                    newPasswordCopy: '',
+                };
+                this.setState({ account: updatedAccount });
+                alert('Account updated.');
+
+                break;
+
+            default:
+                BsCore2.alertForGeneralErrors(callBackData.errors);
+                break;
+        }
+
+
+        this.setState({ isSavingAccount: false });
+    };
+
+
+
+    doOnPreSaveAccountProcess() {
+        if (this.state.isSavingAccount) { return false; }
+        if (this.state.account.oldPassword.trim().length == 0
+            || this.state.account.newPassword.trim().length == 0
+            || this.state.account.newPasswordCopy.trim().length == 0) {
+            alert('Please fill in your credentials.');
+            return false;
+        }
+
+        if (this.state.account.newPassword !== this.state.account.newPasswordCopy) {
+            alert('Passwords don\'t match.');
+            return false;
+        }
+
+        this.setState({ isSavingAccount: true });
+        return true;
+    }
+
+
+
     render() {
         return (
             <>
@@ -245,10 +340,11 @@ class Profile extends React.Component {
                                     <div className="col">
                                         <div className="tab-content" id="myTabContent">
                                             <PersonalData profile={this.state.profile} onPersonalDataChanged={this.onPersonalDataChanged} saveProfile={this.saveProfile} />
-                                            {/* ish */}
                                             <Orders orders={this.props.orders} ordersMetaData={this.props.ordersMetaData} onOrderPageNumClick={this.onOrderPageNumClick} selectedPageNum={this.props.selectedOrderPageNum} />
                                             <Addresses addresses={this.props.addresses} onAddressFormShown={this.onAddressFormShown} onDelete={this.onAddressDelete} />
                                             <Payments paymentInfos={this.props.paymentInfos} onPaymenFormShown={this.onPaymenFormShown} />
+                                            <Account account={this.state.account} onAccountInputChange={this.onAccountInputChange} onSaveAccount={this.onSaveAccount} isSavingAccount={this.state.isSavingAccount} />
+                                            {/* ish */}
                                         </div>
                                     </div>
                                 </div>
@@ -297,6 +393,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        saveAccount: (data) => dispatch(actions.saveAccount(data)),
         readOrders: (objs) => dispatch(actions.readOrders(objs)),
         readProfile: () => dispatch(actions.readProfile()),
         onProfileDisplayedSuccess: () => dispatch(actions.onProfileDisplayedSuccess()),

@@ -1,0 +1,1 @@
+export const RESULT_CODE_OLD_PASSWORD_WRONG = { code: -1, msg: 'Old password is wrong.' };

@@ -7,6 +7,8 @@ import BmdAuth from "../bs-library/core/BmdAuth";
 
 
 /* NAMES */
+export const ON_SAVE_ACCOUNT_RETURN = "ON_SAVE_ACCOUNT_RETURN";
+
 export const ON_READ_ORDERS_RETURN = "ON_READ_ORDERS_RETURN";
 export const ON_ADDRESS_DELETE_FAIL = "ON_ADDRESS_DELETE_FAIL";
 export const ON_ADDRESS_DELETE_SUCCESS = "ON_ADDRESS_DELETE_SUCCESS";
@@ -27,6 +29,8 @@ export const SET_PROFILE = "SET_PROFILE";
 
 
 /* FUNCS */
+export const onSaveAccountReturn = (callBackData) => ({ type: ON_SAVE_ACCOUNT_RETURN, callBackData: callBackData });
+
 export const onReadOrdersReturn = (objs = null) => ({ type: ON_READ_ORDERS_RETURN, objs: objs });
 export const onAddressDeleteFail = () => ({ type: ON_ADDRESS_DELETE_FAIL });
 export const onAddressDeleteSuccess = (addressId) => ({ type: ON_ADDRESS_DELETE_SUCCESS, addressId: addressId });
@@ -46,6 +50,35 @@ export const setProfile = (profile, paymentInfos, addresses, orders, ordersMetaD
 
 
 /* AJAX FUNCS */
+export const saveAccount = (data) => {
+
+    const bmdAuth = BmdAuth.getInstance();
+
+    return (dispatch) => {
+
+        BsCore2.ajaxCrud({
+            url: '/users/update',
+            method: 'post',
+            params: { 
+                bmdToken: bmdAuth.bmdToken, authProviderId: bmdAuth.authProviderId, 
+                oldPassword: data.oldPassword,
+                newPassword: data.newPassword,
+            },
+            callBackFunc: (requestData, json) => {
+                const callBackData = { ...data, ...json };
+                dispatch(onSaveAccountReturn(callBackData));
+                //ish
+            },
+            errorCallBackFunc: (errors) => {
+                const callBackData = { ...data, errors: errors };
+                dispatch(onSaveAccountReturn(callBackData));
+            },
+        });
+    };
+};
+
+
+
 export const readOrders = (objs) => {
 
     Bs.log("\n###############");
