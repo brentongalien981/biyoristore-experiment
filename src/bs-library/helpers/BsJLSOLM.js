@@ -139,6 +139,32 @@ export default class BsJLSOLM {
 
 
 
+    static shouldObjWithPathRefresh(path) {
+        if (!path || path.length === 0) { return false; }
+        if (!BsJLS.isSet(path)) { return true; }
+
+        const objPathArr = path.split(".");
+
+        let currentTraversedObj = BsJLSOLM.objs;
+        objPathArr.forEach(key => {
+            if (!currentTraversedObj[key]) {
+                currentTraversedObj[key] = {};
+            }
+            currentTraversedObj = currentTraversedObj[key];
+        });
+
+        if (currentTraversedObj.shouldForceReadDb) { return true; }
+        if (!currentTraversedObj.dateRefreshed) { return true; }
+
+        const nowInMilliSec = Date.now();
+        const lifespanInMilliSec = currentTraversedObj.lifespan * 60 * 1000;
+        const elapsedTime = nowInMilliSec - currentTraversedObj.dateRefreshed;
+
+        if (elapsedTime > lifespanInMilliSec) { return true; }
+    }
+
+
+
     static shouldObjRefresh(obj) {
         if (!obj) { return true; }
         if (!obj.dateRefreshed) { return true; }

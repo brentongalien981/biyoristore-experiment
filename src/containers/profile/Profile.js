@@ -47,7 +47,6 @@ class Profile extends React.Component {
         this.props.checkBmdAuthValidity({ reactRouterHistory: this.props.history });
         this.props.readProfile();
         this.props.readOrders({ pageNum: 1 });
-        //ish
     }
 
 
@@ -100,6 +99,7 @@ class Profile extends React.Component {
 
 
 
+    //ish
     saveProfile = (e) => {
         e.preventDefault();
         this.props.saveProfile(this.state.profile);

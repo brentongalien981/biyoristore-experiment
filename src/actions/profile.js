@@ -190,22 +190,20 @@ export const savePayment = (newPayment, paymentFormCrudMethod) => {
     };
 };
 
-export const saveProfile = (profile) => {
 
-    // TODO: When there's an attempt to save-profile, update the BsJLSOLM-obj to 
-    // force-read-db next time.
+
+export const saveProfile = (profile) => {
 
     return (dispatch) => {
 
-        BsCore.ajaxCrud({
+        BsCore2.ajaxCrud({
             url: '/profile/save',
             method: "post",
+            //ish
             params: { ...profile, api_token: BsAppSession.get("apiToken") },
             neededResponseParams: ["errors", "profile"],
             callBackFunc: (requestData, json) => {
-                Bs.log("\n#####################");
-                Bs.log("FILE: actions/join.js, METHOD: saveProfile() => ajaxCrud() => callBackFunc()");
-
+                
                 if (!json.errors) {
                     dispatch(onSaveProfileSuccess(json.profile));
                 }
@@ -226,10 +224,9 @@ export const readProfile = () => {
 
     // Read from local-storage.
     if (
-        // TODO: Enhance the method: shouldObjRefresh() to shouldObjWithPathNameRefresh(pathName)
-        !BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.profile.personalData)
-        && !BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.profile.stripePaymentInfos)
-        && !BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.profile.addresses)
+        !BsJLSOLM.shouldObjWithPathRefresh('profile.personalData')
+        && !BsJLSOLM.shouldObjWithPathRefresh('profile.stripePaymentInfos')
+        && !BsJLSOLM.shouldObjWithPathRefresh('profile.addresses')
     ) {
         return setProfile({ resultCode: 2 });
     }
