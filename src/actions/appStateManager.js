@@ -18,9 +18,11 @@ export const onCheckBmdAuthValidityFail = (callBackData) => ({ type: ON_CHECK_BM
 
 
 /* AJAX FUNCS */
-export const checkBmdAuthValidity = () => {
+export const checkBmdAuthValidity = (data) => {
 
-    const data = BmdAuth.getInstance();
+    if (!BmdAuth.isLoggedIn()) { return onCheckBmdAuthValidityFail({ ...data }); }
+
+    const bmdAuth = BmdAuth.getInstance();
 
     return (dispatch) => {
 
@@ -28,8 +30,8 @@ export const checkBmdAuthValidity = () => {
             url: '/bmd-auth/checkBmdAuthValidity',
             method: "post",
             params: {
-                bmdToken: data.bmdToken,
-                authProviderId: data.authProviderId,
+                bmdToken: bmdAuth.bmdToken,
+                authProviderId: bmdAuth.authProviderId,
             },
             callBackFunc: (requestData, json) => {
                 const callBackData = { ...data, ...json };

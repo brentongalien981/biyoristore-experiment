@@ -1,3 +1,4 @@
+import BmdWebPagesInfo from "../helpers/BmdWebPagesInfo";
 import BsAppLocalStorage from "../helpers/BsAppLocalStorage";
 import BsJLS from "../helpers/BsJLS";
 import BsJLSOLM from "../helpers/BsJLSOLM";
@@ -47,6 +48,26 @@ class BmdAuth {
 
 
     /** MAIN FUNCS */
+    static isAuthorizedForWebPage(relativePathOrPageName) {
+        
+        const pageName = BmdWebPagesInfo.getParsedWebPageName(relativePathOrPageName);
+        const page = BmdWebPagesInfo.getPageInfo(pageName);
+
+        if (!BmdAuth.isLoggedIn()) {
+            if (page.doesNeedAuthentication) { return false; }
+        }
+
+        return true;
+    }
+
+
+
+    static isAuthorizedForRequest(route) {
+        // TODO
+    }
+
+
+
     static set(authData) {
         BsJLS.set('auth.currentAccount', authData);
         BsAppLocalStorage.set('isLoggedIn', 1);

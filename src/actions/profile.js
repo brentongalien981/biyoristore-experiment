@@ -8,6 +8,8 @@ import BsJLSOLM from "../bs-library/helpers/BsJLSOLM";
 
 
 /* NAMES */
+export const ON_SET_PROFILE_FAIL = "ON_SET_PROFILE_FAIL";
+
 export const ON_SAVE_ACCOUNT_RETURN = "ON_SAVE_ACCOUNT_RETURN";
 
 export const ON_READ_ORDERS_RETURN = "ON_READ_ORDERS_RETURN";
@@ -30,6 +32,8 @@ export const SET_PROFILE = "SET_PROFILE";
 
 
 /* FUNCS */
+export const onSetProfileFail = () => ({ type: ON_SET_PROFILE_FAIL, });
+
 export const onSaveAccountReturn = (callBackData) => ({ type: ON_SAVE_ACCOUNT_RETURN, callBackData: callBackData });
 
 export const onReadOrdersReturn = (objs = null) => ({ type: ON_READ_ORDERS_RETURN, objs: objs });
@@ -80,6 +84,8 @@ export const saveAccount = (data) => {
 
 
 export const readOrders = (data) => {
+
+    if (!BmdAuth.isLoggedIn()) { return onReadOrdersReturn({ errors: {} }); }
 
     const bmdAuth = BmdAuth.getInstance();
 
@@ -214,6 +220,9 @@ export const saveProfile = (profile) => {
 
 
 export const readProfile = () => {
+
+    if (!BmdAuth.isLoggedIn()) { return onSetProfileFail(); }
+
 
     // Read from the backend.
     if (

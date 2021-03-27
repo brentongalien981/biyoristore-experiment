@@ -25,6 +25,8 @@ const initialState = {
 /* REDUCER */
 const profile = (state = initialState, action) => {
     switch (action.type) {
+
+        case actions.ON_SET_PROFILE_FAIL: return onSetProfileFail(state, action);
         
         case actions.ON_SAVE_ACCOUNT_RETURN: return onSaveAccountReturn(state, action);
 
@@ -319,10 +321,18 @@ const onProfileDisplayedSuccess = (state, action) => {
 const setProfile = (state, action) => {
     return {
         ...state,
-        profile: action.callBackData.objs.profile,
-        paymentInfos: action.callBackData.objs.paymentInfos,
-        addresses: action.callBackData.objs.addresses,
+        profile: action.callBackData.objs.profile ?? {},
+        paymentInfos: action.callBackData.objs.paymentInfos ?? [],
+        addresses: action.callBackData.objs.addresses ?? [],
         shouldDisplayProfile: true
+    };
+};
+
+
+
+const onSetProfileFail = (state, action) => {
+    return {
+        ...state,
     };
 };
 

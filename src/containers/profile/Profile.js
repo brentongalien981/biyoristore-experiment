@@ -33,7 +33,7 @@ class Profile extends React.Component {
         addressFormCrudMethod: "create",
 
         account: {
-            email: BmdAuth.getInstance().email,
+            email: BmdAuth.getInstance()?.email,
             oldPassword: '',
             newPassword: '',
             newPasswordCopy: '',

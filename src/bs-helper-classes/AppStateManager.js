@@ -7,6 +7,7 @@ import Bs from '../bs-library/helpers/Bs';
 import BsAppLocalStorage from '../bs-library/helpers/BsAppLocalStorage';
 import BmdBrowserTabsManager from '../bs-library/helpers/BmdBrowserTabsManager';
 import BmdAuth from '../bs-library/core/BmdAuth';
+import { withRouter } from 'react-router';
 
 
 
@@ -17,13 +18,26 @@ class AppStateManager extends React.Component {
 
 
     /** HELPER FUNCS */
+    doOnCheckBmdAuthValidityProcess = (isResultOk = false) => {
+        if (!isResultOk) {
+            // TODO: 
+            if (!BmdAuth.isAuthorizedForWebPage(this.props.location.pathname)) {
+                alert('bmd-auth invalid. should logout');
+                this.props.history.replace('/');
+            }
+
+
+        }
+    };
 
 
 
     /** MAIN FUNCS */
     componentDidMount() {
 
-        if (BmdAuth.isLoggedIn()) { this.props.checkBmdAuthValidity() }
+        const data = { doCallBackFunc: this.doOnCheckBmdAuthValidityProcess, };
+        if (BmdAuth.isLoggedIn()) { this.props.checkBmdAuthValidity(data) }
+
         BmdBrowserTabsManager.initNewTab();
         BsJLSOLM.init();
     }
@@ -44,10 +58,10 @@ class AppStateManager extends React.Component {
 /** REACT-FUNCS */
 const mapDispatchToProps = (dispatch) => {
     return {
-        checkBmdAuthValidity: () => dispatch(actions.checkBmdAuthValidity()),
+        checkBmdAuthValidity: (data) => dispatch(actions.checkBmdAuthValidity(data)),
     };
 };
 
 
 
-export default connect(null, mapDispatchToProps)(AppStateManager);
+export default connect(null, mapDispatchToProps)(withRouter(AppStateManager));

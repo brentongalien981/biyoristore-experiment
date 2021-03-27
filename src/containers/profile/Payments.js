@@ -30,7 +30,7 @@ function Payments(props) {
 
 function showPaymentDetails(paymentInfos, onPaymenFormShown) {
 
-    const paymentDetails = paymentInfos.map((p, i) => {
+    const paymentDetails = paymentInfos?.map((p, i) => {
         return (
             <div className="col-md-6" key={i}>
                 <div className="card card-data">

@@ -33,6 +33,8 @@ const onCheckBmdAuthValidityOk = (state, action) => {
         BmdAuth.clearAuth();
     }
 
+    action.callBackData.doCallBackFunc(action.callBackData.isResultOk);
+
     return {
         ...state,
     };
@@ -43,6 +45,8 @@ const onCheckBmdAuthValidityOk = (state, action) => {
 const onCheckBmdAuthValidityFail = (state, action) => {
 
     BmdAuth.clearAuth();
+
+    action.callBackData.doCallBackFunc(false);
 
     return {
         ...state,
