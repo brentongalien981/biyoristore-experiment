@@ -18,26 +18,11 @@ class AppStateManager extends React.Component {
 
 
     /** HELPER FUNCS */
-    doOnCheckBmdAuthValidityProcess = (isResultOk = false) => {
-        if (!isResultOk) {
-            // TODO: 
-            if (!BmdAuth.isAuthorizedForWebPage(this.props.location.pathname)) {
-                alert('bmd-auth invalid. should logout');
-                this.props.history.replace('/');
-            }
-
-
-        }
-    };
 
 
 
     /** MAIN FUNCS */
     componentDidMount() {
-
-        const data = { doCallBackFunc: this.doOnCheckBmdAuthValidityProcess, };
-        if (BmdAuth.isLoggedIn()) { this.props.checkBmdAuthValidity(data) }
-
         BmdBrowserTabsManager.initNewTab();
         BsJLSOLM.init();
     }

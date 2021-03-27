@@ -29,11 +29,7 @@ const appStateManager = (state = initialState, action) => {
 /** NORMAL FUNCS */
 const onCheckBmdAuthValidityOk = (state, action) => {
 
-    if (!action.callBackData.isResultOk) {
-        BmdAuth.clearAuth();
-    }
-
-    action.callBackData.doCallBackFunc(action.callBackData.isResultOk);
+    updatePseudoSession(action.callBackData);
 
     return {
         ...state,
@@ -44,13 +40,27 @@ const onCheckBmdAuthValidityOk = (state, action) => {
 
 const onCheckBmdAuthValidityFail = (state, action) => {
 
-    BmdAuth.clearAuth();
-
-    action.callBackData.doCallBackFunc(false);
+    updatePseudoSession(action.callBackData);
 
     return {
         ...state,
     };
+};
+
+
+
+/** HELPER-FUNCS */
+const updatePseudoSession = (callBackData) => {
+    if (!callBackData.isResultOk) {
+        BmdAuth.clearAuth();
+
+        const reactRouterHistory = callBackData.reactRouterHistory;
+
+        if (!BmdAuth.isAuthorizedForWebPage(reactRouterHistory.location.pathname)) {
+            alert('You\'re session ended.');
+            reactRouterHistory.replace('/');
+        }
+    }
 };
 
 

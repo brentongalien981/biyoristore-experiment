@@ -17,6 +17,7 @@ import Orders from './Orders';
 import BmdAuth from '../../bs-library/core/BmdAuth';
 import Account from './Account';
 import BsCore2 from '../../bs-library/helpers/BsCore2';
+import { checkBmdAuthValidity } from '../../actions/appStateManager';
 
 
 
@@ -43,7 +44,7 @@ class Profile extends React.Component {
 
 
     componentDidMount() {
-        if (!BmdAuth.isLoggedIn()) { this.props.history.push("/"); }
+        this.props.checkBmdAuthValidity({ reactRouterHistory: this.props.history });
         this.props.readProfile();
         this.props.readOrders({ pageNum: 1 });
         //ish
@@ -255,7 +256,7 @@ class Profile extends React.Component {
     };
 
 
-    
+
     onSaveAccount = () => {
         if (this.doOnPreSaveAccountProcess()) { this.doOnActualSaveAccountProcess(); }
     };
@@ -394,6 +395,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        checkBmdAuthValidity: (data) => dispatch(checkBmdAuthValidity(data)),
+
         saveAccount: (data) => dispatch(actions.saveAccount(data)),
         readOrders: (data) => dispatch(actions.readOrders(data)),
         readProfile: () => dispatch(actions.readProfile()),

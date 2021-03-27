@@ -224,31 +224,38 @@ export const readProfile = () => {
     if (!BmdAuth.isLoggedIn()) { return onSetProfileFail(); }
 
 
-    // Read from the backend.
+    // Read from local-storage.
     if (
-        BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.profile.personalData)
-        || BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.profile.stripePaymentInfos)
-        || BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.profile.addresses)
+        // TODO: Enhance the method: shouldObjRefresh() to shouldObjWithPathNameRefresh(pathName)
+        !BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.profile.personalData)
+        && !BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.profile.stripePaymentInfos)
+        && !BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.profile.addresses)
     ) {
-        const bmdAuth = BmdAuth.getInstance();
-
-        return (dispatch) => {
-
-            BsCore.ajaxCrud({
-                url: '/profile/show',
-                method: 'post',
-                params: { bmdToken: bmdAuth.bmdToken, authProviderId: bmdAuth.authProviderId, },
-                callBackFunc: (requestData, json) => {
-                    const callBackData = { ...json };
-                    dispatch(setProfile(callBackData));
-                    //ish
-                }
-            });
-        };
+        return setProfile({ resultCode: 2 });
     }
 
 
-    // TODO: Read from local-storage.
+    // Read from the backend.
+    const bmdAuth = BmdAuth.getInstance();
+
+    return (dispatch) => {
+
+        BsCore2.ajaxCrud({
+            url: '/profile/show',
+            method: 'post',
+            params: { bmdToken: bmdAuth.bmdToken, authProviderId: bmdAuth.authProviderId, },
+            callBackFunc: (requestData, json) => {
+                const callBackData = { ...json };
+                dispatch(setProfile(callBackData));
+            },
+            errorCallBackFunc: (errors) => {
+                dispatch(onSetProfileFail());
+            },
+        });
+    };
+
+
+
 
 
 

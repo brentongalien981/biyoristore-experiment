@@ -1,6 +1,8 @@
 import * as actions from '../actions/profile';
 import Bs from '../bs-library/helpers/Bs';
 import BsAppSession from '../bs-library/helpers/BsAppSession';
+import BsJLS from '../bs-library/helpers/BsJLS';
+import BsJLSOLM from '../bs-library/helpers/BsJLSOLM';
 
 /** */
 const initialState = {
@@ -27,7 +29,7 @@ const profile = (state = initialState, action) => {
     switch (action.type) {
 
         case actions.ON_SET_PROFILE_FAIL: return onSetProfileFail(state, action);
-        
+
         case actions.ON_SAVE_ACCOUNT_RETURN: return onSaveAccountReturn(state, action);
 
         case actions.ON_READ_ORDERS_RETURN: return onReadOrdersReturn(state, action);
@@ -79,7 +81,7 @@ const onReadOrdersReturn = (state, action) => {
     if (action.objs?.orders?.length > 0) {
         updatedOrders = action.objs.orders;
         updatedPageNum = action.objs.pageNum
-    } 
+    }
 
     return {
         ...state,
@@ -211,7 +213,7 @@ const onSavePaymentSuccess = (state, action) => {
 
     alert("Payment saved...");
 
-    
+
     let updatedState = {
         ...state,
         shouldDoPostSavePayment: true,
@@ -319,13 +321,40 @@ const onProfileDisplayedSuccess = (state, action) => {
 };
 
 const setProfile = (state, action) => {
-    return {
-        ...state,
-        profile: action.callBackData.objs.profile ?? {},
-        paymentInfos: action.callBackData.objs.paymentInfos ?? [],
-        addresses: action.callBackData.objs.addresses ?? [],
-        shouldDisplayProfile: true
-    };
+
+    switch (action.callBackData.resultCode) {
+        case 1: // Read from the backend.
+
+            const profile = action.callBackData.objs.profile ?? {};
+            const paymentInfos = action.callBackData.objs.paymentInfos ?? [];
+            const addresses = action.callBackData.objs.addresses ?? [];
+
+
+            if (BsJLS.set('profile.personalData', profile)) { BsJLSOLM.updateRefreshDate('profile.personalData'); }
+            if (BsJLS.set('profile.stripePaymentInfos', paymentInfos)) { BsJLSOLM.updateRefreshDate('profile.stripePaymentInfos'); }
+            if (BsJLS.set('profile.addresses', addresses)) { BsJLSOLM.updateRefreshDate('profile.addresses'); }
+
+            return {
+                ...state,
+                profile: profile,
+                paymentInfos: paymentInfos,
+                addresses: addresses,
+                shouldDisplayProfile: true
+            };
+
+        case 2: // Read from local-storage.
+
+            return {
+                ...state,
+                profile: BsJLS.get('profile.personalData') ?? {},
+                paymentInfos: BsJLS.get('profile.stripePaymentInfos') ?? [],
+                addresses: BsJLS.get('profile.addresses') ?? [],
+                shouldDisplayProfile: true
+            };
+
+        default:
+            return { ...state };
+    }
 };
 
 

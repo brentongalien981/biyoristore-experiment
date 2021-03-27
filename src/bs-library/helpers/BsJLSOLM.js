@@ -46,8 +46,17 @@ export default class BsJLSOLM {
 
 
     static init() {
-        BsJLSOLM.objs = BsJLS.get("BsJLSOLM-objs") ?? BsJLSOLM.defaultObjs;
-        BsJLSOLM.searchQueryObjs = BsJLS.get("BsJLSOLM-searchQueryObjs") ?? BsJLSOLM.defaultSearchQueryObjs;
+
+        if (!BsJLS.isSet('BsJLSOLM-objs')) {
+            BsJLS.set("BsJLSOLM-objs", BsJLSOLM.defaultObjs);
+            BsJLSOLM.objs = BsJLSOLM.defaultObjs;
+        }
+
+        if (!BsJLS.isSet('BsJLSOLM-searchQueryObjs')) {
+            BsJLS.set("BsJLSOLM-searchQueryObjs", BsJLSOLM.defaultSearchQueryObjs);
+            BsJLSOLM.searchQueryObjs = BsJLSOLM.defaultSearchQueryObjs;
+        }
+        
     }
 
 

@@ -18,7 +18,7 @@ class Home extends React.Component {
 
     render() {
 
-        const content = "Feb 16 is a good date...";
+        const content = "May 15 is a good date...";
         const featuredProductCategories = this.getFeaturedProductCategories();
 
         return (
@@ -33,6 +33,7 @@ class Home extends React.Component {
 
 
     componentDidMount() {
+
         BsCore.ajaxCrud({
             url: '/products/featured',
             params: {},
