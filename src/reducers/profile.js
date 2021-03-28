@@ -220,20 +220,38 @@ const onSavePaymentSuccess = (state, action) => {
         } else {
             BsCore2.alertForCallBackDataErrors();
         }
-        
+
         return { ...state };
     }
 
 
-    const oldPaymentInfos = BsJLS.get('profile.stripePaymentInfos');
+    let oldPaymentInfos = BsJLS.get('profile.stripePaymentInfos');
     let updatedPaymentInfos = oldPaymentInfos;
 
     if (action.callBackData.paymentFormCrudMethod == "create") {
-
         updatedPaymentInfos = [...oldPaymentInfos, action.callBackData.objs.newPayment];
-        if (BsJLS.set('profile.stripePaymentInfos', updatedPaymentInfos)) { BsJLSOLM.updateRefreshDate('profile.stripePaymentInfos'); }
-
     }
+    else {
+        let indexOfUpdatedPayment = null;
+
+        for (let i = 0; i < oldPaymentInfos.length; i++) {
+            const p = oldPaymentInfos[i];
+
+            if (p.id === action.callBackData.objs.newPayment.id) {
+                indexOfUpdatedPayment = i;
+                break;
+            }
+
+        }
+
+        if (indexOfUpdatedPayment) {
+            oldPaymentInfos[indexOfUpdatedPayment] = action.callBackData.objs.newPayment;
+            updatedPaymentInfos = [...oldPaymentInfos];
+        }
+    }
+
+    if (BsJLS.set('profile.stripePaymentInfos', updatedPaymentInfos)) { BsJLSOLM.updateRefreshDate('profile.stripePaymentInfos'); }
+
 
     document.querySelector("#closePaymentFormBtn").click();
 
@@ -283,7 +301,7 @@ const onSavePaymentSuccess = (state, action) => {
 
 
 const onSavePaymentFail = (state, action) => {
-    
+
     action.callBackData.doCallBackFunc(false);
     BsCore2.alertForCallBackDataErrors(action.callBackData);
 

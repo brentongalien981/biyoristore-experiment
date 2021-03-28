@@ -231,8 +231,6 @@ class Profile extends React.Component {
 
     onPaymenFormShown = (e, payment) => {
         e.preventDefault();
-        Bs.log("payment ==> ...");
-        Bs.log(payment);
 
         if (payment) {
             // edit payment

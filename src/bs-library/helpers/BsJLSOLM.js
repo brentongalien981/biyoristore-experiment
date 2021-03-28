@@ -142,6 +142,7 @@ export default class BsJLSOLM {
     static shouldObjWithPathRefresh(path) {
         if (!path || path.length === 0) { return false; }
         if (!BsJLS.isSet(path)) { return true; }
+        //
 
         const objPathArr = path.split(".");
 
