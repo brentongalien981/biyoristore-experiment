@@ -42,7 +42,7 @@ class BsCore2 {
 
 
 
-    static alertForCallBackDataErrors(data) {
+    static alertForCallBackDataErrors(data = {}) {
 
         if (data.errorStatusCode === 401) {
             alert('Oops! Please log-in to continue.');

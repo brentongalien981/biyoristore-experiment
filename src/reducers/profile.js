@@ -9,8 +9,8 @@ import BsJLSOLM from '../bs-library/helpers/BsJLSOLM';
 const initialState = {
     profile: {
     },
-    shouldDoPostSavePayment: false,
-    wasPaymentFormCrudOk: false,
+    // shouldDoPostSavePayment: false,
+    // wasPaymentFormCrudOk: false,
 
     paymentInfos: [],
     addresses: [
@@ -210,66 +210,85 @@ const onSaveAddressSuccess = (state, action) => {
 
 const onSavePaymentSuccess = (state, action) => {
 
+    //ish
+    const isResultOk = action.callBackData.isResultOk;
+    action.callBackData.doCallBackFunc(isResultOk);
+
+    if (!isResultOk) {
+        if (action.callBackData.caughtCustomError) {
+            alert('Oops, there\s an error. ' + action.callBackData.caughtCustomError);
+        } else {
+            BsCore2.alertForCallBackDataErrors();
+        }
+        
+        return { ...state };
+    }
+
+
+    const oldPaymentInfos = BsJLS.get('profile.stripePaymentInfos');
+    let updatedPaymentInfos = oldPaymentInfos;
+
+    if (action.callBackData.paymentFormCrudMethod == "create") {
+
+        updatedPaymentInfos = [...oldPaymentInfos, action.callBackData.objs.newPayment];
+        if (BsJLS.set('profile.stripePaymentInfos', updatedPaymentInfos)) { BsJLSOLM.updateRefreshDate('profile.stripePaymentInfos'); }
+
+    }
+
     document.querySelector("#closePaymentFormBtn").click();
 
-    alert("Payment saved...");
 
-
-    let updatedState = {
+    return {
         ...state,
-        shouldDoPostSavePayment: true,
-        wasPaymentFormCrudOk: true
+        paymentInfos: updatedPaymentInfos,
     };
 
-    let updatedPaymentInfos = state.paymentInfos;
 
-    if (action.paymentForCrudMethod == "create") {
-        return {
-            ...updatedState,
-            paymentInfos: [...updatedPaymentInfos, action.newPayment]
-        };
-    }
-    else {
 
-        let i = 0;
-        for (; i < updatedPaymentInfos.length; i++) {
-            const p = updatedPaymentInfos[i];
+    //bmd-todo: delete
+    // let updatedState = {
+    //     ...state,
+    //     shouldDoPostSavePayment: true,
+    //     wasPaymentFormCrudOk: true
+    // };
 
-            if (p.id === action.newPayment.id) { break; }
+    // let updatedPaymentInfos = state.paymentInfos;
 
-        }
+    // if (action.paymentForCrudMethod == "create") {
+    //     return {
+    //         ...updatedState,
+    //         paymentInfos: [...updatedPaymentInfos, action.newPayment]
+    //     };
+    // }
+    // else {
 
-        updatedPaymentInfos[i] = action.newPayment;
+    //     let i = 0;
+    //     for (; i < updatedPaymentInfos.length; i++) {
+    //         const p = updatedPaymentInfos[i];
 
-        return {
-            ...updatedState,
-            paymentInfos: [...updatedPaymentInfos]
-        };
-    }
+    //         if (p.id === action.newPayment.id) { break; }
+
+    //     }
+
+    //     updatedPaymentInfos[i] = action.newPayment;
+
+    //     return {
+    //         ...updatedState,
+    //         paymentInfos: [...updatedPaymentInfos]
+    //     };
+    // }
 
 };
 
 
 
 const onSavePaymentFail = (state, action) => {
-    let errorMsg = "";
-
-    for (const field in action.errors) {
-        if (action.errors.hasOwnProperty(field)) {
-            const fieldErrors = action.errors[field];
-
-            errorMsg += fieldErrors[0] + "\n";
-
-        }
-    }
-
-    if (errorMsg.length > 0) { alert(errorMsg); }
-    else { alert("Oops, there's an error on our end. Please try again."); }
+    
+    action.callBackData.doCallBackFunc(false);
+    BsCore2.alertForCallBackDataErrors(action.callBackData);
 
     return {
         ...state,
-        shouldDoPostSavePayment: true,
-        wasPaymentFormCrudOk: false
     };
 };
 

@@ -44,9 +44,10 @@ export const onAddressDeleteSuccess = (addressId) => ({ type: ON_ADDRESS_DELETE_
 export const onAddressFormResetSuccess = () => ({ type: ON_ADDRESS_FORM_RESET_SUCCESS });
 export const onSaveAddressFail = (errors) => ({ type: ON_SAVE_ADDRESS_FAIL, errors: errors });
 export const onSaveAddressSuccess = (address, addressFormCrudMethod) => ({ type: ON_SAVE_ADDRESS_SUCCESS, address: address, addressFormCrudMethod: addressFormCrudMethod });
+
 // export const onPaymentFormResetSuccess = () => ({ type: ON_PAYMENT_FORM_RESET_SUCCESS });
-export const onSavePaymentFail = (errors) => ({ type: ON_SAVE_PAYMENT_FAIL, errors: errors });
-export const onSavePaymentSuccess = (newPayment, paymentFormCrudMethod) => ({ type: ON_SAVE_PAYMENT_SUCCESS, newPayment: newPayment, paymentFormCrudMethod: paymentFormCrudMethod });
+export const onSavePaymentFail = (callBackData) => ({ type: ON_SAVE_PAYMENT_FAIL, callBackData: callBackData });
+export const onSavePaymentSuccess = (callBackData) => ({ type: ON_SAVE_PAYMENT_SUCCESS, callBackData: callBackData });
 export const doPostSavePaymentFinalization = () => ({ type: DO_POST_SAVE_PAYMENT_FINALIZATION });
 
 export const onSaveProfileFail = (callBackData) => ({ type: ON_SAVE_PROFILE_FAIL, callBackData: callBackData });
@@ -162,31 +163,34 @@ export const saveAddress = (address, addressFormCrudMethod) => {
     };
 };
 
-export const savePayment = (newPayment, paymentFormCrudMethod) => {
 
-    const url = (paymentFormCrudMethod == "create" ? "/stripePaymentMethod/save" : "/stripePaymentMethod/update");
+
+export const savePayment = (data) => {
+
+    const bmdAuth = BmdAuth.getInstance();
+
+    const url = (data.paymentFormCrudMethod == "create" ? "/stripePaymentMethod/save" : "/stripePaymentMethod/update");
 
     return (dispatch) => {
 
-        BsCore.ajaxCrud({
+        BsCore2.ajaxCrud({
             url: url,
             method: "post",
-            params: { ...newPayment, api_token: BsAppSession.get("apiToken") },
-            neededResponseParams: ["newPayment"],
+            params: { bmdToken: bmdAuth?.bmdToken, authProviderId: bmdAuth?.authProviderId, ...data.newPayment },
             callBackFunc: (requestData, json) => {
-                Bs.log("\n#####################");
-                Bs.log("FILE: actions/join.js, METHOD: savePayment() => ajaxCrud() => callBackFunc()");
 
+                //bmd-ish
                 if (json.isResultOk) {
-                    dispatch(onSavePaymentSuccess(json.newPayment, paymentFormCrudMethod));
+                    const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: 'Payment-method saved.' });
+                    dispatch(queueAlert(newAlertObj));
                 }
 
-                if (json.customErrors) {
-                    dispatch(onSavePaymentFail(json.customErrors));
-                }
+                const callBackData = { ...data, ...json };
+                dispatch(onSavePaymentSuccess(callBackData));
             },
-            errorCallBackFunc: (errors) => {
-                dispatch(onSavePaymentFail(errors));
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
+                dispatch(onSavePaymentFail(callBackData));
             }
         });
     };
@@ -204,7 +208,7 @@ export const saveProfile = (data) => {
             url: '/profile/save',
             method: "post",
             params: { 
-                bmdToken: bmdAuth.bmdToken, authProviderId: bmdAuth.authProviderId, 
+                bmdToken: bmdAuth?.bmdToken, authProviderId: bmdAuth?.authProviderId, 
                 ...data.profile
             },
             callBackFunc: (requestData, json) => {
@@ -254,7 +258,7 @@ export const readProfile = () => {
         BsCore2.ajaxCrud({
             url: '/profile/show',
             method: 'post',
-            params: { bmdToken: bmdAuth.bmdToken, authProviderId: bmdAuth.authProviderId, },
+            params: { bmdToken: bmdAuth?.bmdToken, authProviderId: bmdAuth?.authProviderId, },
             callBackFunc: (requestData, json) => {
                 const callBackData = { ...json };
                 dispatch(setProfile(callBackData));

@@ -13,7 +13,7 @@ function Payments(props) {
                 <div className="col">
                     <h3 className="mb-0">Payments</h3>
                     {/* <span className="eyebrow">{props.paymentInfos.length} Entry</span><br /> */}
-                    <button type="button" className="btn btn-primary btn-with-ico" data-toggle="modal" data-target="#exampleModal-1" onClick={props.onPaymenFormShown}><i className="icon-plus"></i> Add New Payment</button>
+                    <button type="button" className="btn btn-primary btn-with-ico" data-toggle="modal" data-target="#paymentFormModal" onClick={props.onPaymenFormShown}><i className="icon-plus"></i> Add New Payment</button>
                 </div>
             </div>
 
@@ -44,7 +44,7 @@ function showPaymentDetails(paymentInfos, onPaymenFormShown) {
                                     <button id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button" className="btn btn-lg btn-secondary btn-ico"><i className="icon-more-vertical"></i></button>
                                     <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
                                         <li>
-                                            <a className="dropdown-item" href="#!" data-toggle="modal" data-target="#exampleModal-1" onClick={(e) => onPaymenFormShown(e, p)}>Edit</a>
+                                            <a className="dropdown-item" href="#!" data-toggle="modal" data-target="#paymentFormModal" onClick={(e) => onPaymenFormShown(e, p)}>Edit</a>
                                         </li>
                                         <li>
                                             <a className="dropdown-item" href="#!" onClick={() => alert("TODO: Payment@delete")}>Delete</a>

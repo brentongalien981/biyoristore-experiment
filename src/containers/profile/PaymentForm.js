@@ -8,12 +8,12 @@ function PaymentForm(props) {
 
 
     return (
-        <div className="modal fade" id="exampleModal-1" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal fade" id="paymentFormModal" tabIndex="-1" role="dialog" aria-labelledby="paymentFormModalLabel" aria-hidden="true">
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
 
                     <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">{methodTitle}</h5>
+                        <h5 className="modal-title" id="paymentFormModalLabel">{methodTitle}</h5>
                         <button id="closePaymentFormBtn" type="button" className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>

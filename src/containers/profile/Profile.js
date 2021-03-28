@@ -63,9 +63,6 @@ class Profile extends React.Component {
         }
 
 
-        if (this.props.shouldDoPostSavePayment) { this.doPostSavePayment(); }
-
-
 
         if (this.props.shouldResetAddressForm) {
             this.setState({ editedAddress: { street: "", city: "", province: "ON", country: "Canada", postalCode: "" } });
@@ -132,7 +129,9 @@ class Profile extends React.Component {
 
 
     doPreSavePayment = () => {
+
         if (this.state.isPaymentFormCruding) { Bs.log("We're still processing..."); return false; }
+        if (!BmdAuth.isLoggedIn()) { return false; }
 
         this.setState({ isPaymentFormCruding: true });
         return true;
@@ -147,28 +146,23 @@ class Profile extends React.Component {
 
         this.setState({ newPayment: newPayment });
 
-        this.props.doSavePayment(this.state.newPayment, this.state.paymentFormCrudMethod);
+        const data = {
+            newPayment: newPayment,
+            paymentFormCrudMethod: this.state.paymentFormCrudMethod,
+            doCallBackFunc: (isResultOk) => {
+
+                const updatedNewPayment = (isResultOk ? { cardNumber: "", expirationMonth: "01", expirationYear: "2022", cvc: "", postalCode: "" } : newPayment);
+                
+                this.setState({
+                    newPayment: updatedNewPayment,
+                    isPaymentFormCruding: false
+                });
+            },
+        };
+
+
+        this.props.doSavePayment(data);
     };
-
-
-
-    doPostSavePayment = () => {
-        if (this.props.wasPaymentFormCrudOk) {
-            this.setState({
-                newPayment: { cardNumber: "", expirationMonth: "01", expirationYear: "2022", cvc: "", postalCode: "" },
-                isPaymentFormCruding: false
-            });
-        }
-        else {
-            this.setState({ isPaymentFormCruding: false });
-        }
-
-        this.props.doPostSavePaymentFinalization();
-    };
-
-
-
-
 
 
 
@@ -394,11 +388,9 @@ const mapStateToProps = (state) => {
         profile: state.profile.profile,
         shouldDisplayProfile: state.profile.shouldDisplayProfile,
 
-        shouldDoPostSavePayment: state.profile.shouldDoPostSavePayment,
-        wasPaymentFormCrudOk: state.profile.wasPaymentFormCrudOk,
-
         paymentInfos: state.profile.paymentInfos,
         // shouldResetPaymentForm: state.profile.shouldResetPaymentForm,
+
         addresses: state.profile.addresses,
         orders: state.profile.orders,
         ordersMetaData: state.profile.ordersMetaData,
@@ -417,9 +409,9 @@ const mapDispatchToProps = (dispatch) => {
         readProfile: () => dispatch(actions.readProfile()),
         onProfileDisplayedSuccess: () => dispatch(actions.onProfileDisplayedSuccess()),
         saveProfile: (data) => dispatch(actions.saveProfile(data)),
-        doSavePayment: (newPayment, paymentFormCrudMethod) => dispatch(actions.savePayment(newPayment, paymentFormCrudMethod)),
-        doPostSavePaymentFinalization: () => dispatch(actions.doPostSavePaymentFinalization()),
+        doSavePayment: (data) => dispatch(actions.savePayment(data)),
         // onPaymentFormResetSuccess: () => dispatch(actions.onPaymentFormResetSuccess()),
+
         saveAddress: (address, addressFormCrudMethod) => dispatch(actions.saveAddress(address, addressFormCrudMethod)),
         onAddressFormResetSuccess: () => dispatch(actions.onAddressFormResetSuccess()),
         onAddressDelete: (addressId) => dispatch(actions.onAddressDelete(addressId)),
