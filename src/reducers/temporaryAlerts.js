@@ -29,7 +29,7 @@ const temporaryAlerts = (state = initialState, action) => {
 /** NORMAL FUNCS */
 const tryResetSystem = (state, action) => {
 
-    let updatedAlerts = state.alerts;
+    let updatedAlerts = BsJLS.get('temporaryAlerts.alerts') ?? [];
 
     if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs?.temporaryAlerts?.alerts)) {
         updatedAlerts = [];
@@ -45,9 +45,10 @@ const tryResetSystem = (state, action) => {
 
 const deleteAlert = (state, action) => {
 
+    const oldAlerts = BsJLS.get('temporaryAlerts.alerts') ?? [];
     let updatedAlerts = [];
     
-    state.alerts.forEach(a => {
+    oldAlerts.forEach(a => {
         if (a.id !== action.alertId) {
             updatedAlerts.push(a);
         }
@@ -65,9 +66,11 @@ const deleteAlert = (state, action) => {
 
 const queueAlert = (state, action) => {
 
-    const updatedAlerts = [...state.alerts, action.obj];
-    BsJLS.set('temporaryAlerts.alerts', updatedAlerts);
-    BsJLSOLM.updateRefreshDate('temporaryAlerts.alerts');
+    const oldAlerts = BsJLS.get('temporaryAlerts.alerts') ?? [];
+    const updatedAlerts = [...oldAlerts, action.obj];
+
+    if (BsJLS.set('temporaryAlerts.alerts', updatedAlerts)) { BsJLSOLM.updateRefreshDate('temporaryAlerts.alerts'); }
+
 
     return {
         ...state,

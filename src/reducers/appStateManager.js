@@ -57,7 +57,7 @@ const updatePseudoSession = (callBackData) => {
         const reactRouterHistory = callBackData.reactRouterHistory;
 
         if (!BmdAuth.isAuthorizedForWebPage(reactRouterHistory.location.pathname)) {
-            alert('You\'re session ended.');
+            alert('Please log-in to view this page.');
             reactRouterHistory.replace('/');
         }
     }

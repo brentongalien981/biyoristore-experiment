@@ -26,6 +26,7 @@ class Profile extends React.Component {
     state = {
         profile: {},
         newPayment: { cardNumber: "", expirationMonth: "01", expirationYear: "2022", cvc: "", postalCode: "" },
+        isSavingPersonalData: false,
         isPaymentFormCruding: false,
         isSavingAccount: false,
         paymentFormCrudMethod: "create",
@@ -99,10 +100,24 @@ class Profile extends React.Component {
 
 
 
-    //ish
+
     saveProfile = (e) => {
         e.preventDefault();
-        this.props.saveProfile(this.state.profile);
+
+        if (!BmdAuth.isLoggedIn()) {
+            alert('Please log-in first.');
+            return;
+        }
+
+        if (this.state.isSavingPersonalData) { return; }
+        this.setState({ isSavingPersonalData: true });
+
+        this.props.saveProfile({
+            profile: this.state.profile,
+            doCallBackFunc: () => {
+                this.setState({ isSavingPersonalData: false });
+            },
+        });
     };
 
 
@@ -342,7 +357,7 @@ class Profile extends React.Component {
                                 <div className="row">
                                     <div className="col">
                                         <div className="tab-content" id="myTabContent">
-                                            <PersonalData profile={this.state.profile} onPersonalDataChanged={this.onPersonalDataChanged} saveProfile={this.saveProfile} />
+                                            <PersonalData isSavingPersonalData={this.state.isSavingPersonalData} profile={this.state.profile} onPersonalDataChanged={this.onPersonalDataChanged} saveProfile={this.saveProfile} />
                                             <Orders orders={this.props.orders} ordersMetaData={this.props.ordersMetaData} onOrderPageNumClick={this.onOrderPageNumClick} selectedPageNum={this.props.selectedOrderPageNum} />
                                             <Addresses addresses={this.props.addresses} onAddressFormShown={this.onAddressFormShown} onDelete={this.onAddressDelete} />
                                             <Payments paymentInfos={this.props.paymentInfos} onPaymenFormShown={this.onPaymenFormShown} />
@@ -401,7 +416,7 @@ const mapDispatchToProps = (dispatch) => {
         readOrders: (data) => dispatch(actions.readOrders(data)),
         readProfile: () => dispatch(actions.readProfile()),
         onProfileDisplayedSuccess: () => dispatch(actions.onProfileDisplayedSuccess()),
-        saveProfile: (profile) => dispatch(actions.saveProfile(profile)),
+        saveProfile: (data) => dispatch(actions.saveProfile(data)),
         doSavePayment: (newPayment, paymentFormCrudMethod) => dispatch(actions.savePayment(newPayment, paymentFormCrudMethod)),
         doPostSavePaymentFinalization: () => dispatch(actions.doPostSavePaymentFinalization()),
         // onPaymentFormResetSuccess: () => dispatch(actions.onPaymentFormResetSuccess()),

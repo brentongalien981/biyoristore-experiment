@@ -1,4 +1,5 @@
 import React from 'react';
+import WaitLoader from '../../components/loader/WaitLoader';
 
 
 
@@ -7,6 +8,23 @@ function PersonalData(props) {
     const firstName = props.profile.firstName ? props.profile.firstName : "";
     const lastName = props.profile.lastName ? props.profile.lastName : "";
     const phone = props.profile.phone ? props.profile.phone : "";
+
+
+
+    let saveBtnSection = (
+        <WaitLoader size="md" />
+    );
+
+    if (!props.isSavingPersonalData) {
+        saveBtnSection = (
+            <div className="row">
+                <div className="col">
+                    <a href="#!" className="btn btn-primary" onClick={props.saveProfile}>Save Changes</a>
+                </div>
+            </div>
+        );
+    }
+
 
     return (
         <div className="tab-pane fade show active" id="sidebar-1-1" role="tabpanel" aria-labelledby="sidebar-1-1">
@@ -35,15 +53,12 @@ function PersonalData(props) {
                         <input type="phone" className="form-control" placeholder="Telephone" name="phone" value={phone} onChange={props.onPersonalDataChanged} />
                     </div>
                 </div>
-                
+
             </div>
 
 
-            <div className="row">
-                <div className="col">
-                    <a href="#!" className="btn btn-primary" onClick={props.saveProfile}>Save Changes</a>
-                </div>
-            </div>
+            {saveBtnSection}
+
         </div>
     );
 }

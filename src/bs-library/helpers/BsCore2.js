@@ -11,7 +11,7 @@ class BsCore2 {
     // FOR MAC
     static appBackendUrl = "http://biyoristoreexperiment.test:8000";
     static appApiUrl = "http://biyoristoreexperiment.test:8000/api";
-    
+
     // FOR WINDOWS
     // static appBackendUrl = "http://biyoristoreexperiment.test";
     // static appApiUrl = "http://biyoristoreexperiment.test/api";
@@ -42,6 +42,32 @@ class BsCore2 {
 
 
 
+    static alertForCallBackDataErrors(data) {
+
+        if (data.errorStatusCode === 401) {
+            alert('Oops! Please log-in to continue.');
+            return;
+        }
+
+
+        let errors = data.errors;
+        let errorMsg = "";
+
+        for (const field in errors) {
+            if (errors.hasOwnProperty(field)) {
+                const fieldErrors = errors[field];
+
+                errorMsg += fieldErrors[0] + "\n";
+
+            }
+        }
+
+        if (errorMsg.length > 0) { alert(errorMsg); }
+        else { alert("Oops, there's an error on our end. Please try again."); }
+    }
+
+
+
     static ajaxCrud(data = {}) {
 
         let defaultCrudData = {
@@ -51,6 +77,7 @@ class BsCore2 {
             headers: {},
             callBackFunc: BsCore2.defaultCallBackFunc,
             neededResponseParams: [],
+            bmdHttpErrorCallBackFunc: BsCore2.bmdHttpErrorCallBackFunc,
             errorCallBackFunc: BsCore2.defaultErrorCallBackFunc,
             ...data
         };
@@ -71,7 +98,7 @@ class BsCore2 {
         };
 
 
-        
+
         //
         let url = BsCore2.appApiUrl + defaultCrudData.url;
         if (data.isUrlExternal) { url = defaultCrudData.url; }
@@ -88,7 +115,7 @@ class BsCore2 {
                 Bs.log("Start of THEN clause");
                 Bs.log("AJAX Request URL ==> " + defaultCrudData.url);
                 Bs.log("##############################");
-                
+
 
                 BsCore2.displayObjects(response, "response");
                 BsCore2.displayObjects(response.data, "response.data");
@@ -142,7 +169,9 @@ class BsCore2 {
 
                 BsCore2.displayErrors(error);
                 json.errors = BsCore2.tryGetErrors(error);
-                defaultCrudData.errorCallBackFunc(json.errors);
+                // defaultCrudData.bmdHttpErrorCallBackFunc(error);
+                const errorStatusCode = error.response.status;
+                defaultCrudData.errorCallBackFunc(json.errors, errorStatusCode);
 
 
                 Bs.log("\n##############################");
@@ -179,12 +208,33 @@ class BsCore2 {
     }
 
 
-    static defaultErrorCallBackFunc(errors) {
+    static defaultErrorCallBackFunc(errors, errorStatusCode = null) {
         Bs.displaySeparator(3);
         Bs.log("In method: defaultErrorCallBackFunc()");
         Bs.log("NOTICE: There's error with your AJAX request bro.");
         Bs.log("NOTE: Override this error callback func.");
         Bs.displaySeparator();
+    }
+
+
+
+    static bmdHttpErrorCallBackFunc(error) {
+        Bs.displaySeparator(3);
+        Bs.log("In method: bmdHttpErrorCallBackFunc()");
+        Bs.log("NOTICE: There's error with your AJAX request bro.");
+        Bs.displaySeparator();
+
+        switch (error.response?.status) {
+            case 401:
+                alert('Oops! Try logging-in to continue.');
+                break;
+            case 501:
+
+                break;
+
+            default:
+                break;
+        }
     }
 
 
@@ -207,7 +257,7 @@ class BsCore2 {
             }
         }
 
-        
+
         try {
             Bs.log("\nerror.response ==> ...");
             Bs.log(error.response);

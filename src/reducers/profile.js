@@ -1,6 +1,7 @@
 import * as actions from '../actions/profile';
 import Bs from '../bs-library/helpers/Bs';
 import BsAppSession from '../bs-library/helpers/BsAppSession';
+import BsCore2 from '../bs-library/helpers/BsCore2';
 import BsJLS from '../bs-library/helpers/BsJLS';
 import BsJLSOLM from '../bs-library/helpers/BsJLSOLM';
 
@@ -284,19 +285,10 @@ const doPostSavePaymentFinalization = (state, action) => {
 
 
 const onSaveProfileFail = (state, action) => {
-    let errorMsg = "";
 
-    for (const field in action.errors) {
-        if (action.errors.hasOwnProperty(field)) {
-            const fieldErrors = action.errors[field];
 
-            errorMsg += fieldErrors[0] + "\n";
-
-        }
-    }
-
-    if (errorMsg.length > 0) { alert(errorMsg); }
-    else { alert("Oops, there's an error on our end. Please try again."); }
+    BsCore2.alertForCallBackDataErrors(action.callBackData);
+    action.callBackData.doCallBackFunc();
 
     return {
         ...state,
@@ -305,8 +297,10 @@ const onSaveProfileFail = (state, action) => {
 
 const onSaveProfileSuccess = (state, action) => {
 
-    BsAppSession.set("email", action.profile.email);
-    alert("Profile saved...");
+    const updatedProfile = action.callBackData.objs.profile ?? {};
+    if (BsJLS.set('profile.personalData', updatedProfile)) { BsJLSOLM.updateRefreshDate('profile.personalData'); }
+
+    action.callBackData.doCallBackFunc();
 
     return {
         ...state,

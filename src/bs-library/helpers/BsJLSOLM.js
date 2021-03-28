@@ -34,7 +34,7 @@ export default class BsJLSOLM {
             addresses: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
         },
         temporaryAlerts: {
-            alerts: { dateRefreshed: null, lifespan: 30, shouldForceReadDb: false },
+            alerts: { dateRefreshed: null, lifespan: 10, shouldForceReadDb: false },
         },
     };
 

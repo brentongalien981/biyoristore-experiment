@@ -4,6 +4,8 @@ import BsAppSession from "../bs-library/helpers/BsAppSession";
 import BsCore2 from "../bs-library/helpers/BsCore2";
 import BmdAuth from "../bs-library/core/BmdAuth";
 import BsJLSOLM from "../bs-library/helpers/BsJLSOLM";
+import { queueAlert } from "./temporaryAlerts";
+import TemporaryAlertSystem from "../components/temporary-alert-system/TemporaryAlertSystem";
 
 
 
@@ -47,8 +49,8 @@ export const onSavePaymentFail = (errors) => ({ type: ON_SAVE_PAYMENT_FAIL, erro
 export const onSavePaymentSuccess = (newPayment, paymentFormCrudMethod) => ({ type: ON_SAVE_PAYMENT_SUCCESS, newPayment: newPayment, paymentFormCrudMethod: paymentFormCrudMethod });
 export const doPostSavePaymentFinalization = () => ({ type: DO_POST_SAVE_PAYMENT_FINALIZATION });
 
-export const onSaveProfileFail = (errors) => ({ type: ON_SAVE_PROFILE_FAIL, errors: errors });
-export const onSaveProfileSuccess = (profile) => ({ type: ON_SAVE_PROFILE_SUCCESS, profile: profile });
+export const onSaveProfileFail = (callBackData) => ({ type: ON_SAVE_PROFILE_FAIL, callBackData: callBackData });
+export const onSaveProfileSuccess = (callBackData) => ({ type: ON_SAVE_PROFILE_SUCCESS, callBackData: callBackData });
 export const onProfileDisplayedSuccess = () => ({ type: ON_PROFILE_DISPLAYED_SUCCESS });
 export const setProfile = (callBackData) => ({ type: SET_PROFILE, callBackData: callBackData, });
 
@@ -192,24 +194,36 @@ export const savePayment = (newPayment, paymentFormCrudMethod) => {
 
 
 
-export const saveProfile = (profile) => {
+export const saveProfile = (data) => {
+
+    const bmdAuth = BmdAuth.getInstance();
 
     return (dispatch) => {
 
         BsCore2.ajaxCrud({
             url: '/profile/save',
             method: "post",
-            //ish
-            params: { ...profile, api_token: BsAppSession.get("apiToken") },
-            neededResponseParams: ["errors", "profile"],
+            params: { 
+                bmdToken: bmdAuth.bmdToken, authProviderId: bmdAuth.authProviderId, 
+                ...data.profile
+            },
             callBackFunc: (requestData, json) => {
-                
-                if (!json.errors) {
-                    dispatch(onSaveProfileSuccess(json.profile));
+
+                const callBackData = { ...data, ...json };
+
+                if (json.isResultOk) {
+                    dispatch(onSaveProfileSuccess(callBackData));
+
+                    const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: 'Personal data saved.' });
+                    dispatch(queueAlert(newAlertObj));
+                    
+                } else {
+                    dispatch(onSaveProfileFail(callBackData));
                 }
             },
-            errorCallBackFunc: (errors) => {
-                dispatch(onSaveProfileFail(errors));
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
+                dispatch(onSaveProfileFail(callBackData));
             }
         });
     };
