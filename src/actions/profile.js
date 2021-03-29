@@ -15,16 +15,15 @@ export const ON_SET_PROFILE_FAIL = "ON_SET_PROFILE_FAIL";
 export const ON_SAVE_ACCOUNT_RETURN = "ON_SAVE_ACCOUNT_RETURN";
 
 export const ON_READ_ORDERS_RETURN = "ON_READ_ORDERS_RETURN";
+
 export const ON_ADDRESS_DELETE_FAIL = "ON_ADDRESS_DELETE_FAIL";
 export const ON_ADDRESS_DELETE_SUCCESS = "ON_ADDRESS_DELETE_SUCCESS";
-export const ON_ADDRESS_FORM_RESET_SUCCESS = "ON_ADDRESS_FORM_RESET_SUCCESS";
+
 export const ON_SAVE_ADDRESS_FAIL = "ON_SAVE_ADDRESS_FAIL";
 export const ON_SAVE_ADDRESS_SUCCESS = "ON_SAVE_ADDRESS_SUCCESS";
-// export const ON_PAYMENT_FORM_RESET_SUCCESS = "ON_PAYMENT_FORM_RESET_SUCCESS";
+
 export const ON_SAVE_PAYMENT_FAIL = "ON_SAVE_PAYMENT_FAIL";
 export const ON_SAVE_PAYMENT_SUCCESS = "ON_SAVE_PAYMENT_SUCCESS";
-
-export const DO_POST_SAVE_PAYMENT_FINALIZATION = "DO_POST_SAVE_PAYMENT_FINALIZATION";
 
 export const ON_SAVE_PROFILE_FAIL = "ON_SAVE_PROFILE_FAIL";
 export const ON_SAVE_PROFILE_SUCCESS = "ON_SAVE_PROFILE_SUCCESS";
@@ -39,16 +38,14 @@ export const onSetProfileFail = () => ({ type: ON_SET_PROFILE_FAIL, });
 export const onSaveAccountReturn = (callBackData) => ({ type: ON_SAVE_ACCOUNT_RETURN, callBackData: callBackData });
 
 export const onReadOrdersReturn = (objs = null) => ({ type: ON_READ_ORDERS_RETURN, objs: objs });
+
 export const onAddressDeleteFail = () => ({ type: ON_ADDRESS_DELETE_FAIL });
 export const onAddressDeleteSuccess = (addressId) => ({ type: ON_ADDRESS_DELETE_SUCCESS, addressId: addressId });
-export const onAddressFormResetSuccess = () => ({ type: ON_ADDRESS_FORM_RESET_SUCCESS });
-export const onSaveAddressFail = (errors) => ({ type: ON_SAVE_ADDRESS_FAIL, errors: errors });
-export const onSaveAddressSuccess = (address, addressFormCrudMethod) => ({ type: ON_SAVE_ADDRESS_SUCCESS, address: address, addressFormCrudMethod: addressFormCrudMethod });
+export const onSaveAddressFail = (callBackData) => ({ type: ON_SAVE_ADDRESS_FAIL, callBackData: callBackData });
+export const onSaveAddressSuccess = (callBackData) => ({ type: ON_SAVE_ADDRESS_SUCCESS, callBackData: callBackData });
 
-// export const onPaymentFormResetSuccess = () => ({ type: ON_PAYMENT_FORM_RESET_SUCCESS });
 export const onSavePaymentFail = (callBackData) => ({ type: ON_SAVE_PAYMENT_FAIL, callBackData: callBackData });
 export const onSavePaymentSuccess = (callBackData) => ({ type: ON_SAVE_PAYMENT_SUCCESS, callBackData: callBackData });
-export const doPostSavePaymentFinalization = () => ({ type: DO_POST_SAVE_PAYMENT_FINALIZATION });
 
 export const onSaveProfileFail = (callBackData) => ({ type: ON_SAVE_PROFILE_FAIL, callBackData: callBackData });
 export const onSaveProfileSuccess = (callBackData) => ({ type: ON_SAVE_PROFILE_SUCCESS, callBackData: callBackData });
@@ -139,25 +136,29 @@ export const onAddressDelete = (addressId) => {
     };
 };
 
-export const saveAddress = (address, addressFormCrudMethod) => {
+
+//bmd-ish
+export const saveAddress = (data) => {
+
+    const bmdAuth = BmdAuth.getInstance();
 
     return (dispatch) => {
 
-        BsCore.ajaxCrud({
+        BsCore2.ajaxCrud({
             url: '/address/save',
-            method: "post",
-            params: { ...address, api_token: BsAppSession.get("apiToken") },
-            neededResponseParams: ["address"],
+            method: 'post',
+            params: { bmdToken: bmdAuth?.bmdToken, authProviderId: bmdAuth?.authProviderId, ...data.address },
             callBackFunc: (requestData, json) => {
-                Bs.log("\n#####################");
-                Bs.log("FILE: actions/join.js, METHOD: saveAddress() => ajaxCrud() => callBackFunc()");
 
-                if (json.isResultOk) {
-                    dispatch(onSaveAddressSuccess(json.address, addressFormCrudMethod));
-                }
+                const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: 'Address saved.' });
+                dispatch(queueAlert(newAlertObj));
+
+                const callBackData = { ...data, ...json };
+                dispatch(onSaveAddressSuccess(callBackData));
             },
-            errorCallBackFunc: (errors) => {
-                dispatch(onSaveAddressFail(errors));
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
+                dispatch(onSaveAddressFail(callBackData));
             }
         });
     };
@@ -179,7 +180,6 @@ export const savePayment = (data) => {
             params: { bmdToken: bmdAuth?.bmdToken, authProviderId: bmdAuth?.authProviderId, ...data.newPayment },
             callBackFunc: (requestData, json) => {
 
-                //bmd-ish
                 if (json.isResultOk) {
                     const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: 'Payment-method saved.' });
                     dispatch(queueAlert(newAlertObj));
@@ -207,8 +207,8 @@ export const saveProfile = (data) => {
         BsCore2.ajaxCrud({
             url: '/profile/save',
             method: "post",
-            params: { 
-                bmdToken: bmdAuth?.bmdToken, authProviderId: bmdAuth?.authProviderId, 
+            params: {
+                bmdToken: bmdAuth?.bmdToken, authProviderId: bmdAuth?.authProviderId,
                 ...data.profile
             },
             callBackFunc: (requestData, json) => {
@@ -220,7 +220,7 @@ export const saveProfile = (data) => {
 
                     const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: 'Personal data saved.' });
                     dispatch(queueAlert(newAlertObj));
-                    
+
                 } else {
                     dispatch(onSaveProfileFail(callBackData));
                 }

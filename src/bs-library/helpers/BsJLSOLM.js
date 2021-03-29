@@ -22,16 +22,16 @@ export default class BsJLSOLM {
             accounts: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
         },
         products: {
-            brands: { dateRefreshed: null, lifespan: 10080, shouldForceReadDb: false },
-            categories: { dateRefreshed: null, lifespan: 10080, shouldForceReadDb: false },
-            teams: { dateRefreshed: null, lifespan: 10080, shouldForceReadDb: false }
+            brands: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
+            categories: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
+            teams: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false }
         },
         checkout: {},
         cart: {},
         profile: {
-            personalData: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
-            stripePaymentInfos: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
-            addresses: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
+            personalData: { dateRefreshed: null, lifespan: 1, shouldForceReadDb: false },
+            stripePaymentInfos: { dateRefreshed: null, lifespan: 1, shouldForceReadDb: false },
+            addresses: { dateRefreshed: null, lifespan: 1, shouldForceReadDb: false },
         },
         temporaryAlerts: {
             alerts: { dateRefreshed: null, lifespan: 10, shouldForceReadDb: false },
@@ -142,7 +142,7 @@ export default class BsJLSOLM {
     static shouldObjWithPathRefresh(path) {
         if (!path || path.length === 0) { return false; }
         if (!BsJLS.isSet(path)) { return true; }
-        //
+        
 
         const objPathArr = path.split(".");
 
@@ -157,11 +157,23 @@ export default class BsJLSOLM {
         if (currentTraversedObj.shouldForceReadDb) { return true; }
         if (!currentTraversedObj.dateRefreshed) { return true; }
 
+
+
         const nowInMilliSec = Date.now();
+        const latestRefreshInMilliSec = currentTraversedObj.dateRefreshed;
+        const nowInDateObj = new Date(nowInMilliSec);
+        const latestRefreshInDateObj = new Date(latestRefreshInMilliSec);
+
+        if (latestRefreshInDateObj.getFullYear() < nowInDateObj.getFullYear()) { return true; }
+        if (latestRefreshInDateObj.getMonth() < nowInDateObj.getMonth()) { return true; }
+        if (latestRefreshInDateObj.getDate() < nowInDateObj.getDate()) { return true; }
+
         const lifespanInMilliSec = currentTraversedObj.lifespan * 60 * 1000;
-        const elapsedTime = nowInMilliSec - currentTraversedObj.dateRefreshed;
+        const elapsedTime = nowInMilliSec - latestRefreshInMilliSec;
 
         if (elapsedTime > lifespanInMilliSec) { return true; }
+
+        return false;
     }
 
 
@@ -171,11 +183,20 @@ export default class BsJLSOLM {
         if (!obj.dateRefreshed) { return true; }
         if (obj.shouldForceReadDb) { return true; }
         
-        const msNow = Date.now();
-        const objLifespan = obj.lifespan * 60 * 1000;
-        const elapsedTime = msNow - obj.dateRefreshed;
 
-        if (elapsedTime > objLifespan) { return true; }
+        const nowInMilliSec = Date.now();
+        const latestRefreshInMilliSec = obj.dateRefreshed;
+        const nowInDateObj = new Date(nowInMilliSec);
+        const latestRefreshInDateObj = new Date(latestRefreshInMilliSec);
+
+        if (latestRefreshInDateObj.getFullYear() < nowInDateObj.getFullYear()) { return true; }
+        if (latestRefreshInDateObj.getMonth() < nowInDateObj.getMonth()) { return true; }
+        if (latestRefreshInDateObj.getDate() < nowInDateObj.getDate()) { return true; }
+
+        const lifespanInMilliSec = obj.lifespan * 60 * 1000;
+        const elapsedTime = nowInMilliSec - latestRefreshInMilliSec;
+
+        if (elapsedTime > lifespanInMilliSec) { return true; }
 
         return false;
     }

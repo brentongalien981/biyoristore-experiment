@@ -29,9 +29,10 @@ class Profile extends React.Component {
         isSavingPersonalData: false,
         isPaymentFormCruding: false,
         isSavingAccount: false,
+        isSavingAddress: false,
         paymentFormCrudMethod: "create",
 
-        editedAddress: { street: "", city: "", province: "ON", country: "Canada", postalCode: "" },
+        editedAddress: { street: "", city: "", province: "NY", country: "United States", postalCode: "" },
         addressFormCrudMethod: "create",
 
         account: {
@@ -60,14 +61,6 @@ class Profile extends React.Component {
             });
 
             this.props.onProfileDisplayedSuccess();
-        }
-
-
-
-        if (this.props.shouldResetAddressForm) {
-            this.setState({ editedAddress: { street: "", city: "", province: "ON", country: "Canada", postalCode: "" } });
-
-            this.props.onAddressFormResetSuccess();
         }
     }
 
@@ -165,12 +158,31 @@ class Profile extends React.Component {
     };
 
 
-
+    //bmd-ish
     saveAddress = (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        this.props.saveAddress(this.state.editedAddress, this.state.addressFormCrudMethod);
+        if (this.state.isSavingAddress) { Bs.log("We're still saving your address.."); return false; }
+
+        this.setState({ isSavingAddress: true });
+
+        const editedAddress = this.state.editedAddress;
+        const data = {
+            address: editedAddress,
+            addressFormCrudMethod: this.state.addressFormCrudMethod,
+            doCallBackFunc: (isResultOk) => {
+
+                const updatedAddress = (isResultOk ? { id: 0, street: "123 My Address", city: "Manhattan", province: "NY", country: "United State", postalCode: "98765" } : editedAddress);
+
+                this.setState({
+                    isSavingAddress: false,
+                    editedAddress: updatedAddress
+                });
+            },
+        };
+
+        this.props.saveAddress(data);
     };
 
 
@@ -214,7 +226,7 @@ class Profile extends React.Component {
         } else {
             // create address
             this.setState({
-                editedAddress: { street: "", city: "", province: "ON", country: "Canada", postalCode: "" },
+                editedAddress: { street: "", city: "", province: "NY", country: "United States", postalCode: "" },
                 addressFormCrudMethod: "create"
             });
         }
@@ -364,6 +376,7 @@ class Profile extends React.Component {
                 </section>
 
                 <AddressForm addressFormCrudMethod={this.state.addressFormCrudMethod}
+                    isSavingAddress={this.state.isSavingAddress}
                     address={this.state.editedAddress}
                     onAddressFormInputChanged={this.onAddressFormInputChanged}
                     saveAddress={this.saveAddress} />
@@ -383,16 +396,16 @@ class Profile extends React.Component {
 const mapStateToProps = (state) => {
     return {
         selectedOrderPageNum: state.profile.selectedOrderPageNum,
+
         profile: state.profile.profile,
         shouldDisplayProfile: state.profile.shouldDisplayProfile,
 
         paymentInfos: state.profile.paymentInfos,
-        // shouldResetPaymentForm: state.profile.shouldResetPaymentForm,
 
         addresses: state.profile.addresses,
+
         orders: state.profile.orders,
         ordersMetaData: state.profile.ordersMetaData,
-        shouldResetAddressForm: state.profile.shouldResetAddressForm,
     };
 };
 
@@ -403,15 +416,16 @@ const mapDispatchToProps = (dispatch) => {
         checkBmdAuthValidity: (data) => dispatch(checkBmdAuthValidity(data)),
 
         saveAccount: (data) => dispatch(actions.saveAccount(data)),
+
         readOrders: (data) => dispatch(actions.readOrders(data)),
+
         readProfile: () => dispatch(actions.readProfile()),
         onProfileDisplayedSuccess: () => dispatch(actions.onProfileDisplayedSuccess()),
         saveProfile: (data) => dispatch(actions.saveProfile(data)),
-        doSavePayment: (data) => dispatch(actions.savePayment(data)),
-        // onPaymentFormResetSuccess: () => dispatch(actions.onPaymentFormResetSuccess()),
 
-        saveAddress: (address, addressFormCrudMethod) => dispatch(actions.saveAddress(address, addressFormCrudMethod)),
-        onAddressFormResetSuccess: () => dispatch(actions.onAddressFormResetSuccess()),
+        doSavePayment: (data) => dispatch(actions.savePayment(data)),
+
+        saveAddress: (data) => dispatch(actions.saveAddress(data)),
         onAddressDelete: (addressId) => dispatch(actions.onAddressDelete(addressId)),
     };
 };

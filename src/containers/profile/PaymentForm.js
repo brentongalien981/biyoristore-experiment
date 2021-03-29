@@ -89,7 +89,7 @@ function getFormContent(props) {
 
             <div className="col-6">
                 <div className="form-group">
-                    <label htmlFor="postalCode">Postal Code</label>
+                    <label htmlFor="postalCode">ZIP / Postal Code</label>
                     <input type="text" className="form-control" placeholder="" name="postalCode" value={p.postalCode} onChange={props.onPaymentFormInputChanged} />
                 </div>
             </div>

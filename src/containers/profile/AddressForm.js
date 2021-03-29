@@ -1,4 +1,5 @@
 import React from 'react';
+import WaitLoader from '../../components/loader/WaitLoader';
 
 
 
@@ -6,6 +7,19 @@ function AddressForm(props) {
     const a = props.address;
     const methodTitle = (props.addressFormCrudMethod == "create" ? "New Address" : "Edit Address");
     const submitBtnText = (props.addressFormCrudMethod == "create" ? "Add" : "Update");
+
+
+    let saveBtnSection = (
+        <div className="col-12">
+            <a href="#!" className="btn btn-primary" onClick={props.saveAddress}>{submitBtnText}</a>
+        </div>
+    );
+    
+    if (props.isSavingAddress) {
+        saveBtnSection = (<WaitLoader />);
+    }
+
+
 
     return (
         <div className="modal fade" id="AddressForm" tabIndex="-1" role="dialog" aria-labelledby="AddressFormLabel" aria-hidden="true">
@@ -37,30 +51,30 @@ function AddressForm(props) {
                                 </div>
                             </div>
 
-                            <div className="col-2">
+                            <div className="col-6">
                                 <div className="form-group">
-                                    <label htmlFor="province">Province</label>
+                                    <label htmlFor="province">State / Province</label>
                                     <input type="text" className="form-control" name="province" value={a.province} onChange={props.onAddressFormInputChanged} />
                                 </div>
                             </div>
 
-                            <div className="col-5">
+                            <div className="col-6">
+                                <div className="form-group">
+                                    <label htmlFor="postalCode">ZIP / Postal Code</label>
+                                    <input type="text" className="form-control" name="postalCode" value={a.postalCode} onChange={props.onAddressFormInputChanged} />
+                                </div>
+                            </div>
+
+                            <div className="col-12">
                                 <div className="form-group">
                                     <label htmlFor="country">Country</label>
                                     <input type="text" className="form-control" name="country" value={a.country} onChange={props.onAddressFormInputChanged} />
                                 </div>
                             </div>
 
-                            <div className="col-5">
-                                <div className="form-group">
-                                    <label htmlFor="postalCode">Postal Code</label>
-                                    <input type="text" className="form-control" name="postalCode" value={a.postalCode} onChange={props.onAddressFormInputChanged} />
-                                </div>
-                            </div>
 
-                            <div className="col-12">
-                                <a href="#!" className="btn btn-primary" onClick={props.saveAddress}>{submitBtnText}</a>
-                            </div>
+                            {saveBtnSection}
+
                         </div>
 
                     </div>
