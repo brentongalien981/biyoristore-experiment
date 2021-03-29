@@ -44,8 +44,14 @@ class BsCore2 {
 
     static alertForCallBackDataErrors(data = {}) {
 
-        if (data.errorStatusCode === 401) {
+        // Unauthenticated.
+        if (data.errorStatusCode === 401) { 
             alert('Oops! Please log-in to continue.');
+            return;
+        }
+        // Unauthorized. Forbidden.
+        if (data.errorStatusCode === 403) {
+            alert('Oops! You are not allowed to do that...');
             return;
         }
 

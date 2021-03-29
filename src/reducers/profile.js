@@ -91,41 +91,35 @@ const onReadOrdersReturn = (state, action) => {
 
 
 const onAddressDeleteFail = (state, action) => {
-    let errorMsg = "";
-
-    for (const field in action.errors) {
-        if (action.errors.hasOwnProperty(field)) {
-            const fieldErrors = action.errors[field];
-
-            errorMsg += fieldErrors[0] + "\n";
-
-        }
-    }
-
-    if (errorMsg.length > 0) { alert(errorMsg); }
-    else { alert("Oops, there's an error on our end. Please try again."); }
+    action.callBackData.doCallBackFunc(false);
+    BsCore2.alertForCallBackDataErrors(action.callBackData);
 
     return {
         ...state,
     };
 };
 
-const onAddressDeleteSuccess = (state, action) => {
-    alert("Address deleted");
 
-    let updatedAddresses = state.addresses;
+
+const onAddressDeleteSuccess = (state, action) => {
+
+    let updatedAddresses = BsJLS.get('profile.addresses') ?? [];
 
     let i = 0;
     for (; i < updatedAddresses.length; i++) {
         const a = updatedAddresses[i];
 
-        if (a.id == action.addressId) {
+        if (a.id == action.callBackData.addressId) {
             break;
         }
 
     }
 
     updatedAddresses.splice(i, 1);
+
+
+    if (BsJLS.set('profile.addresses', updatedAddresses)) { BsJLSOLM.updateRefreshDate('profile.addresses'); }
+    action.callBackData.doCallBackFunc(true);
 
     return {
         ...state,
@@ -145,15 +139,15 @@ const onSaveAddressFail = (state, action) => {
 };
 
 
-//bmd-ish
+
 const onSaveAddressSuccess = (state, action) => {
 
-    let oldAddresses = BsJLS.get('profile.addresses');
+    let oldAddresses = BsJLS.get('profile.addresses') ?? [];
     const updatedAddress = action.callBackData.address;
     let updatedAddresses = [...oldAddresses];
 
     if (action.callBackData.addressFormCrudMethod == "create") {
-        updatedAddresses = [...updatedAddresses, updatedAddress];
+        updatedAddresses = [...oldAddresses, updatedAddress];
     }
     else {
 
@@ -190,7 +184,6 @@ const onSaveAddressSuccess = (state, action) => {
 
 const onSavePaymentSuccess = (state, action) => {
 
-    //ish
     const isResultOk = action.callBackData.isResultOk;
     action.callBackData.doCallBackFunc(isResultOk);
 
@@ -205,7 +198,7 @@ const onSavePaymentSuccess = (state, action) => {
     }
 
 
-    let oldPaymentInfos = BsJLS.get('profile.stripePaymentInfos');
+    let oldPaymentInfos = BsJLS.get('profile.stripePaymentInfos') ?? [];
     let updatedPaymentInfos = oldPaymentInfos;
 
     if (action.callBackData.paymentFormCrudMethod == "create") {

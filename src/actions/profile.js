@@ -39,8 +39,8 @@ export const onSaveAccountReturn = (callBackData) => ({ type: ON_SAVE_ACCOUNT_RE
 
 export const onReadOrdersReturn = (objs = null) => ({ type: ON_READ_ORDERS_RETURN, objs: objs });
 
-export const onAddressDeleteFail = () => ({ type: ON_ADDRESS_DELETE_FAIL });
-export const onAddressDeleteSuccess = (addressId) => ({ type: ON_ADDRESS_DELETE_SUCCESS, addressId: addressId });
+export const onAddressDeleteFail = (callBackData) => ({ type: ON_ADDRESS_DELETE_FAIL , callBackData: callBackData});
+export const onAddressDeleteSuccess = (callBackData) => ({ type: ON_ADDRESS_DELETE_SUCCESS, callBackData: callBackData });
 export const onSaveAddressFail = (callBackData) => ({ type: ON_SAVE_ADDRESS_FAIL, callBackData: callBackData });
 export const onSaveAddressSuccess = (callBackData) => ({ type: ON_SAVE_ADDRESS_SUCCESS, callBackData: callBackData });
 
@@ -112,32 +112,35 @@ export const readOrders = (data) => {
 
 
 
-export const onAddressDelete = (addressId) => {
+export const onAddressDelete = (data) => {
+
+    const bmdAuth = BmdAuth.getInstance();
 
     return (dispatch) => {
 
-        BsCore.ajaxCrud({
+        BsCore2.ajaxCrud({
             url: '/address/destroy',
-            method: "post",
-            params: { api_token: BsAppSession.get("apiToken"), addressId: addressId },
-            // neededResponseParams: ["address"],
+            method: 'post',
+            params: { bmdToken: bmdAuth?.bmdToken, authProviderId: bmdAuth?.authProviderId, addressId: data.addressId },
             callBackFunc: (requestData, json) => {
-                Bs.log("\n#####################");
-                Bs.log("FILE: actions/join.js, METHOD: onAddressDelete() => ajaxCrud() => callBackFunc()");
 
-                if (json.isResultOk) {
-                    dispatch(onAddressDeleteSuccess(addressId));
-                }
+                const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: 'Address deleted.' });
+                dispatch(queueAlert(newAlertObj));
+
+                const callBackData = { ...data, ...json };
+                dispatch(onAddressDeleteSuccess(callBackData));
+
             },
-            errorCallBackFunc: (errors) => {
-                dispatch(onAddressDeleteFail(errors));
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
+                dispatch(onAddressDeleteFail(callBackData));
             }
         });
     };
 };
 
 
-//bmd-ish
+
 export const saveAddress = (data) => {
 
     const bmdAuth = BmdAuth.getInstance();

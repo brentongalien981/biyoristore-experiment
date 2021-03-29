@@ -1,8 +1,12 @@
 import React from 'react';
+import WaitLoader from '../../components/loader/WaitLoader';
 
 
 
 function Addresses(props) {
+
+    let loaderComponent = (props.isDeletingAddress ? <WaitLoader size='md'  msg={'Deleting address.'} /> : null);
+
     return (
         <div className="tab-pane fade" id="sidebar-1-3" role="tabpanel" aria-labelledby="sidebar-1-3">
 
@@ -15,6 +19,7 @@ function Addresses(props) {
             </div>
 
             <div className="row gutter-2">
+                {loaderComponent}
                 {showAddresses(props.addresses, props.onAddressFormShown, props.onDelete)}
             </div>
 
