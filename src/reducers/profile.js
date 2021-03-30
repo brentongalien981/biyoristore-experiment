@@ -1,4 +1,5 @@
 import * as actions from '../actions/profile';
+import { RETRIEVED_DATA_FROM_LOCAL_STORAGE } from '../bs-library/constants/global';
 import Bs from '../bs-library/helpers/Bs';
 import BsAppSession from '../bs-library/helpers/BsAppSession';
 import BsCore2 from '../bs-library/helpers/BsCore2';
@@ -62,33 +63,43 @@ const onSaveAccountReturn = (state, action) => {
 };
 
 
-//bmd-ish
+
 const onReadOrdersReturn = (state, action) => {
 
     action.callBackData.doCallBackFunc();
-    
+
     if (!action.callBackData.isResultOk) {
         return {
             ...state,
         };
     }
 
-
+    let updatedPageOrders = [];
+    let userOrdersMetaData = {};
     const pageOrdersReadQuery = 'userOrders?pageNum=' + action.callBackData.pageNum;
 
-    let updatedPageOrders = action.callBackData.objs.orders ?? [];
-    let userOrdersMetaData = action.callBackData.objs.ordersMetaData ?? {};
-    let lifespanInMin = 1;
+    if (action.callBackData.retrievedDataFrom === RETRIEVED_DATA_FROM_LOCAL_STORAGE) {
+        updatedPageOrders = BsJLS.get(pageOrdersReadQuery);
+        userOrdersMetaData = BsJLS.get('userOrdersMetaData');
+        // Bs.log('has read userOrders from local-storage');
+    }
+    else {
 
-    if (BsJLS.set(pageOrdersReadQuery, updatedPageOrders)) { BsJLSOLM.updateRefreshDateForSearchQuery(pageOrdersReadQuery, lifespanInMin); }
-    BsJLS.set('userOrdersMetaData', userOrdersMetaData);
+        updatedPageOrders = action.callBackData.objs.orders;
+        userOrdersMetaData = action.callBackData.objs.ordersMetaData;
+        let lifespanInMin = 2;
+    
+        if (BsJLS.set(pageOrdersReadQuery, updatedPageOrders)) { BsJLSOLM.updateRefreshDateForSearchQuery(pageOrdersReadQuery, lifespanInMin); }
+        BsJLS.set('userOrdersMetaData', userOrdersMetaData);
+        // Bs.log('has read userOrders from backend');
+    }
 
 
     return {
         ...state,
-        orders: updatedPageOrders,
+        orders: updatedPageOrders ?? [],
         selectedOrderPageNum: action.callBackData.pageNum,
-        ordersMetaData: userOrdersMetaData
+        ordersMetaData: userOrdersMetaData ?? {}
     };
 };
 

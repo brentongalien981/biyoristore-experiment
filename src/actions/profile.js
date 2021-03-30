@@ -6,6 +6,7 @@ import BmdAuth from "../bs-library/core/BmdAuth";
 import BsJLSOLM from "../bs-library/helpers/BsJLSOLM";
 import { queueAlert } from "./temporaryAlerts";
 import TemporaryAlertSystem from "../components/temporary-alert-system/TemporaryAlertSystem";
+import { RETRIEVED_DATA_FROM_LOCAL_STORAGE } from "../bs-library/constants/global";
 
 
 
@@ -39,7 +40,7 @@ export const onSaveAccountReturn = (callBackData) => ({ type: ON_SAVE_ACCOUNT_RE
 
 export const onReadOrdersReturn = (callBackData) => ({ type: ON_READ_ORDERS_RETURN, callBackData: callBackData });
 
-export const onAddressDeleteFail = (callBackData) => ({ type: ON_ADDRESS_DELETE_FAIL , callBackData: callBackData});
+export const onAddressDeleteFail = (callBackData) => ({ type: ON_ADDRESS_DELETE_FAIL, callBackData: callBackData });
 export const onAddressDeleteSuccess = (callBackData) => ({ type: ON_ADDRESS_DELETE_SUCCESS, callBackData: callBackData });
 export const onSaveAddressFail = (callBackData) => ({ type: ON_SAVE_ADDRESS_FAIL, callBackData: callBackData });
 export const onSaveAddressSuccess = (callBackData) => ({ type: ON_SAVE_ADDRESS_SUCCESS, callBackData: callBackData });
@@ -82,8 +83,15 @@ export const saveAccount = (data) => {
 };
 
 
-//bmd-ish
+
 export const readOrders = (data) => {
+
+    const readQuery = 'userOrders?pageNum=' + data.pageNum;
+    if (!BsJLSOLM.shouldObjWithQueryRefresh(readQuery)) {
+        const callBackData = { ...data, isResultOk: true, retrievedDataFrom: RETRIEVED_DATA_FROM_LOCAL_STORAGE };
+        return onReadOrdersReturn(callBackData);
+    }
+
 
     const bmdAuth = BmdAuth.getInstance();
 

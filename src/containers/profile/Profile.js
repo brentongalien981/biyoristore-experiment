@@ -86,7 +86,7 @@ class Profile extends React.Component {
     }
 
 
-    //bmd-ish
+
     onOrderPageNumClick = (e, pageNum) => {
         e.preventDefault();
         this.readOrders(pageNum);

@@ -9,7 +9,7 @@ import BsJLS from "./BsJLS";
  */
 export default class BsJLSOLM {
 
-    static SEARCH_QUERY_LIFESPAN = 120;
+    static DEFAULT_SEARCH_QUERY_LIFESPAN = 1320;
 
     static objs = BsJLS.get("BsJLSOLM-objs") ?? BsJLSOLM.defaultObjs;
     static searchQueryObjs = BsJLS.get("BsJLSOLM-searchQueryObjs") ?? BsJLSOLM.defaultSearchQueryObjs;
@@ -93,7 +93,7 @@ export default class BsJLSOLM {
 
 
 
-    static updateRefreshDateForSearchQuery(q, lifespanInMin = BsJLSOLM.SEARCH_QUERY_LIFESPAN) {
+    static updateRefreshDateForSearchQuery(q, lifespanInMin = BsJLSOLM.DEFAULT_SEARCH_QUERY_LIFESPAN) {
         if (!q) { return; }
 
         const updatedSearchQueryObjs = BsJLSOLM.searchQueryObjs;
@@ -169,6 +169,35 @@ export default class BsJLSOLM {
         if (latestRefreshInDateObj.getDate() < nowInDateObj.getDate()) { return true; }
 
         const lifespanInMilliSec = currentTraversedObj.lifespan * 60 * 1000;
+        const elapsedTime = nowInMilliSec - latestRefreshInMilliSec;
+
+        if (elapsedTime > lifespanInMilliSec) { return true; }
+
+        return false;
+    }
+
+
+    
+    static shouldObjWithQueryRefresh(q) {
+        if (!BsJLS.isSet(q)) { return true; }
+
+        const searchQueryObj = BsJLSOLM.searchQueryObjs[q];
+
+        if (!searchQueryObj) { return true; }
+        if (!searchQueryObj.dateRefreshed) { return true; }
+        if (searchQueryObj.shouldForceReadDb) { return true; }
+
+
+        const nowInMilliSec = Date.now();
+        const latestRefreshInMilliSec = searchQueryObj.dateRefreshed;
+        const nowInDateObj = new Date(nowInMilliSec);
+        const latestRefreshInDateObj = new Date(latestRefreshInMilliSec);
+
+        if (latestRefreshInDateObj.getFullYear() < nowInDateObj.getFullYear()) { return true; }
+        if (latestRefreshInDateObj.getMonth() < nowInDateObj.getMonth()) { return true; }
+        if (latestRefreshInDateObj.getDate() < nowInDateObj.getDate()) { return true; }
+
+        const lifespanInMilliSec = searchQueryObj.lifespan * 60 * 1000;
         const elapsedTime = nowInMilliSec - latestRefreshInMilliSec;
 
         if (elapsedTime > lifespanInMilliSec) { return true; }
