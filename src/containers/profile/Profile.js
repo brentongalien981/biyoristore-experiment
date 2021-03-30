@@ -26,12 +26,13 @@ class Profile extends React.Component {
     state = {
         profile: {},
         newPayment: { cardNumber: "", expirationMonth: "01", expirationYear: "2022", cvc: "", postalCode: "" },
+        paymentFormCrudMethod: "create",
         isSavingPersonalData: false,
         isPaymentFormCruding: false,
         isSavingAccount: false,
         isSavingAddress: false,
         isDeletingAddress: false,
-        paymentFormCrudMethod: "create",
+        isReadingOrders: false,
 
         editedAddress: { street: "", city: "", province: "NY", country: "United States", postalCode: "" },
         addressFormCrudMethod: "create",
@@ -49,7 +50,7 @@ class Profile extends React.Component {
     componentDidMount() {
         this.props.checkBmdAuthValidity({ reactRouterHistory: this.props.history });
         this.props.readProfile();
-        this.props.readOrders({ pageNum: 1 });
+        this.readOrders(1);
     }
 
 
@@ -67,13 +68,28 @@ class Profile extends React.Component {
 
 
 
+    readOrders(pageNum) {
+
+        if (this.state.isReadingOrders) { return; }
+        if (pageNum === this.props.selectedOrderPageNum) { Bs.log("same pageNum..."); return; }
+
+        this.setState({ isReadingOrders: true });
+
+        const data = {
+            pageNum: pageNum,
+            doCallBackFunc: () => {
+                this.setState({ isReadingOrders: false });
+            }
+        };
+
+        this.props.readOrders(data);
+    }
+
+
+    //bmd-ish
     onOrderPageNumClick = (e, pageNum) => {
         e.preventDefault();
-        Bs.log("TODO: onOrderPageNumClick()");
-        Bs.log("pageNum ==> " + pageNum);
-
-        if (pageNum === this.props.selectedOrderPageNum) { Bs.log("same pageNum..."); return; }
-        this.props.readOrders({ pageNum: pageNum });
+        this.readOrders(pageNum);
     };
 
 
@@ -146,7 +162,7 @@ class Profile extends React.Component {
             doCallBackFunc: (isResultOk) => {
 
                 const updatedNewPayment = (isResultOk ? { cardNumber: "", expirationMonth: "01", expirationYear: "2022", cvc: "", postalCode: "" } : newPayment);
-                
+
                 this.setState({
                     newPayment: updatedNewPayment,
                     isPaymentFormCruding: false
@@ -159,7 +175,7 @@ class Profile extends React.Component {
     };
 
 
-    
+
     saveAddress = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -234,14 +250,14 @@ class Profile extends React.Component {
     };
 
 
-    
+
     onAddressDelete = (e, addressId) => {
 
         e.preventDefault();
         if (this.state.isDeletingAddress) { Bs.log("We're still deleting your address..."); return false; }
 
         this.setState({ isDeletingAddress: true });
-        
+
         const data = {
             addressId: addressId,
             doCallBackFunc: (isResultOk) => {
@@ -377,7 +393,7 @@ class Profile extends React.Component {
                                     <div className="col">
                                         <div className="tab-content" id="myTabContent">
                                             <PersonalData isSavingPersonalData={this.state.isSavingPersonalData} profile={this.state.profile} onPersonalDataChanged={this.onPersonalDataChanged} saveProfile={this.saveProfile} />
-                                            <Orders orders={this.props.orders} ordersMetaData={this.props.ordersMetaData} onOrderPageNumClick={this.onOrderPageNumClick} selectedPageNum={this.props.selectedOrderPageNum} />
+                                            <Orders isReadingOrders={this.state.isReadingOrders} orders={this.props.orders} ordersMetaData={this.props.ordersMetaData} onOrderPageNumClick={this.onOrderPageNumClick} selectedPageNum={this.props.selectedOrderPageNum} />
                                             <Addresses isDeletingAddress={this.state.isDeletingAddress} addresses={this.props.addresses} onAddressFormShown={this.onAddressFormShown} onDelete={this.onAddressDelete} />
                                             <Payments paymentInfos={this.props.paymentInfos} onPaymenFormShown={this.onPaymenFormShown} />
                                             <Account account={this.state.account} onAccountInputChange={this.onAccountInputChange} onSaveAccount={this.onSaveAccount} isSavingAccount={this.state.isSavingAccount} />

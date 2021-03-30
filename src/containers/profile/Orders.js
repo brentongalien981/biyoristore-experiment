@@ -1,4 +1,5 @@
 import React from 'react';
+import WaitLoader from '../../components/loader/WaitLoader';
 import Order from './Order';
 
 
@@ -8,6 +9,10 @@ function Orders(props) {
     const orders = props.orders.map((o, i) => {
         return (<Order key={i} order={o} />);
     });
+
+
+    const loader = (props.isReadingOrders ? <div className='row'><WaitLoader size='md' /> </div>: null);
+
 
     return (
         <div className="tab-pane fade" id="sidebar-1-2" role="tabpanel" aria-labelledby="sidebar-1-2">
@@ -23,6 +28,8 @@ function Orders(props) {
             <div className="row gutter-2">
                 {orders}
             </div>
+
+            {loader}
 
 
             {/* page-number-navigation */}

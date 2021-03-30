@@ -37,7 +37,7 @@ export const onSetProfileFail = () => ({ type: ON_SET_PROFILE_FAIL, });
 
 export const onSaveAccountReturn = (callBackData) => ({ type: ON_SAVE_ACCOUNT_RETURN, callBackData: callBackData });
 
-export const onReadOrdersReturn = (objs = null) => ({ type: ON_READ_ORDERS_RETURN, objs: objs });
+export const onReadOrdersReturn = (callBackData) => ({ type: ON_READ_ORDERS_RETURN, callBackData: callBackData });
 
 export const onAddressDeleteFail = (callBackData) => ({ type: ON_ADDRESS_DELETE_FAIL , callBackData: callBackData});
 export const onAddressDeleteSuccess = (callBackData) => ({ type: ON_ADDRESS_DELETE_SUCCESS, callBackData: callBackData });
@@ -82,10 +82,8 @@ export const saveAccount = (data) => {
 };
 
 
-
+//bmd-ish
 export const readOrders = (data) => {
-
-    if (!BmdAuth.isLoggedIn()) { return onReadOrdersReturn({ errors: {} }); }
 
     const bmdAuth = BmdAuth.getInstance();
 
@@ -95,16 +93,16 @@ export const readOrders = (data) => {
             url: '/orders/read',
             method: 'post',
             params: {
-                bmdToken: bmdAuth.bmdToken, authProviderId: bmdAuth.authProviderId,
+                bmdToken: bmdAuth?.bmdToken, authProviderId: bmdAuth?.authProviderId,
                 pageNum: data.pageNum
             },
             callBackFunc: (requestData, json) => {
-                json.objs.isResultOk = json.isResultOk;
-                json.objs.pageNum = data.pageNum;
-                dispatch(onReadOrdersReturn(json.objs));
+                const callBackData = { ...data, ...json };
+                dispatch(onReadOrdersReturn(callBackData));
             },
-            errorCallBackFunc: (errors) => {
-                dispatch(onReadOrdersReturn({ errors: errors }));
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
+                dispatch(onReadOrdersReturn(callBackData));
             }
         });
     };

@@ -18,7 +18,7 @@ const initialState = {
     ordersMetaData: {},
 
     shouldDisplayProfile: false,
-    selectedOrderPageNum: 1
+    selectedOrderPageNum: 0
 };
 
 
@@ -62,29 +62,33 @@ const onSaveAccountReturn = (state, action) => {
 };
 
 
-
+//bmd-ish
 const onReadOrdersReturn = (state, action) => {
 
-    if (action.objs.errors) {
+    action.callBackData.doCallBackFunc();
+    
+    if (!action.callBackData.isResultOk) {
         return {
             ...state,
         };
     }
 
 
-    let updatedOrders = state.orders;
-    let updatedPageNum = state.selectedOrderPageNum;
+    const pageOrdersReadQuery = 'userOrders?pageNum=' + action.callBackData.pageNum;
 
-    if (action.objs?.orders?.length > 0) {
-        updatedOrders = action.objs.orders;
-        updatedPageNum = action.objs.pageNum
-    }
+    let updatedPageOrders = action.callBackData.objs.orders ?? [];
+    let userOrdersMetaData = action.callBackData.objs.ordersMetaData ?? {};
+    let lifespanInMin = 1;
+
+    if (BsJLS.set(pageOrdersReadQuery, updatedPageOrders)) { BsJLSOLM.updateRefreshDateForSearchQuery(pageOrdersReadQuery, lifespanInMin); }
+    BsJLS.set('userOrdersMetaData', userOrdersMetaData);
+
 
     return {
         ...state,
-        orders: updatedOrders,
-        selectedOrderPageNum: updatedPageNum,
-        ordersMetaData: action.objs.ordersMetaData
+        orders: updatedPageOrders,
+        selectedOrderPageNum: action.callBackData.pageNum,
+        ordersMetaData: userOrdersMetaData
     };
 };
 
@@ -173,13 +177,6 @@ const onSaveAddressSuccess = (state, action) => {
 
 };
 
-// const onPaymentFormResetSuccess = (state, action) => {
-//     return {
-//         ...state,
-//         shouldResetPaymentForm: false
-//     };
-// };
-
 
 
 const onSavePaymentSuccess = (state, action) => {
@@ -244,15 +241,6 @@ const onSavePaymentFail = (state, action) => {
 
     return {
         ...state,
-    };
-};
-
-
-
-const doPostSavePaymentFinalization = (state, action) => {
-    return {
-        ...state,
-        shouldDoPostSavePayment: false
     };
 };
 

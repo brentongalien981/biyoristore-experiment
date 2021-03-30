@@ -118,7 +118,7 @@ class BsCore2 {
             .then(function (response) {
                 //
                 Bs.log("\n\n\n##############################");
-                Bs.log("Start of THEN clause");
+                Bs.log("Start of THEN clause for");
                 Bs.log("AJAX Request URL ==> " + defaultCrudData.url);
                 Bs.log("##############################");
 
@@ -160,7 +160,7 @@ class BsCore2 {
 
 
                 Bs.log("\n##############################");
-                Bs.log("End of THEN clause");
+                Bs.log("End of THEN clause for");
                 Bs.log("AJAX Request URL ==> " + defaultCrudData.url);
                 Bs.log("##############################");
 
