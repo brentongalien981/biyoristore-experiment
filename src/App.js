@@ -69,7 +69,7 @@ function App() {
 				<Route path="/test-loader" exact component={TestLoaderContainer} />
 				{/* <Route path="/product" exact component={ProductInDetails} /> */}
 
-				{/* TODO:ON-DEPLOYMENT COMMENT-OUT */}
+				{/* bmd-todo:ON-DEPLOYMENT COMMENT-OUT */}
 				<Route path="/test-page-a" component={TestPageA} />
 				<Route path="/test-page-b" component={TestPageB} />
 				<Route path="/test-page-c" component={TestPageC} />

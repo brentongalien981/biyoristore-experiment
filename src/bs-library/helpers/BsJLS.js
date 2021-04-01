@@ -27,7 +27,7 @@ class BsJLS {
         }
 
         return true;
-        
+
     }
 
 
@@ -43,13 +43,18 @@ class BsJLS {
 
 
     static get(key) {
-        
+
         if (!BsJLS.isSet(key)) { return null; }
 
-        key = Bs.appName + "::" + key;
-        let val = localStorage.getItem(key);
-        val = JSON.parse(val);
-        return val;
+        try {
+            key = Bs.appName + "::" + key;
+            let val = localStorage.getItem(key);
+            val = JSON.parse(val);
+            return val;
+        } catch (e) {
+            Bs.log('BMD-Error: In CLASS: BsJLS, METHOD: get(), MESSAGE ==> ' + e);
+            return null
+        }
     }
 }
 

@@ -1,8 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Bs from '../../bs-library/helpers/Bs';
 import BsAppLocalStorage from '../../bs-library/helpers/BsAppLocalStorage';
 import BsCore2 from '../../bs-library/helpers/BsCore2';
+import * as actions from '../../actions/bmdtest';
 
 class TestPageA extends React.Component {
 
@@ -103,6 +105,12 @@ class TestPageA extends React.Component {
                     <label>{'msg ==> ' + this.state.theMsg}</label><br />
                     <button onClick={this.saveTheMsg}>save the-msg</button>
                 </div>
+
+                <br /><br />
+                <div>
+                    <label>{'count ==> ' + this.props.count}</label><br />
+                    <button onClick={this.props.incrementCount}>increment</button>
+                </div>
             </div>
         );
     }
@@ -110,6 +118,22 @@ class TestPageA extends React.Component {
 
 
 
-export default withRouter(TestPageA);
+const mapStateToProps = (state) => {
+    return {
+        count: state.bmdtest.count
+    };
+};
+
+
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        incrementCount: () => dispatch(actions.incrementCount())
+    };
+};
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TestPageA));
 
 

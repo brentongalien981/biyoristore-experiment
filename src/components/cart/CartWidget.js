@@ -14,7 +14,9 @@ class CartWidget extends React.Component {
 
     /* MAIN FUNCS */
     componentDidMount() {
-        this.props.showCart();
+        //bmd-ish: init cart.
+        this.props.initCart();
+        // this.props.showCart();
     }
 
 
@@ -105,7 +107,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         deleteCartItem: (cartItemId, cartItemIndex) => dispatch(actions.deleteCartItem(cartItemId, cartItemIndex)),
-        showCart: () => dispatch(actions.showCart())
+        initCart: () => dispatch(actions.initCart())
+        // showCart: () => dispatch(actions.showCart())
     };
 };
 

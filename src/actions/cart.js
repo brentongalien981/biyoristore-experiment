@@ -1,10 +1,14 @@
 import BsCore from "../bs-library/helpers/BsCore";
 import Bs from "../bs-library/helpers/Bs";
 import BsAppSession from "../bs-library/helpers/BsAppSession";
+import BmdAuth from "../bs-library/core/BmdAuth";
+import { RETRIEVED_DATA_FROM_LOCAL_STORAGE } from "../bs-library/constants/global";
 
 
 
 /* NAMES */
+export const ON_INIT_CART_RETURN = "ON_INIT_CART_RETURN";
+
 // export const SET_CART_ID = "SET_CART_ID";
 export const RESET_CART = "RESET_CART";
 export const ON_SHOULD_RESET_SETTING_CART_ITEM_COUNT_FLAG_SUCCESS = "ON_SHOULD_RESET_SETTING_CART_ITEM_COUNT_FLAG_SUCCESS";
@@ -20,6 +24,8 @@ export const ON_ADD_TO_CART = "ON_ADD_TO_CART";
 
 
 /* FUNCS */
+export const onInitCartReturn = (callBackData) => ({ type: ON_INIT_CART_RETURN, callBackData: callBackData });
+
 // export const setCartId = (cartId) => ({ type: SET_CART_ID, cartId: cartId });
 export const resetCart = () => ({ type: RESET_CART });
 export const onShouldResetSettingCartItemCountFlagSuccess = () => ({ type: ON_SHOULD_RESET_SETTING_CART_ITEM_COUNT_FLAG_SUCCESS });
@@ -142,7 +148,7 @@ export const showCart = () => {
     let cart = BsAppSession.get("cart");
     if (!cart || cart == "") { cart = null; }
     else { cart = JSON.parse(cart); }
-    
+
     return (dispatch) => { dispatch(setCart(cart)); };
 
 
@@ -161,3 +167,18 @@ export const showCart = () => {
     //     });
     // };
 };
+
+
+// bmd-ish
+export const initCart = () => {
+
+    if (!BmdAuth.isLoggedIn()) {
+        const callBackData = { isResultOk: true, retrievedDataFrom: RETRIEVED_DATA_FROM_LOCAL_STORAGE };
+        return onInitCartReturn(callBackData);
+    }
+
+
+    const callBackData = { isResultOk: false };
+    return onInitCartReturn(callBackData);
+
+}

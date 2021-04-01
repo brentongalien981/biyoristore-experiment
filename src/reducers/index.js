@@ -9,6 +9,7 @@ import checkout from './checkout';
 import order from './order';
 import temporaryAlerts from './temporaryAlerts';
 import appStateManager from './appStateManager';
+import bmdtest from './bmdtest'; // bmd-todo: Comment-out on deployment.
 
 export default combineReducers({
     video,
@@ -21,4 +22,5 @@ export default combineReducers({
     order,
     temporaryAlerts,
     appStateManager,
+    bmdtest
 });

@@ -27,7 +27,7 @@ export default class BsJLSOLM {
             teams: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false }
         },
         checkout: {},
-        cart: {},
+        cart: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
         profile: {
             personalData: { dateRefreshed: null, lifespan: 1, shouldForceReadDb: false },
             stripePaymentInfos: { dateRefreshed: null, lifespan: 1, shouldForceReadDb: false },

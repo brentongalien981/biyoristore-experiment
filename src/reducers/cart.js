@@ -1,7 +1,15 @@
 import * as actions from '../actions/cart';
+import { RETRIEVED_DATA_FROM_LOCAL_STORAGE } from '../bs-library/constants/global';
 import Bs from '../bs-library/helpers/Bs';
 import BsAppSession from '../bs-library/helpers/BsAppSession';
 import BsCore from '../bs-library/helpers/BsCore';
+import BsJLS from '../bs-library/helpers/BsJLS';
+import BsJLSOLM from '../bs-library/helpers/BsJLSOLM';
+
+
+
+/** DEFAULTS */
+const DEFAULT_CART = { id: 0, cartItems: [] };
 
 
 
@@ -9,26 +17,7 @@ import BsCore from '../bs-library/helpers/BsCore';
 const initialState = {
     message: "This is the initial state of STORE: cart.",
     shouldResetSettingCartItemCountFlag: false,
-    cart: {
-        id: 0,
-        cartItems: [
-            // {
-            //     id: 0,
-            //     quantity: 1,
-            //     product: {
-            //         id: 0,
-            //         name: "DefaultProductName",
-            //         price: 1.00,
-            //         brand: { id: 0, name: "DefaultBrandName" },
-            //         productPhotoUrls: [
-            //             { id: 0, url: "default-product1.jpg" }
-            //         ]
-
-            //     }
-
-            // }
-        ]
-    }
+    cart: { ...DEFAULT_CART }
 };
 
 
@@ -36,6 +25,8 @@ const initialState = {
 /* REDUCER */
 const cart = (state = initialState, action) => {
     switch (action.type) {
+        case actions.ON_INIT_CART_RETURN: return onInitCartReturn(state, action);
+
         // case actions.SET_CART_ID: return setCartId(state, action);
         case actions.RESET_CART: return resetCart(state, action);
         case actions.ON_SHOULD_RESET_SETTING_CART_ITEM_COUNT_FLAG_SUCCESS: return onShouldResetSettingCartItemCountFlagSuccess(state, action);
@@ -49,6 +40,50 @@ const cart = (state = initialState, action) => {
         case actions.ON_ADD_TO_CART: return onAddToCart(state, action);
         default: return state;
     }
+};
+
+
+
+/* HELPER FUNCS */
+// bmd-ish
+const checkCartValidity = (cart) => {
+    let isValid = false;
+
+    if (cart) {
+        const cartId = cart.id;
+        const cartItems = cart.cartItems;
+        if (parseInt(cartId) && typeof (cartItems) == 'object') {
+            isValid = true;
+        }
+    }
+
+    return isValid;
+};
+
+
+
+const addProductToCart = (product, cart) => {
+    const cartItem = { id: null, quantity: 1, product: product };
+    cart.cartItems.push(cartItem);
+
+    BsAppSession.set("cart", JSON.stringify(cart));
+
+};
+
+
+
+const isAlreadyInCart = (product, cart) => {
+
+    for (const cartItem of cart.cartItems) {
+        if (cartItem.product.id == product.id) {
+            Bs.log("\n####################");
+            Bs.log("product is already in cart");
+            return true;
+        }
+    }
+
+
+    return false;
 };
 
 
@@ -201,6 +236,39 @@ const setCart = (state, action) => {
 };
 
 
+// bmd-ish
+const onInitCartReturn = (state, action) => {
+
+    let cart = { ...DEFAULT_CART };
+
+
+    if (action.callBackData.isResultOk) {
+
+        if (action.callBackData.retrievedDataFrom === RETRIEVED_DATA_FROM_LOCAL_STORAGE) {
+            if (!BsJLSOLM.shouldObjWithPathRefresh('cart')) {
+                // If local-storage-cart is not tampered, use it.
+                const localStorageCart = BsJLS.get('cart');
+                if (checkCartValidity(localStorageCart)) {
+                    cart = localStorageCart;
+                }
+            }
+        }
+    }
+
+
+
+    if (BsJLS.set('cart', cart)) { BsJLSOLM.updateRefreshDate('cart'); }
+    else { alert('Please free-up some space on your storage for better experience.'); }
+
+
+
+    return {
+        ...state,
+        cart: cart
+    };
+};
+
+
 
 const onAddToCart = (state, action) => {
     action.event.stopPropagation();
@@ -211,33 +279,6 @@ const onAddToCart = (state, action) => {
     return {
         ...state,
     };
-};
-
-
-
-/* HELPER FUNCS */
-const addProductToCart = (product, cart) => {
-    const cartItem = { id: null, quantity: 1, product: product };
-    cart.cartItems.push(cartItem);
-
-    BsAppSession.set("cart", JSON.stringify(cart));
-
-};
-
-
-
-const isAlreadyInCart = (product, cart) => {
-
-    for (const cartItem of cart.cartItems) {
-        if (cartItem.product.id == product.id) {
-            Bs.log("\n####################");
-            Bs.log("product is already in cart");
-            return true;
-        }
-    }
-
-
-    return false;
 };
 
 
