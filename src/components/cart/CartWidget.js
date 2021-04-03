@@ -16,6 +16,8 @@ class CartWidget extends React.Component {
     componentDidMount() {
         //bmd-ish: init cart.
         this.props.initCart();
+
+        //bmd-todo: Delete.
         // this.props.showCart();
     }
 

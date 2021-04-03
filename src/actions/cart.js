@@ -3,6 +3,7 @@ import Bs from "../bs-library/helpers/Bs";
 import BsAppSession from "../bs-library/helpers/BsAppSession";
 import BmdAuth from "../bs-library/core/BmdAuth";
 import { RETRIEVED_DATA_FROM_LOCAL_STORAGE } from "../bs-library/constants/global";
+import BsCore2 from "../bs-library/helpers/BsCore2";
 
 
 
@@ -178,7 +179,25 @@ export const initCart = () => {
     }
 
 
-    const callBackData = { isResultOk: false };
-    return onInitCartReturn(callBackData);
+    const bmdAuth = BmdAuth.getInstance();
+
+    return (dispatch) => {
+
+        BsCore2.ajaxCrud({
+            url: '/cart/read',
+            method: 'post',
+            params: {
+                bmdToken: bmdAuth?.bmdToken, authProviderId: bmdAuth?.authProviderId,
+            },
+            callBackFunc: (requestData, json) => {
+                const callBackData = { ...json };
+                dispatch(onInitCartReturn(callBackData));
+            },
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { errors: errors, errorStatusCode: errorStatusCode };
+                dispatch(onInitCartReturn(callBackData));
+            }
+        });
+    };
 
 }

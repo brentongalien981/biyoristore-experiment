@@ -46,6 +46,28 @@ const cart = (state = initialState, action) => {
 
 /* HELPER FUNCS */
 // bmd-ish
+const combineCarts = (backendCart, localStorageCart) => {
+    const backendCartItems = backendCart.cartItems ?? [];
+    const localStorageCartItems = localStorageCart.cartItems ?? [];
+
+    let combinedCartItems = [...backendCartItems];
+
+    localStorageCartItems.forEach(cartItem => {
+        if (!isAlreadyInCart(cartItem.product, backendCart)) {
+            combinedCartItems.push(cartItem);
+        }
+    });
+
+    const combinedCart = {
+        ...backendCart,
+        cartItems: combinedCartItems
+    };
+
+    return combinedCart;
+};
+
+
+
 const checkCartValidity = (cart) => {
     let isValid = false;
 
@@ -252,13 +274,23 @@ const onInitCartReturn = (state, action) => {
                     cart = localStorageCart;
                 }
             }
+        } else {
+
+            let localStorageCart = BsJLS.get('cart');
+
+            if (!checkCartValidity(localStorageCart)) {
+                localStorageCart = { ...DEFAULT_CART };
+            }
+
+            const backendCart = action.callBackData.objs.cart;
+            cart = combineCarts(backendCart, localStorageCart);
         }
     }
 
 
 
     if (BsJLS.set('cart', cart)) { BsJLSOLM.updateRefreshDate('cart'); }
-    else { alert('Please free-up some space on your storage for better experience.'); }
+    // else { alert('Please free-up some space on your storage for better experience.'); }
 
 
 
