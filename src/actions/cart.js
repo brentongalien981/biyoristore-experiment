@@ -8,6 +8,7 @@ import BsCore2 from "../bs-library/helpers/BsCore2";
 
 
 /* NAMES */
+export const ON_ADD_TO_CART = "ON_ADD_TO_CART";
 export const ON_INIT_CART_RETURN = "ON_INIT_CART_RETURN";
 
 // export const SET_CART_ID = "SET_CART_ID";
@@ -17,14 +18,12 @@ export const ON_UPDATE_CART_ITEM_COUNT_FAIL = "ON_UPDATE_CART_ITEM_COUNT_FAIL";
 export const ON_UPDATE_CART_ITEM_COUNT_SUCCESS = "ON_UPDATE_CART_ITEM_COUNT_SUCCESS";
 export const ON_DELETE_CART_ITEM_FAIL = "ON_DELETE_CART_ITEM_FAIL";
 export const ON_DELETE_CART_ITEM_SUCCESS = "ON_DELETE_CART_ITEM_SUCCESS";
-export const ON_ADD_TO_CART_FAIL = "ON_ADD_TO_CART_FAIL";
-export const ON_ADD_TO_CART_SUCCESS = "ON_ADD_TO_CART_SUCCESS";
 export const SET_CART = "SET_CART";
-export const ON_ADD_TO_CART = "ON_ADD_TO_CART";
 
 
 
 /* FUNCS */
+export const onAddToCart = (data) => ({ type: ON_ADD_TO_CART, data: data });
 export const onInitCartReturn = (callBackData) => ({ type: ON_INIT_CART_RETURN, callBackData: callBackData });
 
 // export const setCartId = (cartId) => ({ type: SET_CART_ID, cartId: cartId });
@@ -34,16 +33,6 @@ export const onUpdateCartItemCountFail = (errors) => ({ type: ON_UPDATE_CART_ITE
 export const onUpdateCartItemCountSuccess = (quantity, index) => ({ type: ON_UPDATE_CART_ITEM_COUNT_SUCCESS, quantity: quantity, index: index });
 export const onDeleteCartItemFail = (errors) => ({ type: ON_DELETE_CART_ITEM_FAIL, errors: errors });
 export const onDeleteCartItemSuccess = (cartItemIndex) => ({ type: ON_DELETE_CART_ITEM_SUCCESS, cartItemIndex: cartItemIndex });
-
-export const onAddToCartFail = (errors) => ({
-    type: ON_ADD_TO_CART_FAIL,
-    errors: errors
-});
-
-export const onAddToCartSuccess = (obj) => ({
-    type: ON_ADD_TO_CART_SUCCESS,
-    obj: obj
-});
 
 export const setCart = (obj) => ({ type: SET_CART, obj: obj });
 
@@ -102,37 +91,6 @@ export const deleteCartItem = (cartItemId, cartItemIndex) => {
     //         },
     //         errorCallBackFunc: (errors) => {
     //             dispatch(onDeleteCartItemFail(errors));
-    //         }
-    //     });
-    // };
-};
-
-
-
-export const onAddToCart = (product) => {
-
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: cart, METHOD: onAddToCart()");
-
-    //
-    return (dispatch) => { dispatch(onAddToCartSuccess(product)); };
-
-
-    // //
-    // return (dispatch) => {
-
-    //     BsCore.ajaxCrud({
-    //         url: '/cartItem/save',
-    //         method: "post",
-    //         params: { productId: productId, api_token: BsAppSession.get("apiToken") },
-    //         callBackFunc: (requestData, json) => {
-    //             Bs.log("\n#####################");
-    //             Bs.log("FILE: actions/cart.js, METHOD: onAddToCart() => ajaxCrud() => callBackFunc()");
-
-    //             dispatch(onAddToCartSuccess(json.obj));
-    //         },
-    //         errorCallBackFunc: (errors) => {
-    //             dispatch(onAddToCartFail(errors));
     //         }
     //     });
     // };

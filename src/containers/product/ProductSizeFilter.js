@@ -43,24 +43,26 @@ function getSizeOptionComponents(context, product) {
 
     possibleSizeOptions.forEach(possibleSize => {
         let isPossibleSizeOptionAvailable = false;
+        let selectedSizeObj = null;
 
         for (const availableSize of actualSizeAvailabilities) {
             if (possibleSize === availableSize.size
                 && availableSize.quantity > 0) {
                 isPossibleSizeOptionAvailable = true;
+                selectedSizeObj = availableSize;
                 break;
             }
         }
 
         if (isPossibleSizeOptionAvailable) {
             sizeOptionComponents.push(
-                <label key={"option-" + possibleSize} className="btn AvailableSizeOption" onClick={() => context.onSizeOptionClick(possibleSize)}>
+                <label key={"option-" + possibleSize} className="btn AvailableSizeOption" onClick={() => context.onSizeOptionClick(selectedSizeObj)}>
                     <input type="radio" name="size-options"
                         id={"size-option-" + possibleSize} />
                     {possibleSize}
                 </label>);
         } else {
-            sizeOptionComponents.push(<label key={"option-" + possibleSize} className="btn UnavailableSizeOption"><input type="radio" name="size-options" id={"size-option-" + possibleSize} />{possibleSize}</label>);
+            sizeOptionComponents.push(<label key={"option-" + possibleSize} onClick={() => context.onSizeOptionClick(selectedSizeObj)} className="btn UnavailableSizeOption"><input type="radio" name="size-options" id={"size-option-" + possibleSize} />{possibleSize}</label>);
         }
     });
 

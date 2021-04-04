@@ -35,8 +35,6 @@ const cart = (state = initialState, action) => {
         case actions.ON_UPDATE_CART_ITEM_COUNT_SUCCESS: return onUpdateCartItemCountSuccess(state, action);
         case actions.ON_DELETE_CART_ITEM_FAIL: return onDeleteCartItemFail(state, action);
         case actions.ON_DELETE_CART_ITEM_SUCCESS: return onDeleteCartItemSuccess(state, action);
-        case actions.ON_ADD_TO_CART_FAIL: return onAddToCartFail(state, action);
-        case actions.ON_ADD_TO_CART_SUCCESS: return onAddToCartSuccess(state, action);
         case actions.SET_CART: return setCart(state, action);
         case actions.ON_ADD_TO_CART: return onAddToCart(state, action);
         default: return state;
@@ -47,6 +45,22 @@ const cart = (state = initialState, action) => {
 
 /* HELPER FUNCS */
 // bmd-ish
+const isTryingToAddItemWithDifferentSize = (cart, productToAdd, selectedSizeObj) => {
+
+    const cartItems = cart.cartItems;
+    for (const ci of cartItems) {
+        if (ci.product.id == productToAdd.id) {
+            if (ci.selectedSizeAvailability?.id != selectedSizeObj.id) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+};
+
+
+
 const combineCarts = (backendCart, localStorageCart) => {
     const backendCartItems = backendCart.cartItems ?? [];
     const localStorageCartItems = localStorageCart.cartItems ?? [];
@@ -84,13 +98,10 @@ const checkCartValidity = (cart) => {
 };
 
 
-
-const addProductToCart = (product, cart) => {
-    const cartItem = { id: null, quantity: 1, product: product };
+//bmd-ish
+const addProductToCart = (product, cart, selectedSizeAvailability) => {
+    const cartItem = { id: null, quantity: 1, selectedSizeAvailability: selectedSizeAvailability, product: product };
     cart.cartItems.push(cartItem);
-
-    BsAppSession.set("cart", JSON.stringify(cart));
-
 };
 
 
@@ -203,31 +214,6 @@ const onDeleteCartItemSuccess = (state, action) => {
 
 
 
-const onAddToCartFail = (state, action) => {
-
-    BsCore.alertForGeneralErrors(action.errors);
-
-    return {
-        ...state
-    };
-};
-
-const onAddToCartSuccess = (state, action) => {
-    alert("Item added to cart.");
-
-    let updatedCart = state.cart;
-    let product = action.obj;
-
-    if (!isAlreadyInCart(product, updatedCart)) { addProductToCart(product, updatedCart); }
-
-    return {
-        ...state,
-        cart: { ...updatedCart }
-    };
-};
-
-
-
 const resetCart = (state, action) => {
     Bs.log("\n###############");
     Bs.log("In REDUCER: cart, METHOD: resetCart()");
@@ -314,15 +300,40 @@ const onInitCartReturn = (state, action) => {
 };
 
 
-
+//bmd-ish
 const onAddToCart = (state, action) => {
-    action.event.stopPropagation();
-
     Bs.log("\n###############");
     Bs.log("In REDUCER: cart, METHOD: onAddToCart()");
+    Bs.log('action.data ==> ...');
+    Bs.log(action.data);
+
+    let oldCart = BsJLS.get('cart') ?? state.cart;
+    const productToAdd = action.data.product;
+    const selectedSizeObj = action.data.selectedSizeObj;
+    let alertMsg = null;
+
+    if (isAlreadyInCart(productToAdd, oldCart)) {
+        if (isTryingToAddItemWithDifferentSize(oldCart, productToAdd, selectedSizeObj)) {
+            addProductToCart(productToAdd, oldCart, selectedSizeObj);
+            alertMsg = 'Item added to cart.';
+        }
+        else {
+            alertMsg = 'Item is already in your cart.';
+        }
+
+    }
+    else {
+        addProductToCart(productToAdd, oldCart, selectedSizeObj);
+        alertMsg = 'Item added to cart.';
+    }
+
+    const updatedCart = { ...oldCart };
+    alert(alertMsg);
+
 
     return {
         ...state,
+        cart: updatedCart,
     };
 };
 

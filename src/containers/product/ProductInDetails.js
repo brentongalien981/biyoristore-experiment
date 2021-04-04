@@ -41,6 +41,7 @@ class ProductInDetails extends React.Component {
         isReadingReviews: false,
         isSavingReview: false,
         newReview: { rating: 1, message: "" },
+        selectedSizeObj: null
     };
 
 
@@ -219,6 +220,7 @@ class ProductInDetails extends React.Component {
 
 
 
+    //bmd-ish
     onAddToCart = (e, product) => {
 
         e.preventDefault();
@@ -231,14 +233,23 @@ class ProductInDetails extends React.Component {
         Bs.log("product ==> ...");
         Bs.log(product);
 
-        this.props.onAddToCart(product);
+        if (!this.state.selectedSizeObj) { alert('Please select an available size'); return; }
+
+        const data = {
+            selectedSizeObj: this.state.selectedSizeObj,
+            product: product
+        };
+        this.props.onAddToCart(data);
     };
 
 
 
-    onSizeOptionClick = (possibleSize) => {
+    //bmd-ish
+    onSizeOptionClick = (selectedSizeObj) => {
         Bs.log("onSizeOptionClick()");
-        Bs.log("possibleSize ==> " + possibleSize);
+        Bs.log("possibleSize ==> ...");
+        Bs.log(selectedSizeObj);
+        this.setState({ selectedSizeObj: selectedSizeObj });
     };
 }
 
@@ -267,7 +278,7 @@ const mapDispatchToProps = (dispatch) => {
         saveReview: (data) => dispatch(actions.saveReview(data)),
         endReadReviewsProcess: () => dispatch(actions.endReadReviewsProcess()),
         readReviews: (params) => dispatch(actions.readReviews(params)),
-        onAddToCart: (product) => dispatch(onAddToCart(product)),
+        onAddToCart: (data) => dispatch(onAddToCart(data)),
         readProduct: (productId) => dispatch(actions.readProduct(productId)),
         readRelatedProducts: (productId) => dispatch(actions.readRelatedProducts(productId)),
         relaunchVendorScript: () => dispatch(actions.relaunchVendorScript()),
