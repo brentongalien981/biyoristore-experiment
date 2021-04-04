@@ -4,12 +4,28 @@ import CartItem from './CartItem';
 import * as actions from '../../actions/cart';
 import Bs from '../../bs-library/helpers/Bs';
 import { withRouter } from 'react-router-dom';
+import BsCore2 from '../../bs-library/helpers/BsCore2';
+import BmdAuth from '../../bs-library/core/BmdAuth';
 
 
 
 class CartWidget extends React.Component {
 
     /* HELPER FUNCS */
+    static updateUserCartCacheRecord() {
+        alert('bmd-todo: METHOD: updateUserCartCacheRecord()');
+        // if (!BmdAuth.isLoggedIn()) { return; }
+        // const auth = BmdAuth.getInstance();
+
+        // BsCore2.ajaxCrud({
+        //     url: '/cart/updateUserCartCache',
+        //     method: 'post',
+        //     params: {
+        //         bmdToken: auth?.bmdToken,
+        //         authProviderId: auth?.authProviderId,
+        //     },
+        // });
+    }
 
 
     /* MAIN FUNCS */
