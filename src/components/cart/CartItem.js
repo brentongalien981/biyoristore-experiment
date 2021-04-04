@@ -6,6 +6,10 @@ import BsCore from '../../bs-library/helpers/BsCore';
 function CartItem(props) {
 
     const productPhotoUrl = BsCore.pubPhotoUrl + props.item.product.productPhotoUrls[0].url;
+    const mostEfficientSeller = props.item.product.mostEfficientSeller;
+    const discountPrice = parseFloat(mostEfficientSeller.productSeller.discount_sell_price) ? parseFloat(mostEfficientSeller.productSeller.discount_sell_price) : 0;
+    const regularPrice = parseFloat(mostEfficientSeller.productSeller.sell_price) ? parseFloat(mostEfficientSeller.productSeller.sell_price) : 0;
+    const displayPrice = ((discountPrice != 0 && discountPrice < regularPrice) ? discountPrice : regularPrice);
 
     return (
         <div className="col-12">
@@ -21,7 +25,7 @@ function CartItem(props) {
                         </div>
                     </div>
                     <div className="col-lg-3 text-center text-lg-right">
-                        <span className="cart-item-price">${props.item.product.price}</span>
+                        <span className="cart-item-price">${displayPrice.toFixed(2)}</span>
                     </div>
                     <a href="#" className="cart-item-close" onClick={(e) => props.onRemoveCartItem(e, props.item.id, props.index)}><i className="icon-x"></i></a>
                 </div>

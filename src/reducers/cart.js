@@ -1,10 +1,11 @@
 import * as actions from '../actions/cart';
-import { RETRIEVED_DATA_FROM_LOCAL_STORAGE } from '../bs-library/constants/global';
+import { RETRIEVED_DATA_FROM_DB, RETRIEVED_DATA_FROM_LOCAL_STORAGE } from '../bs-library/constants/global';
 import Bs from '../bs-library/helpers/Bs';
 import BsAppSession from '../bs-library/helpers/BsAppSession';
 import BsCore from '../bs-library/helpers/BsCore';
 import BsJLS from '../bs-library/helpers/BsJLS';
 import BsJLSOLM from '../bs-library/helpers/BsJLSOLM';
+import { setMostEfficientSellerForProduct } from './products';
 
 
 
@@ -286,6 +287,18 @@ const onInitCartReturn = (state, action) => {
             cart = combineCarts(backendCart, localStorageCart);
         }
     }
+
+
+    // Set the most-efficient-seller property for every product for cart-items.
+    let modifiedCartItems = [];
+    cart.cartItems.forEach(ci => {
+        let modifiedCartItem = { ...ci };
+        const cartItemProductWithMostEfficientSeller = setMostEfficientSellerForProduct(ci.product);
+        modifiedCartItem.product = cartItemProductWithMostEfficientSeller;
+        modifiedCartItems.push(modifiedCartItem);
+    });
+
+    cart.cartItems = modifiedCartItems;
 
 
 
