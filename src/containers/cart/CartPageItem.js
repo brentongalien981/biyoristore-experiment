@@ -6,8 +6,15 @@ import BsCore from '../../bs-library/helpers/BsCore';
 function CartPageItem(props) {
 
     const productPhotoUrl = BsCore.pubPhotoUrl + props.item.product.productPhotoUrls[0].url;
-    const itemTotalPrice = parseFloat(props.item.product.price) * parseInt(props.item.quantity);
+
+    const mostEfficientSeller = props.item.product.mostEfficientSeller;
+    const discountPrice = parseFloat(mostEfficientSeller.productSeller.discount_sell_price) ? parseFloat(mostEfficientSeller.productSeller.discount_sell_price) : 0;
+    const regularPrice = parseFloat(mostEfficientSeller.productSeller.sell_price) ? parseFloat(mostEfficientSeller.productSeller.sell_price) : 0;
+    const displayPrice = ((discountPrice != 0 && discountPrice < regularPrice) ? discountPrice : regularPrice);
+
     const quantity = parseInt(props.item.quantity);
+    const itemTotalPrice = displayPrice * quantity;
+    
 
     return (
         <div className="cart-item">
@@ -22,7 +29,7 @@ function CartPageItem(props) {
                     </div>
                 </div>
                 <div className="col-4 col-lg-2 text-center">
-                    <span className="cart-item-price">${parseFloat(props.item.product.price).toFixed(2)}</span>
+                    <span className="cart-item-price">${displayPrice.toFixed(2)}</span>
                 </div>
                 <div className="col-4 col-lg-2 text-center">
                     <div className="counter">

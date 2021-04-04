@@ -16,11 +16,11 @@ function OrderSummary(props) {
     }
 
     const shipmentRateFee = orderSummaryVals.shipmentRateFee;
-    const tax = orderSummaryVals.tax ? "$" + orderSummaryVals.tax : "To be Calculated";
-    const total = orderSummaryVals.total ? "$" + orderSummaryVals.total : "To be Calculated";
+    const tax = orderSummaryVals.tax ? "$" + orderSummaryVals.tax : "TBC";
+    const total = orderSummaryVals.total ? "$" + orderSummaryVals.total : "TBC";
 
 
-    let shipmentRateFeeSection = (<li className="list-group-item d-flex justify-content-between align-items-center">Shipping<span>To be Calculated</span></li>);
+    let shipmentRateFeeSection = (<li className="list-group-item d-flex justify-content-between align-items-center">Shipping<span>TBC</span></li>);
     if (shipmentRateFee) {
         shipmentRateFeeSection = (<li className="list-group-item d-flex justify-content-between align-items-center">Shipping<span>${shipmentRateFee.toFixed(2)}</span></li>);
     }
@@ -86,17 +86,20 @@ function getOrderSummaryValues(items, shouldCalculateForOrderPage, shouldCalcula
             let itemTotalPrice = 0.0;
 
             // TODO: Refactor to handle multiple scenarios.
-            if (shouldCalculateForCheckoutFinalizationPage) {
+            // if (shouldCalculateForCheckoutFinalizationPage) {
 
-                let itemMostEfficientPrice = i.product.mostEfficientSeller.productSeller.discount_sell_price ?? i.product.mostEfficientSeller.productSeller.sell_price;
-                itemMostEfficientPrice = parseFloat(itemMostEfficientPrice);
-                itemTotalPrice = itemMostEfficientPrice * parseInt(i.quantity);
+            //     let itemMostEfficientPrice = i.product.mostEfficientSeller.productSeller.discount_sell_price ?? i.product.mostEfficientSeller.productSeller.sell_price;
+            //     itemMostEfficientPrice = parseFloat(itemMostEfficientPrice);
+            //     itemTotalPrice = itemMostEfficientPrice * parseInt(i.quantity);
 
-            } else if (shouldCalculateForOrderPage) {
-                itemTotalPrice = parseFloat(i.price) * parseInt(i.quantity);
-            } else {
-                itemTotalPrice = parseFloat(i.product.price) * parseInt(i.quantity);
-            }
+            // } else if (shouldCalculateForOrderPage) {
+            //     itemTotalPrice = parseFloat(i.price) * parseInt(i.quantity);
+            // } else {
+            //     itemTotalPrice = parseFloat(i.product.price) * parseInt(i.quantity);
+            // }
+            let itemMostEfficientPrice = i.product.mostEfficientSeller.productSeller.discount_sell_price ?? i.product.mostEfficientSeller.productSeller.sell_price;
+            itemMostEfficientPrice = parseFloat(itemMostEfficientPrice);
+            itemTotalPrice = itemMostEfficientPrice * parseInt(i.quantity);
 
 
             vals.subtotal += itemTotalPrice;
