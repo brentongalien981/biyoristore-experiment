@@ -90,7 +90,20 @@ const checkCartValidity = (cart) => {
         const cartId = cart.id;
         const cartItems = cart.cartItems;
         if (parseInt(cartId) && typeof (cartItems) == 'object') {
-            isValid = true;
+            if (cartItems?.length >= 0) {
+                isValid = true;
+                for (const ci of cartItems) {
+                    if (typeof (ci?.selectedSizeAvailability) != 'object'
+                        || typeof (ci?.product?.mostEfficientSeller) != 'object'
+                    ) {
+                        isValid = false;
+                        break;
+                    }
+
+                }
+
+            }
+
         }
     }
 
@@ -250,47 +263,24 @@ const onInitCartReturn = (state, action) => {
 
     let cart = { ...DEFAULT_CART };
 
-
     if (action.callBackData.isResultOk) {
-
-        if (action.callBackData.retrievedDataFrom === RETRIEVED_DATA_FROM_LOCAL_STORAGE) {
-            if (!BsJLSOLM.shouldObjWithPathRefresh('cart')) {
-                // If local-storage-cart is not tampered, use it.
-                const localStorageCart = BsJLS.get('cart');
-                if (checkCartValidity(localStorageCart)) {
-                    cart = localStorageCart;
-                }
-            }
-        } else {
-
-            let localStorageCart = BsJLS.get('cart');
-
-            if (!checkCartValidity(localStorageCart)) {
-                localStorageCart = { ...DEFAULT_CART };
-            }
-
-            const backendCart = action.callBackData.objs.cart;
-            cart = combineCarts(backendCart, localStorageCart);
-        }
+        cart = action.callBackData.objs.cart;
     }
 
 
     // Set the most-efficient-seller property for every product for cart-items.
     let modifiedCartItems = [];
-    cart.cartItems.forEach(ci => {
-        let modifiedCartItem = { ...ci };
-        const cartItemProductWithMostEfficientSeller = setMostEfficientSellerForProduct(ci.product);
-        modifiedCartItem.product = cartItemProductWithMostEfficientSeller;
-        modifiedCartItems.push(modifiedCartItem);
-    });
+    if (cart.cartItems) {
+        cart.cartItems.forEach(ci => {
+            let modifiedCartItem = { ...ci };
+            const cartItemProductWithMostEfficientSellerProp = setMostEfficientSellerForProduct(ci.product);
+            modifiedCartItem.product = cartItemProductWithMostEfficientSellerProp;
+            modifiedCartItems.push(modifiedCartItem);
+        });
+    }
+
 
     cart.cartItems = modifiedCartItems;
-
-
-
-    if (BsJLS.set('cart', cart)) { BsJLSOLM.updateRefreshDate('cart'); }
-    // else { alert('Please free-up some space on your storage for better experience.'); }
-
 
 
     return {
@@ -300,7 +290,7 @@ const onInitCartReturn = (state, action) => {
 };
 
 
-//bmd-ish
+
 const onAddToCart = (state, action) => {
     Bs.log("\n###############");
     Bs.log("In REDUCER: cart, METHOD: onAddToCart()");
@@ -328,6 +318,8 @@ const onAddToCart = (state, action) => {
     }
 
     const updatedCart = { ...oldCart };
+    //bmd-ish: save to local-storage.
+    BsJLS.set('cart', updatedCart)
     alert(alertMsg);
 
 

@@ -100,7 +100,6 @@ export default class BmdBrowserTabsManager {
         switch (BsJLS.get('BmdBrowserTabsManager-pseudoSessionStatusOnCache')) {
             case BmdBrowserTabsManager.PSEUDO_SESSION_STATUS_IDLE:
                 BmdBrowserTabsManager.flagCacheBmdAuthExpiring();
-                BmdBrowserTabsManager.updateUserCartCacheRecord();
                 break;
         }
     }
@@ -237,13 +236,6 @@ export default class BmdBrowserTabsManager {
 
 
         BsJLS.set('BmdBrowserTabsManager-pseudoSessionStatusOnCache', BmdBrowserTabsManager.PSEUDO_SESSION_STATUS_FLAGGED_EXPIRING);
-    };
-
-
-
-    static updateUserCartCacheRecord() {
-
-        CartWidget.updateUserCartCacheRecord();
     };
 
 }

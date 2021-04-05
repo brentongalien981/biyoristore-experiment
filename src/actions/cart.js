@@ -129,24 +129,30 @@ export const showCart = () => {
 
 
 // bmd-ish
-export const initCart = () => {
+export const initCart = (data) => {
 
-    if (!BmdAuth.isLoggedIn()) {
-        const callBackData = { isResultOk: true, retrievedDataFrom: RETRIEVED_DATA_FROM_LOCAL_STORAGE };
-        return onInitCartReturn(callBackData);
+    let params = {};
+    let requestMethod = 'get';
+
+    if (BmdAuth.isLoggedIn()) {
+        const bmdAuth = BmdAuth.getInstance();
+        params = {
+            bmdToken: bmdAuth?.bmdToken,
+            authProviderId: bmdAuth?.authProviderId
+        };
+        requestMethod = 'post';
+    } else {
+        params = { temporaryGuestUserId: data.temporaryGuestUserId };
     }
 
 
-    const bmdAuth = BmdAuth.getInstance();
 
     return (dispatch) => {
 
         BsCore2.ajaxCrud({
             url: '/cart/read',
-            method: 'post',
-            params: {
-                bmdToken: bmdAuth?.bmdToken, authProviderId: bmdAuth?.authProviderId,
-            },
+            method: requestMethod,
+            params: params,
             callBackFunc: (requestData, json) => {
                 const callBackData = { ...json };
                 dispatch(onInitCartReturn(callBackData));

@@ -6,44 +6,64 @@ import Bs from '../../bs-library/helpers/Bs';
 import { withRouter } from 'react-router-dom';
 import BsCore2 from '../../bs-library/helpers/BsCore2';
 import BmdAuth from '../../bs-library/core/BmdAuth';
+import WaitLoader from '../loader/WaitLoader';
+import BsJLS from '../../bs-library/helpers/BsJLS';
 
 
 
 class CartWidget extends React.Component {
 
-    /* HELPER FUNCS */
-    static updateUserCartCacheRecord() {
-        alert('bmd-todo: METHOD: updateUserCartCacheRecord()');
-        // if (!BmdAuth.isLoggedIn()) { return; }
-        // const auth = BmdAuth.getInstance();
+    /** PROPS */
+    state = {
+        isReadingCart: false
+    };
 
-        // BsCore2.ajaxCrud({
-        //     url: '/cart/updateUserCartCache',
-        //     method: 'post',
-        //     params: {
-        //         bmdToken: auth?.bmdToken,
-        //         authProviderId: auth?.authProviderId,
-        //     },
-        // });
+
+
+    /* HELPER FUNCS */
+    initCart() {
+        //bmd-ish: init cart.
+        let data = {};
+
+        if (!BmdAuth.isLoggedIn()) {
+
+            let temporaryGuestUserId = null;
+            let shouldCreateNewTemporaryGuestUserId = true;
+
+            if (BsJLS.isSet('Cart-temporaryGuestUserId')) { 
+                temporaryGuestUserId = BsJLS.get('Cart-temporaryGuestUserId'); 
+                if (typeof(temporaryGuestUserId) == 'string') { shouldCreateNewTemporaryGuestUserId = false; }
+            }
+            
+            if (shouldCreateNewTemporaryGuestUserId) {
+                temporaryGuestUserId = Bs.getRandomId(32);
+                BsJLS.set('Cart-temporaryGuestUserId', temporaryGuestUserId);
+            }
+
+            data.temporaryGuestUserId = temporaryGuestUserId;
+        }
+
+        this.props.initCart(data);
     }
 
 
     /* MAIN FUNCS */
     componentDidMount() {
-        //bmd-ish: init cart.
-        this.props.initCart();
-
-        //bmd-todo: Delete.
-        // this.props.showCart();
+        this.initCart();
     }
 
 
 
     render() {
 
-        const cartItems = this.props.cart?.cartItems?.map((item, i) => {
+        let cartItems = this.props.cart?.cartItems?.map((item, i) => {
             return <CartItem item={item} key={i} index={i} onRemoveCartItem={this.onRemoveCartItem} />;
         });
+
+        if (this.state.isReadingCart) {
+            cartItems = (<WaitLoader />);
+        }
+
 
         return (
             <div className="modal fade sidebar" id="cart" tabIndex="-1" role="dialog" aria-labelledby="cartLabel" aria-hidden="true">
@@ -125,7 +145,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         deleteCartItem: (cartItemId, cartItemIndex) => dispatch(actions.deleteCartItem(cartItemId, cartItemIndex)),
-        initCart: () => dispatch(actions.initCart())
+        initCart: (data) => dispatch(actions.initCart(data))
         // showCart: () => dispatch(actions.showCart())
     };
 };
