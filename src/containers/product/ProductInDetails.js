@@ -40,6 +40,7 @@ class ProductInDetails extends React.Component {
     state = {
         isReadingReviews: false,
         isSavingReview: false,
+        isAddingItemToCart: false,
         newReview: { rating: 1, message: "" },
         selectedSizeObj: null
     };
@@ -226,25 +227,23 @@ class ProductInDetails extends React.Component {
         e.preventDefault();
         e.stopPropagation();
 
-        Bs.log("\n####################");
-        Bs.log("Using React's Context!");
-        Bs.log("In CLASS: ProductInDetails, METHOD: onAddToCart()");
-
-        Bs.log("product ==> ...");
-        Bs.log(product);
-
+        if (this.state.isAddingItemToCart) { return; }
         if (!this.state.selectedSizeObj) { alert('Please select an available size'); return; }
 
+        this.setState({ isAddingItemToCart: true });
+
         const data = {
-            selectedSizeObj: this.state.selectedSizeObj,
-            product: product
+            sizeAvailabilityId: this.state.selectedSizeObj.id,
+            sellerProductId: product.mostEfficientSeller.productSeller.id,
+            doCallBackFunc: () => {
+                this.setState({ isAddingItemToCart: false });
+            }
         };
         this.props.onAddToCart(data);
     };
 
 
 
-    //bmd-ish
     onSizeOptionClick = (selectedSizeObj) => {
         Bs.log("onSizeOptionClick()");
         Bs.log("possibleSize ==> ...");

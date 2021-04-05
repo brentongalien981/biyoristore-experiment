@@ -26,6 +26,7 @@ const initialState = {
 /* REDUCER */
 const cart = (state = initialState, action) => {
     switch (action.type) {
+        case actions.ON_ADD_TO_CART_RETURN: return onAddToCartReturn(state, action);
         case actions.ON_INIT_CART_RETURN: return onInitCartReturn(state, action);
 
         // case actions.SET_CART_ID: return setCartId(state, action);
@@ -36,7 +37,6 @@ const cart = (state = initialState, action) => {
         case actions.ON_DELETE_CART_ITEM_FAIL: return onDeleteCartItemFail(state, action);
         case actions.ON_DELETE_CART_ITEM_SUCCESS: return onDeleteCartItemSuccess(state, action);
         case actions.SET_CART: return setCart(state, action);
-        case actions.ON_ADD_TO_CART: return onAddToCart(state, action);
         default: return state;
     }
 };
@@ -258,7 +258,7 @@ const setCart = (state, action) => {
 };
 
 
-// bmd-ish
+
 const onInitCartReturn = (state, action) => {
 
     let cart = { ...DEFAULT_CART };
@@ -290,12 +290,15 @@ const onInitCartReturn = (state, action) => {
 };
 
 
+//bmd-todo
+const onAddToCartReturn = (state, action) => {
 
-const onAddToCart = (state, action) => {
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: cart, METHOD: onAddToCart()");
-    Bs.log('action.data ==> ...');
-    Bs.log(action.data);
+    alert('bmd-todo: METHOD: onAddToCartReturn()');
+
+    return {
+        ...state
+    };
+
 
     let oldCart = BsJLS.get('cart') ?? state.cart;
     const productToAdd = action.data.product;
@@ -322,11 +325,6 @@ const onAddToCart = (state, action) => {
     BsJLS.set('cart', updatedCart)
     alert(alertMsg);
 
-
-    return {
-        ...state,
-        cart: updatedCart,
-    };
 };
 
 

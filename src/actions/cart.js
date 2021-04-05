@@ -8,7 +8,7 @@ import BsCore2 from "../bs-library/helpers/BsCore2";
 
 
 /* NAMES */
-export const ON_ADD_TO_CART = "ON_ADD_TO_CART";
+export const ON_ADD_TO_CART_RETURN = "ON_ADD_TO_CART_RETURN";
 export const ON_INIT_CART_RETURN = "ON_INIT_CART_RETURN";
 
 // export const SET_CART_ID = "SET_CART_ID";
@@ -23,7 +23,7 @@ export const SET_CART = "SET_CART";
 
 
 /* FUNCS */
-export const onAddToCart = (data) => ({ type: ON_ADD_TO_CART, data: data });
+export const onAddToCartReturn = (callBackData) => ({ type: ON_ADD_TO_CART_RETURN, callBackData: callBackData });
 export const onInitCartReturn = (callBackData) => ({ type: ON_INIT_CART_RETURN, callBackData: callBackData });
 
 // export const setCartId = (cartId) => ({ type: SET_CART_ID, cartId: cartId });
@@ -128,7 +128,48 @@ export const showCart = () => {
 };
 
 
-// bmd-ish
+//bmd-ish
+export const onAddToCart = (data) => {
+
+    let params = { 
+        sizeAvailabilityId: data.sizeAvailabilityId,
+        sellerProductId: data.sellerProductId,
+        temporaryGuestUserId: BmdAuth.getTemporaryGuestUserId() 
+    };
+    let requestMethod = 'get';
+
+    if (BmdAuth.isLoggedIn()) {
+        const bmdAuth = BmdAuth.getInstance();
+        params = {
+            ...params,
+            bmdToken: bmdAuth?.bmdToken,
+            authProviderId: bmdAuth?.authProviderId
+        };
+        requestMethod = 'post';
+    }
+
+
+    return (dispatch) => {
+
+        BsCore2.ajaxCrud({
+            url: '/cart/addItem',
+            method: requestMethod,
+            params: params,
+            callBackFunc: (requestData, json) => {
+                const callBackData = { ...data, ...json };
+                dispatch(onAddToCartReturn(callBackData));
+            },
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
+                dispatch(onAddToCartReturn(callBackData));
+            }
+        });
+    };
+
+}
+
+
+
 export const initCart = (data) => {
 
     let params = {};

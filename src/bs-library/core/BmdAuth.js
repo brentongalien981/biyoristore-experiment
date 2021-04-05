@@ -1,4 +1,5 @@
 import BmdWebPagesInfo from "../helpers/BmdWebPagesInfo";
+import Bs from "../helpers/Bs";
 import BsAppLocalStorage from "../helpers/BsAppLocalStorage";
 import BsJLS from "../helpers/BsJLS";
 import BsJLSOLM from "../helpers/BsJLSOLM";
@@ -43,6 +44,25 @@ class BmdAuth {
 
         return false;
 
+    }
+
+
+
+    static getTemporaryGuestUserId() {
+        let temporaryGuestUserId = null;
+        let shouldCreateNewTemporaryGuestUserId = true;
+
+        if (BsJLS.isSet('Cart-temporaryGuestUserId')) { 
+            temporaryGuestUserId = BsJLS.get('Cart-temporaryGuestUserId'); 
+            if (typeof(temporaryGuestUserId) == 'string') { shouldCreateNewTemporaryGuestUserId = false; }
+        }
+        
+        if (shouldCreateNewTemporaryGuestUserId) {
+            temporaryGuestUserId = Bs.getRandomId(32);
+            BsJLS.set('Cart-temporaryGuestUserId', temporaryGuestUserId);
+        }
+
+        return temporaryGuestUserId;
     }
 
 

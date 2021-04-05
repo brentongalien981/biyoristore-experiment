@@ -26,21 +26,7 @@ class CartWidget extends React.Component {
         let data = {};
 
         if (!BmdAuth.isLoggedIn()) {
-
-            let temporaryGuestUserId = null;
-            let shouldCreateNewTemporaryGuestUserId = true;
-
-            if (BsJLS.isSet('Cart-temporaryGuestUserId')) { 
-                temporaryGuestUserId = BsJLS.get('Cart-temporaryGuestUserId'); 
-                if (typeof(temporaryGuestUserId) == 'string') { shouldCreateNewTemporaryGuestUserId = false; }
-            }
-            
-            if (shouldCreateNewTemporaryGuestUserId) {
-                temporaryGuestUserId = Bs.getRandomId(32);
-                BsJLS.set('Cart-temporaryGuestUserId', temporaryGuestUserId);
-            }
-
-            data.temporaryGuestUserId = temporaryGuestUserId;
+            data.temporaryGuestUserId = BmdAuth.getTemporaryGuestUserId;
         }
 
         this.props.initCart(data);
