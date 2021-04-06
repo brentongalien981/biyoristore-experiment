@@ -233,8 +233,9 @@ class ProductInDetails extends React.Component {
         this.setState({ isAddingItemToCart: true });
 
         const data = {
-            sizeAvailabilityId: this.state.selectedSizeObj.id,
+            productId: this.state.product.id,
             sellerProductId: product.mostEfficientSeller.productSeller.id,
+            sizeAvailabilityId: this.state.selectedSizeObj.id,
             doCallBackFunc: () => {
                 this.setState({ isAddingItemToCart: false });
             }

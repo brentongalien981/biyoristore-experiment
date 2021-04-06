@@ -132,6 +132,7 @@ export const showCart = () => {
 export const onAddToCart = (data) => {
 
     let params = { 
+        productid, data.productid,
         sizeAvailabilityId: data.sizeAvailabilityId,
         sellerProductId: data.sellerProductId,
         temporaryGuestUserId: BmdAuth.getTemporaryGuestUserId() 
