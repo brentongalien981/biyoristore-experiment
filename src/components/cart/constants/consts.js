@@ -3,3 +3,6 @@ export const RESULT_CODE_ADD_ITEM_DATA_MISMATCHES = -2;
 
 export const RESULT_CODE_ADD_ITEM_OK_TO_ADD = 1;
 export const RESULT_CODE_ADD_ITEM_SUCCESSFUL = 2;
+
+
+export const MAX_CART_ITEM_QUANTITY = 100;

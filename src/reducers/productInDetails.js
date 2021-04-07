@@ -178,6 +178,7 @@ const relaunchVendorScript = (state, action) => {
 const showProduct = (state, action) => {
     Bs.log("\n###############");
     Bs.log("In REDUCER: productInDetails, METHOD: showProduct()");
+    Bs.log('action.objs.retrievedDataFrom ==> ' + action.objs.retrievedDataFrom);
 
 
     const requestUrlQ = action.objs.requestUrlQ;

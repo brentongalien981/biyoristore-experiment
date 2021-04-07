@@ -63,7 +63,8 @@ export const readRelatedProducts = (productId) => {
 export const readProduct = (productId) => {
 
     const requestUrlQ = '?productId=' + productId;
-    if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.searchQueryObjs[requestUrlQ])) {
+    // if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.searchQueryObjs[requestUrlQ])) {
+    if (BsJLSOLM.shouldObjWithQueryRefresh(requestUrlQ)) {
         return (dispatch) => {
 
             BsCore2.ajaxCrud({
@@ -105,7 +106,8 @@ export const readReviews = (params) => {
     params.requestUrlQ = requestUrlQ;
 
 
-    if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.searchQueryObjs[requestUrlQ])) {
+    // if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.searchQueryObjs[requestUrlQ])) {
+    if (BsJLSOLM.shouldObjWithQueryRefresh(requestUrlQ)) {
         return (dispatch) => {
 
             BsCore2.ajaxCrud({

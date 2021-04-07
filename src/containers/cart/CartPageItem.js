@@ -33,9 +33,9 @@ function CartPageItem(props) {
                 </div>
                 <div className="col-4 col-lg-2 text-center">
                     <div className="counter">
-                        <span className="counter-minus icon-minus" field='qty-1' onClick={() => props.onSetCartItemCount(props.item.id, quantity-1, props.index)}></span>
+                        <span className="counter-minus icon-minus" field='qty-1' onClick={() => props.onSetCartItemCount(props.item.sellerProductId, props.item.sizeAvailabilityId, quantity-1, props.index)}></span>
                         <input type='text' name='qty-1' className="counter-value" value={quantity} min="1" max="" disabled />
-                        <span className="counter-plus icon-plus" field='qty-1' onClick={() => props.onSetCartItemCount(props.item.id, quantity+1, props.index)}></span>
+                        <span className="counter-plus icon-plus" field='qty-1' onClick={() => props.onSetCartItemCount(props.item.sellerProductId, props.item.sizeAvailabilityId, quantity+1, props.index)}></span>
                     </div>
                 </div>
                 <div className="col-4 col-lg-2 text-center">

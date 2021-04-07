@@ -8,6 +8,7 @@ import BsCore2 from '../../bs-library/helpers/BsCore2';
 import BmdAuth from '../../bs-library/core/BmdAuth';
 import WaitLoader from '../loader/WaitLoader';
 import BsJLS from '../../bs-library/helpers/BsJLS';
+import * as helperFuncs from './helper-funcs/HelperFuncsA';
 
 
 
@@ -23,11 +24,9 @@ class CartWidget extends React.Component {
     /* HELPER FUNCS */
     initCart() {
         //bmd-ish: init cart.
-        let data = {};
-
-        if (!BmdAuth.isLoggedIn()) {
-            data.temporaryGuestUserId = BmdAuth.getTemporaryGuestUserId();
-        }
+        let data = {
+            bmdHttpRequest: helperFuncs.prepareCartBmdHttpRequestData()
+        };
 
         this.props.initCart(data);
     }

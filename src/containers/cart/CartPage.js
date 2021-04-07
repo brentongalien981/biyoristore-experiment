@@ -5,10 +5,17 @@ import OrderSummary from './OrderSummary';
 import * as actions from '../../actions/cart';
 import Bs from '../../bs-library/helpers/Bs';
 import { withRouter } from 'react-router-dom';
+import * as cartWidgetHelperFuncs from '../../components/cart/helper-funcs/HelperFuncsA';
+import * as cartWidgetConsts from '../../components/cart/constants/consts';
 
 
 
 class CartPage extends React.Component {
+
+    /** PROPS */
+    state = { isSettingCartItemCount: false };
+
+
 
     /* HELPER FUNCS */
     getCartPageItems = (items) => {
@@ -25,22 +32,6 @@ class CartPage extends React.Component {
 
 
     /* MAIN FUNCS */
-    constructor(props) {
-        super(props);
-        this.state = { isSettingCartItemCount: false };
-    }
-
-
-
-    componentDidUpdate() {
-        if (this.props.shouldResetSettingCartItemCountFlag) {
-            this.setState({ isSettingCartItemCount: false });
-            this.props.onShouldResetSettingCartItemCountFlagSuccess();
-        }
-    }
-
-
-
     render() {
         return (
             <>
@@ -94,14 +85,31 @@ class CartPage extends React.Component {
 
 
     /* EVENT FUNCS */
-    onSetCartItemCount = (cartItemId, quantity, index) => {
+    //bmd-ish
+    onSetCartItemCount = (sellerProductId, sizeAvailabilityId, quantity, index) => {
+        if (quantity < 1 || quantity > cartWidgetConsts.MAX_CART_ITEM_QUANTITY) { return; }
         if (this.state.isSettingCartItemCount) { alert("Oops, we're processing your previous input. Please try again shortly."); return; }
         this.setState({ isSettingCartItemCount: true });
 
-        Bs.log("\n####################");
-        Bs.log("cartItemId ==> " + cartItemId);
+        
+        const bmdHttpRequestData = cartWidgetHelperFuncs.prepareCartBmdHttpRequestData();
 
-        this.props.updateCartItemCount(cartItemId, quantity, index)
+        const data = {
+            bmdHttpRequest: bmdHttpRequestData,
+            params: {
+                ...bmdHttpRequestData.params,
+                sellerProductId: sellerProductId,
+                sizeAvailabilityId: sizeAvailabilityId,
+                quantity: quantity,
+                index: index
+            },
+            doCallBackFunc: () => {
+                this.setState({ isSettingCartItemCount: false });
+            }
+        };
+
+
+        this.props.updateCartItemCount(data)
     };
 
 
@@ -128,7 +136,6 @@ class CartPage extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        shouldResetSettingCartItemCountFlag: state.cart.shouldResetSettingCartItemCountFlag,
         cart: state.cart.cart,
     };
 };
@@ -137,8 +144,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onShouldResetSettingCartItemCountFlagSuccess: () => dispatch(actions.onShouldResetSettingCartItemCountFlagSuccess()),
-        updateCartItemCount: (cartItemId, quantity, index) => dispatch(actions.updateCartItemCount(cartItemId, quantity, index)),
+        updateCartItemCount: (data) => dispatch(actions.updateCartItemCount(data)),
         showCart: () => dispatch(actions.showCart()),
         deleteCartItem: (cartItemId, cartItemIndex) => dispatch(actions.deleteCartItem(cartItemId, cartItemIndex)),
     };

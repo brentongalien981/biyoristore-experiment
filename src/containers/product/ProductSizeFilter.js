@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import Bs from '../../bs-library/helpers/Bs';
 import './ProductSizeFilter.css';
 import ProductInDetailsContext from '../../contexts/product/ProductInDetailsContext';
+import { PACKAGE_ITEM_TYPE_ID_SHOES } from './constants/consts';
 
 
 
@@ -30,7 +31,7 @@ function getSizeOptionComponents(context, product) {
 
 
     let possibleSizeOptions = ['S', 'M', 'L', 'XL', '2XL', '3XL'];
-    if (product.packageItemTypeId == 5) {
+    if (product.packageItemTypeId == PACKAGE_ITEM_TYPE_ID_SHOES) {
         possibleSizeOptions = [];
         for (let size = 6.0; size <= 16.0; size += 0.5) {
             possibleSizeOptions.push(size.toFixed(1));

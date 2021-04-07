@@ -18,6 +18,7 @@ import TemporaryAlertSystem from '../../components/temporary-alert-system/Tempor
 import BlankBreadCrumbsSubstitute from '../../components/customized-spacers/BlankBreadCrumbsSubstitute';
 import BsCore2 from '../../bs-library/helpers/BsCore2';
 import BsJLS from '../../bs-library/helpers/BsJLS';
+import * as cartWidgetHelperFuncs from '../../components/cart/helper-funcs/HelperFuncsA';
 
 
 
@@ -232,14 +233,23 @@ class ProductInDetails extends React.Component {
 
         this.setState({ isAddingItemToCart: true });
 
+        
+        const bmdHttpRequestData = cartWidgetHelperFuncs.prepareCartBmdHttpRequestData();
+
         const data = {
-            productId: product.id,
-            sellerProductId: product.mostEfficientSeller.productSeller.id,
-            sizeAvailabilityId: this.state.selectedSizeObj.id,
+            bmdHttpRequest: bmdHttpRequestData,
+            params: {
+                ...bmdHttpRequestData.params,
+                productId: product.id,
+                sellerProductId: product.mostEfficientSeller.productSeller.id,
+                sizeAvailabilityId: this.state.selectedSizeObj.id,
+            },
             doCallBackFunc: () => {
                 this.setState({ isAddingItemToCart: false });
             }
         };
+
+
         this.props.onAddToCart(data);
     };
 

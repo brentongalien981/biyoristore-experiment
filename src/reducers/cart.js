@@ -18,8 +18,6 @@ const DEFAULT_CART = { id: 0, cartItems: [] };
 
 /* STATE */
 const initialState = {
-    message: "This is the initial state of STORE: cart.",
-    shouldResetSettingCartItemCountFlag: false,
     cart: { ...DEFAULT_CART }
 };
 
@@ -28,14 +26,12 @@ const initialState = {
 /* REDUCER */
 const cart = (state = initialState, action) => {
     switch (action.type) {
+        case actions.ON_UPDATE_CART_ITEM_COUNT_RETURN: return onUpdateCartItemCountReturn(state, action);
         case actions.ON_ADD_TO_CART_RETURN: return onAddToCartReturn(state, action);
         case actions.ON_INIT_CART_RETURN: return onInitCartReturn(state, action);
 
         // case actions.SET_CART_ID: return setCartId(state, action);
         case actions.RESET_CART: return resetCart(state, action);
-        case actions.ON_SHOULD_RESET_SETTING_CART_ITEM_COUNT_FLAG_SUCCESS: return onShouldResetSettingCartItemCountFlagSuccess(state, action);
-        case actions.ON_UPDATE_CART_ITEM_COUNT_FAIL: return onUpdateCartItemCountFail(state, action);
-        case actions.ON_UPDATE_CART_ITEM_COUNT_SUCCESS: return onUpdateCartItemCountSuccess(state, action);
         case actions.ON_DELETE_CART_ITEM_FAIL: return onDeleteCartItemFail(state, action);
         case actions.ON_DELETE_CART_ITEM_SUCCESS: return onDeleteCartItemSuccess(state, action);
         case actions.SET_CART: return setCart(state, action);
@@ -46,7 +42,23 @@ const cart = (state = initialState, action) => {
 
 
 /* HELPER FUNCS */
-// bmd-ish
+const addMostEfficientSellerPropToCartItems = (cart) => {
+    let modifiedCartItems = [];
+    if (cart.cartItems) {
+        cart.cartItems.forEach(ci => {
+            let modifiedCartItem = { ...ci };
+            const cartItemProductWithMostEfficientSellerProp = setMostEfficientSellerForProduct(ci.product);
+            modifiedCartItem.product = cartItemProductWithMostEfficientSellerProp;
+            modifiedCartItems.push(modifiedCartItem);
+        });
+    }
+
+
+    cart.cartItems = modifiedCartItems;
+};
+
+
+
 const isTryingToAddItemWithDifferentSize = (cart, productToAdd, selectedSizeObj) => {
 
     const cartItems = cart.cartItems;
@@ -113,13 +125,6 @@ const checkCartValidity = (cart) => {
 };
 
 
-//bmd-ish
-const addProductToCart = (product, cart, selectedSizeAvailability) => {
-    const cartItem = { id: null, quantity: 1, selectedSizeAvailability: selectedSizeAvailability, product: product };
-    cart.cartItems.push(cartItem);
-};
-
-
 
 const isAlreadyInCart = (product, cart) => {
 
@@ -138,51 +143,22 @@ const isAlreadyInCart = (product, cart) => {
 
 
 /* NORMAL FUNCS */
-const onShouldResetSettingCartItemCountFlagSuccess = (state, action) => {
-    return {
-        ...state,
-        shouldResetSettingCartItemCountFlag: false
-    };
-};
-
-
-
-const onUpdateCartItemCountFail = (state, action) => {
-
-    BsCore.alertForGeneralErrors(action.errors);
-
-    return {
-        ...state,
-        shouldResetSettingCartItemCountFlag: true
-    };
-};
-
-
-
-const onUpdateCartItemCountSuccess = (state, action) => {
-
-    Bs.log("action.cartItemIndex ==> " + action.cartItemIndex);
-
-    let updatedCartItems = state.cart.cartItems;
-    Bs.log("updatedCartItems ==> ...");
-    Bs.log(updatedCartItems);
-
-    updatedCartItems[action.index].quantity = action.quantity;
+const onUpdateCartItemCountReturn = (state, action) => {
 
     let updatedCart = state.cart;
-    Bs.log("updatedCart ==> ...");
-    Bs.log(updatedCart);
 
-    updatedCart.cartItems = updatedCartItems;
-    Bs.log("updatedCart ==> ...");
-    Bs.log(updatedCart);
+    if (action.callBackData.isResultOk) {
+        updatedCart = action.callBackData.objs.cart;
+        addMostEfficientSellerPropToCartItems(updatedCart);
+    } else {
+        BsCore2.alertForCallBackDataErrors(action.callBackData);
+    }
 
-    BsAppSession.set("cart", JSON.stringify(updatedCart));
+    action.callBackData.doCallBackFunc();
 
     return {
         ...state,
-        cart: { ...updatedCart },
-        shouldResetSettingCartItemCountFlag: true
+        cart: updatedCart
     };
 };
 
@@ -269,21 +245,7 @@ const onInitCartReturn = (state, action) => {
         cart = action.callBackData.objs.cart;
     }
 
-
-    //bmd-todo: Extract this to a method.
-    // Set the most-efficient-seller property for every product for cart-items.
-    let modifiedCartItems = [];
-    if (cart.cartItems) {
-        cart.cartItems.forEach(ci => {
-            let modifiedCartItem = { ...ci };
-            const cartItemProductWithMostEfficientSellerProp = setMostEfficientSellerForProduct(ci.product);
-            modifiedCartItem.product = cartItemProductWithMostEfficientSellerProp;
-            modifiedCartItems.push(modifiedCartItem);
-        });
-    }
-
-
-    cart.cartItems = modifiedCartItems;
+    addMostEfficientSellerPropToCartItems(cart);
 
 
     return {
@@ -293,7 +255,7 @@ const onInitCartReturn = (state, action) => {
 };
 
 
-//bmd-todo
+
 const onAddToCartReturn = (state, action) => {
 
     let updatedCart = state.cart;
@@ -308,21 +270,7 @@ const onAddToCartReturn = (state, action) => {
         case consts.RESULT_CODE_ADD_ITEM_SUCCESSFUL:
             alert('Item added to cart.');
             updatedCart = action.callBackData.objs.cart;
-
-            //bmd-todo: Extract this to a method.
-            // Set the most-efficient-seller property for every product for cart-items.
-            let modifiedCartItems = [];
-            if (updatedCart.cartItems) {
-                updatedCart.cartItems.forEach(ci => {
-                    let modifiedCartItem = { ...ci };
-                    const cartItemProductWithMostEfficientSellerProp = setMostEfficientSellerForProduct(ci.product);
-                    modifiedCartItem.product = cartItemProductWithMostEfficientSellerProp;
-                    modifiedCartItems.push(modifiedCartItem);
-                });
-            }
-
-
-            updatedCart.cartItems = modifiedCartItems;
+            addMostEfficientSellerPropToCartItems(updatedCart);
             break;
         default:
             BsCore2.alertForCallBackDataErrors(action.callBackData);
