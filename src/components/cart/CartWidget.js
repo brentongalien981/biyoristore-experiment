@@ -26,7 +26,7 @@ class CartWidget extends React.Component {
         let data = {};
 
         if (!BmdAuth.isLoggedIn()) {
-            data.temporaryGuestUserId = BmdAuth.getTemporaryGuestUserId;
+            data.temporaryGuestUserId = BmdAuth.getTemporaryGuestUserId();
         }
 
         this.props.initCart(data);

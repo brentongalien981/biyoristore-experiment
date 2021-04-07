@@ -1,4 +1,5 @@
 import * as actions from '../actions/cart';
+import * as consts from '../components/cart/constants/consts';
 import { RETRIEVED_DATA_FROM_DB, RETRIEVED_DATA_FROM_LOCAL_STORAGE } from '../bs-library/constants/global';
 import Bs from '../bs-library/helpers/Bs';
 import BsAppSession from '../bs-library/helpers/BsAppSession';
@@ -6,6 +7,7 @@ import BsCore from '../bs-library/helpers/BsCore';
 import BsJLS from '../bs-library/helpers/BsJLS';
 import BsJLSOLM from '../bs-library/helpers/BsJLSOLM';
 import { setMostEfficientSellerForProduct } from './products';
+import BsCore2 from '../bs-library/helpers/BsCore2';
 
 
 
@@ -268,6 +270,7 @@ const onInitCartReturn = (state, action) => {
     }
 
 
+    //bmd-todo: Extract this to a method.
     // Set the most-efficient-seller property for every product for cart-items.
     let modifiedCartItems = [];
     if (cart.cartItems) {
@@ -293,37 +296,45 @@ const onInitCartReturn = (state, action) => {
 //bmd-todo
 const onAddToCartReturn = (state, action) => {
 
-    alert('bmd-todo: METHOD: onAddToCartReturn()');
+    let updatedCart = state.cart;
+
+    switch (action.callBackData.resultCode) {
+        case consts.RESULT_CODE_ADD_ITEM_ALREADY_EXISTS:
+            alert('This item is already in your cart.');
+            break;
+        case consts.RESULT_CODE_ADD_ITEM_DATA_MISMATCHES:
+            alert('Oops! Invalid cart item.');
+            break;
+        case consts.RESULT_CODE_ADD_ITEM_SUCCESSFUL:
+            alert('Item added to cart.');
+            updatedCart = action.callBackData.objs.cart;
+
+            //bmd-todo: Extract this to a method.
+            // Set the most-efficient-seller property for every product for cart-items.
+            let modifiedCartItems = [];
+            if (updatedCart.cartItems) {
+                updatedCart.cartItems.forEach(ci => {
+                    let modifiedCartItem = { ...ci };
+                    const cartItemProductWithMostEfficientSellerProp = setMostEfficientSellerForProduct(ci.product);
+                    modifiedCartItem.product = cartItemProductWithMostEfficientSellerProp;
+                    modifiedCartItems.push(modifiedCartItem);
+                });
+            }
+
+
+            updatedCart.cartItems = modifiedCartItems;
+            break;
+        default:
+            BsCore2.alertForCallBackDataErrors(action.callBackData);
+            break;
+    }
+
+    action.callBackData.doCallBackFunc();
 
     return {
-        ...state
+        ...state,
+        cart: updatedCart
     };
-
-
-    let oldCart = BsJLS.get('cart') ?? state.cart;
-    const productToAdd = action.data.product;
-    const selectedSizeObj = action.data.selectedSizeObj;
-    let alertMsg = null;
-
-    if (isAlreadyInCart(productToAdd, oldCart)) {
-        if (isTryingToAddItemWithDifferentSize(oldCart, productToAdd, selectedSizeObj)) {
-            addProductToCart(productToAdd, oldCart, selectedSizeObj);
-            alertMsg = 'Item added to cart.';
-        }
-        else {
-            alertMsg = 'Item is already in your cart.';
-        }
-
-    }
-    else {
-        addProductToCart(productToAdd, oldCart, selectedSizeObj);
-        alertMsg = 'Item added to cart.';
-    }
-
-    const updatedCart = { ...oldCart };
-    //bmd-ish: save to local-storage.
-    BsJLS.set('cart', updatedCart)
-    alert(alertMsg);
 
 };
 
