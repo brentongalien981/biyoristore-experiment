@@ -26,6 +26,7 @@ const initialState = {
 /* REDUCER */
 const cart = (state = initialState, action) => {
     switch (action.type) {
+        case actions.ON_TRY_EXTENDING_CART_LIFESPAN_RETURN: return onTryExtendingCartLifespanReturn(state, action);
         case actions.ON_DELETE_CART_ITEM_RETURN: return onDeleteCartItemReturn(state, action);
         case actions.ON_UPDATE_CART_ITEM_COUNT_RETURN: return onUpdateCartItemCountReturn(state, action);
         case actions.ON_ADD_TO_CART_RETURN: return onAddToCartReturn(state, action);
@@ -143,6 +144,17 @@ const isAlreadyInCart = (product, cart) => {
 
 /* NORMAL FUNCS */
 //bmd-ish
+const onTryExtendingCartLifespanReturn = (state, action) => {
+
+    action.callBackData.doCallBackFunc();
+
+    return {
+        ...state
+    };
+};
+
+
+
 const onDeleteCartItemReturn = (state, action) => {
 
     let updatedCart = state.cart;

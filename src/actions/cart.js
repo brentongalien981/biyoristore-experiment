@@ -5,6 +5,7 @@ import BsCore2 from "../bs-library/helpers/BsCore2";
 
 
 /* NAMES */
+export const ON_TRY_EXTENDING_CART_LIFESPAN_RETURN = "ON_TRY_EXTENDING_CART_LIFESPAN_RETURN";
 export const ON_DELETE_CART_ITEM_RETURN = "ON_DELETE_CART_ITEM_RETURN";
 export const ON_UPDATE_CART_ITEM_COUNT_RETURN = "ON_UPDATE_CART_ITEM_COUNT_RETURN";
 export const ON_ADD_TO_CART_RETURN = "ON_ADD_TO_CART_RETURN";
@@ -17,6 +18,7 @@ export const SET_CART = "SET_CART";
 
 
 /* FUNCS */
+export const onTryExtendingCartLifespanReturn = (callBackData) => ({ type: ON_TRY_EXTENDING_CART_LIFESPAN_RETURN, callBackData: callBackData });
 export const onDeleteCartItemReturn = (callBackData) => ({ type: ON_DELETE_CART_ITEM_RETURN, callBackData: callBackData });
 export const onUpdateCartItemCountReturn = (callBackData) => ({ type: ON_UPDATE_CART_ITEM_COUNT_RETURN, callBackData: callBackData });
 export const onAddToCartReturn = (callBackData) => ({ type: ON_ADD_TO_CART_RETURN, callBackData: callBackData });
@@ -29,6 +31,32 @@ export const setCart = (obj) => ({ type: SET_CART, obj: obj });
 
 
 /* AJAX FUNCS */
+//bmd-ish
+export const tryExtendingCartLifespan = (data) => {
+
+    return (dispatch) => {
+
+        BsCore2.ajaxCrud({
+            url: '/cart/tryExtendingCartLifespan',
+            method: data.bmdHttpRequest.method,
+            params: data.params,
+            callBackFunc: (requestData, json) => {
+                Bs.log('In ACTION: cart, METHOD: tryExtendingCartLifespan() / callBackFunc()...');
+                const callBackData = { ...data, ...json };
+                dispatch(onTryExtendingCartLifespanReturn(callBackData));
+            },
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
+                dispatch(onTryExtendingCartLifespanReturn(callBackData));
+            }
+        });
+
+    };
+
+};
+
+
+
 export const updateCartItemCount = (data) => {
 
     return (dispatch) => {

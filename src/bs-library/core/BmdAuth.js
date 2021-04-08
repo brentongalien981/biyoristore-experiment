@@ -48,18 +48,40 @@ class BmdAuth {
 
 
 
-    static getTemporaryGuestUserId() {
-        let temporaryGuestUserId = null;
-        let shouldCreateNewTemporaryGuestUserId = true;
+    static resetTemporaryGuestUserId() {
+        const temporaryGuestUserId = Bs.getRandomId(32);
+        BsJLS.set('auth.temporaryGuestUserId', temporaryGuestUserId);
 
-        if (BsJLS.isSet('Cart-temporaryGuestUserId')) { 
-            temporaryGuestUserId = BsJLS.get('Cart-temporaryGuestUserId'); 
-            if (typeof(temporaryGuestUserId) == 'string') { shouldCreateNewTemporaryGuestUserId = false; }
+        return temporaryGuestUserId;
+    }
+
+
+
+    static getTemporaryGuestUserId() {
+
+        let temporaryGuestUserId = BsJLS.get('auth.temporaryGuestUserId');
+        let shouldCreateNewTemporaryGuestUserId = false;
+
+        if (BsJLSOLM.shouldObjWithPathRefresh('auth.temporaryGuestUserId')) {
+            shouldCreateNewTemporaryGuestUserId = true;
+            Bs.log('oh yeah create one');
         }
-        
+        else {
+            if (!temporaryGuestUserId
+                || typeof (temporaryGuestUserId) != 'string'
+                || temporaryGuestUserId.length != 32
+            ) {
+                Bs.log('oh yeah create one for sure');
+                shouldCreateNewTemporaryGuestUserId = true;
+            }
+        }
+
+
         if (shouldCreateNewTemporaryGuestUserId) {
             temporaryGuestUserId = Bs.getRandomId(32);
-            BsJLS.set('Cart-temporaryGuestUserId', temporaryGuestUserId);
+            if (BsJLS.set('auth.temporaryGuestUserId', temporaryGuestUserId)) {
+                BsJLSOLM.updateRefreshDate('auth.temporaryGuestUserId');
+            }
         }
 
         return temporaryGuestUserId;
@@ -69,7 +91,7 @@ class BmdAuth {
 
     /** MAIN FUNCS */
     static isAuthorizedForWebPage(relativePathOrPageName) {
-        
+
         const pageName = BmdWebPagesInfo.getParsedWebPageName(relativePathOrPageName);
         const page = BmdWebPagesInfo.getPageInfo(pageName);
 

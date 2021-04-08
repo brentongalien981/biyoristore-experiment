@@ -20,6 +20,7 @@ export default class BsJLSOLM {
         auth: {
             currentAccount: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
             accounts: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
+            temporaryGuestUserId: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false }
         },
         products: {
             brands: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
@@ -27,7 +28,9 @@ export default class BsJLSOLM {
             teams: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false }
         },
         checkout: {},
-        cart: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
+        cart: {
+            status: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false }
+        },
         profile: {
             personalData: { dateRefreshed: null, lifespan: 1, shouldForceReadDb: false },
             stripePaymentInfos: { dateRefreshed: null, lifespan: 1, shouldForceReadDb: false },

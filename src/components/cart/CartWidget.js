@@ -9,6 +9,7 @@ import BmdAuth from '../../bs-library/core/BmdAuth';
 import WaitLoader from '../loader/WaitLoader';
 import BsJLS from '../../bs-library/helpers/BsJLS';
 import * as helperFuncs from './helper-funcs/HelperFuncsA';
+import * as consts from './constants/consts';
 
 
 
@@ -23,6 +24,42 @@ class CartWidget extends React.Component {
 
 
     /* HELPER FUNCS */
+    //bmd-ish
+    tryExtendingCartLifespan = () => {
+
+        Bs.log('In CLASS: CartWidget, METHOD: tryExtendingCartLifespan()...');
+        //bmd-todo: Also work on when the cart-status gets stuck to CART_STATUS_EXTENDING_CART_LIFESPAN.
+
+        Bs.log('helperFuncs.getCartStatus ==> ' + helperFuncs.getCartStatus());
+        if (helperFuncs.getCartStatus() != consts.CART_STATUS_AVAILABLE) { return; }
+
+        // Check if the current time is 1hr or less before midnight.
+        const nowInDateObj = new Date(Date.now());
+        if (nowInDateObj.getHours() < 12) { return; } //bmd-todo: change to 23.
+
+
+        helperFuncs.setCartStatus(consts.CART_STATUS_EXTENDING_CART_LIFESPAN);
+
+        const bmdHttpRequestData = helperFuncs.prepareCartBmdHttpRequestData();
+
+        const data = {
+            bmdHttpRequest: bmdHttpRequestData,
+            params: {
+                ...bmdHttpRequestData.params,
+                oldTemporaryGuestUserId: BmdAuth.getTemporaryGuestUserId(),
+                newTemporaryGuestUserId: BmdAuth.resetTemporaryGuestUserId()
+            },
+            doCallBackFunc: () => {
+                helperFuncs.setCartStatus(consts.CART_STATUS_AVAILABLE);
+            }
+        };
+
+
+        this.props.tryExtendingCartLifespan(data);
+    };
+
+
+
     initCart() {
         let data = {
             bmdHttpRequest: helperFuncs.prepareCartBmdHttpRequestData()
@@ -35,6 +72,7 @@ class CartWidget extends React.Component {
     /* MAIN FUNCS */
     componentDidMount() {
         this.initCart();
+        setInterval(this.tryExtendingCartLifespan, consts.TRY_EXTENDING_CART_LIFESPAN_INTERVAL);
     }
 
 
@@ -105,7 +143,7 @@ class CartWidget extends React.Component {
     };
 
 
-    //bmd-ish
+    
     onRemoveCartItem = (e, sellerProductId, sizeAvailabilityId) => {
         e.preventDefault();
 
@@ -116,7 +154,7 @@ class CartWidget extends React.Component {
 
         this.setState({ isDeletingCartItem: true });
 
-        
+
         const bmdHttpRequestData = helperFuncs.prepareCartBmdHttpRequestData();
 
         const data = {
@@ -131,7 +169,7 @@ class CartWidget extends React.Component {
             }
         };
 
-        
+
         this.props.deleteCartItem(data);
     };
 
@@ -148,6 +186,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        tryExtendingCartLifespan: (data) => dispatch(actions.tryExtendingCartLifespan(data)),
         deleteCartItem: (data) => dispatch(actions.deleteCartItem(data)),
         initCart: (data) => dispatch(actions.initCart(data))
         // showCart: () => dispatch(actions.showCart())
