@@ -8,6 +8,7 @@ export default class BmdWebPagesInfo {
         doesNotExistPage: { doesNeedAuthentication: true, },
         home: { doesNeedAuthentication: false, },
         profile: { doesNeedAuthentication: true, },
+        cart: { doesNeedAuthentication: false, },
     };
 
 
