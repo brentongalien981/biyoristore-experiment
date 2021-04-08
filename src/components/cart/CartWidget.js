@@ -16,14 +16,14 @@ class CartWidget extends React.Component {
 
     /** PROPS */
     state = {
-        isReadingCart: false
+        isReadingCart: false,
+        isDeletingCartItem: false
     };
 
 
 
     /* HELPER FUNCS */
     initCart() {
-        //bmd-ish: init cart.
         let data = {
             bmdHttpRequest: helperFuncs.prepareCartBmdHttpRequestData()
         };
@@ -105,15 +105,34 @@ class CartWidget extends React.Component {
     };
 
 
-
-    onRemoveCartItem = (e, cartItemId, cartItemIndex) => {
-        Bs.log("\n####################");
-        Bs.log("In METHOD: onRemoveCartItem()");
+    //bmd-ish
+    onRemoveCartItem = (e, sellerProductId, sizeAvailabilityId) => {
         e.preventDefault();
-        Bs.log("cartItemId ==> " + cartItemId);
-        Bs.log("index ==> " + cartItemIndex);
 
-        this.props.deleteCartItem(cartItemId, cartItemIndex);
+        if (this.state.isDeletingCartItem) {
+            alert('Please wait, we are deleting the previous item.');
+            return;
+        }
+
+        this.setState({ isDeletingCartItem: true });
+
+        
+        const bmdHttpRequestData = helperFuncs.prepareCartBmdHttpRequestData();
+
+        const data = {
+            bmdHttpRequest: bmdHttpRequestData,
+            params: {
+                ...bmdHttpRequestData.params,
+                sellerProductId: sellerProductId,
+                sizeAvailabilityId: sizeAvailabilityId
+            },
+            doCallBackFunc: () => {
+                this.setState({ isDeletingCartItem: false });
+            }
+        };
+
+        
+        this.props.deleteCartItem(data);
     };
 
 }
@@ -129,7 +148,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        deleteCartItem: (cartItemId, cartItemIndex) => dispatch(actions.deleteCartItem(cartItemId, cartItemIndex)),
+        deleteCartItem: (data) => dispatch(actions.deleteCartItem(data)),
         initCart: (data) => dispatch(actions.initCart(data))
         // showCart: () => dispatch(actions.showCart())
     };

@@ -5,29 +5,25 @@ import BsCore2 from "../bs-library/helpers/BsCore2";
 
 
 /* NAMES */
+export const ON_DELETE_CART_ITEM_RETURN = "ON_DELETE_CART_ITEM_RETURN";
 export const ON_UPDATE_CART_ITEM_COUNT_RETURN = "ON_UPDATE_CART_ITEM_COUNT_RETURN";
 export const ON_ADD_TO_CART_RETURN = "ON_ADD_TO_CART_RETURN";
 export const ON_INIT_CART_RETURN = "ON_INIT_CART_RETURN";
 
 // export const SET_CART_ID = "SET_CART_ID";
 export const RESET_CART = "RESET_CART";
-export const ON_DELETE_CART_ITEM_FAIL = "ON_DELETE_CART_ITEM_FAIL";
-export const ON_DELETE_CART_ITEM_SUCCESS = "ON_DELETE_CART_ITEM_SUCCESS";
 export const SET_CART = "SET_CART";
 
 
 
 /* FUNCS */
+export const onDeleteCartItemReturn = (callBackData) => ({ type: ON_DELETE_CART_ITEM_RETURN, callBackData: callBackData });
 export const onUpdateCartItemCountReturn = (callBackData) => ({ type: ON_UPDATE_CART_ITEM_COUNT_RETURN, callBackData: callBackData });
 export const onAddToCartReturn = (callBackData) => ({ type: ON_ADD_TO_CART_RETURN, callBackData: callBackData });
 export const onInitCartReturn = (callBackData) => ({ type: ON_INIT_CART_RETURN, callBackData: callBackData });
 
 // export const setCartId = (cartId) => ({ type: SET_CART_ID, cartId: cartId });
 export const resetCart = () => ({ type: RESET_CART });
-
-export const onDeleteCartItemFail = (errors) => ({ type: ON_DELETE_CART_ITEM_FAIL, errors: errors });
-export const onDeleteCartItemSuccess = (cartItemIndex) => ({ type: ON_DELETE_CART_ITEM_SUCCESS, cartItemIndex: cartItemIndex });
-
 export const setCart = (obj) => ({ type: SET_CART, obj: obj });
 
 
@@ -55,32 +51,28 @@ export const updateCartItemCount = (data) => {
 
 };
 
-export const deleteCartItem = (cartItemId, cartItemIndex) => {
 
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: cart, METHOD: deleteCartItem()");
+//bmd-ish
+export const deleteCartItem = (data) => {
 
-    //
-    return (dispatch) => { dispatch(onDeleteCartItemSuccess(cartItemIndex)); };
+    return (dispatch) => {
 
+        BsCore2.ajaxCrud({
+            url: '/cart/deleteCartItem',
+            method: data.bmdHttpRequest.method,
+            params: data.params,
+            callBackFunc: (requestData, json) => {
+                const callBackData = { ...data, ...json };
+                dispatch(onDeleteCartItemReturn(callBackData));
+            },
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
+                dispatch(onDeleteCartItemReturn(callBackData));
+            }
+        });
 
-    // return (dispatch) => {
+    };
 
-    //     BsCore.ajaxCrud({
-    //         url: '/cartItem/delete',
-    //         method: "post",
-    //         params: { api_token: BsAppSession.get("apiToken"), cartItemId: cartItemId },
-    //         callBackFunc: (requestData, json) => {
-    //             Bs.log("\n#####################");
-    //             Bs.log("FILE: actions/cart.js, METHOD: deleteCartItem() => ajaxCrud() => callBackFunc()");
-
-    //             dispatch(onDeleteCartItemSuccess(cartItemIndex));
-    //         },
-    //         errorCallBackFunc: (errors) => {
-    //             dispatch(onDeleteCartItemFail(errors));
-    //         }
-    //     });
-    // };
 };
 
 

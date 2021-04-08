@@ -13,7 +13,10 @@ import * as cartWidgetConsts from '../../components/cart/constants/consts';
 class CartPage extends React.Component {
 
     /** PROPS */
-    state = { isSettingCartItemCount: false };
+    state = { 
+        isSettingCartItemCount: false,
+        isDeletingCartItem: false 
+    };
 
 
 
@@ -85,13 +88,12 @@ class CartPage extends React.Component {
 
 
     /* EVENT FUNCS */
-    //bmd-ish
     onSetCartItemCount = (sellerProductId, sizeAvailabilityId, quantity, index) => {
         if (quantity < 1 || quantity > cartWidgetConsts.MAX_CART_ITEM_QUANTITY) { return; }
         if (this.state.isSettingCartItemCount) { alert("Oops, we're processing your previous input. Please try again shortly."); return; }
         this.setState({ isSettingCartItemCount: true });
 
-        
+
         const bmdHttpRequestData = cartWidgetHelperFuncs.prepareCartBmdHttpRequestData();
 
         const data = {
@@ -120,15 +122,34 @@ class CartPage extends React.Component {
     };
 
 
-
-    onRemoveCartItem = (e, cartItemId, cartItemIndex) => {
-        Bs.log("\n####################");
-        Bs.log("In METHOD: onRemoveCartItem()");
+    //bmd-ish
+    onRemoveCartItem = (e, sellerProductId, sizeAvailabilityId) => {
         e.preventDefault();
-        Bs.log("cartItemId ==> " + cartItemId);
-        Bs.log("index ==> " + cartItemIndex);
 
-        this.props.deleteCartItem(cartItemId, cartItemIndex);
+        if (this.state.isDeletingCartItem) {
+            alert('Please wait, we are deleting the previous item.');
+            return;
+        }
+
+        this.setState({ isDeletingCartItem: true });
+
+
+        const bmdHttpRequestData = cartWidgetHelperFuncs.prepareCartBmdHttpRequestData();
+
+        const data = {
+            bmdHttpRequest: bmdHttpRequestData,
+            params: {
+                ...bmdHttpRequestData.params,
+                sellerProductId: sellerProductId,
+                sizeAvailabilityId: sizeAvailabilityId
+            },
+            doCallBackFunc: () => {
+                this.setState({ isDeletingCartItem: false });
+            }
+        };
+
+
+        this.props.deleteCartItem(data);
     };
 }
 
@@ -146,7 +167,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         updateCartItemCount: (data) => dispatch(actions.updateCartItemCount(data)),
         showCart: () => dispatch(actions.showCart()),
-        deleteCartItem: (cartItemId, cartItemIndex) => dispatch(actions.deleteCartItem(cartItemId, cartItemIndex)),
+        deleteCartItem: (data) => dispatch(actions.deleteCartItem(data)),
     };
 };
 

@@ -27,7 +27,7 @@ function CartItem(props) {
                     <div className="col-lg-3 text-center text-lg-right">
                         <span className="cart-item-price">${displayPrice.toFixed(2)}</span>
                     </div>
-                    <a href="#" className="cart-item-close" onClick={(e) => props.onRemoveCartItem(e, props.item.id, props.index)}><i className="icon-x"></i></a>
+                    <a href="#" className="cart-item-close" onClick={(e) => props.onRemoveCartItem(e, props.item.sellerProductId, props.item.sizeAvailabilityId)}><i className="icon-x"></i></a>
                 </div>
             </div>
         </div>

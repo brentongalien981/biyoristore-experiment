@@ -26,14 +26,13 @@ const initialState = {
 /* REDUCER */
 const cart = (state = initialState, action) => {
     switch (action.type) {
+        case actions.ON_DELETE_CART_ITEM_RETURN: return onDeleteCartItemReturn(state, action);
         case actions.ON_UPDATE_CART_ITEM_COUNT_RETURN: return onUpdateCartItemCountReturn(state, action);
         case actions.ON_ADD_TO_CART_RETURN: return onAddToCartReturn(state, action);
         case actions.ON_INIT_CART_RETURN: return onInitCartReturn(state, action);
 
         // case actions.SET_CART_ID: return setCartId(state, action);
         case actions.RESET_CART: return resetCart(state, action);
-        case actions.ON_DELETE_CART_ITEM_FAIL: return onDeleteCartItemFail(state, action);
-        case actions.ON_DELETE_CART_ITEM_SUCCESS: return onDeleteCartItemSuccess(state, action);
         case actions.SET_CART: return setCart(state, action);
         default: return state;
     }
@@ -143,7 +142,8 @@ const isAlreadyInCart = (product, cart) => {
 
 
 /* NORMAL FUNCS */
-const onUpdateCartItemCountReturn = (state, action) => {
+//bmd-ish
+const onDeleteCartItemReturn = (state, action) => {
 
     let updatedCart = state.cart;
 
@@ -151,7 +151,8 @@ const onUpdateCartItemCountReturn = (state, action) => {
         updatedCart = action.callBackData.objs.cart;
         addMostEfficientSellerPropToCartItems(updatedCart);
     } else {
-        BsCore2.alertForCallBackDataErrors(action.callBackData);
+        if (action.callBackData.errorStatusCode == 422) { BsCore2.alertForGeneralError(); }
+        else { BsCore2.alertForCallBackDataErrors(action.callBackData); }
     }
 
     action.callBackData.doCallBackFunc();
@@ -164,42 +165,23 @@ const onUpdateCartItemCountReturn = (state, action) => {
 
 
 
-const onDeleteCartItemFail = (state, action) => {
-
-    BsCore.alertForGeneralErrors(action.errors);
-
-    return {
-        ...state
-    };
-};
-
-
-
-const onDeleteCartItemSuccess = (state, action) => {
-
-    Bs.log("action.cartItemIndex ==> " + action.cartItemIndex);
-
-    let updatedCartItems = state.cart.cartItems;
-    Bs.log("updatedCartItems ==> ...");
-    Bs.log(updatedCartItems);
-
-    updatedCartItems.splice(action.cartItemIndex, 1);
-    Bs.log("updatedCartItems ==> ...");
-    Bs.log(updatedCartItems);
+const onUpdateCartItemCountReturn = (state, action) => {
 
     let updatedCart = state.cart;
-    Bs.log("updatedCart ==> ...");
-    Bs.log(updatedCart);
 
-    updatedCart.cartItems = updatedCartItems;
-    Bs.log("updatedCart ==> ...");
-    Bs.log(updatedCart);
+    if (action.callBackData.isResultOk) {
+        updatedCart = action.callBackData.objs.cart;
+        addMostEfficientSellerPropToCartItems(updatedCart);
+    } else {
+        if (action.callBackData.errorStatusCode == 422) { BsCore2.alertForGeneralError(); }
+        else { BsCore2.alertForCallBackDataErrors(action.callBackData); }
+    }
 
-    BsAppSession.set("cart", JSON.stringify(updatedCart));
+    action.callBackData.doCallBackFunc();
 
     return {
         ...state,
-        cart: { ...updatedCart }
+        cart: updatedCart
     };
 };
 
