@@ -27,15 +27,21 @@ class CartWidget extends React.Component {
     //bmd-ish
     tryExtendingCartLifespan = () => {
 
-        Bs.log('In CLASS: CartWidget, METHOD: tryExtendingCartLifespan()...');
-        //bmd-todo: Also work on when the cart-status gets stuck to CART_STATUS_EXTENDING_CART_LIFESPAN.
+        helperFuncs.initCartStatusDetailsBasedOnTime();
 
-        Bs.log('helperFuncs.getCartStatus ==> ' + helperFuncs.getCartStatus());
-        if (helperFuncs.getCartStatus() != consts.CART_STATUS_AVAILABLE) { return; }
+        switch (helperFuncs.getCartStatus()) {
+            case consts.CART_STATUS_AVAILABLE:
+            case consts.CART_STATUS_EXTENDING_CART_LIFESPAN:
+                if (!helperFuncs.isItTimeToRetryExtendingCartLifespan()) { return; }
+                break;
+            default:
+                return;
+        }
 
         // Check if the current time is 1hr or less before midnight.
         const nowInDateObj = new Date(Date.now());
-        if (nowInDateObj.getHours() < 12) { return; } //bmd-todo: change to 23.
+        if (nowInDateObj.getHours() < consts.END_HOUR_OF_CART_BEING_TOTALLY_AVAILABLE) { return; }
+
 
 
         helperFuncs.setCartStatus(consts.CART_STATUS_EXTENDING_CART_LIFESPAN);
@@ -50,11 +56,13 @@ class CartWidget extends React.Component {
                 newTemporaryGuestUserId: BmdAuth.resetTemporaryGuestUserId()
             },
             doCallBackFunc: () => {
-                helperFuncs.setCartStatus(consts.CART_STATUS_AVAILABLE);
+                helperFuncs.setCartStatus(consts.HAS_JUST_TRIED_EXTENDING_CART_LIFESPAN);
+                helperFuncs.setNumOfTriesExtendingCartLifespan(0);
             }
         };
 
-
+        helperFuncs.setLatestTimeTryExtendingCartLifespan();
+        helperFuncs.incrementNumOfTriesExtendingCartLifespan();
         this.props.tryExtendingCartLifespan(data);
     };
 
@@ -72,7 +80,7 @@ class CartWidget extends React.Component {
     /* MAIN FUNCS */
     componentDidMount() {
         this.initCart();
-        setInterval(this.tryExtendingCartLifespan, consts.TRY_EXTENDING_CART_LIFESPAN_INTERVAL);
+        setInterval(this.tryExtendingCartLifespan, consts.TRY_EXTENDING_CART_LIFESPAN_INTERVAL_IN_SEC * 1000    );
     }
 
 
@@ -143,7 +151,7 @@ class CartWidget extends React.Component {
     };
 
 
-    
+
     onRemoveCartItem = (e, sellerProductId, sizeAvailabilityId) => {
         e.preventDefault();
 

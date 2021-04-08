@@ -146,7 +146,7 @@ const isAlreadyInCart = (product, cart) => {
 //bmd-ish
 const onTryExtendingCartLifespanReturn = (state, action) => {
 
-    action.callBackData.doCallBackFunc();
+    action.callBackData.doCallBackFunc(action.callBackData.isResultOk);
 
     return {
         ...state
