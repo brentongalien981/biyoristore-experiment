@@ -26,7 +26,7 @@ class CartWidget extends React.Component {
     /* HELPER FUNCS */
     //bmd-ish
     tryExtendingCartLifespan = () => {
-
+        
         helperFuncs.initCartStatusDetailsBasedOnTime();
 
         switch (helperFuncs.getCartStatus()) {

@@ -146,10 +146,21 @@ const isAlreadyInCart = (product, cart) => {
 //bmd-ish
 const onTryExtendingCartLifespanReturn = (state, action) => {
 
+    let updatedCart = state.cart;
+
+    if (action.callBackData.isResultOk) {
+        updatedCart = action.callBackData.objs.cart;
+        addMostEfficientSellerPropToCartItems(updatedCart);
+    } else {
+        if (action.callBackData.errorStatusCode == 401 || action.callBackData.errorStatusCode == 403) { BsCore2.alertForCallBackDataErrors(action.callBackData); }
+        else { Bs.log('Bmd-Error: In REDUCER: cart, METHOD: onTryExtendingCartLifespanReturn()'); }
+    }
+
     action.callBackData.doCallBackFunc(action.callBackData.isResultOk);
 
     return {
-        ...state
+        ...state,
+        cart: updatedCart
     };
 };
 
