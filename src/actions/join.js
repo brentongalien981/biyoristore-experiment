@@ -5,6 +5,9 @@ import BsCore2 from "../bs-library/helpers/BsCore2";
 
 
 /* NAMES */
+export const STOP_SHIT = "STOP_SHIT";
+export const DO_SHIT = "DO_SHIT";
+
 export const ON_LOGIN_SUCCESS = "ON_LOGIN_SUCCESS";
 export const ON_LOGIN_FAIL = "ON_LOGIN_FAIL";
 export const RESET_FLAGS = "RESET_FLAGS";
@@ -17,6 +20,9 @@ export const ON_CREATE_ACCOUNT_FAIL = "ON_CREATE_ACCOUNT_FAIL";
 
 
 /* FUNCS */
+export const stopShit = () => ({ type: STOP_SHIT });
+export const doShit = () => ({ type: DO_SHIT });
+
 export const onLoginSuccess = (callBackData) => ({ type: ON_LOGIN_SUCCESS, callBackData: callBackData });
 export const onLoginFail = (callBackData) => ({ type: ON_LOGIN_FAIL, callBackData: callBackData });
 export const resetFlags = () => ({ type: RESET_FLAGS });

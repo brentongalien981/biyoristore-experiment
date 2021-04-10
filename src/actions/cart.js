@@ -5,6 +5,7 @@ import BsCore2 from "../bs-library/helpers/BsCore2";
 
 
 /* NAMES */
+export const ON_MERGE_GUEST_AND_ACTUALUSER_CARTS_RETURN = "ON_MERGE_GUEST_AND_ACTUALUSER_CARTS_RETURN";
 export const ON_TRY_EXTENDING_CART_LIFESPAN_RETURN = "ON_TRY_EXTENDING_CART_LIFESPAN_RETURN";
 export const ON_DELETE_CART_ITEM_RETURN = "ON_DELETE_CART_ITEM_RETURN";
 export const ON_UPDATE_CART_ITEM_COUNT_RETURN = "ON_UPDATE_CART_ITEM_COUNT_RETURN";
@@ -18,6 +19,7 @@ export const SET_CART = "SET_CART";
 
 
 /* FUNCS */
+export const onMergeGuestAndActualUserCartsReturn = (callBackData) => ({ type: ON_MERGE_GUEST_AND_ACTUALUSER_CARTS_RETURN, callBackData: callBackData });
 export const onTryExtendingCartLifespanReturn = (callBackData) => ({ type: ON_TRY_EXTENDING_CART_LIFESPAN_RETURN, callBackData: callBackData });
 export const onDeleteCartItemReturn = (callBackData) => ({ type: ON_DELETE_CART_ITEM_RETURN, callBackData: callBackData });
 export const onUpdateCartItemCountReturn = (callBackData) => ({ type: ON_UPDATE_CART_ITEM_COUNT_RETURN, callBackData: callBackData });
@@ -32,6 +34,30 @@ export const setCart = (obj) => ({ type: SET_CART, obj: obj });
 
 /* AJAX FUNCS */
 //bmd-ish
+export const mergeGuestAndActualUserCarts = (data) => {
+
+    return (dispatch) => {
+
+        BsCore2.ajaxCrud({
+            url: '/cart/mergeGuestAndActualUserCarts',
+            method: data.bmdHttpRequest.method,
+            params: data.params,
+            callBackFunc: (requestData, json) => {
+                const callBackData = { ...data, ...json };
+                dispatch(onMergeGuestAndActualUserCartsReturn(callBackData));
+            },
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
+                dispatch(onMergeGuestAndActualUserCartsReturn(callBackData));
+            }
+        });
+
+    };
+
+};
+
+
+
 export const tryExtendingCartLifespan = (data) => {
 
     return (dispatch) => {

@@ -43,22 +43,6 @@ class Join extends React.Component {
 
 
     /** HELPER-FUNCS */
-    //bmd-ish
-    mergeGuestAndActualUserCarts = () => {
-        return;
-        const bmdHttpRequestData = cartWidgetHelperFuncs.prepareCartBmdHttpRequestData();
-
-        const data = {
-            bmdHttpRequest: bmdHttpRequestData,
-            params: {
-                ...bmdHttpRequestData.params,
-                temporaryGuestUserId: BmdAuth.getTemporaryGuestUserId()
-            }
-        };
-    };
-
-
-
     doPostOnLoginProcess = (isProcessSuccessful) => {
 
         this.setState({
@@ -176,7 +160,7 @@ class Join extends React.Component {
 
     /** MAIN-FUNCS */
     componentDidMount() {
-        if (BsAppLocalStorage.isLoggedIn()) {
+        if (BmdAuth.isLoggedIn()) {
             this.props.history.replace("/");
             return;
         }
@@ -196,8 +180,6 @@ class Join extends React.Component {
             }
             const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: msg });
             this.props.queueAlert(newAlertObj);
-
-            this.mergeGuestAndActualUserCarts();
 
             const redirectTo = this.getRedirectToUrl();
             this.props.history.replace(redirectTo);
@@ -226,6 +208,8 @@ class Join extends React.Component {
                                     onCredentialChanged={this.onCredentialChanged}
                                     passwordForSignIn={this.state.passwordForSignIn}
                                     isLoggingIn={this.state.isLoggingIn}
+                                    // bmd-todo:delete
+                                    onDoShit={this.onDoShit}
                                     onLogin={this.onLogin} />
 
                                 <CreateAccount email={this.state.email}
@@ -294,6 +278,15 @@ class Join extends React.Component {
 
 
 
+    //bmd-todo:delete
+    onDoShit = (e) => {
+        e.preventDefault();
+        Bs.log('do shit');
+        this.props.doShit();
+    };
+
+
+
     onCredentialChanged = (e) => {
         const target = e.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -328,6 +321,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        doShit: () => dispatch(actions.doShit()), //bmd-todo:delete
         queueAlert: (obj) => dispatch(queueAlert(obj)),
         resetFlags: () => dispatch(actions.resetFlags()),
         onRedirectHomeSuccess: () => dispatch(actions.onRedirectHomeSuccess()),

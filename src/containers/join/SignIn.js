@@ -32,6 +32,8 @@ function SignIn(props) {
 
             <div className="col-12 mt-2">
                 <a href="#!" className="btn btn-block btn-primary" onClick={(e) => props.onLogin(e)}>Log In</a>
+                {/* bmd-todo:delete */}
+                <a href="#!" className="btn btn-block btn-primary" onClick={(e) => props.onDoShit(e)}>do shit</a>
             </div>
         </>
     );

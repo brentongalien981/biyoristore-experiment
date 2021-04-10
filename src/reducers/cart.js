@@ -26,6 +26,7 @@ const initialState = {
 /* REDUCER */
 const cart = (state = initialState, action) => {
     switch (action.type) {
+        case actions.ON_MERGE_GUEST_AND_ACTUALUSER_CARTS_RETURN: return onMergeGuestAndActualUserCartsReturn(state, action);
         case actions.ON_TRY_EXTENDING_CART_LIFESPAN_RETURN: return onTryExtendingCartLifespanReturn(state, action);
         case actions.ON_DELETE_CART_ITEM_RETURN: return onDeleteCartItemReturn(state, action);
         case actions.ON_UPDATE_CART_ITEM_COUNT_RETURN: return onUpdateCartItemCountReturn(state, action);
@@ -144,6 +145,27 @@ const isAlreadyInCart = (product, cart) => {
 
 /* NORMAL FUNCS */
 //bmd-ish
+const onMergeGuestAndActualUserCartsReturn = (state, action) => {
+
+    let updatedCart = state.cart;
+
+    if (action.callBackData.isResultOk) {
+        updatedCart = action.callBackData.objs.cart;
+        addMostEfficientSellerPropToCartItems(updatedCart);
+    } else {
+        if (action.callBackData.errorStatusCode == 401 || action.callBackData.errorStatusCode == 403) { BsCore2.alertForCallBackDataErrors(action.callBackData); }
+        else { Bs.log('Bmd-Error: In REDUCER: cart, METHOD: onMergeGuestAndActualUserCartsReturn()'); }
+    }
+
+
+    return {
+        ...state,
+        cart: updatedCart
+    };
+};
+
+
+
 const onTryExtendingCartLifespanReturn = (state, action) => {
 
     let updatedCart = state.cart;
