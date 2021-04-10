@@ -104,37 +104,6 @@ export const deleteCartItem = (data) => {
 };
 
 
-
-export const showCart = () => {
-
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: cart, METHOD: showCart()");
-
-    //
-    let cart = BsAppSession.get("cart");
-    if (!cart || cart == "") { cart = null; }
-    else { cart = JSON.parse(cart); }
-
-    return (dispatch) => { dispatch(setCart(cart)); };
-
-
-    // //
-    // return (dispatch) => {
-
-    //     BsCore.ajaxCrud({
-    //         url: '/cart/show',
-    //         params: { api_token: BsAppSession.get("apiToken") },
-    //         callBackFunc: (requestData, json) => {
-    //             Bs.log("\n#####################");
-    //             Bs.log("FILE: actions/cart.js, METHOD: showCart() => ajaxCrud() => callBackFunc()");
-
-    //             dispatch(setCart(json.obj));
-    //         }
-    //     });
-    // };
-};
-
-
 //bmd-ish
 export const onAddToCart = (data) => {
 

@@ -7,12 +7,13 @@ import * as actions from '../../actions/join';
 import BsAppSession from '../../bs-library/helpers/BsAppSession';
 import Bs from '../../bs-library/helpers/Bs';
 import { withRouter } from 'react-router-dom';
-import { showCart } from '../../actions/cart';
 import BsAppLocalStorage from '../../bs-library/helpers/BsAppLocalStorage';
 import WaitLoader from '../../components/loader/WaitLoader';
 import TemporaryAlertSystem from '../../components/temporary-alert-system/TemporaryAlertSystem';
 import { queueAlert } from '../../actions/temporaryAlerts';
 import BsCore2 from '../../bs-library/helpers/BsCore2';
+import * as cartWidgetHelperFuncs from '../../components/cart/helper-funcs/HelperFuncsA';
+import BmdAuth from '../../bs-library/core/BmdAuth';
 
 
 
@@ -42,6 +43,22 @@ class Join extends React.Component {
 
 
     /** HELPER-FUNCS */
+    //bmd-ish
+    mergeGuestAndActualUserCarts = () => {
+        return;
+        const bmdHttpRequestData = cartWidgetHelperFuncs.prepareCartBmdHttpRequestData();
+
+        const data = {
+            bmdHttpRequest: bmdHttpRequestData,
+            params: {
+                ...bmdHttpRequestData.params,
+                temporaryGuestUserId: BmdAuth.getTemporaryGuestUserId()
+            }
+        };
+    };
+
+
+
     doPostOnLoginProcess = (isProcessSuccessful) => {
 
         this.setState({
@@ -175,13 +192,12 @@ class Join extends React.Component {
             // Show message to user.
             let msg = 'Sign-up successful. Welcome ' + this.state.email + '!';
             if (this.props.shouldDoOnLoginProcessFinalization) {
-                msg = 'Welcome back ' + this.state.email;
+                msg = 'Welcome back!';
             }
             const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: msg });
             this.props.queueAlert(newAlertObj);
 
-            // Refresh the cart.
-            this.props.showCart();
+            this.mergeGuestAndActualUserCarts();
 
             const redirectTo = this.getRedirectToUrl();
             this.props.history.replace(redirectTo);
@@ -315,7 +331,6 @@ const mapDispatchToProps = (dispatch) => {
         queueAlert: (obj) => dispatch(queueAlert(obj)),
         resetFlags: () => dispatch(actions.resetFlags()),
         onRedirectHomeSuccess: () => dispatch(actions.onRedirectHomeSuccess()),
-        showCart: () => dispatch(showCart()),
         saveUser: (data) => dispatch(actions.saveUser(data)),
         login: (credentials) => dispatch(actions.login(credentials)),
         resetErrors: () => dispatch(actions.resetErrors())

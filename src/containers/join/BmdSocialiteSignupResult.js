@@ -7,7 +7,6 @@ import * as actions from '../../actions/join';
 import TemporaryAlertSystem from '../../components/temporary-alert-system/TemporaryAlertSystem';
 import BsAppLocalStorage from '../../bs-library/helpers/BsAppLocalStorage';
 import { queueAlert } from '../../actions/temporaryAlerts';
-import { showCart } from '../../actions/cart';
 
 class BmdSocialiteSignupResult extends React.Component {
 
@@ -102,8 +101,7 @@ class BmdSocialiteSignupResult extends React.Component {
         const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: "Sign-up successful. Welcome " + email + "!" });
         this.props.queueAlert(newAlertObj);
 
-        // Refresh the cart.
-        this.props.showCart();
+        //bmd-todo: mergeGuestAndActualUserCarts()
 
         const redirectTo = this.getRedirectToUrl();
         this.props.history.replace(redirectTo);
@@ -166,7 +164,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onCreateAccountFail: (objs) => dispatch(actions.onCreateAccountFail(objs)),
-        showCart: () => dispatch(showCart()),
         verifyAuthData: (data) => dispatch(actions.verifyAuthData(data)),
         queueAlert: (obj) => dispatch(queueAlert(obj)),
     };
