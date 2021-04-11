@@ -9,6 +9,7 @@ import BmdBrowserTabsManager from '../bs-library/helpers/BmdBrowserTabsManager';
 import BmdAuth from '../bs-library/core/BmdAuth';
 import { withRouter } from 'react-router';
 import { stopShit } from '../actions/join';
+import OnSuccessfulJoin from '../bs-listeners/OnSuccessfulJoin';
 
 
 
@@ -41,7 +42,11 @@ class AppStateManager extends React.Component {
 
 
     render() {
-        return null;
+        return (
+            <>
+                <OnSuccessfulJoin />
+            </>
+        );
     }
 
 

@@ -1,6 +1,7 @@
 import Bs from "../bs-library/helpers/Bs";
 import BsAppSession from "../bs-library/helpers/BsAppSession";
 import BsCore2 from "../bs-library/helpers/BsCore2";
+import { resetFlags } from "./join";
 
 
 
@@ -45,6 +46,7 @@ export const mergeGuestAndActualUserCarts = (data) => {
             callBackFunc: (requestData, json) => {
                 const callBackData = { ...data, ...json };
                 dispatch(onMergeGuestAndActualUserCartsReturn(callBackData));
+
             },
             errorCallBackFunc: (errors, errorStatusCode) => {
                 const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };

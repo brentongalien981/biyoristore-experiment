@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import * as cartActions from '../actions/cart';
+import { resetFlags } from '../actions/join';
 import BmdAuth from '../bs-library/core/BmdAuth';
 import * as cartWidgetHelperFuncs from '../components/cart/helper-funcs/HelperFuncsA';
 
@@ -32,6 +33,7 @@ class OnSuccessfulJoin extends React.Component {
 
 
     handleOnSuccessfulLogin = () => {
+        this.props.resetFlags();
         this.mergeGuestAndActualUserCarts();
     };
 
@@ -69,7 +71,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        mergeGuestAndActualUserCarts: (data) => dispatch(cartActions.mergeGuestAndActualUserCarts(data))
+        mergeGuestAndActualUserCarts: (data) => dispatch(cartActions.mergeGuestAndActualUserCarts(data)),
+        resetFlags: () => dispatch(resetFlags())
     };
 };
 
