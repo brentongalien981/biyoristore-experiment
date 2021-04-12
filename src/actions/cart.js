@@ -165,11 +165,11 @@ export const initCart = (data) => {
             method: data.bmdHttpRequest.method,
             params: data.bmdHttpRequest.params,
             callBackFunc: (requestData, json) => {
-                const callBackData = { ...json };
+                const callBackData = { ...data, ...json };
                 dispatch(onInitCartReturn(callBackData));
             },
             errorCallBackFunc: (errors, errorStatusCode) => {
-                const callBackData = { errors: errors, errorStatusCode: errorStatusCode };
+                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
                 dispatch(onInitCartReturn(callBackData));
             }
         });

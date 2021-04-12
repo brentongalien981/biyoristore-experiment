@@ -70,7 +70,11 @@ class CartWidget extends React.Component {
 
     initCart() {
         let data = {
-            bmdHttpRequest: helperFuncs.prepareCartBmdHttpRequestData()
+            bmdHttpRequest: helperFuncs.prepareCartBmdHttpRequestData(),
+            doCallBackFunc: () => {
+                helperFuncs.setCartStatus(consts.CART_STATUS_AVAILABLE);
+                helperFuncs.setNumOfTriesExtendingCartLifespan(0);
+            }
         };
 
         this.props.initCart(data);

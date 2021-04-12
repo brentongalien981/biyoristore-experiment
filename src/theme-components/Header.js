@@ -5,11 +5,13 @@ import HeaderLight from './HeaderLight';
 import HeaderDark from './HeaderDark';
 import BsAppSession from '../bs-library/helpers/BsAppSession';
 import { connect } from 'react-redux';
-import { resetCart } from '../actions/cart';
+import { initCart } from '../actions/cart';
 import BsAppLocalStorage from '../bs-library/helpers/BsAppLocalStorage';
 import BmdAuth from '../bs-library/core/BmdAuth';
 import TemporaryAlertSystem from '../components/temporary-alert-system/TemporaryAlertSystem';
 import { queueAlert } from '../actions/temporaryAlerts';
+import * as cartWidgetHelperFuncs from '../components/cart/helper-funcs/HelperFuncsA';
+import { CART_STATUS_AVAILABLE } from '../components/cart/constants/consts';
 
 
 
@@ -31,8 +33,11 @@ class Header extends React.Component {
 
     onLogout = (e) => {
         e.preventDefault();
+
+        //bmd-ish
         BmdAuth.clearAuth();
-        this.props.resetCart();
+        BmdAuth.resetTemporaryGuestUserId();
+        this.initCart();
 
         const msg = 'See yah later!';
         const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: msg });
@@ -40,6 +45,21 @@ class Header extends React.Component {
 
         this.props.history.push("/");
     };
+
+
+
+    initCart() {
+        let data = {
+            
+            bmdHttpRequest: cartWidgetHelperFuncs.prepareCartBmdHttpRequestData(),
+            doCallBackFunc: () => {
+                cartWidgetHelperFuncs.setCartStatus(CART_STATUS_AVAILABLE);
+                cartWidgetHelperFuncs.setNumOfTriesExtendingCartLifespan(0);
+            }
+        };
+
+        this.props.initCart(data);
+    }
 }
 
 
@@ -55,7 +75,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         queueAlert: (obj) => dispatch(queueAlert(obj)),
-        resetCart: () => dispatch(resetCart()),
+        initCart: (data) => dispatch(initCart(data)),
     };
 };
 

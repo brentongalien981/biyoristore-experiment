@@ -158,6 +158,9 @@ const onMergeGuestAndActualUserCartsReturn = (state, action) => {
     }
 
 
+    action.callBackData.doCallBackFunc();
+
+
     return {
         ...state,
         cart: updatedCart
@@ -273,6 +276,8 @@ const onInitCartReturn = (state, action) => {
     }
 
     addMostEfficientSellerPropToCartItems(cart);
+
+    action.callBackData.doCallBackFunc();
 
 
     return {

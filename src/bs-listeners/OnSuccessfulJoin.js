@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 import * as cartActions from '../actions/cart';
 import { resetFlags } from '../actions/join';
 import BmdAuth from '../bs-library/core/BmdAuth';
+import { CART_STATUS_AVAILABLE } from '../components/cart/constants/consts';
 import * as cartWidgetHelperFuncs from '../components/cart/helper-funcs/HelperFuncsA';
 
 
@@ -24,6 +25,10 @@ class OnSuccessfulJoin extends React.Component {
             params: {
                 ...bmdHttpRequestData.params,
                 temporaryGuestUserId: BmdAuth.getTemporaryGuestUserId()
+            },
+            doCallBackFunc: () => {
+                cartWidgetHelperFuncs.setCartStatus(CART_STATUS_AVAILABLE);
+                cartWidgetHelperFuncs.setNumOfTriesExtendingCartLifespan(0);
             }
         };
 
