@@ -16,7 +16,6 @@ class OnSuccessfulJoin extends React.Component {
 
 
     /** HELPER FUNCS */
-    //bmd-ish
     mergeGuestAndActualUserCarts = () => {
         const bmdHttpRequestData = cartWidgetHelperFuncs.prepareCartBmdHttpRequestData();
 

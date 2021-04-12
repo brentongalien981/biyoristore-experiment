@@ -161,7 +161,7 @@ class ProductInDetails extends React.Component {
                 {/* <button onClick={this.testReadNewProduct}>TEST READ NEW PRODUCT</button> */}
 
                 <BlankBreadCrumbsSubstitute />
-                <ProductMainSection product={this.props.product} />
+                <ProductMainSection product={this.props.product} isAddingItemToCart={this.state.isAddingItemToCart} />
                 <ProductExtraInfo product={this.props.product} avgRating={this.props.avgRating} />
                 <SuggestedProducts relatedProducts={this.props.relatedProducts} onProductClicked={this.onProductClicked} />
 
@@ -221,8 +221,7 @@ class ProductInDetails extends React.Component {
     };
 
 
-
-    //bmd-ish
+    
     onAddToCart = (e, product) => {
 
         e.preventDefault();

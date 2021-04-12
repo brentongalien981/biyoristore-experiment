@@ -24,16 +24,6 @@ class AppStateManager extends React.Component {
 
 
     /** MAIN FUNCS */
-    componentDidUpdate() {
-        //bmd-todo:delete
-        if (this.props.doShit) {
-            alert('Wow! Do some Shit then!');
-            this.props.stopShit();
-        }
-    }
-
-
-
     componentDidMount() {
         BmdBrowserTabsManager.initNewTab();
         BsJLSOLM.init();
@@ -59,7 +49,6 @@ class AppStateManager extends React.Component {
 /** REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
-        doShit: state.join.doShit, //bmd-todo:delete
     };
 };
 
@@ -67,7 +56,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        stopShit: () => dispatch(stopShit()), //bmd-todo:delete
         checkBmdAuthValidity: (data) => dispatch(actions.checkBmdAuthValidity(data)),
     };
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import BsCore from '../../bs-library/helpers/BsCore';
+import { getSizeComponentLabel } from './helper-funcs/HelperFuncsA';
 
 
 
@@ -17,10 +18,12 @@ function CartItem(props) {
                 <div className="row align-items-center">
                     <div className="col-lg-9">
                         <div className="media media-product">
-                            <a href="#!"><img src={productPhotoUrl} alt="Image" /></a>
+                            <a href="#!" onClick={(e) => props.onProductClick(e, props.item.product.id)}><img src={productPhotoUrl} alt="Image" /></a>
                             <div className="media-body">
-                                <h5 className="media-title">{props.item.product.name}</h5>
-                                {/* <span className="media-subtitle">Black, Steel</span> */}
+                                <a href="#!" className="media-title" onClick={(e) => props.onProductClick(e, props.item.product.id)}>{props.item.product.name}</a>
+                                <br />
+                                {/* <span className="media-subtitle">xxx</span> */}
+                                <span className="small">{getSizeComponentLabel(props.item)}</span>
                             </div>
                         </div>
                     </div>

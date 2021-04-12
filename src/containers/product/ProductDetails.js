@@ -38,7 +38,7 @@ function ProductDetails(props) {
             <div className="row mb-4">
                 <ProductSizeFilter product={p} />
             </div>
-            <ProductActions product={p} />
+            <ProductActions product={p} isAddingItemToCart={props.isAddingItemToCart} />
         </div>
     );
 }

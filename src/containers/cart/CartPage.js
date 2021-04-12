@@ -24,7 +24,7 @@ class CartPage extends React.Component {
     getCartPageItems = (items) => {
         const itemComponents = items?.map((item, i) => {
             return (
-                <CartPageItem item={item} key={i} index={i} onRemoveCartItem={this.onRemoveCartItem}
+                <CartPageItem item={item} key={i} index={i} onProductClick={this.onProductClick} onRemoveCartItem={this.onRemoveCartItem}
                     onSetCartItemCount={this.onSetCartItemCount} />
             );
         });
@@ -88,6 +88,16 @@ class CartPage extends React.Component {
 
 
     /* EVENT FUNCS */
+    onProductClick = (e, productId) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.props.history.push('/product?productId=' + productId);
+        // this.props.resetProduct();
+    };
+
+
+
     onSetCartItemCount = (sellerProductId, sizeAvailabilityId, quantity, index) => {
         if (quantity < 1 || quantity > cartWidgetConsts.MAX_CART_ITEM_QUANTITY) { return; }
         if (this.state.isSettingCartItemCount) { alert("Oops, we're processing your previous input. Please try again shortly."); return; }
@@ -122,7 +132,7 @@ class CartPage extends React.Component {
     };
 
 
-    //bmd-ish
+    
     onRemoveCartItem = (e, sellerProductId, sizeAvailabilityId) => {
         e.preventDefault();
 

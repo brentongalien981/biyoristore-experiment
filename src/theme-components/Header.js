@@ -34,7 +34,6 @@ class Header extends React.Component {
     onLogout = (e) => {
         e.preventDefault();
 
-        //bmd-ish
         BmdAuth.clearAuth();
         BmdAuth.resetTemporaryGuestUserId();
         this.initCart();

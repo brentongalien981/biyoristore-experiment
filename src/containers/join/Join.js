@@ -208,8 +208,6 @@ class Join extends React.Component {
                                     onCredentialChanged={this.onCredentialChanged}
                                     passwordForSignIn={this.state.passwordForSignIn}
                                     isLoggingIn={this.state.isLoggingIn}
-                                    // bmd-todo:delete
-                                    onDoShit={this.onDoShit}
                                     onLogin={this.onLogin} />
 
                                 <CreateAccount email={this.state.email}
@@ -278,15 +276,6 @@ class Join extends React.Component {
 
 
 
-    //bmd-todo:delete
-    onDoShit = (e) => {
-        e.preventDefault();
-        Bs.log('do shit');
-        this.props.doShit();
-    };
-
-
-
     onCredentialChanged = (e) => {
         const target = e.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -321,7 +310,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        doShit: () => dispatch(actions.doShit()), //bmd-todo:delete
         queueAlert: (obj) => dispatch(queueAlert(obj)),
         resetFlags: () => dispatch(actions.resetFlags()),
         onRedirectHomeSuccess: () => dispatch(actions.onRedirectHomeSuccess()),

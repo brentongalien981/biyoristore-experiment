@@ -1,5 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import BsCore from '../../bs-library/helpers/BsCore';
+import { getSizeComponentLabel } from '../../components/cart/helper-funcs/HelperFuncsA';
 
 
 
@@ -14,17 +16,20 @@ function CartPageItem(props) {
 
     const quantity = parseInt(props.item.quantity);
     const itemTotalPrice = displayPrice * quantity;
-    
+
 
     return (
         <div className="cart-item">
             <div className="row align-items-center">
                 <div className="col-12 col-lg-6">
                     <div className="media media-product">
-                        <a href="#!"><img src={productPhotoUrl} alt="Image" /></a>
+                        <a href="#!" onClick={(e) => props.onProductClick(e, props.item.product.id)}><img src={productPhotoUrl} alt="Image" /></a>
                         <div className="media-body">
-                            <h5 className="media-title">{props.item.product.name}</h5>
-                            <span className="small">{props.item.product.brand.name}</span>
+                            <a href="#!" className="media-title" onClick={(e) => props.onProductClick(e, props.item.product.id)}>{props.item.product.name}</a>
+                            <br />
+                            <span className="small"><Link to={'/products?brands=' + props.item.product.brand.id}>{props.item.product.brand.name}</Link></span>
+                            <br />
+                            <span className="small">{getSizeComponentLabel(props.item)}</span>
                         </div>
                     </div>
                 </div>
@@ -33,9 +38,9 @@ function CartPageItem(props) {
                 </div>
                 <div className="col-4 col-lg-2 text-center">
                     <div className="counter">
-                        <span className="counter-minus icon-minus" field='qty-1' onClick={() => props.onSetCartItemCount(props.item.sellerProductId, props.item.sizeAvailabilityId, quantity-1, props.index)}></span>
+                        <span className="counter-minus icon-minus" field='qty-1' onClick={() => props.onSetCartItemCount(props.item.sellerProductId, props.item.sizeAvailabilityId, quantity - 1, props.index)}></span>
                         <input type='text' name='qty-1' className="counter-value" value={quantity} min="1" max="" disabled />
-                        <span className="counter-plus icon-plus" field='qty-1' onClick={() => props.onSetCartItemCount(props.item.sellerProductId, props.item.sizeAvailabilityId, quantity+1, props.index)}></span>
+                        <span className="counter-plus icon-plus" field='qty-1' onClick={() => props.onSetCartItemCount(props.item.sellerProductId, props.item.sizeAvailabilityId, quantity + 1, props.index)}></span>
                     </div>
                 </div>
                 <div className="col-4 col-lg-2 text-center">

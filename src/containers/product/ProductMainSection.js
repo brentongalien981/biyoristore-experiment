@@ -11,7 +11,7 @@ function ProductMainSection(props) {
                 <div className="row gutter-2 gutter-md-4 justify-content-between">
                     {/* <ProductGallery productPhotoUrls={props.product.productPhotoUrls} shouldResetGallery={props.shouldResetGallery} /> */}
                     <ProductGallery productPhotoUrls={props.product.productPhotoUrls} />
-                    <ProductDetails product={props.product} />
+                    <ProductDetails product={props.product} isAddingItemToCart={props.isAddingItemToCart} />
                 </div>
             </div>
         </section>

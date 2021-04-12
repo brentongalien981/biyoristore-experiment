@@ -10,6 +10,7 @@ import WaitLoader from '../loader/WaitLoader';
 import BsJLS from '../../bs-library/helpers/BsJLS';
 import * as helperFuncs from './helper-funcs/HelperFuncsA';
 import * as consts from './constants/consts';
+import { resetProduct } from '../../actions/productInDetails';
 
 
 
@@ -24,7 +25,6 @@ class CartWidget extends React.Component {
 
 
     /* HELPER FUNCS */
-    //bmd-ish
     tryExtendingCartLifespan = () => {
         
         helperFuncs.initCartStatusDetailsBasedOnTime();
@@ -92,7 +92,7 @@ class CartWidget extends React.Component {
     render() {
 
         let cartItems = this.props.cart?.cartItems?.map((item, i) => {
-            return <CartItem item={item} key={i} index={i} onRemoveCartItem={this.onRemoveCartItem} />;
+            return <CartItem item={item} key={i} index={i} onProductClick={this.onProductClick} onRemoveCartItem={this.onRemoveCartItem} />;
         });
 
         if (this.state.isReadingCart) {
@@ -140,6 +140,16 @@ class CartWidget extends React.Component {
 
 
     /* EVENT FUNCS */
+    onProductClick = (e, productId) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.props.history.push('/product?productId=' + productId);
+        this.props.resetProduct();
+    };
+
+
+
     onCheckout = (e) => {
         e.preventDefault();
         document.querySelector("#closeCartWidgetBtn").click();
@@ -198,6 +208,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        resetProduct: () => dispatch(resetProduct()),
         tryExtendingCartLifespan: (data) => dispatch(actions.tryExtendingCartLifespan(data)),
         deleteCartItem: (data) => dispatch(actions.deleteCartItem(data)),
         initCart: (data) => dispatch(actions.initCart(data))

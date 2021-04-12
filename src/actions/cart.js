@@ -34,7 +34,6 @@ export const setCart = (obj) => ({ type: SET_CART, obj: obj });
 
 
 /* AJAX FUNCS */
-//bmd-ish
 export const mergeGuestAndActualUserCarts = (data) => {
 
     return (dispatch) => {
@@ -108,7 +107,7 @@ export const updateCartItemCount = (data) => {
 };
 
 
-//bmd-ish
+
 export const deleteCartItem = (data) => {
 
     return (dispatch) => {
@@ -132,7 +131,7 @@ export const deleteCartItem = (data) => {
 };
 
 
-//bmd-ish
+
 export const onAddToCart = (data) => {
 
     return (dispatch) => {

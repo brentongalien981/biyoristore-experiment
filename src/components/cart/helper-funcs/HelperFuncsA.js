@@ -5,7 +5,25 @@ import BsJLS from "../../../bs-library/helpers/BsJLS";
 import * as consts from "../constants/consts";
 
 
-//bmd-ish
+
+export const getSizeComponentLabel = (cartItem) => {
+    const selectedSizeAvailabilityId = cartItem.sizeAvailabilityId;
+    const sizeAvailabilities = cartItem.product.mostEfficientSeller.sizeAvailabilities;
+
+    let label = 'size: n/a';
+
+    for (const s of sizeAvailabilities) {
+        if (s.id == selectedSizeAvailabilityId) {
+            label = 'size: ' + s.size;
+            break;
+        }
+    }
+
+    return label;
+};
+
+
+
 export const setNumOfTriesExtendingCartLifespan = (val) => {
     BsJLS.set('Cart-numOfTriesExtendingCartLifespan', val);
 };

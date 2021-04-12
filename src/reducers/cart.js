@@ -144,7 +144,6 @@ const isAlreadyInCart = (product, cart) => {
 
 
 /* NORMAL FUNCS */
-//bmd-ish
 const onMergeGuestAndActualUserCartsReturn = (state, action) => {
 
     let updatedCart = state.cart;

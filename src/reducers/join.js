@@ -29,9 +29,6 @@ const initialState = {
 /* REDUCER */
 const join = (state = initialState, action) => {
     switch (action.type) {
-        //bmd-todo:delete
-        case actions.STOP_SHIT: return stopShit(state, action);
-        case actions.DO_SHIT: return doShit(state, action);
 
         case actions.ON_LOGIN_SUCCESS: return onLoginSuccess(state, action);
         case actions.ON_LOGIN_FAIL: return onLoginFail(state, action);
@@ -47,25 +44,6 @@ const join = (state = initialState, action) => {
 
 
 /* NORMAL */
-//bmd-todo:delete
-const stopShit = (state, action) => {
-
-    return {
-        ...state,
-        doShit: false
-    };
-};
-
-const doShit = (state, action) => {
-
-    return {
-        ...state,
-        doShit: true
-    };
-};
-
-
-
 const onRedirectHomeSuccess = (state, action) => {
 
     return {
@@ -107,7 +85,7 @@ const onCreateAccountFail = (state, action) => {
 };
 
 
-//bmd-ish
+
 const onCreateAccountSuccess = (state, action) => {
 
     action.returnData.doPostProcessCallBack(action.returnData.isResultOk);
