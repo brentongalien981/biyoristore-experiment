@@ -112,7 +112,6 @@ class BmdSocialiteLoginResult extends React.Component {
             const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: msg });
             this.props.queueAlert(newAlertObj);
 
-            //bmd-todo: mergeGuestAndActualUserCarts()
 
             const redirectTo = this.getRedirectToUrl();
             this.props.history.replace(redirectTo);

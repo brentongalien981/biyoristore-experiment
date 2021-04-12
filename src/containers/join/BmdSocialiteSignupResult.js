@@ -101,8 +101,6 @@ class BmdSocialiteSignupResult extends React.Component {
         const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: "Sign-up successful. Welcome " + email + "!" });
         this.props.queueAlert(newAlertObj);
 
-        //bmd-todo: mergeGuestAndActualUserCarts()
-
         const redirectTo = this.getRedirectToUrl();
         this.props.history.replace(redirectTo);
     }
