@@ -15,9 +15,21 @@ import OrderDetailsSummaryModal from './OrderDetailsSummaryModal';
 import Loader from '../../components/loader/Loader';
 import NonClosableLoader from '../../components/loader/NonClosableLoader';
 import ShippingOptions from './ShippingOptions';
+import BmdAuth from '../../bs-library/core/BmdAuth';
 
 
 class Checkout extends React.Component {
+
+    /* PROPERTIES */
+    static BLANK_ADDRESS = { firstName: "", lastName: "", street: "", city: "", province: "", country: "", postalCode: "", email: "", phone: "" };
+
+    state = {
+        address: { ...Checkout.BLANK_ADDRESS },
+        paymentMethod: {},
+        shipmentRate: {}
+    };
+
+
 
     /* HELPER FUNCS */
     goToCheckoutFinalizationPage() {
@@ -57,17 +69,6 @@ class Checkout extends React.Component {
 
 
 
-    /* PROPERTIES */
-    static BLANK_ADDRESS = { firstName: "", lastName: "", street: "", city: "", province: "", country: "", postalCode: "", email: "", phone: "" };
-
-    state = {
-        address: { ...Checkout.BLANK_ADDRESS },
-        paymentMethod: {},
-        shipmentRate: {}
-    };
-
-
-
     /* MAIN FUNCS */
     componentDidUpdate() {
         if (this.props.shouldDoGetShippingRatesPostProcess) {
@@ -81,21 +82,15 @@ class Checkout extends React.Component {
             this.props.doGetShippingRatesFinalizationProcess();
         }
 
-        
+
         if (this.props.shouldGoToCheckoutFinalizationPage) {
             this.goToCheckoutFinalizationPage();
         }
     }
 
 
+    
     componentDidMount() {
-
-        // TODO:LATER Modify this chunk. Check if cart has items.
-        // if (this.props.cartItems.length === 0) {
-        //     alert("Please add items to your cart before checkout.");
-        //     this.props.history.replace("/products");
-        //     return;
-        // }
 
         this.props.resetReducerInitVars();
 
@@ -103,8 +98,10 @@ class Checkout extends React.Component {
         const modalBtn = document.querySelector("#checkoutAsWhoModalBtn");
         if (modalBtn) { modalBtn.click(); }
 
-        if (BsAppSession.isLoggedIn()) { this.props.readCheckoutRequiredData(); }
+        //bmd-ish: Edit the workflow.
+        if (BmdAuth.isLoggedIn()) { this.props.readCheckoutRequiredData(); }
 
+        //bmd-todo: Move this to a more generic method "setOnlyAllowableDestinationPagesEntryCode()".
         this.props.setCheckoutFinalizationPageEntryCode();
     }
 
@@ -173,7 +170,7 @@ class Checkout extends React.Component {
     onShippingOptionConfirm = () => {
 
         // If user confirms without selection, re-show the options.
-        if (!this.state.shipmentRate || this.state.shipmentRate.id == null || this.state.shipmentRate.id === "") { 
+        if (!this.state.shipmentRate || this.state.shipmentRate.id == null || this.state.shipmentRate.id === "") {
 
             alert("Please select a shipping option.");
 
@@ -181,7 +178,7 @@ class Checkout extends React.Component {
                 document.querySelector("#ShippingOptionsTriggerBtn").click();
             }, 200);
 
-            return; 
+            return;
         }
 
         this.props.setShipmentRate(this.state.shipmentRate);

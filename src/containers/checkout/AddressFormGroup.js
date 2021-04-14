@@ -1,4 +1,5 @@
 import React from 'react';
+import BmdAuth from '../../bs-library/core/BmdAuth';
 import BsAppSession from '../../bs-library/helpers/BsAppSession';
 
 
@@ -87,7 +88,7 @@ export default function AddressFormGroup(props) {
 
 
 function getMyAddressesBtn(numOfAddresses) {
-    if (BsAppSession.isLoggedIn() && numOfAddresses > 0) {
+    if (BmdAuth.isLoggedIn() && numOfAddresses > 0) {
         return (
             <div className="col-md-6 text-md-right">
                 <a className="eyebrow unedrline action" data-toggle="modal" data-target="#addresses">My Addresses</a>

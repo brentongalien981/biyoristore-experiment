@@ -1,5 +1,5 @@
 import React from 'react';
-import BsAppSession from '../../bs-library/helpers/BsAppSession';
+import BmdAuth from '../../bs-library/core/BmdAuth';
 
 
 
@@ -65,7 +65,7 @@ function getPaymentMethodInputFields(props) {
 
 
 function getMyPaymentMethodsBtn(numOfPaymentMethods) {
-    if (BsAppSession.isLoggedIn() && numOfPaymentMethods > 0) {
+    if (BmdAuth.isLoggedIn() && numOfPaymentMethods > 0) {
         return (
             <div className="col-md-6 text-md-right">
                 <a className="eyebrow unedrline action" data-toggle="modal" data-target="#payments">My payment methods</a>

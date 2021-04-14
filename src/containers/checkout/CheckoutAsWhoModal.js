@@ -1,11 +1,12 @@
 import React from 'react';
+import BmdAuth from '../../bs-library/core/BmdAuth';
 import BsAppSession from '../../bs-library/helpers/BsAppSession';
 
 
 
 export default function CheckoutAsWhoModal(props) {
 
-    if (BsAppSession.get("hasChosenToCheckoutAsWho") == 1 || BsAppSession.isLoggedIn()) { return null; }
+    if (BsAppSession.get("hasChosenToCheckoutAsWho") == 1 || BmdAuth.isLoggedIn()) { return null; }
 
     return (
         <>

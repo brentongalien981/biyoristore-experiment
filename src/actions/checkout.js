@@ -4,6 +4,7 @@ import BsAppSession from "../bs-library/helpers/BsAppSession";
 import { resetCart } from "./cart";
 import BsKeys from "../bs-library/helpers/BsKeys";
 import axios from "axios";
+import BmdAuth from "../bs-library/core/BmdAuth";
 
 
 
@@ -172,19 +173,17 @@ export const finalizeOrder = (cartId, shippingInfo) => {
 };
 
 
-
+//bmd-ish
 export const readCheckoutRequiredData = () => {
-
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: join, METHOD: login()");
+    const bmdAuth = BmdAuth.getInstance();
 
 
     return (dispatch) => {
 
         BsCore2.ajaxCrud({
             url: '/checkout/readCheckoutRequiredData',
-            method: "post",
-            params: { api_token: BsAppSession.get("apiToken") },
+            method: 'post',
+            params: { bmdToken: bmdAuth?.bmdToken, authProviderId: bmdAuth?.authProviderId },
             callBackFunc: (requestData, json) => {
                 Bs.log("\n#####################");
                 Bs.log("FILE: actions/checkout.js, METHOD: readCheckoutRequiredData() => ajaxCrud() => callBackFunc()");
