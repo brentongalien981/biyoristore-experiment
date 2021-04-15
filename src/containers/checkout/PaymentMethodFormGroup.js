@@ -26,8 +26,15 @@ export default function PaymentMethodFormGroup(props) {
 function getPaymentMethodInputFields(props) {
 
     const p = props.paymentMethod;
-    
-    if (!p.id || p.id === 0) { return null; }
+
+    if (!p.id || p.id === 0) {
+        return (
+            <div className="row gutter-1 mb-6">
+                <div className="form-group col-md-6"></div>
+                <hr style={{ width: '100%' }} />
+            </div>
+        );
+    }
 
     let disabledAttrib = { disabled: true };
     // if (!p.id || p.id === 0) { disabledAttrib = {}; }

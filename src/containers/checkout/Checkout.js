@@ -89,7 +89,7 @@ class Checkout extends React.Component {
     }
 
 
-    
+
     componentDidMount() {
 
         this.props.resetReducerInitVars();
@@ -127,8 +127,8 @@ class Checkout extends React.Component {
                         <div className="row gutter-4 justify-content-between">
 
                             <div className="col-lg-8">
-                                <AddressFormGroup address={this.state.address} addressType="shipping" numOfAddresses={this.props.addresses.length} onOrderInputChange={this.onOrderInputChange} />
                                 <PaymentMethodFormGroup paymentMethod={this.state.paymentMethod} numOfPaymentMethods={this.props.paymentInfos.length} onPaymentMethodInputChange={this.onPaymentMethodInputChange} />
+                                <AddressFormGroup address={this.state.address} addressType="shipping" numOfAddresses={this.props.addresses.length} onOrderInputChange={this.onOrderInputChange} />
                             </div>
 
                             <aside className="col-lg-4">

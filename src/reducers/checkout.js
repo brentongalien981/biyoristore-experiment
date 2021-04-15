@@ -55,6 +55,7 @@ const checkout = (state = initialState, action) => {
         case actions.SET_PAYMENT_PAGE_ENTRY_CODE: return setPaymentPageEntryCode(state, action);
         case actions.SET_CHECKOUT_FINALIZATION_PAGE_ENTRY_CODE: return setCheckoutFinalizationPageEntryCode(state, action);        
         case actions.ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS: return onReadCheckoutRequiredDataSuccess(state, action);
+        case actions.ON_READ_CHECKOUT_REQUIRED_DATA_FAIL: return onReadCheckoutRequiredDataFail(state, action);
         default: return state;
     }
 };
@@ -228,6 +229,17 @@ const setPaymentPageEntryCode = (state, action) => {
     return {
         ...state,
         paymentPageEntryCode: Bs.getRandomId(),
+    };
+};
+
+
+//bmd-ish
+const onReadCheckoutRequiredDataFail = (state, action) => {
+
+    BsCore2.alertForGeneralError();
+
+    return {
+        ...state
     };
 };
 

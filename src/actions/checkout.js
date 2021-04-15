@@ -28,6 +28,7 @@ export const SET_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE = "SET_PAYMENT_FINALIZATIO
 export const SET_PAYMENT_PAGE_ENTRY_CODE = "SET_PAYMENT_PAGE_ENTRY_CODE";
 export const SET_CHECKOUT_FINALIZATION_PAGE_ENTRY_CODE = "SET_CHECKOUT_FINALIZATION_PAGE_ENTRY_CODE";
 export const ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS = "ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS";
+export const ON_READ_CHECKOUT_REQUIRED_DATA_FAIL = "ON_READ_CHECKOUT_REQUIRED_DATA_FAIL";
 
 
 
@@ -51,6 +52,7 @@ export const setPaymentFinalizationPageEntryCode = () => ({ type: SET_PAYMENT_FI
 export const setPaymentPageEntryCode = () => ({ type: SET_PAYMENT_PAGE_ENTRY_CODE });
 export const setCheckoutFinalizationPageEntryCode = () => ({ type: SET_CHECKOUT_FINALIZATION_PAGE_ENTRY_CODE });
 export const onReadCheckoutRequiredDataSuccess = (objs) => ({ type: ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS, objs: objs });
+export const onReadCheckoutRequiredDataFail = (callBackData) => ({ type: ON_READ_CHECKOUT_REQUIRED_DATA_FAIL, callBackData: callBackData });
 
 
 
@@ -175,8 +177,8 @@ export const finalizeOrder = (cartId, shippingInfo) => {
 
 //bmd-ish
 export const readCheckoutRequiredData = () => {
-    const bmdAuth = BmdAuth.getInstance();
 
+    const bmdAuth = BmdAuth.getInstance();
 
     return (dispatch) => {
 
@@ -185,13 +187,11 @@ export const readCheckoutRequiredData = () => {
             method: 'post',
             params: { bmdToken: bmdAuth?.bmdToken, authProviderId: bmdAuth?.authProviderId },
             callBackFunc: (requestData, json) => {
-                Bs.log("\n#####################");
-                Bs.log("FILE: actions/checkout.js, METHOD: readCheckoutRequiredData() => ajaxCrud() => callBackFunc()");
-
-                Bs.log("\njson.objs.addresses => ...");
-                Bs.log(json.objs.addresses);
-
                 dispatch(onReadCheckoutRequiredDataSuccess(json.objs));
+            },
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { errors: errors, errorStatusCode: errorStatusCode };
+                dispatch(onReadCheckoutRequiredDataFail(callBackData));
             }
         });
     };
