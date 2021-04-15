@@ -70,6 +70,7 @@ class Checkout extends React.Component {
 
 
     /* MAIN FUNCS */
+    //bmd-ish
     componentDidUpdate() {
         if (this.props.shouldDoGetShippingRatesPostProcess) {
 
@@ -220,6 +221,7 @@ class Checkout extends React.Component {
         };
 
         this.props.getShippingRates(params);
+        //bmd-ish
     };
 
 

@@ -30,8 +30,7 @@ function getPaymentMethodInputFields(props) {
     if (!p.id || p.id === 0) {
         return (
             <div className="row gutter-1 mb-6">
-                <div className="form-group col-md-6"></div>
-                <hr style={{ width: '100%' }} />
+                <hr style={{ width: '100%', marginTop: '3.75rem' }} />
             </div>
         );
     }
