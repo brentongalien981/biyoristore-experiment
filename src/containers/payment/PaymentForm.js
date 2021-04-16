@@ -51,8 +51,6 @@ function PaymentForm(props) {
                 }
 
 
-                //bmd-ish
-                props.setCart(json.cart);
                 setClientSecret(json.clientSecret);
             },
             errorCallBackFunc: (errors) => {
