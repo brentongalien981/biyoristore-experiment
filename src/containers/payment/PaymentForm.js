@@ -3,6 +3,7 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import Bs from "../../bs-library/helpers/Bs";
 import BsCore2 from "../../bs-library/helpers/BsCore2";
 import { withRouter } from "react-router-dom";
+import BmdAuth from "../../bs-library/core/BmdAuth";
 
 
 
@@ -24,10 +25,18 @@ function PaymentForm(props) {
     useEffect(() => {
 
         // Create PaymentIntent as soon as the page loads
+        const bmdAuth = BmdAuth.getInstance();
         BsCore2.ajaxCrud({
             url: '/paymentIntent',
             method: "post",
-            params: { cartId: props.cart.id, cartItemsData: props.cartItemsData, ...props.shippingAddress },
+            params: { 
+                bmdToken: bmdAuth?.bmdToken, 
+                authProviderId: bmdAuth?.authProviderId,
+                temporaryGuestUserId: BmdAuth.getTemporaryGuestUserId(),
+                cartId: props.cart.id, 
+                cartItemsData: props.cartItemsData, 
+                ...props.shippingAddress
+            },
             neededResponseParams: ["clientSecret", "cart"],
             callBackFunc: (requestData, json) => {
 

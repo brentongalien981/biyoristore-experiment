@@ -57,7 +57,6 @@ export const onReadCheckoutRequiredDataFail = (callBackData) => ({ type: ON_READ
 
 
 /* AJAX FUNCS */
-//bmd-ish
 export const getShippingRates = (params) => {
 
     return (dispatch) => {
@@ -131,7 +130,7 @@ export const finalizeOrderWithPredefinedPayment = (objs) => {
 };
 
 
-
+//bmd-ish
 export const finalizeOrder = (cartId, shippingInfo) => {
 
     Bs.log("\n###############");
@@ -163,7 +162,7 @@ export const finalizeOrder = (cartId, shippingInfo) => {
 };
 
 
-//bmd-ish
+
 export const readCheckoutRequiredData = () => {
 
     const bmdAuth = BmdAuth.getInstance();

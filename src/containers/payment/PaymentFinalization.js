@@ -4,6 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import Bs from '../../bs-library/helpers/Bs';
 import { setPaymentFinalizationPageEntryCode, finalizeOrder, resetFinalizationObjs, endPaymentFinalizationProcess } from '../../actions/checkout';
 import BsAppSession from '../../bs-library/helpers/BsAppSession';
+import { COMPANY_CUSTOMER_SERVICE_EMAIL } from '../../bs-library/constants/global';
 
 
 
@@ -97,7 +98,7 @@ class PaymentFinalization extends React.Component {
 
         let msgHeader = "";
         let msgBody = "";
-        let orderLink = null; // TODO:LATER add order-link.
+        let orderLink = null; // bmdt-todo:LATER add order-link.
 
 
         switch (this.props.orderProcessStatusCode) {
@@ -110,7 +111,7 @@ class PaymentFinalization extends React.Component {
                     <>
                         We've received your payment and now processing your order.<br />
                         If you have any questions or want to cancel your order before it's shipped,<br />
-                        please contact our Customer Service at <b style={{ color: "orangered" }}>customerservice@anyshotbasketball.com</b>
+                        please contact our Customer Service at <b style={{ color: "orangered" }}>{COMPANY_CUSTOMER_SERVICE_EMAIL}</b>
                     </>
                 );
                 break;

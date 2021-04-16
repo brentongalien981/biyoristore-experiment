@@ -25,7 +25,7 @@ class Payment extends React.Component {
         let data = [];
 
         cartItems.forEach(i => {
-            const item = { id: i.id, productId: i.product.id, quantity: i.quantity };
+            const item = { productId: i.product.id, quantity: i.quantity, sellerProductId: i.sellerProductId };
             data.push(item);
         });
 
