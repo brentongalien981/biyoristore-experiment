@@ -20,7 +20,7 @@ const initialState = {
     orderProcessStatusCode: 0,
     // isThereError: false,
     order: {},
-    shouldDoGetShippingRatesPostProcess: false,
+
     shouldShowShippingDetails: false,
     efficientShipmentRates: [],
     canSelectShippingOption: false,
@@ -40,10 +40,11 @@ const checkout = (state = initialState, action) => {
         case actions.SET_SHIPPING_INFO: return setShippingInfo(state, action);
         case actions.SET_SHIPMENT_RATE: return setShipmentRate(state, action);
         case actions.RESET_REDUCER_INIT_VARS: return resetReducerInitVars(state, action);
-        case actions.DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS: return doGetShippingRatesFinalizationProcess(state, action);
         // case actions.FINALIZE_SHOW_SHIPPING_DETAILS: return finalizeShowShippingDetails(state, action);
+
         case actions.ON_GET_SHIPPING_RATES_FAIL: return onGetShippingRatesFail(state, action);
         case actions.ON_GET_SHIPPING_RATES_RETURN: return onGetShippingRatesReturn(state, action);
+        
         // case actions.ON_ADDRESS_SELECTION_CHANGE: return onAddressSelectionChange(state, action);
         case actions.END_PAYMENT_FINALIZATION_PROCESS: return endPaymentFinalizationProcess(state, action);
         case actions.ON_FINALIZE_ORDER_RETURN: return onFinalizeOrderReturn(state, action);
@@ -101,37 +102,25 @@ const resetReducerInitVars = (state, action) => {
 
 
 
-const doGetShippingRatesFinalizationProcess = (state, action) => {
-    return {
-        ...state,
-        shouldDoGetShippingRatesPostProcess: false,
-        shouldShowShippingDetails: false
-    };
-};
-
-
-
 const onGetShippingRatesFail = (state, action) => {
 
-    alert("Oops! There's problem on our end. Please try again later.");
+    BsCore2.alertForGeneralError();
+    action.callBackData.doCallBackFunc();
 
     return {
-        ...state,
-        shouldDoGetShippingRatesPostProcess: true
+        ...state
     };
 };
 
 
-
+//bmd-ish
 const onGetShippingRatesReturn = (state, action) => {
 
-    const resultCode = action.objs.resultCode;
+    const resultCode = action.callBackData.objs.resultCode;
     const DESTINATION_ADDRESS_EXCEPTION = -2;
     const EMPTY_CART_EXCEPTION = -4;
     const ENTIRE_PROCESS_OK = 1;
 
-    let canSelectShippingOption = false;
-    let shouldShowShippingDetails = false;
     let shipmentId = "";
     let efficientShipmentRates = [];
 
@@ -143,23 +132,21 @@ const onGetShippingRatesReturn = (state, action) => {
             alert("Oops! Please add items to your cart.");
             break;
         case ENTIRE_PROCESS_OK:
-            canSelectShippingOption = true;
-            shouldShowShippingDetails = true;
-            shipmentId = action.objs.shipmentId;
-            efficientShipmentRates = action.objs.efficientShipmentRates;
+            shipmentId = action.callBackData.objs.shipmentId;
+            efficientShipmentRates = action.callBackData.objs.efficientShipmentRates;
             break;
         default:
-            alert("Oops! There's problem on our end. Please try again later.");
+            BsCore2.alertForGeneralError();
             break;
     }
 
 
+    action.callBackData.doCallBackFunc();
+
+
     return {
         ...state,
-        canSelectShippingOption: canSelectShippingOption,
-        shouldDoGetShippingRatesPostProcess: true,
         shipmentId: shipmentId,
-        shouldShowShippingDetails: shouldShowShippingDetails,
         efficientShipmentRates: efficientShipmentRates
     };
 };

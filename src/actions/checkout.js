@@ -13,10 +13,11 @@ export const SET_PAYMENT_METHOD = "SET_PAYMENT_METHOD";
 export const SET_SHIPPING_INFO = "SET_SHIPPING_INFO";
 export const SET_SHIPMENT_RATE = "SET_SHIPMENT_RATE";
 export const RESET_REDUCER_INIT_VARS = "RESET_REDUCER_INIT_VARS";
-export const DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS = "DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS";
 // export const FINALIZE_SHOW_SHIPPING_DETAILS = "FINALIZE_SHOW_SHIPPING_DETAILS";
+
 export const ON_GET_SHIPPING_RATES_FAIL = "ON_GET_SHIPPING_RATES_FAIL";
 export const ON_GET_SHIPPING_RATES_RETURN = "ON_GET_SHIPPING_RATES_RETURN";
+
 // export const ON_ADDRESS_SELECTION_CHANGE = "ON_ADDRESS_SELECTION_CHANGE";
 export const END_PAYMENT_FINALIZATION_PROCESS = "END_PAYMENT_FINALIZATION_PROCESS";
 export const RESET_FINALIZATION_OBJS = "RESET_FINALIZATION_OBJS";
@@ -37,10 +38,11 @@ export const setPaymentMethod = (paymentMethod) => ({ type: SET_PAYMENT_METHOD, 
 export const setShippingInfo = (shippingInfo) => ({ type: SET_SHIPPING_INFO, shippingInfo: shippingInfo });
 export const setShipmentRate = (shipmentRate) => ({ type: SET_SHIPMENT_RATE, shipmentRate: shipmentRate });
 export const resetReducerInitVars = () => ({ type: RESET_REDUCER_INIT_VARS });
-export const doGetShippingRatesFinalizationProcess = () => ({ type: DO_GET_SHIPPING_RATES_FINALIZATION_PROCESS });
 // export const finalizeShowShippingDetails = () => ({ type: FINALIZE_SHOW_SHIPPING_DETAILS });
+
 export const onGetShippingRatesFail = () => ({ type: ON_GET_SHIPPING_RATES_FAIL });
-export const onGetShippingRatesReturn = (objs) => ({ type: ON_GET_SHIPPING_RATES_RETURN, objs: objs });
+export const onGetShippingRatesReturn = (callBackData) => ({ type: ON_GET_SHIPPING_RATES_RETURN, callBackData: callBackData });
+
 // export const onAddressSelectionChange = (e, i) => ({ type: ON_ADDRESS_SELECTION_CHANGE, e: e, i: i });
 export const endPaymentFinalizationProcess = () => ({ type: END_PAYMENT_FINALIZATION_PROCESS });
 export const resetFinalizationObjs = () => ({ type: RESET_FINALIZATION_OBJS });
@@ -57,7 +59,8 @@ export const onReadCheckoutRequiredDataFail = (callBackData) => ({ type: ON_READ
 
 
 /* AJAX FUNCS */
-export const getShippingRates = (params) => {
+//bmd-ish
+export const getShippingRates = (data) => {
 
     return (dispatch) => {
 
@@ -65,17 +68,18 @@ export const getShippingRates = (params) => {
             url: '/customized-easypost/getRates',
             // url: '/customized-easypost/test',
             params: {
-                reducedCartItemsData: params.reducedCartItemsData,
-                shippingInfo: params.shippingInfo
+                reducedCartItemsData: data.reducedCartItemsData,
+                shippingInfo: data.shippingInfo
             },
             callBackFunc: (requestData, json) => {
-
-                dispatch(onGetShippingRatesReturn(json.objs));
-                dispatch(setShippingInfo(params.shippingInfo));
-                dispatch(setPaymentMethod(params.paymentMethod));
+                const callBackData = { ...data, ...json };
+                dispatch(onGetShippingRatesReturn(callBackData));
+                dispatch(setShippingInfo(data.shippingInfo));
+                dispatch(setPaymentMethod(data.paymentMethod));
             },
-            errorCallBackFunc: (errors) => {
-                dispatch(onGetShippingRatesFail());
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
+                dispatch(onGetShippingRatesFail(callBackData));
             }
         });
 

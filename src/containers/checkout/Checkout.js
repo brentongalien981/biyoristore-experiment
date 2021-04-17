@@ -26,7 +26,8 @@ class Checkout extends React.Component {
     state = {
         address: { ...Checkout.BLANK_ADDRESS },
         paymentMethod: {},
-        shipmentRate: {}
+        shipmentRate: {},
+        isPlacingOrder: false,
     };
 
 
@@ -42,7 +43,7 @@ class Checkout extends React.Component {
     }
 
 
-
+    //bmd-ish
     showShippingOptions() {
         document.querySelector("#ShippingOptionsTriggerBtn").click();
     }
@@ -70,20 +71,7 @@ class Checkout extends React.Component {
 
 
     /* MAIN FUNCS */
-    //bmd-ish
     componentDidUpdate() {
-        if (this.props.shouldDoGetShippingRatesPostProcess) {
-
-            this.setState({ nonClosableLoader: null });
-
-            if (this.props.shouldShowShippingDetails) {
-                this.showShippingOptions();
-            }
-
-            this.props.doGetShippingRatesFinalizationProcess();
-        }
-
-
         if (this.props.shouldGoToCheckoutFinalizationPage) {
             this.goToCheckoutFinalizationPage();
         }
@@ -151,6 +139,7 @@ class Checkout extends React.Component {
 
                 <CheckoutAsWhoModal login={this.login} dismissModal={this.dismissModal} />
                 {this.state.nonClosableLoader}
+                {/* BMD-ISH */}
                 <ShippingOptions shippingRates={this.props.efficientShipmentRates} cartItems={this.props.cartItems} onShippingOptionConfirm={this.onShippingOptionConfirm} onShippingOptionChange={this.onShippingOptionChange} />
 
             </>
@@ -184,7 +173,7 @@ class Checkout extends React.Component {
     };
 
 
-
+    //bmd-ish
     onOrderPlace = (e) => {
 
         e.preventDefault();
@@ -198,13 +187,18 @@ class Checkout extends React.Component {
             return;
         }
 
+        const items = this.props.cartItems;
+        if (items.length == 0) { alert('Please add items to your cart.'); return; }
+
 
         // show loader
-        this.setState({ nonClosableLoader: <NonClosableLoader msg="Please wait... We're looking for your shipping options." /> });
+        this.setState({ 
+            isPlacingOrder: true,
+            nonClosableLoader: (<NonClosableLoader msg="Please wait... We're looking for your shipping options." />) 
+        });
 
 
         // check shipping validity and get shipment-rates
-        const items = this.props.cartItems;
         let reducedCartItemsData = [];
         for (const i of items) {
             const reducedCartItem = { productId: i.product.id, quantity: i.quantity, packageItemTypeId: i.product.packageItemTypeId };
@@ -212,13 +206,20 @@ class Checkout extends React.Component {
         }
 
 
-        const params = {
+        const data = {
             reducedCartItemsData: reducedCartItemsData,
             shippingInfo: this.state.address,
-            paymentMethod: this.state.paymentMethod
+            paymentMethod: this.state.paymentMethod,
+            doCallBackFunc: () => {
+                this.setState({ 
+                    isPlacingOrder: false,
+                    nonClosableLoader: null
+                });
+                this.showShippingOptions();
+            }
         };
 
-        this.props.getShippingRates(params);
+        this.props.getShippingRates(data);
         
     };
 
@@ -286,8 +287,6 @@ const mapStateToProps = (state) => {
         shouldGoToCheckoutFinalizationPage: state.checkout.shouldGoToCheckoutFinalizationPage,
         canSelectShippingOption: state.checkout.canSelectShippingOption,
         efficientShipmentRates: state.checkout.efficientShipmentRates,
-        shouldDoGetShippingRatesPostProcess: state.checkout.shouldDoGetShippingRatesPostProcess,
-        shouldShowShippingDetails: state.checkout.shouldShowShippingDetails,
         checkoutFinalizationPageEntryCode: state.checkout.checkoutFinalizationPageEntryCode,
         cart: state.cart.cart,
         cartItems: state.cart.cart.cartItems,
@@ -303,8 +302,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setShipmentRate: (shipmentRate) => dispatch(actions.setShipmentRate(shipmentRate)),
         resetReducerInitVars: () => dispatch(actions.resetReducerInitVars()),
-        doGetShippingRatesFinalizationProcess: () => dispatch(actions.doGetShippingRatesFinalizationProcess()),
-        getShippingRates: (params) => dispatch(actions.getShippingRates(params)),
+        getShippingRates: (data) => dispatch(actions.getShippingRates(data)),
         // onAddressSelectionChange: (e, i) => dispatch(actions.onAddressSelectionChange(e, i)),
         setCheckoutFinalizationPageEntryCode: () => dispatch(actions.setCheckoutFinalizationPageEntryCode()),
         readCheckoutRequiredData: () => dispatch(actions.readCheckoutRequiredData()),
