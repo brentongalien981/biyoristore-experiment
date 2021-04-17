@@ -145,7 +145,6 @@ const onAddressDeleteSuccess = (state, action) => {
 
 
 
-//bmd-ish
 const onDeletePaymentMethodReturn = (state, action) => {
 
     let oldPaymentInfos = BsJLS.get('profile.stripePaymentInfos') ?? [];
@@ -165,7 +164,7 @@ const onDeletePaymentMethodReturn = (state, action) => {
     }
     
     if (BsJLS.set('profile.stripePaymentInfos', updatedPaymentInfos)) { BsJLSOLM.updateRefreshDate('profile.stripePaymentInfos'); }
-    
+
     action.callBackData.doCallBackFunc();
 
     return {

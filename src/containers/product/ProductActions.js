@@ -28,7 +28,7 @@ function ProductActions(props) {
                 <ul className="nav nav-actions">
 
                     {/* <li className="nav-item">
-                        <a className="nav-link" href="#" onClick={() => alert("TODO")}>Add to wishlist</a>
+                        <a className="nav-link" href="#" onClick={() => alert("xxx")}>Add to wishlist</a>
                     </li> */}
 
                 </ul>

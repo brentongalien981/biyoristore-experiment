@@ -104,12 +104,6 @@ class BmdAuth {
 
 
 
-    static isAuthorizedForRequest(route) {
-        // TODO
-    }
-
-
-
     static set(authData) {
         BsJLS.set('auth.currentAccount', authData);
         BsAppLocalStorage.set('isLoggedIn', 1);

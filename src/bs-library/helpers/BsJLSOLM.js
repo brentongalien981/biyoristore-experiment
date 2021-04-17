@@ -63,39 +63,7 @@ export default class BsJLSOLM {
     }
 
 
-     
-    /**
-     * @deprecated
-     * TODO:DELETE
-     */
-    static getDefaultObjs() {
-
-        const reducerNames = {
-            products: ["brands", "categories"],
-            checkout: ["addresses", "paymentInfos", "efficientShipmentRates"],
-            cart: ["cart"],
-            profile: ["paymentInfos", "orders"]
-        };
-
-        let defaultObjs = {};
-
-        for (const reducerName in reducerNames) {
-            const reducerPropNames = reducerNames[reducerName];
-
-            let actualNewReducer = {};
-
-            reducerPropNames.forEach(reducerPropName => {
-
-                actualNewReducer[reducerPropName] = {dateRefreshed: null, lifespan: 3600};
-
-            });
-
-            defaultObjs[reducerName] = actualNewReducer;
-        }
-    }
-
-
-
+    
     static updateRefreshDateForSearchQuery(q, lifespanInMin = BsJLSOLM.DEFAULT_SEARCH_QUERY_LIFESPAN) {
         if (!q) { return; }
 

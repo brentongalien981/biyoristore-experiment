@@ -233,7 +233,7 @@ const setPaymentPageEntryCode = (state, action) => {
 };
 
 
-//bmd-ish
+
 const onReadCheckoutRequiredDataFail = (state, action) => {
 
     BsCore2.alertForGeneralError();

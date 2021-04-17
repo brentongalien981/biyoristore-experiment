@@ -80,7 +80,7 @@ class PredefinedPaymentFinalization extends React.Component {
 
         let msgHeader = "";
         let msgBody = "";
-        let orderLink = null; // TODO:LATER add order-link.
+        let orderLink = null; // bmd-TODO:LATER add order-link.
 
 
         switch (this.props.paymentProcessStatusCode) {

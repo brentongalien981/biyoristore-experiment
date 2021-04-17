@@ -273,7 +273,7 @@ class Profile extends React.Component {
     };
 
 
-//bmd-ish
+
     onPaymentMethodDelete = (e, paymentMethodId) => {
 
         e.preventDefault();
@@ -285,7 +285,7 @@ class Profile extends React.Component {
 
         const data = {
             paymentMethodId: paymentMethodId,
-            doCallBackFunc: (isResultOk) => {
+            doCallBackFunc: () => {
                 this.setState({
                     isDeletingPaymentMethod: false
                 });
@@ -420,7 +420,7 @@ class Profile extends React.Component {
                                             <PersonalData isSavingPersonalData={this.state.isSavingPersonalData} profile={this.state.profile} onPersonalDataChanged={this.onPersonalDataChanged} saveProfile={this.saveProfile} />
                                             <Orders isReadingOrders={this.state.isReadingOrders} orders={this.props.orders} ordersMetaData={this.props.ordersMetaData} onOrderPageNumClick={this.onOrderPageNumClick} selectedPageNum={this.props.selectedOrderPageNum} />
                                             <Addresses isDeletingAddress={this.state.isDeletingAddress} addresses={this.props.addresses} onAddressFormShown={this.onAddressFormShown} onDelete={this.onAddressDelete} />
-                                            <Payments paymentInfos={this.props.paymentInfos} onPaymenFormShown={this.onPaymenFormShown} onPaymentMethodDelete={this.onPaymentMethodDelete} />
+                                            <Payments isDeletingPaymentMethod={this.state.isDeletingPaymentMethod} paymentInfos={this.props.paymentInfos} onPaymenFormShown={this.onPaymenFormShown} onPaymentMethodDelete={this.onPaymentMethodDelete} />
                                             <Account account={this.state.account} onAccountInputChange={this.onAccountInputChange} onSaveAccount={this.onSaveAccount} isSavingAccount={this.state.isSavingAccount} />
                                         </div>
                                     </div>

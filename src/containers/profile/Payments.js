@@ -1,9 +1,12 @@
 import React from 'react';
+import WaitLoader from '../../components/loader/WaitLoader';
 import PaymentForm from './PaymentForm';
 
 
 
 function Payments(props) {
+
+    let loaderComponent = (props.isDeletingPaymentMethod ? <WaitLoader size='md' /> : null);
 
     return (
         <div className="tab-pane fade" id="sidebar-1-4" role="tabpanel" aria-labelledby="sidebar-1-4">
@@ -19,6 +22,7 @@ function Payments(props) {
 
             {/* payment-details */}
             <div className="row gutter-2 mb-6">
+                {loaderComponent}
                 {showPaymentDetails(props.paymentInfos, props.onPaymenFormShown, props.onPaymentMethodDelete)}
             </div>
 

@@ -75,7 +75,6 @@ function HeaderLight(props) {
 
                                             <ul className="col-6 col-md-3 col-lg-2">
                                                 <li><span className="megamenu-title">Pages</span></li>
-                                                {/* ish */}
                                                 <li><Link className="dropdown-item" to="/navigation-blocker">NavBlocker</Link></li>
                                                 <li><a className="dropdown-item" href="about.html">About</a></li>
                                                 <li><a className="dropdown-item" href="contact.html">Contact</a></li>

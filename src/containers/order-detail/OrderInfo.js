@@ -37,7 +37,7 @@ function OrderInfo(props) {
                         <div className="col-6 col-md-3 mb-3">
                             <h5 className="eyebrow text-muted">To</h5>
                             <p className="card-text">
-                                {"TODO: FirstName LastName"}<br />
+                                {"bmd-TODO: FirstName LastName"}<br />
                                 {o.email}<br />
                                 {o.phone}
                             </p>

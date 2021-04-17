@@ -119,7 +119,7 @@ export const readOrders = (data) => {
 };
 
 
-//bmd-ish
+
 export const deletePaymentMethod = (data) => {
 
     const bmdAuth = BmdAuth.getInstance();

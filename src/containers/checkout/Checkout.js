@@ -99,10 +99,8 @@ class Checkout extends React.Component {
         const modalBtn = document.querySelector("#checkoutAsWhoModalBtn");
         if (modalBtn) { modalBtn.click(); }
 
-        //bmd-ish: Edit the workflow.
         if (BmdAuth.isLoggedIn()) { this.props.readCheckoutRequiredData(); }
 
-        //bmd-todo: Move this to a more generic method "setOnlyAllowableDestinationPagesEntryCode()".
         this.props.setCheckoutFinalizationPageEntryCode();
     }
 
@@ -221,7 +219,7 @@ class Checkout extends React.Component {
         };
 
         this.props.getShippingRates(params);
-        //bmd-ish
+        
     };
 
 
