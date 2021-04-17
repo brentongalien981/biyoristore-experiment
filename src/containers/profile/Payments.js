@@ -19,7 +19,7 @@ function Payments(props) {
 
             {/* payment-details */}
             <div className="row gutter-2 mb-6">
-                {showPaymentDetails(props.paymentInfos, props.onPaymenFormShown)}
+                {showPaymentDetails(props.paymentInfos, props.onPaymenFormShown, props.onPaymentMethodDelete)}
             </div>
 
         </div>
@@ -28,7 +28,7 @@ function Payments(props) {
 
 
 
-function showPaymentDetails(paymentInfos, onPaymenFormShown) {
+function showPaymentDetails(paymentInfos, onPaymenFormShown, onPaymentMethodDelete) {
 
     const paymentDetails = paymentInfos?.map((p, i) => {
         return (
@@ -47,7 +47,7 @@ function showPaymentDetails(paymentInfos, onPaymenFormShown) {
                                             <a className="dropdown-item" href="#!" data-toggle="modal" data-target="#paymentFormModal" onClick={(e) => onPaymenFormShown(e, p)}>Edit</a>
                                         </li>
                                         <li>
-                                            <a className="dropdown-item" href="#!" onClick={() => alert("TODO: Payment@delete")}>Delete</a>
+                                            <a className="dropdown-item" href="#!" onClick={(e) => onPaymentMethodDelete(e, p.id)}>Delete</a>
                                         </li>
                                     </ul>
                                 </div>

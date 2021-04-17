@@ -23,6 +23,7 @@ export const ON_ADDRESS_DELETE_SUCCESS = "ON_ADDRESS_DELETE_SUCCESS";
 export const ON_SAVE_ADDRESS_FAIL = "ON_SAVE_ADDRESS_FAIL";
 export const ON_SAVE_ADDRESS_SUCCESS = "ON_SAVE_ADDRESS_SUCCESS";
 
+export const ON_DELETE_PAYMENT_METHOD_RETURN = "ON_DELETE_PAYMENT_METHOD_RETURN";
 export const ON_SAVE_PAYMENT_FAIL = "ON_SAVE_PAYMENT_FAIL";
 export const ON_SAVE_PAYMENT_SUCCESS = "ON_SAVE_PAYMENT_SUCCESS";
 
@@ -45,6 +46,7 @@ export const onAddressDeleteSuccess = (callBackData) => ({ type: ON_ADDRESS_DELE
 export const onSaveAddressFail = (callBackData) => ({ type: ON_SAVE_ADDRESS_FAIL, callBackData: callBackData });
 export const onSaveAddressSuccess = (callBackData) => ({ type: ON_SAVE_ADDRESS_SUCCESS, callBackData: callBackData });
 
+export const onDeletePaymentMethodReturn = (callBackData) => ({ type: ON_DELETE_PAYMENT_METHOD_RETURN, callBackData: callBackData });
 export const onSavePaymentFail = (callBackData) => ({ type: ON_SAVE_PAYMENT_FAIL, callBackData: callBackData });
 export const onSavePaymentSuccess = (callBackData) => ({ type: ON_SAVE_PAYMENT_SUCCESS, callBackData: callBackData });
 
@@ -111,6 +113,39 @@ export const readOrders = (data) => {
             errorCallBackFunc: (errors, errorStatusCode) => {
                 const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
                 dispatch(onReadOrdersReturn(callBackData));
+            }
+        });
+    };
+};
+
+
+//bmd-ish
+export const deletePaymentMethod = (data) => {
+
+    const bmdAuth = BmdAuth.getInstance();
+
+    return (dispatch) => {
+
+        BsCore2.ajaxCrud({
+            url: '/stripePaymentMethod/delete',
+            method: 'post',
+            params: { 
+                bmdToken: bmdAuth?.bmdToken,
+                authProviderId: bmdAuth?.authProviderId,
+                paymentMethodId: data.paymentMethodId
+            },
+            callBackFunc: (requestData, json) => {
+
+                const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: 'Payment method deleted.' });
+                dispatch(queueAlert(newAlertObj));
+
+                const callBackData = { ...data, ...json };
+                dispatch(onDeletePaymentMethodReturn(callBackData));
+
+            },
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
+                dispatch(onDeletePaymentMethodReturn(callBackData));
             }
         });
     };

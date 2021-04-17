@@ -33,6 +33,7 @@ class Profile extends React.Component {
         isSavingAddress: false,
         isDeletingAddress: false,
         isReadingOrders: false,
+        isDeletingPaymentMethod: false,
 
         editedAddress: { street: "", city: "", province: "NY", country: "United States", postalCode: "" },
         addressFormCrudMethod: "create",
@@ -254,6 +255,7 @@ class Profile extends React.Component {
     onAddressDelete = (e, addressId) => {
 
         e.preventDefault();
+        e.stopPropagation();
         if (this.state.isDeletingAddress) { Bs.log("We're still deleting your address..."); return false; }
 
         this.setState({ isDeletingAddress: true });
@@ -268,6 +270,29 @@ class Profile extends React.Component {
         };
 
         this.props.onAddressDelete(data);
+    };
+
+
+//bmd-ish
+    onPaymentMethodDelete = (e, paymentMethodId) => {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (this.state.isDeletingPaymentMethod) { return false; }
+
+        this.setState({ isDeletingPaymentMethod: true });
+
+        const data = {
+            paymentMethodId: paymentMethodId,
+            doCallBackFunc: (isResultOk) => {
+                this.setState({
+                    isDeletingPaymentMethod: false
+                });
+            },
+        };
+
+        this.props.deletePaymentMethod(data);
     };
 
 
@@ -395,7 +420,7 @@ class Profile extends React.Component {
                                             <PersonalData isSavingPersonalData={this.state.isSavingPersonalData} profile={this.state.profile} onPersonalDataChanged={this.onPersonalDataChanged} saveProfile={this.saveProfile} />
                                             <Orders isReadingOrders={this.state.isReadingOrders} orders={this.props.orders} ordersMetaData={this.props.ordersMetaData} onOrderPageNumClick={this.onOrderPageNumClick} selectedPageNum={this.props.selectedOrderPageNum} />
                                             <Addresses isDeletingAddress={this.state.isDeletingAddress} addresses={this.props.addresses} onAddressFormShown={this.onAddressFormShown} onDelete={this.onAddressDelete} />
-                                            <Payments paymentInfos={this.props.paymentInfos} onPaymenFormShown={this.onPaymenFormShown} />
+                                            <Payments paymentInfos={this.props.paymentInfos} onPaymenFormShown={this.onPaymenFormShown} onPaymentMethodDelete={this.onPaymentMethodDelete} />
                                             <Account account={this.state.account} onAccountInputChange={this.onAccountInputChange} onSaveAccount={this.onSaveAccount} isSavingAccount={this.state.isSavingAccount} />
                                         </div>
                                     </div>
@@ -454,6 +479,7 @@ const mapDispatchToProps = (dispatch) => {
         onProfileDisplayedSuccess: () => dispatch(actions.onProfileDisplayedSuccess()),
         saveProfile: (data) => dispatch(actions.saveProfile(data)),
 
+        deletePaymentMethod: (data) => dispatch(actions.deletePaymentMethod(data)),
         doSavePayment: (data) => dispatch(actions.savePayment(data)),
 
         saveAddress: (data) => dispatch(actions.saveAddress(data)),

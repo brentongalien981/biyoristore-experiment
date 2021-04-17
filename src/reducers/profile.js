@@ -39,6 +39,7 @@ const profile = (state = initialState, action) => {
         case actions.ON_SAVE_ADDRESS_FAIL: return onSaveAddressFail(state, action);
         case actions.ON_SAVE_ADDRESS_SUCCESS: return onSaveAddressSuccess(state, action);
 
+        case actions.ON_DELETE_PAYMENT_METHOD_RETURN: return onDeletePaymentMethodReturn(state, action);
         case actions.ON_SAVE_PAYMENT_SUCCESS: return onSavePaymentSuccess(state, action);
         case actions.ON_SAVE_PAYMENT_FAIL: return onSavePaymentFail(state, action);
 
@@ -139,6 +140,37 @@ const onAddressDeleteSuccess = (state, action) => {
     return {
         ...state,
         addresses: [...updatedAddresses]
+    };
+};
+
+
+
+//bmd-ish
+const onDeletePaymentMethodReturn = (state, action) => {
+
+    let oldPaymentInfos = BsJLS.get('profile.stripePaymentInfos') ?? [];
+    let updatedPaymentInfos = [...oldPaymentInfos];
+
+    if (action.callBackData.isResultOk) {
+        updatedPaymentInfos = [];
+        const paymentMethodId = action.callBackData.paymentMethodId;
+
+        for (const p of oldPaymentInfos) {
+            if (p.id == paymentMethodId) { continue; }
+            updatedPaymentInfos.push(p);
+        }
+    }
+    else {
+        BsCore2.alertForCallBackDataErrors(action.callBackData);
+    }
+    
+    if (BsJLS.set('profile.stripePaymentInfos', updatedPaymentInfos)) { BsJLSOLM.updateRefreshDate('profile.stripePaymentInfos'); }
+    
+    action.callBackData.doCallBackFunc();
+
+    return {
+        ...state,
+        paymentInfos: updatedPaymentInfos
     };
 };
 
