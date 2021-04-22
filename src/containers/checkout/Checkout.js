@@ -72,6 +72,7 @@ class Checkout extends React.Component {
 
     /* MAIN FUNCS */
     componentDidUpdate() {
+        // BMD-ISH
         if (this.props.shouldGoToCheckoutFinalizationPage) {
             this.goToCheckoutFinalizationPage();
         }
@@ -170,6 +171,7 @@ class Checkout extends React.Component {
         }
 
         this.props.setShipmentRate(this.state.shipmentRate);
+        // BMD-ISH:
     };
 
 
@@ -215,7 +217,7 @@ class Checkout extends React.Component {
                     isPlacingOrder: false,
                     nonClosableLoader: null
                 });
-                this.showShippingOptions();
+                this.showShippingOptions(); // bmd-todo: No need for this.
             }
         };
 

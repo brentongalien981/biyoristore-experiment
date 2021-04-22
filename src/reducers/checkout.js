@@ -134,6 +134,8 @@ const onGetShippingRatesReturn = (state, action) => {
         case ENTIRE_PROCESS_OK:
             shipmentId = action.callBackData.objs.shipmentId;
             efficientShipmentRates = action.callBackData.objs.efficientShipmentRates;
+            // Set the default shipment-rate.
+            // shipmentRate
             break;
         default:
             BsCore2.alertForGeneralError();
