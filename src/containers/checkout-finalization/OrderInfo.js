@@ -84,7 +84,7 @@ function OrderInfo(props) {
                             <p className="card-text">
                                 Payment Pending<br />
                                 Arrives in {getEstimatedArrivalDescription(props)}<br />
-                                <button className="btn btn-primary btn-sm" onClick={props.onShowShippingOptions}>Change Shipping Option</button>
+                                <button className="btn btn-warning btn-sm" onClick={props.onShowShippingOptions}>Change Shipping Option</button>
                             </p>
                         </div>
 

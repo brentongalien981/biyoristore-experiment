@@ -113,7 +113,7 @@ class Payment extends React.Component {
         // recreating the Stripe object on every render.
         // loadStripe is initialized with your real test publishable API key.
         //bmd-todo: ON-STAGING: Maybe you need the production key here? Make sure to follow the docs.
-        // This is sensitive info...
+        // BMD-SENSITIVE-INFO
         this.promise = loadStripe("pk_test_51HbnWfBQWOThz1xMxYTQAjuuDdoSsGMtHQi9XN5WCwfgFA66EvZOH5G9NKtDJ2NGR5TxKCdTfGqXotF3Pi1BoNlr00GwZCC38H");
 
     }
@@ -121,9 +121,6 @@ class Payment extends React.Component {
 
 
     componentDidMount() {
-        Bs.log("\n\n##############################");
-        Bs.log("In FILE: Payment.js, METHOD: componentDidMount()...");
-        
         this.props.setPaymentFinalizationPageEntryCode();
     }
 

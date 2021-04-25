@@ -21,7 +21,7 @@ function PaymentForm(props) {
     const navBlockerMsg = "Please wait we're processing your payment. \nIf you wanna cancel your order, please contact customer service at \ncustomerservice@anyshotbasketball.com";
 
 
-
+    // BMD-ISH
     useEffect(() => {
 
         // Create PaymentIntent as soon as the page loads
@@ -37,14 +37,14 @@ function PaymentForm(props) {
                 cartItemsData: props.cartItemsData, 
                 ...props.shippingAddress
             },
-            neededResponseParams: ["clientSecret", "cart"],
+            neededResponseParams: ["clientSecret"],
             callBackFunc: (requestData, json) => {
 
                 Bs.log("\n#####################");
                 Bs.log("FILE: PaymentForm.js, METHOD: useEffect() => ajaxCrud() => callBackFunc()");
 
 
-                if (json.customError) {
+                if (!json.isResultOk) {
                     alert("Sorry, there's 3rd party problem on our end. Please try again shortly.");
                     props.history.replace("/checkout");
                     return;
@@ -152,7 +152,6 @@ function PaymentForm(props) {
                 shippingInfo: props.shippingAddress
             };
 
-            //
             props.history.replace("/payment-finalization", redirectPageDataRequirements);
         }
     };

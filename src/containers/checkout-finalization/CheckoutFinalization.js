@@ -112,9 +112,7 @@ class CheckoutFinalization extends React.Component {
 
 
     /* EVENT FUNCS */
-    // BMD-ISH:
     onShippingOptionChange = (r) => {
-        Bs.log('BMD-TODO');
         this.props.setShipmentRate(r);
     };
 
