@@ -83,11 +83,18 @@ class CheckoutFinalization extends React.Component {
                     <div className="container">
                         <div className="row">
                             <div className="col text-center">
-                                <h1>Finalize Order</h1>
+                                <h2>Please review your order.</h2>
                             </div>
                         </div>
                     </div>
                 </section>
+
+                <div className="container pt-8 pb-4">
+                    <div className="row justify-content-center mb-1">
+                        <OrderInfo cartItems={this.props.cartItems} shipmentRate={this.props.shipmentRate} paymentMethod={this.props.paymentMethod} shippingInfo={this.props.shippingInfo} onShowShippingOptions={this.onShowShippingOptions} />
+                    </div>
+                    <Link to="/checkout" className="btn btn-light">Edit Order Details</Link>
+                </div>
 
 
                 <div className="container pt-8 pb-2">
@@ -97,14 +104,7 @@ class CheckoutFinalization extends React.Component {
                 <OrderTable orderItems={this.props.cartItems} shipmentRate={this.props.shipmentRate} onPay={this.onPay} />
 
 
-                <div className="container">
-                    <div className="row justify-content-center mb-1">
-                        <OrderInfo cartItems={this.props.cartItems} shipmentRate={this.props.shipmentRate} paymentMethod={this.props.paymentMethod} shippingInfo={this.props.shippingInfo} onShowShippingOptions={this.onShowShippingOptions} />
-                    </div>
-                    <Link to="/checkout" className="btn btn-light">Edit Order Details</Link>
-                </div>
-                {/* BMD-ISH */}
-                <ShippingOptions shippingRates={this.props.efficientShipmentRates} cartItems={this.props.cartItems} onShippingOptionConfirm={this.onShippingOptionConfirm} onShippingOptionChange={this.onShippingOptionChange} />
+                <ShippingOptions shippingRates={this.props.efficientShipmentRates} cartItems={this.props.cartItems} onShippingOptionChange={this.onShippingOptionChange} />
             </>
         );
     }
@@ -113,27 +113,6 @@ class CheckoutFinalization extends React.Component {
 
     /* EVENT FUNCS */
     // BMD-ISH
-    onShippingOptionConfirm = () => {
-
-        
-
-        // // If user confirms without selection, re-show the options.
-        // if (!this.state.shipmentRate || this.state.shipmentRate.id == null || this.state.shipmentRate.id === "") {
-
-        //     alert("Please select a shipping option.");
-
-        //     setTimeout(() => {
-        //         document.querySelector("#ShippingOptionsTriggerBtn").click();
-        //     }, 200);
-
-        //     return;
-        // }
-
-        // this.props.setShipmentRate(this.state.shipmentRate);
-    };
-
-
-
     onShippingOptionChange = (r) => {
         Bs.log('BMD-TODO');
         // this.setState({ shipmentRate: r });
