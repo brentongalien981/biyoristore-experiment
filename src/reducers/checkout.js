@@ -157,9 +157,20 @@ const setShippingInfo = (state, action) => {
 
 
 const setShipmentRate = (state, action) => {
+
+    let shipmentRate = state.shipmentRate;
+    const chosenShipmentRate = action.shipmentRate;
+
+    for (const r of state.efficientShipmentRates) {
+        if (r.id == chosenShipmentRate.id) {
+            shipmentRate = r;
+            break;
+        }
+    }
+
     return {
         ...state,
-        shipmentRate: action.shipmentRate
+        shipmentRate: shipmentRate
     };
 };
 

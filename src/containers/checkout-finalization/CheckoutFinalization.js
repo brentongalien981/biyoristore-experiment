@@ -115,7 +115,7 @@ class CheckoutFinalization extends React.Component {
     // BMD-ISH:
     onShippingOptionChange = (r) => {
         Bs.log('BMD-TODO');
-        // this.setState({ shipmentRate: r });
+        this.props.setShipmentRate(r);
     };
 
 
