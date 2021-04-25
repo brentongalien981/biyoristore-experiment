@@ -197,7 +197,7 @@ const onGetShippingRatesFail = (state, action) => {
 };
 
 
-// BMD-ISH
+
 const onGetShippingRatesReturn = (state, action) => {
 
     const resultCode = action.callBackData.objs.resultCode;

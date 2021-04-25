@@ -79,7 +79,7 @@ class PaymentFinalization extends React.Component {
     }
 
 
-
+    // BMD-ISH
     doActualPaymentFinalizationProcess() {
         this.props.finalizeOrder(this.props.location.state.cartId, this.props.location.state.shippingInfo);
     }

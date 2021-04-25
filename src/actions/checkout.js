@@ -59,7 +59,6 @@ export const onReadCheckoutRequiredDataFail = (callBackData) => ({ type: ON_READ
 
 
 /* AJAX FUNCS */
-//bmd-ish
 export const getShippingRates = (data) => {
 
     return (dispatch) => {
@@ -137,19 +136,29 @@ export const finalizeOrderWithPredefinedPayment = (objs) => {
 //bmd-ish
 export const finalizeOrder = (cartId, shippingInfo) => {
 
+    // BMD-DELETE:
     Bs.log("\n###############");
     Bs.log("In ACTION: checkout, METHOD: finalizeOrder()");
 
 
     return (dispatch) => {
 
+        const bmdAuth = BmdAuth.getInstance();
+
         BsCore2.ajaxCrud({
             url: '/checkout/finalizeOrder',
-            method: "post",
-            params: { cartId: cartId, ...shippingInfo },
+            method: 'post',
+            params: { 
+                bmdToken: bmdAuth?.bmdToken, 
+                authProviderId: bmdAuth?.authProviderId,
+                temporaryGuestUserId: BmdAuth.getTemporaryGuestUserId(),
+                cartId: cartId, 
+                ...shippingInfo 
+            },
             neededResponseParams: ["paymentProcessStatusCode", "orderProcessStatusCode", "order"],
             callBackFunc: (requestData, json) => {
 
+                // BMD-DELETE
                 Bs.log("\n#####################");
                 Bs.log("ACTION: checkout, METHOD: finalizeOrder() => ajaxCrud() => callBackFunc()");
 
