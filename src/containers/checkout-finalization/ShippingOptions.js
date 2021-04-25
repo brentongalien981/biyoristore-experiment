@@ -15,7 +15,7 @@ export default function ShippingOptions(props) {
 
         return (
             <div key={i} className="custom-control custom-radio mb-2">
-                <input type="radio" name="custom-radio-1" className="custom-control-input" id={"shipping-option-" + i} onChange={(e) => props.onShippingOptionChange(e, r)} />
+                <input type="radio" name="custom-radio-1" className="custom-control-input" id={"shipping-option-" + i} onChange={(e) => props.onShippingOptionChange(r)} />
                 <label className="custom-control-label" htmlFor={"shipping-option-" + i}>{shippingDescription}</label>
             </div>
         );
@@ -31,23 +31,13 @@ export default function ShippingOptions(props) {
 
                         <div className="modal-header">
                             <h4>Choose your shipping option</h4>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
                         </div>
 
                         <div className="modal-body">
                             <ul>{options}</ul>
-                        </div>
-
-                        <div className="modal-footer">
-                            <div className="container-fluid">
-                                <div className="row gutter-0">
-                                    <div className="col">
-                                        <button type="button" className="btn btn-block btn-secondary" data-dismiss="modal">Cancel</button>
-                                    </div>
-                                    <div className="col">
-                                        <button type="button" className="btn btn-block btn-primary" data-dismiss="modal" onClick={props.onShippingOptionConfirm}>Confirm</button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                     </div>

@@ -5,6 +5,7 @@ import * as actions from '../../actions/checkout';
 import Bs from '../../bs-library/helpers/Bs';
 import OrderInfo from './OrderInfo';
 import OrderTable from './OrderTable';
+import ShippingOptions from './ShippingOptions';
 
 
 
@@ -98,10 +99,12 @@ class CheckoutFinalization extends React.Component {
 
                 <div className="container">
                     <div className="row justify-content-center mb-1">
-                        <OrderInfo cartItems={this.props.cartItems} shipmentRate={this.props.shipmentRate} paymentMethod={this.props.paymentMethod} shippingInfo={this.props.shippingInfo} />
+                        <OrderInfo cartItems={this.props.cartItems} shipmentRate={this.props.shipmentRate} paymentMethod={this.props.paymentMethod} shippingInfo={this.props.shippingInfo} onShowShippingOptions={this.onShowShippingOptions} />
                     </div>
                     <Link to="/checkout" className="btn btn-light">Edit Order Details</Link>
                 </div>
+                {/* BMD-ISH */}
+                <ShippingOptions shippingRates={this.props.efficientShipmentRates} cartItems={this.props.cartItems} onShippingOptionConfirm={this.onShippingOptionConfirm} onShippingOptionChange={this.onShippingOptionChange} />
             </>
         );
     }
@@ -109,6 +112,41 @@ class CheckoutFinalization extends React.Component {
 
 
     /* EVENT FUNCS */
+    // BMD-ISH
+    onShippingOptionConfirm = () => {
+
+        
+
+        // // If user confirms without selection, re-show the options.
+        // if (!this.state.shipmentRate || this.state.shipmentRate.id == null || this.state.shipmentRate.id === "") {
+
+        //     alert("Please select a shipping option.");
+
+        //     setTimeout(() => {
+        //         document.querySelector("#ShippingOptionsTriggerBtn").click();
+        //     }, 200);
+
+        //     return;
+        // }
+
+        // this.props.setShipmentRate(this.state.shipmentRate);
+    };
+
+
+
+    onShippingOptionChange = (r) => {
+        Bs.log('BMD-TODO');
+        // this.setState({ shipmentRate: r });
+    };
+
+
+
+    onShowShippingOptions() {
+        document.querySelector("#ShippingOptionsTriggerBtn").click();
+    }
+
+
+
     onPay = () => {
 
         let redirectPage = "/payment";
@@ -152,6 +190,7 @@ const mapStateToProps = (state) => {
         shippingInfo: state.checkout.shippingInfo,
         cartItems: state.cart.cart.cartItems,
         shipmentRate: state.checkout.shipmentRate,
+        efficientShipmentRates: state.checkout.efficientShipmentRates,
         shipmentId: state.checkout.shipmentId,
         actualPageEntryCode: state.checkout.checkoutFinalizationPageEntryCode
     };
@@ -161,6 +200,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        setShipmentRate: (shipmentRate) => dispatch(actions.setShipmentRate(shipmentRate)),
         setCheckoutFinalizationPageEntryCode: () => dispatch(actions.setCheckoutFinalizationPageEntryCode()),
         setPredefinedPaymentFinalizationPageEntryCode: () => dispatch(actions.setPredefinedPaymentFinalizationPageEntryCode()),
         setPaymentPageEntryCode: () => dispatch(actions.setPaymentPageEntryCode())

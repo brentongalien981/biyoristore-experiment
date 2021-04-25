@@ -14,7 +14,6 @@ import Bs from '../../bs-library/helpers/Bs';
 import OrderDetailsSummaryModal from './OrderDetailsSummaryModal';
 import Loader from '../../components/loader/Loader';
 import NonClosableLoader from '../../components/loader/NonClosableLoader';
-import ShippingOptions from './ShippingOptions';
 import BmdAuth from '../../bs-library/core/BmdAuth';
 
 
@@ -32,7 +31,7 @@ class Checkout extends React.Component {
 
 
 
-    /* HELPER FUNCS */
+    /** HELPER FUNCS */
     goToCheckoutFinalizationPage() {
         const redirectPage = "/checkout-finalization";
         const redirectPageDataRequirements = {
@@ -40,12 +39,6 @@ class Checkout extends React.Component {
         };
 
         this.props.history.push(redirectPage, redirectPageDataRequirements);
-    }
-
-
-    //bmd-ish
-    showShippingOptions() {
-        document.querySelector("#ShippingOptionsTriggerBtn").click();
     }
 
 
@@ -72,7 +65,6 @@ class Checkout extends React.Component {
 
     /* MAIN FUNCS */
     componentDidUpdate() {
-        // BMD-ISH
         if (this.props.shouldGoToCheckoutFinalizationPage) {
             this.goToCheckoutFinalizationPage();
         }
@@ -140,8 +132,6 @@ class Checkout extends React.Component {
 
                 <CheckoutAsWhoModal login={this.login} dismissModal={this.dismissModal} />
                 {this.state.nonClosableLoader}
-                {/* BMD-ISH */}
-                <ShippingOptions shippingRates={this.props.efficientShipmentRates} cartItems={this.props.cartItems} onShippingOptionConfirm={this.onShippingOptionConfirm} onShippingOptionChange={this.onShippingOptionChange} />
 
             </>
         );
@@ -150,32 +140,6 @@ class Checkout extends React.Component {
 
 
     /* EVENT FUNCS */
-    onShippingOptionChange = (e, r) => {
-        this.setState({ shipmentRate: r });
-    };
-
-
-
-    onShippingOptionConfirm = () => {
-
-        // If user confirms without selection, re-show the options.
-        if (!this.state.shipmentRate || this.state.shipmentRate.id == null || this.state.shipmentRate.id === "") {
-
-            alert("Please select a shipping option.");
-
-            setTimeout(() => {
-                document.querySelector("#ShippingOptionsTriggerBtn").click();
-            }, 200);
-
-            return;
-        }
-
-        this.props.setShipmentRate(this.state.shipmentRate);
-        // BMD-ISH:
-    };
-
-
-    //bmd-ish
     onOrderPlace = (e) => {
 
         e.preventDefault();
@@ -217,7 +181,6 @@ class Checkout extends React.Component {
                     isPlacingOrder: false,
                     nonClosableLoader: null
                 });
-                this.showShippingOptions(); // bmd-todo: No need for this.
             }
         };
 
@@ -302,7 +265,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setShipmentRate: (shipmentRate) => dispatch(actions.setShipmentRate(shipmentRate)),
         resetReducerInitVars: () => dispatch(actions.resetReducerInitVars()),
         getShippingRates: (data) => dispatch(actions.getShippingRates(data)),
         // onAddressSelectionChange: (e, i) => dispatch(actions.onAddressSelectionChange(e, i)),

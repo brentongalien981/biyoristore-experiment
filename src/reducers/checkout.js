@@ -44,7 +44,7 @@ const checkout = (state = initialState, action) => {
 
         case actions.ON_GET_SHIPPING_RATES_FAIL: return onGetShippingRatesFail(state, action);
         case actions.ON_GET_SHIPPING_RATES_RETURN: return onGetShippingRatesReturn(state, action);
-        
+
         // case actions.ON_ADDRESS_SELECTION_CHANGE: return onAddressSelectionChange(state, action);
         case actions.END_PAYMENT_FINALIZATION_PROCESS: return endPaymentFinalizationProcess(state, action);
         case actions.ON_FINALIZE_ORDER_RETURN: return onFinalizeOrderReturn(state, action);
@@ -54,11 +54,85 @@ const checkout = (state = initialState, action) => {
         case actions.SET_PREDEFINED_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE: return setPredefinedPaymentFinalizationPageEntryCode(state, action);
         case actions.SET_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE: return setPaymentFinalizationPageEntryCode(state, action);
         case actions.SET_PAYMENT_PAGE_ENTRY_CODE: return setPaymentPageEntryCode(state, action);
-        case actions.SET_CHECKOUT_FINALIZATION_PAGE_ENTRY_CODE: return setCheckoutFinalizationPageEntryCode(state, action);        
+        case actions.SET_CHECKOUT_FINALIZATION_PAGE_ENTRY_CODE: return setCheckoutFinalizationPageEntryCode(state, action);
         case actions.ON_READ_CHECKOUT_REQUIRED_DATA_SUCCESS: return onReadCheckoutRequiredDataSuccess(state, action);
         case actions.ON_READ_CHECKOUT_REQUIRED_DATA_FAIL: return onReadCheckoutRequiredDataFail(state, action);
         default: return state;
     }
+};
+
+
+
+/** HELPER FUNCS */
+const extractCheapestShipmentRate = (efficientShipmentRates) => {
+    let cheapestRate = {};
+
+    efficientShipmentRates.forEach(r => {
+        if (!cheapestRate.rate) { cheapestRate = r; }
+        else {
+            if (parseFloat(r.rate) <= parseFloat(cheapestRate.rate)
+                && r.delivery_days < cheapestRate.delivery_days
+            ) {
+                cheapestRate = r;
+            }
+        }
+
+    });
+
+    return cheapestRate;
+};
+
+
+
+const setPaymentInfos = (paymentInfos) => {
+
+    paymentInfos.unshift({});
+    let updatedPaymentInfos = [];
+
+    paymentInfos.forEach(p => {
+        updatedPaymentInfos.push({
+            id: p.id ? p.id : 0,
+            cardNumber: p.card ? "**** **** **** " + p.card?.last4 : "",
+            cvc: p.card ? "***" : "",
+            expMonth: p.card?.exp_month ? p.card?.exp_month : "",
+            expYear: p.card?.exp_year ? p.card?.exp_year : "",
+            postalCode: p.billing_details?.address?.postal_code ? p.billing_details?.address?.postal_code : "",
+            brand: p.card?.brand ? p.card?.brand : "",
+            last4: p.card ? p.card?.last4 : ""
+        });
+    });
+
+
+    return updatedPaymentInfos;
+};
+
+
+
+const setAddresses = (objs) => {
+    let addresses = [];
+
+    // Append an option for the user to fill-in her address.
+    addresses.push({ id: 0, isBlankAddress: true });
+
+    objs.addresses.forEach(a => {
+        const addressWithProfile = { ...a, ...objs.profile };
+        addresses.push(addressWithProfile);
+    });
+
+    return addresses;
+};
+
+
+
+const uncheckAllOptions = (options) => {
+    let updatedOptions = [];
+
+    options.forEach(o => {
+        o.isChecked = false;
+        updatedOptions.push(o);
+    });
+
+    return updatedOptions;
 };
 
 
@@ -85,8 +159,7 @@ const setShippingInfo = (state, action) => {
 const setShipmentRate = (state, action) => {
     return {
         ...state,
-        shipmentRate: action.shipmentRate,
-        shouldGoToCheckoutFinalizationPage: true
+        shipmentRate: action.shipmentRate
     };
 };
 
@@ -113,7 +186,7 @@ const onGetShippingRatesFail = (state, action) => {
 };
 
 
-//bmd-ish
+// BMD-ISH
 const onGetShippingRatesReturn = (state, action) => {
 
     const resultCode = action.callBackData.objs.resultCode;
@@ -123,6 +196,8 @@ const onGetShippingRatesReturn = (state, action) => {
 
     let shipmentId = "";
     let efficientShipmentRates = [];
+    let shipmentRate = {};
+    let shouldGoToCheckoutFinalizationPage = false;
 
     switch (resultCode) {
         case DESTINATION_ADDRESS_EXCEPTION:
@@ -134,8 +209,8 @@ const onGetShippingRatesReturn = (state, action) => {
         case ENTIRE_PROCESS_OK:
             shipmentId = action.callBackData.objs.shipmentId;
             efficientShipmentRates = action.callBackData.objs.efficientShipmentRates;
-            // Set the default shipment-rate.
-            // shipmentRate
+            shipmentRate = extractCheapestShipmentRate(efficientShipmentRates);
+            shouldGoToCheckoutFinalizationPage = true;
             break;
         default:
             BsCore2.alertForGeneralError();
@@ -149,7 +224,9 @@ const onGetShippingRatesReturn = (state, action) => {
     return {
         ...state,
         shipmentId: shipmentId,
-        efficientShipmentRates: efficientShipmentRates
+        efficientShipmentRates: efficientShipmentRates,
+        shipmentRate: shipmentRate,
+        shouldGoToCheckoutFinalizationPage: shouldGoToCheckoutFinalizationPage
     };
 };
 
@@ -245,60 +322,6 @@ const onReadCheckoutRequiredDataSuccess = (state, action) => {
         addresses: updatedAddresses,
         paymentInfos: updatedPaymentInfos
     };
-};
-
-
-
-/* HELPER FUNCS */
-const setPaymentInfos = (paymentInfos) => {
-
-    paymentInfos.unshift({});
-    let updatedPaymentInfos = [];
-
-    paymentInfos.forEach(p => {
-        updatedPaymentInfos.push({
-            id: p.id ? p.id : 0,
-            cardNumber: p.card ? "**** **** **** " + p.card?.last4 : "",
-            cvc: p.card ? "***" : "",
-            expMonth: p.card?.exp_month ? p.card?.exp_month : "",
-            expYear: p.card?.exp_year ? p.card?.exp_year : "",
-            postalCode: p.billing_details?.address?.postal_code ? p.billing_details?.address?.postal_code : "",
-            brand: p.card?.brand ? p.card?.brand : "",
-            last4: p.card ? p.card?.last4 : ""
-        });
-    });
-
-
-    return updatedPaymentInfos;
-};
-
-
-
-const setAddresses = (objs) => {
-    let addresses = [];
-
-    // Append an option for the user to fill-in her address.
-    addresses.push({ id: 0, isBlankAddress: true });
-
-    objs.addresses.forEach(a => {
-        const addressWithProfile = { ...a, ...objs.profile };
-        addresses.push(addressWithProfile);
-    });
-
-    return addresses;
-};
-
-
-
-const uncheckAllOptions = (options) => {
-    let updatedOptions = [];
-
-    options.forEach(o => {
-        o.isChecked = false;
-        updatedOptions.push(o);
-    });
-
-    return updatedOptions;
 };
 
 
