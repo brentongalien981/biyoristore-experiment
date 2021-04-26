@@ -1,17 +1,13 @@
 import React from 'react';
+import { ORDER_PROCESSING_PERIOD, PAYMENT_TO_FUNDS_PERIOD } from '../../bs-library/constants/global';
 
 
 
 function getShippingDescription(estimatedShippingDays) {
     let label = "";
 
-    if (estimatedShippingDays >= 4) {
-        label = (estimatedShippingDays - 3) + " - " + estimatedShippingDays + " Business Days";
-    } else if (estimatedShippingDays > 1) {
-        label = "1 - " + estimatedShippingDays + " Business Days";
-    } else {
-        label = "1 Business Day";
-    }
+    let totalDeliveryDays = estimatedShippingDays + ORDER_PROCESSING_PERIOD + PAYMENT_TO_FUNDS_PERIOD;
+    label += estimatedShippingDays + '-' + totalDeliveryDays + ' Business Days';
 
     return label;
 }

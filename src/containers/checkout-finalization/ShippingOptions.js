@@ -1,4 +1,5 @@
 import React from 'react';
+import { ORDER_PROCESSING_PERIOD, PAYMENT_TO_FUNDS_PERIOD } from '../../bs-library/constants/global';
 import Bs from '../../bs-library/helpers/Bs';
 
 
@@ -51,18 +52,11 @@ export default function ShippingOptions(props) {
 
 function getShippingDescription(estimatedShippingDays, rate) {
     const r = rate;
-    Bs.log("estimatedShippingDays ==> " + estimatedShippingDays);
 
     let label = r.service + " / ";
+    let totalDeliveryDays = estimatedShippingDays + ORDER_PROCESSING_PERIOD + PAYMENT_TO_FUNDS_PERIOD;
 
-    if (estimatedShippingDays >= 4) {
-        label += (estimatedShippingDays - 3) + "-" + estimatedShippingDays + " Business Days";
-    } else if (estimatedShippingDays > 1) {
-        label += "1-" + estimatedShippingDays + " Business Days";
-    } else {
-        label += estimatedShippingDays + " Business Day";
-    }
-
+    label += estimatedShippingDays + '-' + totalDeliveryDays + ' Business Days';
     label += " / $" + r.rate + " " + r.currency;
 
     return label;
