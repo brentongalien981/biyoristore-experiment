@@ -12,6 +12,9 @@ import ShippingOptions from './ShippingOptions';
 class CheckoutFinalization extends React.Component {
 
     /* PROPERTIES */
+    state = {
+        isPseudoPaying: false
+    };
 
 
 
@@ -101,7 +104,7 @@ class CheckoutFinalization extends React.Component {
                     <h4>Items</h4>
                 </div>
 
-                <OrderTable orderItems={this.props.cartItems} shipmentRate={this.props.shipmentRate} onPay={this.onPay} />
+                <OrderTable orderItems={this.props.cartItems} shipmentRate={this.props.shipmentRate} onPay={this.onPseudoPay} />
 
 
                 <ShippingOptions shippingRates={this.props.efficientShipmentRates} cartItems={this.props.cartItems} onShippingOptionChange={this.onShippingOptionChange} />
@@ -123,8 +126,9 @@ class CheckoutFinalization extends React.Component {
     }
 
 
-
-    onPay = () => {
+    // BMD-ISH
+    doPostOnPseudoPayProcess = () => {
+        this.setState({ isPseudoPaying: false });
 
         let redirectPage = "/payment";
         let redirectPageDataRequirements = {};
@@ -154,6 +158,26 @@ class CheckoutFinalization extends React.Component {
         // redirect
         this.props.history.push(redirectPage, redirectPageDataRequirements);
     };
+
+
+    // BMD-ISH
+    doActualOnPseudoPayProcess = () => {
+        const data = {
+            doCallBackFunc: this.doPostOnPseudoPayProcess
+        };
+
+        this.props.doOrderInventoryChecks(data);
+    };
+
+
+
+    onPseudoPay = () => {
+
+        if (this.state.isPseudoPaying) { return; }
+        this.setState({ isPseudoPaying: true });
+
+        this.doActualOnPseudoPayProcess();
+    };
 }
 
 
@@ -177,6 +201,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        doOrderInventoryChecks: (data) => dispatch(actions.doOrderInventoryChecks(data)),
         setShipmentRate: (shipmentRate) => dispatch(actions.setShipmentRate(shipmentRate)),
         setCheckoutFinalizationPageEntryCode: () => dispatch(actions.setCheckoutFinalizationPageEntryCode()),
         setPredefinedPaymentFinalizationPageEntryCode: () => dispatch(actions.setPredefinedPaymentFinalizationPageEntryCode()),

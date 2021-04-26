@@ -9,6 +9,8 @@ import BmdAuth from "../bs-library/core/BmdAuth";
 
 
 /* NAMES */
+export const ON_DO_ORDER_INVENTORY_CHECKS_RETURN = "ON_DO_ORDER_INVENTORY_CHECKS_RETURN";
+
 export const SET_PAYMENT_METHOD = "SET_PAYMENT_METHOD";
 export const SET_SHIPPING_INFO = "SET_SHIPPING_INFO";
 export const SET_SHIPMENT_RATE = "SET_SHIPMENT_RATE";
@@ -34,6 +36,8 @@ export const ON_READ_CHECKOUT_REQUIRED_DATA_FAIL = "ON_READ_CHECKOUT_REQUIRED_DA
 
 
 /* FUNCS */
+export const onDoOrderInventoryChecksReturn = (callBackData) => ({ type: ON_DO_ORDER_INVENTORY_CHECKS_RETURN, callBackData: callBackData });
+
 export const setPaymentMethod = (paymentMethod) => ({ type: SET_PAYMENT_METHOD, paymentMethod: paymentMethod });
 export const setShippingInfo = (shippingInfo) => ({ type: SET_SHIPPING_INFO, shippingInfo: shippingInfo });
 export const setShipmentRate = (shipmentRate) => ({ type: SET_SHIPMENT_RATE, shipmentRate: shipmentRate });
@@ -134,6 +138,37 @@ export const finalizeOrderWithPredefinedPayment = (objs) => {
 
 
 //bmd-ish
+export const doOrderInventoryChecks = (data) => {
+
+    return (dispatch) => {
+
+        const bmdAuth = BmdAuth.getInstance();
+
+        BsCore2.ajaxCrud({
+            url: '/checkout/doOrderInventoryChecks',
+            method: 'post',
+            params: {
+                bmdToken: bmdAuth?.bmdToken, 
+                authProviderId: bmdAuth?.authProviderId,
+                temporaryGuestUserId: BmdAuth.getTemporaryGuestUserId()
+            },
+            callBackFunc: (requestData, json) => {
+                const callBackData = { ...data, ...json };
+                dispatch(onDoOrderInventoryChecksReturn(callBackData));
+
+            },
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
+                dispatch(onDoOrderInventoryChecksReturn(callBackData));
+            }
+        });
+
+    };
+
+};
+
+
+
 export const finalizeOrder = (cartId, shippingInfo) => {
 
     // BMD-DELETE:

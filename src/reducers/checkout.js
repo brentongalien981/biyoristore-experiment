@@ -36,6 +36,8 @@ const initialState = {
 /* REDUCER */
 const checkout = (state = initialState, action) => {
     switch (action.type) {
+        case actions.ON_DO_ORDER_INVENTORY_CHECKS_RETURN: return onDoOrderInventoryChecksReturn(state, action);
+
         case actions.SET_PAYMENT_METHOD: return setPaymentMethod(state, action);
         case actions.SET_SHIPPING_INFO: return setShippingInfo(state, action);
         case actions.SET_SHIPMENT_RATE: return setShipmentRate(state, action);
@@ -138,6 +140,14 @@ const uncheckAllOptions = (options) => {
 
 
 /* NORMAL FUNCS */
+const onDoOrderInventoryChecksReturn = (state, action) => {
+    return {
+        ...state
+    };
+};
+
+
+
 const setPaymentMethod = (state, action) => {
     return {
         ...state,
@@ -202,6 +212,7 @@ const onGetShippingRatesReturn = (state, action) => {
 
     const resultCode = action.callBackData.objs.resultCode;
     const DESTINATION_ADDRESS_EXCEPTION = -2;
+    const NULL_PREDEFINED_PACKAGE_EXCEPTION = -3;
     const EMPTY_CART_EXCEPTION = -4;
     const ENTIRE_PROCESS_OK = 1;
 
@@ -213,6 +224,9 @@ const onGetShippingRatesReturn = (state, action) => {
     switch (resultCode) {
         case DESTINATION_ADDRESS_EXCEPTION:
             alert("Oops! Please enter a valid address.");
+            break;
+        case NULL_PREDEFINED_PACKAGE_EXCEPTION:
+            alert("Oops! Our largest package-box couldn't quite carry that many items. Try doing multiple orders or reduce your cart item quantities.");
             break;
         case EMPTY_CART_EXCEPTION:
             alert("Oops! Please add items to your cart.");
