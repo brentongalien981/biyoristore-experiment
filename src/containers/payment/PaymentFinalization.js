@@ -98,7 +98,7 @@ class PaymentFinalization extends React.Component {
 
         let msgHeader = "";
         let msgBody = "";
-        let orderLink = null; // bmdt-todo:LATER add order-link.
+        let orderLink = null; // bmd-todo:LATER add order-link.
 
 
         switch (this.props.orderProcessStatusCode) {

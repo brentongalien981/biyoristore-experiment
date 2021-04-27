@@ -139,7 +139,7 @@ export const finalizeOrderWithPredefinedPayment = (objs) => {
 };
 
 
-//bmd-ish
+
 export const doOrderInventoryChecks = (data) => {
 
     return (dispatch) => {
@@ -170,13 +170,8 @@ export const doOrderInventoryChecks = (data) => {
 };
 
 
-
+// BMD-ISH
 export const finalizeOrder = (cartId, shippingInfo) => {
-
-    // BMD-DELETE:
-    Bs.log("\n###############");
-    Bs.log("In ACTION: checkout, METHOD: finalizeOrder()");
-
 
     return (dispatch) => {
 
@@ -194,11 +189,6 @@ export const finalizeOrder = (cartId, shippingInfo) => {
             },
             neededResponseParams: ["paymentProcessStatusCode", "orderProcessStatusCode", "order"],
             callBackFunc: (requestData, json) => {
-
-                // BMD-DELETE
-                Bs.log("\n#####################");
-                Bs.log("ACTION: checkout, METHOD: finalizeOrder() => ajaxCrud() => callBackFunc()");
-
                 const objs = { orderProcessStatusCode: json.orderProcessStatusCode, order: json.order };
                 dispatch(onFinalizeOrderReturn(objs));
                 dispatch(resetCart());

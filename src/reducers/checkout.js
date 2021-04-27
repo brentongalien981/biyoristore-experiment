@@ -161,7 +161,6 @@ const onDoOrderInventoryChecksReturn = (state, action) => {
     if (!action.callBackData.isResultOk) {
 
         canGoToPaymentPage = false;
-        // BMD-ISH
         const failedCheckObjs = action.callBackData.objs.orderItemExceedInventoryQuantityFailedCheckObjs;
         let errorMsg = 'Oops!';
 

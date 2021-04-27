@@ -134,7 +134,7 @@ class CheckoutFinalization extends React.Component {
     }
 
 
-    // BMD-ISH
+    
     doGoToPaymentPage = () => {
         
         let redirectPage = "/payment";
@@ -163,11 +163,11 @@ class CheckoutFinalization extends React.Component {
 
 
         // redirect
-        this.props.history.push(redirectPage, redirectPageDataRequirements);
+        this.props.history.replace(redirectPage, redirectPageDataRequirements);
     };
 
 
-    // BMD-ISH
+    
     onPseudoPay = () => {
 
         if (this.state.isPseudoPaying) { return; }
