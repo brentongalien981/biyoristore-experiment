@@ -141,6 +141,7 @@ const uncheckAllOptions = (options) => {
 
 /* NORMAL FUNCS */
 const onDoOrderInventoryChecksReturn = (state, action) => {
+    alert('BMD-TODO: REDUCER: checkout, METHOD: onDoOrderInventoryChecksReturn()');
     return {
         ...state
     };
@@ -215,6 +216,9 @@ const onGetShippingRatesReturn = (state, action) => {
     const NULL_PREDEFINED_PACKAGE_EXCEPTION = -3;
     const EMPTY_CART_EXCEPTION = -4;
     const COULD_NOT_FIND_SHIPMENT_RATES = -5;
+    const NUM_OF_DAILY_ORDERS_LIMIT_REACHED = -6;
+    const NUM_OF_DAILY_ORDER_ITEMS_LIMIT_REACHED = -7;
+
     const ENTIRE_PROCESS_OK = 1;
 
     let shipmentId = "";
@@ -232,9 +236,13 @@ const onGetShippingRatesReturn = (state, action) => {
         case EMPTY_CART_EXCEPTION:
             alert("Oops! Please add items to your cart.");
             break;
-            case COULD_NOT_FIND_SHIPMENT_RATES:
-                alert("Oops! We couldn't find a shipping-option available. Please try again later.");
-                break;
+        case COULD_NOT_FIND_SHIPMENT_RATES:
+            alert("Oops! We couldn't find a shipping-option available. Please try again later.");
+            break;
+        case NUM_OF_DAILY_ORDERS_LIMIT_REACHED:
+        case NUM_OF_DAILY_ORDER_ITEMS_LIMIT_REACHED:
+            alert("We're very sorry... Due to our restricted man-power, we've reached the order limits we could process. Try again tomorrow, ok? Thanks you.");
+            break;
         case ENTIRE_PROCESS_OK:
             shipmentId = action.callBackData.objs.shipmentId;
             efficientShipmentRates = action.callBackData.objs.efficientShipmentRates;
