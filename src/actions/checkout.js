@@ -9,6 +9,7 @@ import BmdAuth from "../bs-library/core/BmdAuth";
 
 
 /* NAMES */
+export const RESET_CHECKOUT_FINALIZATION_PAGE_FLAGS = "RESET_CHECKOUT_FINALIZATION_PAGE_FLAGS";
 export const ON_DO_ORDER_INVENTORY_CHECKS_RETURN = "ON_DO_ORDER_INVENTORY_CHECKS_RETURN";
 
 export const SET_PAYMENT_METHOD = "SET_PAYMENT_METHOD";
@@ -36,6 +37,7 @@ export const ON_READ_CHECKOUT_REQUIRED_DATA_FAIL = "ON_READ_CHECKOUT_REQUIRED_DA
 
 
 /* FUNCS */
+export const resetCheckoutFinalizationPageFlags = () => ({ type: RESET_CHECKOUT_FINALIZATION_PAGE_FLAGS });
 export const onDoOrderInventoryChecksReturn = (callBackData) => ({ type: ON_DO_ORDER_INVENTORY_CHECKS_RETURN, callBackData: callBackData });
 
 export const setPaymentMethod = (paymentMethod) => ({ type: SET_PAYMENT_METHOD, paymentMethod: paymentMethod });

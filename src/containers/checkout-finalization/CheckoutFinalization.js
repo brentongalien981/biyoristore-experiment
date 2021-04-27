@@ -57,6 +57,12 @@ class CheckoutFinalization extends React.Component {
 
 
 
+    componentDidUpdate() {
+        if (this.props.canGoToPaymentPage) { this.doGoToPaymentPage(); }
+    }
+
+
+
     componentDidMount() {
 
         // Check page-data-requirements.
@@ -68,6 +74,8 @@ class CheckoutFinalization extends React.Component {
             this.props.history.replace("/checkout");
             return;
         }
+
+        this.props.resetCheckoutFinalizationPageFlags();
 
 
         // set the page-entry-codes for the possible-next-sequential-pages
@@ -127,9 +135,8 @@ class CheckoutFinalization extends React.Component {
 
 
     // BMD-ISH
-    doPostOnPseudoPayProcess = () => {
-        this.setState({ isPseudoPaying: false });
-
+    doGoToPaymentPage = () => {
+        
         let redirectPage = "/payment";
         let redirectPageDataRequirements = {};
 
@@ -161,22 +168,18 @@ class CheckoutFinalization extends React.Component {
 
 
     // BMD-ISH
-    doActualOnPseudoPayProcess = () => {
-        const data = {
-            doCallBackFunc: this.doPostOnPseudoPayProcess
-        };
-
-        this.props.doOrderInventoryChecks(data);
-    };
-
-
-
     onPseudoPay = () => {
 
         if (this.state.isPseudoPaying) { return; }
         this.setState({ isPseudoPaying: true });
 
-        this.doActualOnPseudoPayProcess();
+        const data = {
+            doCallBackFunc: () => {
+                this.setState({ isPseudoPaying: false });
+            }
+        };
+
+        this.props.doOrderInventoryChecks(data);
     };
 }
 
@@ -185,6 +188,7 @@ class CheckoutFinalization extends React.Component {
 /* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
+        canGoToPaymentPage: state.checkout.canGoToPaymentPage,
         paymentPageEntryCode: state.checkout.paymentPageEntryCode,
         predefinedPaymentFinalizationPageEntryCode: state.checkout.predefinedPaymentFinalizationPageEntryCode,
         paymentMethod: state.checkout.paymentMethod,
@@ -201,6 +205,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        resetCheckoutFinalizationPageFlags: () => dispatch(actions.resetCheckoutFinalizationPageFlags()),
         doOrderInventoryChecks: (data) => dispatch(actions.doOrderInventoryChecks(data)),
         setShipmentRate: (shipmentRate) => dispatch(actions.setShipmentRate(shipmentRate)),
         setCheckoutFinalizationPageEntryCode: () => dispatch(actions.setCheckoutFinalizationPageEntryCode()),

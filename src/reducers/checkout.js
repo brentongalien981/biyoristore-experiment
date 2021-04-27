@@ -28,7 +28,10 @@ const initialState = {
     shipmentRate: {},
     shouldGoToCheckoutFinalizationPage: false,
     shippingInfo: {},
-    paymentMethod: {}
+    paymentMethod: {},
+
+    // FLAGS
+    canGoToPaymentPage: false,
 };
 
 
@@ -36,6 +39,7 @@ const initialState = {
 /* REDUCER */
 const checkout = (state = initialState, action) => {
     switch (action.type) {
+        case actions.RESET_CHECKOUT_FINALIZATION_PAGE_FLAGS: return resetCheckoutFinalizationPageFlags(state, action);
         case actions.ON_DO_ORDER_INVENTORY_CHECKS_RETURN: return onDoOrderInventoryChecksReturn(state, action);
 
         case actions.SET_PAYMENT_METHOD: return setPaymentMethod(state, action);
@@ -140,10 +144,47 @@ const uncheckAllOptions = (options) => {
 
 
 /* NORMAL FUNCS */
-const onDoOrderInventoryChecksReturn = (state, action) => {
-    alert('BMD-TODO: REDUCER: checkout, METHOD: onDoOrderInventoryChecksReturn()');
+const resetCheckoutFinalizationPageFlags = (state, action) => {
+
     return {
-        ...state
+        ...state,
+        canGoToPaymentPage: false
+    };
+};
+
+
+
+const onDoOrderInventoryChecksReturn = (state, action) => {
+
+    let canGoToPaymentPage = true;
+
+    if (!action.callBackData.isResultOk) {
+
+        canGoToPaymentPage = false;
+        // BMD-ISH
+        const failedCheckObjs = action.callBackData.objs.orderItemExceedInventoryQuantityFailedCheckObjs;
+        let errorMsg = 'Oops!';
+
+        failedCheckObjs.forEach(fco => {
+            if (fco.productInventoryQuantity == 0) {
+                errorMsg += '\nWe just ran out of stock for ' + fco.productName + ' with size ' + fco.size + '.';
+            } else {
+
+                let pluralSingularClause = fco.productInventoryQuantity;
+                pluralSingularClause += (fco.productInventoryQuantity == 1 ? ' item left for ' : ' items left for ');
+                errorMsg += '\nWe only have ' + pluralSingularClause + fco.productName + ' with size ' + fco.size + '.';
+            }
+        });
+
+        alert(errorMsg);
+    }
+
+
+    action.callBackData.doCallBackFunc();
+
+    return {
+        ...state,
+        canGoToPaymentPage: canGoToPaymentPage
     };
 };
 
