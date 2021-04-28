@@ -35,7 +35,9 @@ function PaymentForm(props) {
                 temporaryGuestUserId: BmdAuth.getTemporaryGuestUserId(),
                 cartId: props.cart.id, 
                 cartItemsData: props.cartItemsData, 
-                ...props.shippingAddress
+                ...props.shippingAddress,
+                shipmentRateAmount: props.shipmentRate.rate,
+                projectedTotalDeliveryDays: props.projectedTotalDeliveryDays
             },
             neededResponseParams: ["clientSecret"],
             callBackFunc: (requestData, json) => {
