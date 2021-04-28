@@ -14,12 +14,11 @@ const initialState = {
     checkoutFinalizationPageEntryCode: "",
     paymentFinalizationPageEntryCode: "",
     predefinedPaymentFinalizationPageEntryCode: "",
-    // shouldDisplayFinalizationMsg: false,
-    shouldDoPostPaymentFinalizationProcess: false,
-    paymentProcessStatusCode: 0,
+    // shouldDoPostPaymentFinalizationProcess: false, // BMD-DELETE
+    // paymentProcessStatusCode: 0, // BMD-DELETE
     orderProcessStatusCode: 0,
-    // isThereError: false,
     order: {},
+    orderId: 0,
 
     shouldShowShippingDetails: false,
     efficientShipmentRates: [],
@@ -52,7 +51,9 @@ const checkout = (state = initialState, action) => {
         case actions.ON_GET_SHIPPING_RATES_RETURN: return onGetShippingRatesReturn(state, action);
 
         // case actions.ON_ADDRESS_SELECTION_CHANGE: return onAddressSelectionChange(state, action);
-        case actions.END_PAYMENT_FINALIZATION_PROCESS: return endPaymentFinalizationProcess(state, action);
+
+        // case actions.END_PAYMENT_FINALIZATION_PROCESS: return endPaymentFinalizationProcess(state, action); // BMD-DELETE
+
         case actions.ON_FINALIZE_ORDER_RETURN: return onFinalizeOrderReturn(state, action);
         case actions.RESET_FINALIZATION_OBJS: return resetFinalizationObjs(state, action);
         // case actions.ON_FINALIZE_ORDER_FAIL: return onFinalizeOrderFail(state, action);
@@ -308,34 +309,38 @@ const onGetShippingRatesReturn = (state, action) => {
 };
 
 
-
-const endPaymentFinalizationProcess = (state, action) => {
-    return {
-        ...state,
-        shouldDoPostPaymentFinalizationProcess: false
-    };
-};
+// BMD-DELETE
+// const endPaymentFinalizationProcess = (state, action) => {
+//     return {
+//         ...state,
+//         shouldDoPostPaymentFinalizationProcess: false
+//     };
+// };
 
 
 
 const resetFinalizationObjs = (state, action) => {
     return {
         ...state,
-        paymentProcessStatusCode: 0,
+        // paymentProcessStatusCode: 0, // BMD-DELETE
         orderProcessStatusCode: 0,
-        order: {}
+        order: {} 
     };
 };
 
 
-
+// BMD-ISH
 const onFinalizeOrderReturn = (state, action) => {
+
+    action.callBackData.doCallBackFunc();
+
     return {
         ...state,
-        shouldDoPostPaymentFinalizationProcess: true,
-        paymentProcessStatusCode: (action.objs?.paymentProcessStatusCode ? action.objs.paymentProcessStatusCode : -1),
-        orderProcessStatusCode: (action.objs?.orderProcessStatusCode ? action.objs.orderProcessStatusCode : -1),
-        order: (action.objs?.order ? action.objs.order : {})
+        // shouldDoPostPaymentFinalizationProcess: true, // BMD-DELETE
+        // paymentProcessStatusCode: (action.objs?.paymentProcessStatusCode ? action.objs.paymentProcessStatusCode : -1), // BMD-DELETE
+        orderProcessStatusCode: (action.callBackData?.orderProcessStatusCode ?? -1),
+        orderId: action.callBackData.orderId
+        // order: (action.objs?.order ? action.objs.order : {}) // BMD-DELETE
     };
 };
 

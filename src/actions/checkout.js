@@ -22,7 +22,9 @@ export const ON_GET_SHIPPING_RATES_FAIL = "ON_GET_SHIPPING_RATES_FAIL";
 export const ON_GET_SHIPPING_RATES_RETURN = "ON_GET_SHIPPING_RATES_RETURN";
 
 // export const ON_ADDRESS_SELECTION_CHANGE = "ON_ADDRESS_SELECTION_CHANGE";
-export const END_PAYMENT_FINALIZATION_PROCESS = "END_PAYMENT_FINALIZATION_PROCESS";
+
+export const END_PAYMENT_FINALIZATION_PROCESS = "END_PAYMENT_FINALIZATION_PROCESS"; // BMD-DELETE
+
 export const RESET_FINALIZATION_OBJS = "RESET_FINALIZATION_OBJS";
 export const ON_FINALIZE_ORDER_RETURN = "ON_FINALIZE_ORDER_RETURN";
 // export const ON_FINALIZE_ORDER_FAIL = "ON_FINALIZE_ORDER_FAIL";
@@ -50,9 +52,11 @@ export const onGetShippingRatesFail = () => ({ type: ON_GET_SHIPPING_RATES_FAIL 
 export const onGetShippingRatesReturn = (callBackData) => ({ type: ON_GET_SHIPPING_RATES_RETURN, callBackData: callBackData });
 
 // export const onAddressSelectionChange = (e, i) => ({ type: ON_ADDRESS_SELECTION_CHANGE, e: e, i: i });
-export const endPaymentFinalizationProcess = () => ({ type: END_PAYMENT_FINALIZATION_PROCESS });
+export const endPaymentFinalizationProcess = () => ({ type: END_PAYMENT_FINALIZATION_PROCESS }); // BMD-DELETE
 export const resetFinalizationObjs = () => ({ type: RESET_FINALIZATION_OBJS });
-export const onFinalizeOrderReturn = (objs = null) => ({ type: ON_FINALIZE_ORDER_RETURN, objs: objs });
+
+export const onFinalizeOrderReturn = (callBackData) => ({ type: ON_FINALIZE_ORDER_RETURN, callBackData: callBackData });
+
 // export const onFinalizeOrderFail = () => ({ type: ON_FINALIZE_ORDER_FAIL });
 // export const onFinalizeOrderSuccess = () => ({ type: ON_FINALIZE_ORDER_SUCCESS });
 export const setPredefinedPaymentFinalizationPageEntryCode = () => ({ type: SET_PREDEFINED_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE });
@@ -95,11 +99,6 @@ export const getShippingRates = (data) => {
 
 export const finalizeOrderWithPredefinedPayment = (objs) => {
 
-    Bs.log("\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-    Bs.log("In ACTION: checkout, METHOD: finalizeOrderWithPredefinedPayment()");
-    Bs.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-
-
     return (dispatch) => {
 
         BsCore2.ajaxCrud({
@@ -114,10 +113,6 @@ export const finalizeOrderWithPredefinedPayment = (objs) => {
             neededResponseParams: ["paymentProcessStatusCode", "orderProcessStatusCode", "order"],
             callBackFunc: (requestData, json) => {
 
-                Bs.log("\n@@@@@@@@@@@@@@@@@@@@");
-                Bs.log("START OF ACTION: checkout, METHOD: finalizeOrderWithPredefinedPayment() => ajaxCrud() => callBackFunc()");
-                Bs.log("@@@@@@@@@@@@@@@@@@@@");
-
                 const objs = { paymentProcessStatusCode: json.paymentProcessStatusCode, orderProcessStatusCode: json.orderProcessStatusCode, order: json.order };
                 dispatch(onFinalizeOrderReturn(objs));
 
@@ -125,11 +120,6 @@ export const finalizeOrderWithPredefinedPayment = (objs) => {
                 if (json.paymentProcessStatusCode === PAYMENT_METHOD_CHARGED) {
                     dispatch(resetCart());
                 }
-
-
-                Bs.log("\n####################");
-                Bs.log("END OF ACTION: checkout, METHOD: finalizeOrderWithPredefinedPayment() => ajaxCrud() => callBackFunc()");
-                Bs.log("####################");
             },
             errorCallBackFunc: (errors) => {
                 dispatch(onFinalizeOrderReturn());
@@ -170,8 +160,8 @@ export const doOrderInventoryChecks = (data) => {
 };
 
 
-// BMD-ISH
-export const finalizeOrder = (cartId, shippingInfo) => {
+
+export const finalizeOrder = (data) => {
 
     return (dispatch) => {
 
@@ -184,18 +174,20 @@ export const finalizeOrder = (cartId, shippingInfo) => {
                 bmdToken: bmdAuth?.bmdToken, 
                 authProviderId: bmdAuth?.authProviderId,
                 temporaryGuestUserId: BmdAuth.getTemporaryGuestUserId(),
-                cartId: cartId, 
-                ...shippingInfo 
+                cartId: data.cartId, 
+                ...data.shippingInfo 
             },
             neededResponseParams: ["paymentProcessStatusCode", "orderProcessStatusCode", "order"],
             callBackFunc: (requestData, json) => {
-                const objs = { orderProcessStatusCode: json.orderProcessStatusCode, order: json.order };
-                dispatch(onFinalizeOrderReturn(objs));
-                dispatch(resetCart());
+                const callBackData = { ...data, ...json };
+                dispatch(onFinalizeOrderReturn(callBackData));
+                dispatch(resetCart(callBackData));
             },
-            errorCallBackFunc: (errors) => {
-                dispatch(onFinalizeOrderReturn());
-                dispatch(resetCart());
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
+                dispatch(onFinalizeOrderReturn(callBackData));
+                dispatch(resetCart(callBackData));
+                // BMD-ISH
             }
         });
     };

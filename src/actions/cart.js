@@ -28,7 +28,7 @@ export const onAddToCartReturn = (callBackData) => ({ type: ON_ADD_TO_CART_RETUR
 export const onInitCartReturn = (callBackData) => ({ type: ON_INIT_CART_RETURN, callBackData: callBackData });
 
 // export const setCartId = (cartId) => ({ type: SET_CART_ID, cartId: cartId });
-export const resetCart = () => ({ type: RESET_CART });
+export const resetCart = (callBackData) => ({ type: RESET_CART, callBackData: callBackData });
 export const setCart = (obj) => ({ type: SET_CART, obj: obj });
 
 

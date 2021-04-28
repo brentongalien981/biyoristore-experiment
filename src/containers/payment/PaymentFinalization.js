@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import Bs from '../../bs-library/helpers/Bs';
-import { setPaymentFinalizationPageEntryCode, finalizeOrder, resetFinalizationObjs, endPaymentFinalizationProcess } from '../../actions/checkout';
+import { setPaymentFinalizationPageEntryCode, finalizeOrder, resetFinalizationObjs } from '../../actions/checkout';
 import BsAppSession from '../../bs-library/helpers/BsAppSession';
 import { COMPANY_CUSTOMER_SERVICE_EMAIL } from '../../bs-library/constants/global';
 
@@ -81,15 +81,20 @@ class PaymentFinalization extends React.Component {
 
     // BMD-ISH
     doActualPaymentFinalizationProcess() {
-        this.props.finalizeOrder(this.props.location.state.cartId, this.props.location.state.shippingInfo);
+        const data = {
+            cartId: this.props.location.state.cartId,
+            shippingInfo: this.props.location.state.shippingInfo,
+            doCallBackFunc: this.doPostPaymentFinalizationProcess
+        };
+        this.props.finalizeOrder(data);
     }
 
 
-
+    
     doPostPaymentFinalizationProcess() {
         PaymentFinalization.unblockNavBlocker();
         PaymentFinalization.isPaymentFinalizationProcessing = false;
-        this.props.endPaymentFinalizationProcess();
+        // this.props.endPaymentFinalizationProcess(); // BMD-DELETE
     }
 
 
@@ -98,7 +103,7 @@ class PaymentFinalization extends React.Component {
 
         let msgHeader = "";
         let msgBody = "";
-        let orderLink = null; // bmd-todo:LATER add order-link.
+        let orderLink = null;
 
 
         switch (this.props.orderProcessStatusCode) {
@@ -107,9 +112,14 @@ class PaymentFinalization extends React.Component {
                 break;
             default:
                 msgHeader = "Payment Successful!";
+
+                const orderUrl = '/order?id=' + this.props.orderId;
+                orderLink = (<Link to={orderUrl}>here</Link>);
+
                 msgBody = (
                     <>
                         We've received your payment and now processing your order.<br />
+                        We've emailed you the order details for your copy. You can also view it {orderLink}.<br /><br />
                         If you have any questions or want to cancel your order before it's shipped,<br />
                         please contact our Customer Service at <b style={{ color: "orangered" }}>{COMPANY_CUSTOMER_SERVICE_EMAIL}</b>
                     </>
@@ -129,13 +139,14 @@ class PaymentFinalization extends React.Component {
 
     /* MAIN FUNCS */
     componentDidUpdate() {
-        if (this.props.shouldDoPostPaymentFinalizationProcess) {
-            this.doPostPaymentFinalizationProcess();
-        }
+        // BMD-DELETE
+        // if (this.props.shouldDoPostPaymentFinalizationProcess) {
+        //     this.doPostPaymentFinalizationProcess();
+        // }
     }
 
 
-
+    // BMD-ISH
     componentDidMount() {
         if (!this.doPrePaymentFinalizationProcess()) { return; }
         this.doActualPaymentFinalizationProcess();
@@ -208,10 +219,9 @@ class PaymentFinalization extends React.Component {
 /* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
-        // isThereError: state.checkout.isThereError,
+        orderId: state.checkout.orderId,
         orderProcessStatusCode: state.checkout.orderProcessStatusCode,
-        // shouldDisplayFinalizationMsg: state.checkout.shouldDisplayFinalizationMsg,
-        shouldDoPostPaymentFinalizationProcess: state.checkout.shouldDoPostPaymentFinalizationProcess,
+        // shouldDoPostPaymentFinalizationProcess: state.checkout.shouldDoPostPaymentFinalizationProcess, // BMD-TODO: DELETE
         paymentFinalizationPageEntryCode: state.checkout.paymentFinalizationPageEntryCode,
     };
 };
@@ -220,9 +230,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        endPaymentFinalizationProcess: () => dispatch(endPaymentFinalizationProcess()),
+        // endPaymentFinalizationProcess: () => dispatch(endPaymentFinalizationProcess()), // BMD-DELETE
         resetFinalizationObjs: () => dispatch(resetFinalizationObjs()),
-        finalizeOrder: (cartId, shippingInfo) => dispatch(finalizeOrder(cartId, shippingInfo)),
+        finalizeOrder: (data) => dispatch(finalizeOrder(data)),
         setPaymentFinalizationPageEntryCode: () => dispatch(setPaymentFinalizationPageEntryCode()),
     };
 };

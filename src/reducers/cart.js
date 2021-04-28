@@ -235,15 +235,13 @@ const onUpdateCartItemCountReturn = (state, action) => {
 
 
 const resetCart = (state, action) => {
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: cart, METHOD: resetCart()");
+    let cart = action.callBackData?.newCart ?? { ...DEFAULT_CART };
 
-    const cart = { id: 0, cartItems: [] };
-    BsAppSession.set("cart", JSON.stringify(cart));
+    addMostEfficientSellerPropToCartItems(cart);
 
     return {
         ...state,
-        cart: { ...cart }
+        cart: cart
     };
 };
 
