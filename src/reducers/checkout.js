@@ -336,11 +336,8 @@ const onFinalizeOrderReturn = (state, action) => {
 
     return {
         ...state,
-        // shouldDoPostPaymentFinalizationProcess: true, // BMD-DELETE
-        // paymentProcessStatusCode: (action.objs?.paymentProcessStatusCode ? action.objs.paymentProcessStatusCode : -1), // BMD-DELETE
         orderProcessStatusCode: (action.callBackData.objs?.orderProcessStatusCode ?? -1),
-        orderId: action.callBackData.objs.orderId
-        // order: (action.objs?.order ? action.objs.order : {}) // BMD-DELETE
+        orderId: action.callBackData.objs?.orderId ?? 0
     };
 };
 
