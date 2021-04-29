@@ -31,7 +31,7 @@ const PaymentFinalization = React.lazy(() => import('./containers/payment/Paymen
 const PredefinedPaymentFinalization = React.lazy(() => import('./containers/payment/PredefinedPaymentFinalization'));
 const Order = React.lazy(() => import('./containers/order-detail/Order'));
 
-// bmd-TODO:DEPLOYMENT: Delete this
+// BMD-ON-DEPLOYMENT: Delete this
 const TestPageWithHistoryNavigationBlocker = React.lazy(() => import('./containers/experiment/TestPageWithHistoryNavigationBlocker'));
 
 
@@ -69,7 +69,7 @@ function App() {
 				<Route path="/test-loader" exact component={TestLoaderContainer} />
 				{/* <Route path="/product" exact component={ProductInDetails} /> */}
 
-				{/* bmd-todo:ON-DEPLOYMENT COMMENT-OUT */}
+				{/* BMD-ON-DEPLOYMENT: COMMENT-OUT */}
 				<Route path="/test-page-a" component={TestPageA} />
 				<Route path="/test-page-b" component={TestPageB} />
 				<Route path="/test-page-c" component={TestPageC} />

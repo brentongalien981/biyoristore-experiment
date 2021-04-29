@@ -16,12 +16,12 @@ function PaymentForm(props) {
     const stripe = useStripe();
     const elements = useElements();
 
-    //
+    
     let unblockNavBlocker = null;
     const navBlockerMsg = "Please wait we're processing your payment. \nIf you wanna cancel your order, please contact customer service at \ncustomerservice@anyshotbasketball.com";
 
 
-    // BMD-ISH
+    
     useEffect(() => {
 
         // Create PaymentIntent as soon as the page loads
@@ -42,10 +42,6 @@ function PaymentForm(props) {
             neededResponseParams: ["clientSecret"],
             callBackFunc: (requestData, json) => {
 
-                Bs.log("\n#####################");
-                Bs.log("FILE: PaymentForm.js, METHOD: useEffect() => ajaxCrud() => callBackFunc()");
-
-
                 if (!json.isResultOk) {
                     alert("Sorry, there's 3rd party problem on our end. Please try again shortly.");
                     props.history.replace("/checkout");
@@ -56,8 +52,6 @@ function PaymentForm(props) {
                 setClientSecret(json.clientSecret);
             },
             errorCallBackFunc: (errors) => {
-                Bs.log("\n#####################");
-                Bs.log("FILE: PaymentForm.js, METHOD: useEffect() => ajaxCrud() => errorCallBackFunc()");
                 alert("Sorry, there's a problem on our end. Please try again shortly.");
                 props.history.replace("/checkout");
                 return;

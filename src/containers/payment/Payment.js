@@ -113,7 +113,7 @@ class Payment extends React.Component {
         // recreating the Stripe object on every render.
         // loadStripe is initialized with your real test publishable API key.
         /**
-         * BMD-TODO: ON-STAGING
+         * BMD-ON-STAGING
          * - Maybe move this to componendDidMount()
          * - Make an AJAX-request for this info instead of hard-coding and showing this info to public
          * - Use stripe-production-pk.

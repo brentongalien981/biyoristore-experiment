@@ -79,7 +79,7 @@ class PaymentFinalization extends React.Component {
     }
 
 
-    // BMD-ISH
+    
     doActualPaymentFinalizationProcess() {
         const data = {
             cartId: this.props.location.state.cartId,
@@ -94,7 +94,6 @@ class PaymentFinalization extends React.Component {
     doPostPaymentFinalizationProcess() {
         PaymentFinalization.unblockNavBlocker();
         PaymentFinalization.isPaymentFinalizationProcessing = false;
-        // this.props.endPaymentFinalizationProcess(); // BMD-DELETE
     }
 
 
@@ -138,15 +137,6 @@ class PaymentFinalization extends React.Component {
 
 
     /* MAIN FUNCS */
-    componentDidUpdate() {
-        // BMD-DELETE
-        // if (this.props.shouldDoPostPaymentFinalizationProcess) {
-        //     this.doPostPaymentFinalizationProcess();
-        // }
-    }
-
-
-    // BMD-ISH
     componentDidMount() {
         if (!this.doPrePaymentFinalizationProcess()) { return; }
         this.doActualPaymentFinalizationProcess();
@@ -221,7 +211,6 @@ const mapStateToProps = (state) => {
     return {
         orderId: state.checkout.orderId,
         orderProcessStatusCode: state.checkout.orderProcessStatusCode,
-        // shouldDoPostPaymentFinalizationProcess: state.checkout.shouldDoPostPaymentFinalizationProcess, // BMD-TODO: DELETE
         paymentFinalizationPageEntryCode: state.checkout.paymentFinalizationPageEntryCode,
     };
 };
@@ -230,7 +219,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        // endPaymentFinalizationProcess: () => dispatch(endPaymentFinalizationProcess()), // BMD-DELETE
         resetFinalizationObjs: () => dispatch(resetFinalizationObjs()),
         finalizeOrder: (data) => dispatch(finalizeOrder(data)),
         setPaymentFinalizationPageEntryCode: () => dispatch(setPaymentFinalizationPageEntryCode()),

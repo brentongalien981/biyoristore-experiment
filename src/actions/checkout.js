@@ -186,7 +186,6 @@ export const finalizeOrder = (data) => {
                 const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
                 dispatch(onFinalizeOrderReturn(callBackData));
                 dispatch(resetCart(callBackData));
-                // BMD-ISH
             }
         });
     };

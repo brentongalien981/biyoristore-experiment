@@ -14,8 +14,6 @@ const initialState = {
     checkoutFinalizationPageEntryCode: "",
     paymentFinalizationPageEntryCode: "",
     predefinedPaymentFinalizationPageEntryCode: "",
-    // shouldDoPostPaymentFinalizationProcess: false, // BMD-DELETE
-    // paymentProcessStatusCode: 0, // BMD-DELETE
     orderProcessStatusCode: 0,
     order: {},
     orderId: 0,
@@ -51,8 +49,6 @@ const checkout = (state = initialState, action) => {
         case actions.ON_GET_SHIPPING_RATES_RETURN: return onGetShippingRatesReturn(state, action);
 
         // case actions.ON_ADDRESS_SELECTION_CHANGE: return onAddressSelectionChange(state, action);
-
-        // case actions.END_PAYMENT_FINALIZATION_PROCESS: return endPaymentFinalizationProcess(state, action); // BMD-DELETE
 
         case actions.ON_FINALIZE_ORDER_RETURN: return onFinalizeOrderReturn(state, action);
         case actions.RESET_FINALIZATION_OBJS: return resetFinalizationObjs(state, action);
@@ -309,27 +305,17 @@ const onGetShippingRatesReturn = (state, action) => {
 };
 
 
-// BMD-DELETE
-// const endPaymentFinalizationProcess = (state, action) => {
-//     return {
-//         ...state,
-//         shouldDoPostPaymentFinalizationProcess: false
-//     };
-// };
-
-
 
 const resetFinalizationObjs = (state, action) => {
     return {
         ...state,
-        // paymentProcessStatusCode: 0, // BMD-DELETE
         orderProcessStatusCode: 0,
         order: {} 
     };
 };
 
 
-// BMD-ISH
+
 const onFinalizeOrderReturn = (state, action) => {
 
     action.callBackData.doCallBackFunc();

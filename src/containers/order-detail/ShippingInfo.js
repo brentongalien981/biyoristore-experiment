@@ -36,7 +36,7 @@ function ShippingInfo(props) {
                         <div className="col">
                             <h5 className="eyebrow text-muted">To</h5>
                             <p className="card-text">
-                                {"bmd-TODO: FirstName LastName"}<br />
+                                {"BMD-TODO: FirstName LastName"}<br />
                                 {o.email}<br />
                                 {o.phone}
                             </p>
