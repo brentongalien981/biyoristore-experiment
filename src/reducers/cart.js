@@ -33,9 +33,7 @@ const cart = (state = initialState, action) => {
         case actions.ON_ADD_TO_CART_RETURN: return onAddToCartReturn(state, action);
         case actions.ON_INIT_CART_RETURN: return onInitCartReturn(state, action);
 
-        // case actions.SET_CART_ID: return setCartId(state, action);
         case actions.RESET_CART: return resetCart(state, action);
-        case actions.SET_CART: return setCart(state, action);
         default: return state;
     }
 };
@@ -235,30 +233,14 @@ const onUpdateCartItemCountReturn = (state, action) => {
 
 
 const resetCart = (state, action) => {
-    let cart = action.callBackData?.newCart ?? { ...DEFAULT_CART };
+    
+    let cart = action.callBackData.objs?.newCart ?? { ...DEFAULT_CART };
 
     addMostEfficientSellerPropToCartItems(cart);
 
     return {
         ...state,
         cart: cart
-    };
-};
-
-
-
-const setCart = (state, action) => {
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: cart, METHOD: setCart()");
-
-    let cart = action.obj;
-    if (!cart || cart == "") { cart = { id: 0, cartItems: [] }; }
-
-    BsAppSession.set("cart", JSON.stringify(cart));
-
-    return {
-        ...state,
-        cart: { ...cart }
     };
 };
 

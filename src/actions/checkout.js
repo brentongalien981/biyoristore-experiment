@@ -177,7 +177,6 @@ export const finalizeOrder = (data) => {
                 cartId: data.cartId, 
                 ...data.shippingInfo 
             },
-            neededResponseParams: ["paymentProcessStatusCode", "orderProcessStatusCode", "order"],
             callBackFunc: (requestData, json) => {
                 const callBackData = { ...data, ...json };
                 dispatch(onFinalizeOrderReturn(callBackData));

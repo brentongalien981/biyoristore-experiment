@@ -114,14 +114,14 @@ class PaymentFinalization extends React.Component {
                 msgHeader = "Payment Successful!";
 
                 const orderUrl = '/order?id=' + this.props.orderId;
-                orderLink = (<Link to={orderUrl}>here</Link>);
+                orderLink = (<Link to={orderUrl} style={{color: 'blue'}}>You can also view it here.</Link>);
 
                 msgBody = (
                     <>
                         We've received your payment and now processing your order.<br />
-                        We've emailed you the order details for your copy. You can also view it {orderLink}.<br /><br />
+                        We've emailed you the order details for your copy. {orderLink}<br /><br />
                         If you have any questions or want to cancel your order before it's shipped,<br />
-                        please contact our Customer Service at <b style={{ color: "orangered" }}>{COMPANY_CUSTOMER_SERVICE_EMAIL}</b>
+                        please contact our Customer Service at <b style={{ color: "green" }}>{COMPANY_CUSTOMER_SERVICE_EMAIL}</b>
                     </>
                 );
                 break;

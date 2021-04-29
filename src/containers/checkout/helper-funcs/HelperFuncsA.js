@@ -2,7 +2,7 @@ import { ORDER_PROCESSING_PERIOD, PAYMENT_TO_FUNDS_PERIOD } from "../../../bs-li
 
 export const getProjectedTotalDeliveryDays = (cartItems, shipmentRateObj) => {
     
-    return getNumOfSlowestRestockDay() + parseInt(shipmentRateObj.delivery_days) + ORDER_PROCESSING_PERIOD + PAYMENT_TO_FUNDS_PERIOD;
+    return getNumOfSlowestRestockDay(cartItems) + parseInt(shipmentRateObj.delivery_days) + ORDER_PROCESSING_PERIOD + PAYMENT_TO_FUNDS_PERIOD;
 };
 
 

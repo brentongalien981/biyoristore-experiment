@@ -7,7 +7,6 @@ import "./Payment.css";
 import PaymentForm from "./PaymentForm";
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { setCart } from '../../actions/cart';
 import { setPaymentFinalizationPageEntryCode, setPaymentPageEntryCode } from '../../actions/checkout';
 import { getProjectedTotalDeliveryDays } from '../checkout/helper-funcs/HelperFuncsA';
 
@@ -168,8 +167,7 @@ class Payment extends React.Component {
                         cart={this.props.cart} shippingAddress={shippingAddress}
                         shipmentRate={this.props.shipmentRate}
                         projectedTotalDeliveryDays={getProjectedTotalDeliveryDays(this.props.cart.cartItems, this.props.shipmentRate)}
-                        cartItemsData={cartItemsData}
-                        setCart={this.props.setCart} />
+                        cartItemsData={cartItemsData} />
                 </Elements>
             </>
         );
@@ -198,7 +196,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setPaymentPageEntryCode: () => dispatch(setPaymentPageEntryCode()),
         setPaymentFinalizationPageEntryCode: () => dispatch(setPaymentFinalizationPageEntryCode()),
-        setCart: (cart) => dispatch(setCart(cart)),
     };
 };
 
