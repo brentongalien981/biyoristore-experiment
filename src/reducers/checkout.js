@@ -278,7 +278,7 @@ const onGetShippingRatesReturn = (state, action) => {
             break;
         case NUM_OF_DAILY_ORDERS_LIMIT_REACHED:
         case NUM_OF_DAILY_ORDER_ITEMS_LIMIT_REACHED:
-            alert("We're very sorry... Due to our restricted man-power, we've reached the order limits we could process. Try again tomorrow, ok? Thanks you.");
+            alert("We're very sorry... Due to our restricted man-power, we've reached the order limits we could process for today. Try again tomorrow, ok? Thank you.");
             break;
         case ENTIRE_PROCESS_OK:
             shipmentId = action.callBackData.objs.shipmentId;

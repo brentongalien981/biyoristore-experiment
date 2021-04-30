@@ -4,6 +4,7 @@ import Bs from "../../bs-library/helpers/Bs";
 import BsCore2 from "../../bs-library/helpers/BsCore2";
 import { withRouter } from "react-router-dom";
 import BmdAuth from "../../bs-library/core/BmdAuth";
+import { COMPANY_CUSTOMER_SERVICE_EMAIL } from "../../bs-library/constants/global";
 
 
 
@@ -18,7 +19,9 @@ function PaymentForm(props) {
 
     
     let unblockNavBlocker = null;
-    const navBlockerMsg = "Please wait we're processing your payment. \nIf you wanna cancel your order, please contact customer service at \ncustomerservice@anyshotbasketball.com";
+    let navBlockerMsg = 'We are processing your payment. Hold on please...\n';
+    navBlockerMsg += "If you wanna cancel your order, please contact customer service at \n";
+    navBlockerMsg += COMPANY_CUSTOMER_SERVICE_EMAIL;
 
 
     
@@ -110,7 +113,7 @@ function PaymentForm(props) {
             alert(navBlockerMsg);
             return false;
         });
-        // window.onbeforeunload = () => { return "Please wait we're processing your payment. \nIf you wanna cancel your order, please contact customer service at \ncustomerservice@anyshotbasketball.com"; };
+        
 
         return true;
     };

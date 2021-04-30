@@ -143,7 +143,6 @@ class Checkout extends React.Component {
     onOrderPlace = (e) => {
 
         e.preventDefault();
-        Bs.log("In METHOD: onOrderPlace()");
 
         let returnObj = this.validateFields(this.state.address);
 
