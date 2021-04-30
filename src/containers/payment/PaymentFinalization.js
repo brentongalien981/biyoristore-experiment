@@ -136,7 +136,7 @@ class PaymentFinalization extends React.Component {
 
 
 
-    /* MAIN FUNCS */
+    /** MAIN FUNCS */
     componentDidMount() {
         if (!this.doPrePaymentFinalizationProcess()) { return; }
         this.doActualPaymentFinalizationProcess();
