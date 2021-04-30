@@ -184,6 +184,7 @@ class Checkout extends React.Component {
         };
 
         this.props.getShippingRates(data);
+        // BMD-ISH
         
     };
 

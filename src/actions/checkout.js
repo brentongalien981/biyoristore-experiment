@@ -75,7 +75,7 @@ export const getShippingRates = (data) => {
 
         BsCore2.ajaxCrud({
             url: '/customized-easypost/getRates',
-            // url: '/customized-easypost/test',
+            // url: '/customized-easypost/test', // BMD-FOR-DEBUG
             params: {
                 reducedCartItemsData: data.reducedCartItemsData,
                 shippingInfo: data.shippingInfo

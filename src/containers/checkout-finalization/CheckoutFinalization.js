@@ -94,7 +94,7 @@ class CheckoutFinalization extends React.Component {
                     <div className="container">
                         <div className="row">
                             <div className="col text-center">
-                                <h2>Please review your order.</h2>
+                                <h2>Please review your order-details...</h2>
                             </div>
                         </div>
                     </div>
