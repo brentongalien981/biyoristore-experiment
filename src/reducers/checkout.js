@@ -23,12 +23,12 @@ const initialState = {
     canSelectShippingOption: false,
     shipmentId: "",
     shipmentRate: {},
-    shouldGoToCheckoutFinalizationPage: false,
     shippingInfo: {},
     paymentMethod: {},
 
     // FLAGS
     canGoToPaymentPage: false,
+    shouldGoToCheckoutFinalizationPage: false
 };
 
 

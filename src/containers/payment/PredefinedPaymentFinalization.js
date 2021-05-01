@@ -16,14 +16,6 @@ class PredefinedPaymentFinalization extends React.Component {
 
 
     /* HELPER FUNCS */
-    doPostPredefinedPaymentFinalizationProcess() {
-        PredefinedPaymentFinalization.unblockNavBlocker();
-        PredefinedPaymentFinalization.isPredefinedPaymentFinalizationProcessing = false;
-        this.props.endPaymentFinalizationProcess();
-    }
-
-
-
     getCartItemsInfo() {
         const cartItems = this.props.location.state.cartItems;
         let info = [];
@@ -37,15 +29,19 @@ class PredefinedPaymentFinalization extends React.Component {
     }
 
 
-
+    // BMD-ISH
     doActualPredefinedPaymentFinalizationProcess() {
-        const objs = {
+        const data = {
             paymentMethodId: this.props.location.state.paymentMethodId,
             shippingInfo: this.props.location.state.shippingInfo,
-            cartItemsInfo: this.getCartItemsInfo()
+            cartItemsInfo: this.getCartItemsInfo(),
+            doCallBackFunc: () => {
+                PredefinedPaymentFinalization.unblockNavBlocker();
+                PredefinedPaymentFinalization.isPredefinedPaymentFinalizationProcessing = false; 
+            }
         };
 
-        this.props.finalizeOrderWithPredefinedPayment(objs);
+        this.props.finalizeOrderWithPredefinedPayment(data);
     }
 
 
@@ -53,6 +49,7 @@ class PredefinedPaymentFinalization extends React.Component {
     enableNavBlocker() {
         // 2 WARNINGS: Warn user from moving away from the page when pay-process has already been dispatched.
         PredefinedPaymentFinalization.unblockNavBlocker = this.props.history.block(() => {
+            // BMD-TODO: Edit this.
             alert("Please wait we're processing your payment. \nIf you wanna cancel your order, please contact customer service at \ncustomerservice@anyshotbasketball.com");
             return false;
         });
@@ -75,7 +72,7 @@ class PredefinedPaymentFinalization extends React.Component {
     }
 
 
-
+    // BMD-TODO
     getMsgComponent() {
 
         let msgHeader = "";
@@ -83,7 +80,7 @@ class PredefinedPaymentFinalization extends React.Component {
         let orderLink = null; // BMD-TODO: add order-link.
 
 
-        switch (this.props.paymentProcessStatusCode) {
+        switch (this.props.orderProcessStatusCode) {
             case -1:
                 msgHeader = "Oops, sorry...";
                 msgBody = (
@@ -156,19 +153,12 @@ class PredefinedPaymentFinalization extends React.Component {
     /* MAIN FUNCS */
     componentWillUnmount() {
         if (PredefinedPaymentFinalization.isPredefinedPaymentFinalizationProcessing) {
+            // BMD-TODO
             alert("Please wait we're processing your payment. \nIf you wanna cancel your order, please contact customer service at \ncustomerservice@anyshotbasketball.com");
             return;
         }
 
         this.props.setPredefinedPaymentFinalizationPageEntryCode();
-    }
-
-
-
-    componentDidUpdate() {
-        if (this.props.shouldDoPostPaymentFinalizationProcess) {
-            this.doPostPredefinedPaymentFinalizationProcess();
-        }
     }
 
 
@@ -183,6 +173,7 @@ class PredefinedPaymentFinalization extends React.Component {
 
         this.props.resetFinalizationObjs();
 
+        // BMD-ISH
         if (!this.doPrePredefinedPaymentFinalizationProcess()) { return; }
 
         this.doActualPredefinedPaymentFinalizationProcess();
@@ -218,8 +209,6 @@ class PredefinedPaymentFinalization extends React.Component {
 /* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
-        paymentProcessStatusCode: state.checkout.paymentProcessStatusCode,
-        shouldDoPostPaymentFinalizationProcess: state.checkout.shouldDoPostPaymentFinalizationProcess,
         orderProcessStatusCode: state.checkout.orderProcessStatusCode,
         actualPageEntryCode: state.checkout.predefinedPaymentFinalizationPageEntryCode,
     };
@@ -230,8 +219,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setPredefinedPaymentFinalizationPageEntryCode: () => dispatch(actions.setPredefinedPaymentFinalizationPageEntryCode()),
-        endPaymentFinalizationProcess: () => dispatch(actions.endPaymentFinalizationProcess()),
-        finalizeOrderWithPredefinedPayment: (objs) => dispatch(actions.finalizeOrderWithPredefinedPayment(objs)),
+        finalizeOrderWithPredefinedPayment: (data) => dispatch(actions.finalizeOrderWithPredefinedPayment(data)),
         resetFinalizationObjs: () => dispatch(actions.resetFinalizationObjs()),
     };
 };

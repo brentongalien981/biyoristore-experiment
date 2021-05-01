@@ -52,7 +52,6 @@ export const onGetShippingRatesFail = () => ({ type: ON_GET_SHIPPING_RATES_FAIL 
 export const onGetShippingRatesReturn = (callBackData) => ({ type: ON_GET_SHIPPING_RATES_RETURN, callBackData: callBackData });
 
 // export const onAddressSelectionChange = (e, i) => ({ type: ON_ADDRESS_SELECTION_CHANGE, e: e, i: i });
-export const endPaymentFinalizationProcess = () => ({ type: END_PAYMENT_FINALIZATION_PROCESS }); // BMD-DELETE
 export const resetFinalizationObjs = () => ({ type: RESET_FINALIZATION_OBJS });
 
 export const onFinalizeOrderReturn = (callBackData) => ({ type: ON_FINALIZE_ORDER_RETURN, callBackData: callBackData });
@@ -97,20 +96,55 @@ export const getShippingRates = (data) => {
 
 
 
-export const finalizeOrderWithPredefinedPayment = (objs) => {
+export const finalizeOrder = (data) => {
 
     return (dispatch) => {
 
+        const bmdAuth = BmdAuth.getInstance();
+
+        BsCore2.ajaxCrud({
+            url: '/checkout/finalizeOrder',
+            method: 'post',
+            params: { 
+                bmdToken: bmdAuth?.bmdToken, 
+                authProviderId: bmdAuth?.authProviderId,
+                temporaryGuestUserId: BmdAuth.getTemporaryGuestUserId(),
+                cartId: data.cartId, 
+                ...data.shippingInfo 
+            },
+            callBackFunc: (requestData, json) => {
+                const callBackData = { ...data, ...json };
+                dispatch(onFinalizeOrderReturn(callBackData));
+                dispatch(resetCart(callBackData));
+            },
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
+                dispatch(onFinalizeOrderReturn(callBackData));
+                dispatch(resetCart(callBackData));
+            }
+        });
+    };
+};
+
+
+// BMD-ISH
+export const finalizeOrderWithPredefinedPayment = (data) => {
+
+    return (dispatch) => {
+
+        const bmdAuth = BmdAuth.getInstance();
+
         BsCore2.ajaxCrud({
             url: '/checkout/finalizeOrderWithPredefinedPayment',
-            method: "post",
+            method: 'post',
             params: {
-                api_token: BsAppSession.get("apiToken"),
-                paymentMethodId: objs.paymentMethodId,
-                cartItemsInfo: objs.cartItemsInfo,
-                ...objs.shippingInfo
+                bmdToken: bmdAuth?.bmdToken, 
+                authProviderId: bmdAuth?.authProviderId,
+                paymentMethodId: data.paymentMethodId,
+                cartItemsInfo: data.cartItemsInfo,
+                ...data.shippingInfo
             },
-            neededResponseParams: ["paymentProcessStatusCode", "orderProcessStatusCode", "order"],
+            neededResponseParams: ["paymentProcessStatusCode", "orderProcessStatusCode", "order"], // BMD-DELETE
             callBackFunc: (requestData, json) => {
 
                 const objs = { paymentProcessStatusCode: json.paymentProcessStatusCode, orderProcessStatusCode: json.orderProcessStatusCode, order: json.order };
@@ -157,38 +191,6 @@ export const doOrderInventoryChecks = (data) => {
 
     };
 
-};
-
-
-
-export const finalizeOrder = (data) => {
-
-    return (dispatch) => {
-
-        const bmdAuth = BmdAuth.getInstance();
-
-        BsCore2.ajaxCrud({
-            url: '/checkout/finalizeOrder',
-            method: 'post',
-            params: { 
-                bmdToken: bmdAuth?.bmdToken, 
-                authProviderId: bmdAuth?.authProviderId,
-                temporaryGuestUserId: BmdAuth.getTemporaryGuestUserId(),
-                cartId: data.cartId, 
-                ...data.shippingInfo 
-            },
-            callBackFunc: (requestData, json) => {
-                const callBackData = { ...data, ...json };
-                dispatch(onFinalizeOrderReturn(callBackData));
-                dispatch(resetCart(callBackData));
-            },
-            errorCallBackFunc: (errors, errorStatusCode) => {
-                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
-                dispatch(onFinalizeOrderReturn(callBackData));
-                dispatch(resetCart(callBackData));
-            }
-        });
-    };
 };
 
 
