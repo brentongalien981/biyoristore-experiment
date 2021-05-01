@@ -105,12 +105,12 @@ export const finalizeOrder = (data) => {
         BsCore2.ajaxCrud({
             url: '/checkout/finalizeOrder',
             method: 'post',
-            params: { 
-                bmdToken: bmdAuth?.bmdToken, 
+            params: {
+                bmdToken: bmdAuth?.bmdToken,
                 authProviderId: bmdAuth?.authProviderId,
                 temporaryGuestUserId: BmdAuth.getTemporaryGuestUserId(),
-                cartId: data.cartId, 
-                ...data.shippingInfo 
+                cartId: data.cartId,
+                ...data.shippingInfo
             },
             callBackFunc: (requestData, json) => {
                 const callBackData = { ...data, ...json };
@@ -138,10 +138,12 @@ export const finalizeOrderWithPredefinedPayment = (data) => {
             url: '/checkout/finalizeOrderWithPredefinedPayment',
             method: 'post',
             params: {
-                bmdToken: bmdAuth?.bmdToken, 
+                bmdToken: bmdAuth?.bmdToken,
                 authProviderId: bmdAuth?.authProviderId,
                 paymentMethodId: data.paymentMethodId,
                 cartItemsInfo: data.cartItemsInfo,
+                shipmentRateAmount: data.shipmentRateAmount,
+                projectedTotalDeliveryDays: data.projectedTotalDeliveryDays,
                 ...data.shippingInfo
             },
             neededResponseParams: ["paymentProcessStatusCode", "orderProcessStatusCode", "order"], // BMD-DELETE
@@ -174,7 +176,7 @@ export const doOrderInventoryChecks = (data) => {
             url: '/checkout/doOrderInventoryChecks',
             method: 'post',
             params: {
-                bmdToken: bmdAuth?.bmdToken, 
+                bmdToken: bmdAuth?.bmdToken,
                 authProviderId: bmdAuth?.authProviderId,
                 temporaryGuestUserId: BmdAuth.getTemporaryGuestUserId()
             },

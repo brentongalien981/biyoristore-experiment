@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import * as actions from '../../actions/checkout';
 import Bs from '../../bs-library/helpers/Bs';
+import { getProjectedTotalDeliveryDays } from '../checkout/helper-funcs/HelperFuncsA';
 
 
 
@@ -35,6 +36,8 @@ class PredefinedPaymentFinalization extends React.Component {
             paymentMethodId: this.props.location.state.paymentMethodId,
             shippingInfo: this.props.location.state.shippingInfo,
             cartItemsInfo: this.getCartItemsInfo(),
+            shipmentRateAmount: this.props.shipmentRate.rate,
+            projectedTotalDeliveryDays: getProjectedTotalDeliveryDays(this.props.cart.cartItems, this.props.shipmentRate),
             doCallBackFunc: () => {
                 PredefinedPaymentFinalization.unblockNavBlocker();
                 PredefinedPaymentFinalization.isPredefinedPaymentFinalizationProcessing = false; 
@@ -209,6 +212,8 @@ class PredefinedPaymentFinalization extends React.Component {
 /* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
+        shipmentRate: state.checkout.shipmentRate,
+        cart: state.cart.cart,
         orderProcessStatusCode: state.checkout.orderProcessStatusCode,
         actualPageEntryCode: state.checkout.predefinedPaymentFinalizationPageEntryCode,
     };
