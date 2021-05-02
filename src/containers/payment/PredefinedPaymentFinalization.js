@@ -2,8 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import * as actions from '../../actions/checkout';
+import { COMPANY_CUSTOMER_SERVICE_EMAIL } from '../../bs-library/constants/global';
 import Bs from '../../bs-library/helpers/Bs';
 import { getProjectedTotalDeliveryDays } from '../checkout/helper-funcs/HelperFuncsA';
+import { ORDER_STATUSES, PAYMENT_FINALIZATION_NAV_BLOCKER_MSG } from './constants/consts';
 
 
 
@@ -30,7 +32,7 @@ class PredefinedPaymentFinalization extends React.Component {
     }
 
 
-    // BMD-ISH
+
     doActualPredefinedPaymentFinalizationProcess() {
         const data = {
             paymentMethodId: this.props.location.state.paymentMethodId,
@@ -40,7 +42,7 @@ class PredefinedPaymentFinalization extends React.Component {
             projectedTotalDeliveryDays: getProjectedTotalDeliveryDays(this.props.cart.cartItems, this.props.shipmentRate),
             doCallBackFunc: () => {
                 PredefinedPaymentFinalization.unblockNavBlocker();
-                PredefinedPaymentFinalization.isPredefinedPaymentFinalizationProcessing = false; 
+                PredefinedPaymentFinalization.isPredefinedPaymentFinalizationProcessing = false;
             }
         };
 
@@ -52,8 +54,7 @@ class PredefinedPaymentFinalization extends React.Component {
     enableNavBlocker() {
         // 2 WARNINGS: Warn user from moving away from the page when pay-process has already been dispatched.
         PredefinedPaymentFinalization.unblockNavBlocker = this.props.history.block(() => {
-            // BMD-TODO: Edit this.
-            alert("Please wait we're processing your payment. \nIf you wanna cancel your order, please contact customer service at \ncustomerservice@anyshotbasketball.com");
+            alert(PAYMENT_FINALIZATION_NAV_BLOCKER_MSG);
             return false;
         });
         // window.onbeforeunload = () => { return "Please wait we're processing your payment. \nIf you wanna cancel your order, please contact customer service at \ncustomerservice@anyshotbasketball.com"; };
@@ -75,29 +76,16 @@ class PredefinedPaymentFinalization extends React.Component {
     }
 
 
-    // BMD-TODO
+    // BMD-ISH
     getMsgComponent() {
 
         let msgHeader = "";
         let msgBody = "";
-        let orderLink = null; // BMD-TODO: add order-link.
+        let orderLink = null;
 
 
-        switch (this.props.orderProcessStatusCode) {
-            case -1:
-                msgHeader = "Oops, sorry...";
-                msgBody = (
-                    <>
-                        Something went wrong on our end. Your payment was not charged.<br />
-                        Please try again shortly<br />
-                    </>
-                );
-                break;
-            case 0:
-                msgHeader = "Please wait...";
-                msgBody = "Please wait. We're finalizing your order.";
-                break;
-            case 1:
+        switch (this.props.paymentProcessStatusCode) {
+            case ORDER_STATUSES.PAYMENT_METHOD_NOT_CHARGED:
                 msgHeader = "Oops, sorry...";
                 msgBody = (
                     <>
@@ -106,17 +94,27 @@ class PredefinedPaymentFinalization extends React.Component {
                     </>
                 );
                 break;
-            case 2:
+            case 0:
+                msgHeader = "Please wait...";
+                msgBody = "Please wait. We're finalizing your order.";
+                break;
+            case ORDER_STATUSES.PAYMENT_METHOD_CHARGED:
                 msgHeader = "Payment Successful!";
+
+                const orderUrl = '/order?id=' + this.props.orderId;
+                orderLink = (<Link to={orderUrl} style={{color: 'blue'}}>You can also view it here.</Link>);
+
                 msgBody = (
                     <>
                         We've received your payment and now processing your order.<br />
+                        We've emailed you the order details for your copy. {orderLink}<br /><br />
                         If you have any questions or want to cancel your order before it's shipped,<br />
-                        please contact our Customer Service at <b style={{ color: "orangered" }}>customerservice@anyshotbasketball.com</b>
+                        please contact our Customer Service at <b style={{ color: "green" }}>{COMPANY_CUSTOMER_SERVICE_EMAIL}</b>
                     </>
                 );
                 break;
         }
+
 
         return (
             <>
@@ -156,8 +154,7 @@ class PredefinedPaymentFinalization extends React.Component {
     /* MAIN FUNCS */
     componentWillUnmount() {
         if (PredefinedPaymentFinalization.isPredefinedPaymentFinalizationProcessing) {
-            // BMD-TODO
-            alert("Please wait we're processing your payment. \nIf you wanna cancel your order, please contact customer service at \ncustomerservice@anyshotbasketball.com");
+            alert(PAYMENT_FINALIZATION_NAV_BLOCKER_MSG);
             return;
         }
 
@@ -176,7 +173,6 @@ class PredefinedPaymentFinalization extends React.Component {
 
         this.props.resetFinalizationObjs();
 
-        // BMD-ISH
         if (!this.doPrePredefinedPaymentFinalizationProcess()) { return; }
 
         this.doActualPredefinedPaymentFinalizationProcess();
@@ -212,8 +208,10 @@ class PredefinedPaymentFinalization extends React.Component {
 /* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
+        orderId: state.checkout.orderId,
         shipmentRate: state.checkout.shipmentRate,
         cart: state.cart.cart,
+        paymentProcessStatusCode: state.checkout.paymentProcessStatusCode,
         orderProcessStatusCode: state.checkout.orderProcessStatusCode,
         actualPageEntryCode: state.checkout.predefinedPaymentFinalizationPageEntryCode,
     };

@@ -27,8 +27,12 @@ export const END_PAYMENT_FINALIZATION_PROCESS = "END_PAYMENT_FINALIZATION_PROCES
 
 export const RESET_FINALIZATION_OBJS = "RESET_FINALIZATION_OBJS";
 export const ON_FINALIZE_ORDER_RETURN = "ON_FINALIZE_ORDER_RETURN";
+export const ON_FINALIZE_ORDER_WITH_PREDEFINED_PAYMENT_RETURN = "ON_FINALIZE_ORDER_WITH_PREDEFINED_PAYMENT_RETURN";
+
+
 // export const ON_FINALIZE_ORDER_FAIL = "ON_FINALIZE_ORDER_FAIL";
 // export const ON_FINALIZE_ORDER_SUCCESS = "ON_FINALIZE_ORDER_SUCCESS";
+
 export const SET_PREDEFINED_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE = "SET_PREDEFINED_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE";
 export const SET_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE = "SET_PAYMENT_FINALIZATION_PAGE_ENTRY_CODE";
 export const SET_PAYMENT_PAGE_ENTRY_CODE = "SET_PAYMENT_PAGE_ENTRY_CODE";
@@ -54,6 +58,8 @@ export const onGetShippingRatesReturn = (callBackData) => ({ type: ON_GET_SHIPPI
 // export const onAddressSelectionChange = (e, i) => ({ type: ON_ADDRESS_SELECTION_CHANGE, e: e, i: i });
 export const resetFinalizationObjs = () => ({ type: RESET_FINALIZATION_OBJS });
 
+
+export const onFinalizeOrderWithPredefinedPaymentReturn = (callBackData) => ({ type: ON_FINALIZE_ORDER_WITH_PREDEFINED_PAYMENT_RETURN, callBackData: callBackData });
 export const onFinalizeOrderReturn = (callBackData) => ({ type: ON_FINALIZE_ORDER_RETURN, callBackData: callBackData });
 
 // export const onFinalizeOrderFail = () => ({ type: ON_FINALIZE_ORDER_FAIL });
@@ -146,19 +152,15 @@ export const finalizeOrderWithPredefinedPayment = (data) => {
                 projectedTotalDeliveryDays: data.projectedTotalDeliveryDays,
                 ...data.shippingInfo
             },
-            neededResponseParams: ["paymentProcessStatusCode", "orderProcessStatusCode", "order"], // BMD-DELETE
             callBackFunc: (requestData, json) => {
-
-                const objs = { paymentProcessStatusCode: json.paymentProcessStatusCode, orderProcessStatusCode: json.orderProcessStatusCode, order: json.order };
-                dispatch(onFinalizeOrderReturn(objs));
-
-                const PAYMENT_METHOD_CHARGED = 2;
-                if (json.paymentProcessStatusCode === PAYMENT_METHOD_CHARGED) {
-                    dispatch(resetCart());
-                }
+                const callBackData = { ...data, ...json };
+                dispatch(onFinalizeOrderWithPredefinedPaymentReturn(callBackData));
+                dispatch(resetCart(callBackData));
             },
-            errorCallBackFunc: (errors) => {
-                dispatch(onFinalizeOrderReturn());
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
+                dispatch(onFinalizeOrderWithPredefinedPaymentReturn(callBackData));
+                dispatch(resetCart(callBackData));
             }
         });
     };

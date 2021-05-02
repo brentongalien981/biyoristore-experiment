@@ -234,7 +234,7 @@ const onUpdateCartItemCountReturn = (state, action) => {
 
 const resetCart = (state, action) => {
     
-    let cart = action.callBackData.objs?.newCart ?? { ...DEFAULT_CART };
+    let cart = action.callBackData.objs?.updatedCart ?? { ...DEFAULT_CART };
 
     addMostEfficientSellerPropToCartItems(cart);
 

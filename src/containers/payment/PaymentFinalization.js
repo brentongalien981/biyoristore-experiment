@@ -4,6 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import Bs from '../../bs-library/helpers/Bs';
 import { setPaymentFinalizationPageEntryCode, finalizeOrder, resetFinalizationObjs } from '../../actions/checkout';
 import { COMPANY_CUSTOMER_SERVICE_EMAIL } from '../../bs-library/constants/global';
+import { PAYMENT_FINALIZATION_NAV_BLOCKER_MSG } from './constants/consts';
 
 
 
@@ -55,10 +56,7 @@ class PaymentFinalization extends React.Component {
     enableNavBlocker() {
         // 2 WARNINGS: Warn user from moving away from the page when pay-process has already been dispatched.
         PaymentFinalization.unblockNavBlocker = this.props.history.block(() => {
-            let alertMsg = 'We are processing your payment. Hold on please...\n';
-            alertMsg += "If you wanna cancel your order, please contact customer service at \n";
-            alertMsg += COMPANY_CUSTOMER_SERVICE_EMAIL;
-            alert(alertMsg);
+            alert(PAYMENT_FINALIZATION_NAV_BLOCKER_MSG);
             return false;
         });
     }
@@ -150,10 +148,7 @@ class PaymentFinalization extends React.Component {
         Bs.log("In CLASS: PaymentFinalization, METHOD: componentWillUnmount()...");
 
         if (PaymentFinalization.isPaymentFinalizationProcessing) {
-            let alertMsg = 'We are processing your payment. Hold on please...\n';
-            alertMsg += "If you wanna cancel your order, please contact customer service at \n";
-            alertMsg += COMPANY_CUSTOMER_SERVICE_EMAIL;
-            alert(alertMsg);
+            alert(PAYMENT_FINALIZATION_NAV_BLOCKER_MSG);
             return;
         }
 

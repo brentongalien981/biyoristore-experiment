@@ -1,6 +1,7 @@
 import * as actions from '../actions/checkout';
 import Bs from '../bs-library/helpers/Bs';
 import BsCore2 from '../bs-library/helpers/BsCore2';
+import { ORDER_STATUSES } from '../containers/payment/constants/consts';
 
 
 
@@ -14,6 +15,7 @@ const initialState = {
     checkoutFinalizationPageEntryCode: "",
     paymentFinalizationPageEntryCode: "",
     predefinedPaymentFinalizationPageEntryCode: "",
+    paymentProcessStatusCode: 0,
     orderProcessStatusCode: 0,
     order: {},
     orderId: 0,
@@ -50,6 +52,7 @@ const checkout = (state = initialState, action) => {
 
         // case actions.ON_ADDRESS_SELECTION_CHANGE: return onAddressSelectionChange(state, action);
 
+        case actions.ON_FINALIZE_ORDER_WITH_PREDEFINED_PAYMENT_RETURN: return onFinalizeOrderWithPredefinedPaymentReturn(state, action);
         case actions.ON_FINALIZE_ORDER_RETURN: return onFinalizeOrderReturn(state, action);
         case actions.RESET_FINALIZATION_OBJS: return resetFinalizationObjs(state, action);
         // case actions.ON_FINALIZE_ORDER_FAIL: return onFinalizeOrderFail(state, action);
@@ -309,8 +312,23 @@ const onGetShippingRatesReturn = (state, action) => {
 const resetFinalizationObjs = (state, action) => {
     return {
         ...state,
+        paymentProcessStatusCode: 0,
         orderProcessStatusCode: 0,
-        order: {} 
+        orderId: 0
+    };
+};
+
+
+// BMD-ISH
+const onFinalizeOrderWithPredefinedPaymentReturn = (state, action) => {
+
+    action.callBackData.doCallBackFunc();
+
+    return {
+        ...state,
+        paymentProcessStatusCode: (action.callBackData.objs?.paymentProcessStatusCode ?? ORDER_STATUSES.PAYMENT_METHOD_NOT_CHARGED),
+        orderProcessStatusCode: (action.callBackData.objs?.orderProcessStatusCode ?? -1),
+        orderId: action.callBackData.objs?.orderId ?? 0
     };
 };
 
