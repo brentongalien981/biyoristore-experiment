@@ -23,8 +23,6 @@ export const ON_GET_SHIPPING_RATES_RETURN = "ON_GET_SHIPPING_RATES_RETURN";
 
 // export const ON_ADDRESS_SELECTION_CHANGE = "ON_ADDRESS_SELECTION_CHANGE";
 
-export const END_PAYMENT_FINALIZATION_PROCESS = "END_PAYMENT_FINALIZATION_PROCESS"; // BMD-DELETE
-
 export const RESET_FINALIZATION_OBJS = "RESET_FINALIZATION_OBJS";
 export const ON_FINALIZE_ORDER_RETURN = "ON_FINALIZE_ORDER_RETURN";
 export const ON_FINALIZE_ORDER_WITH_PREDEFINED_PAYMENT_RETURN = "ON_FINALIZE_ORDER_WITH_PREDEFINED_PAYMENT_RETURN";
@@ -80,7 +78,6 @@ export const getShippingRates = (data) => {
 
         BsCore2.ajaxCrud({
             url: '/customized-easypost/getRates',
-            // url: '/customized-easypost/test', // BMD-FOR-DEBUG
             params: {
                 reducedCartItemsData: data.reducedCartItemsData,
                 shippingInfo: data.shippingInfo
@@ -133,7 +130,7 @@ export const finalizeOrder = (data) => {
 };
 
 
-// BMD-ISH
+
 export const finalizeOrderWithPredefinedPayment = (data) => {
 
     return (dispatch) => {

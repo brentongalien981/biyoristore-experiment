@@ -319,15 +319,36 @@ const resetFinalizationObjs = (state, action) => {
 };
 
 
-// BMD-ISH
+
 const onFinalizeOrderWithPredefinedPaymentReturn = (state, action) => {
+
+    const paymentProcessStatusCode = action.callBackData.objs?.paymentProcessStatusCode ?? ORDER_STATUSES.PAYMENT_METHOD_NOT_CHARGED;
+    const orderProcessStatusCode = action.callBackData.objs?.orderProcessStatusCode ?? -1;
+
+    if (paymentProcessStatusCode == ORDER_STATUSES.PAYMENT_METHOD_NOT_CHARGED) {
+
+        switch (orderProcessStatusCode) {
+            case ORDER_STATUSES.CART_HAS_NO_ITEM:
+                alert('Oops! Your cart has no items.');
+                break;
+            case ORDER_STATUSES.INVALID_PAYMENT_METHOD:
+                alert('Oops! Invalid payment info. Please provide another card.');
+                break;
+            default:
+                BsCore2.alertForGeneralError();
+                break;
+        }
+
+    }
+
 
     action.callBackData.doCallBackFunc();
 
+
     return {
         ...state,
-        paymentProcessStatusCode: (action.callBackData.objs?.paymentProcessStatusCode ?? ORDER_STATUSES.PAYMENT_METHOD_NOT_CHARGED),
-        orderProcessStatusCode: (action.callBackData.objs?.orderProcessStatusCode ?? -1),
+        paymentProcessStatusCode: paymentProcessStatusCode,
+        orderProcessStatusCode: orderProcessStatusCode,
         orderId: action.callBackData.objs?.orderId ?? 0
     };
 };

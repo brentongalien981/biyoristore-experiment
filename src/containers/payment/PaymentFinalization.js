@@ -111,8 +111,11 @@ class PaymentFinalization extends React.Component {
             default:
                 msgHeader = "Payment Successful!";
 
-                const orderUrl = '/order?id=' + this.props.orderId;
-                orderLink = (<Link to={orderUrl} style={{color: 'blue'}}>You can also view it here.</Link>);
+                if (this.props.orderId != 0) {
+                    const orderUrl = '/order?id=' + this.props.orderId;
+                    orderLink = (<Link to={orderUrl} style={{color: 'blue'}}>You can also view it here.</Link>);
+                }
+                
 
                 msgBody = (
                     <>

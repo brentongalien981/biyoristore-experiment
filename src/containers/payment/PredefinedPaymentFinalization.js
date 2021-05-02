@@ -76,7 +76,7 @@ class PredefinedPaymentFinalization extends React.Component {
     }
 
 
-    // BMD-ISH
+    
     getMsgComponent() {
 
         let msgHeader = "";
@@ -90,7 +90,7 @@ class PredefinedPaymentFinalization extends React.Component {
                 msgBody = (
                     <>
                         We couldn't process your payment. Your payment was not charged.<br />
-                        Please use another card <Link to="/checkout">here and try again.</Link><br />
+                        <Link to="/checkout">Please try again.</Link><br />
                     </>
                 );
                 break;
@@ -101,8 +101,10 @@ class PredefinedPaymentFinalization extends React.Component {
             case ORDER_STATUSES.PAYMENT_METHOD_CHARGED:
                 msgHeader = "Payment Successful!";
 
-                const orderUrl = '/order?id=' + this.props.orderId;
-                orderLink = (<Link to={orderUrl} style={{color: 'blue'}}>You can also view it here.</Link>);
+                if (this.props.orderId != 0) {
+                    const orderUrl = '/order?id=' + this.props.orderId;
+                    orderLink = (<Link to={orderUrl} style={{color: 'blue'}}>You can also view it here.</Link>);
+                }
 
                 msgBody = (
                     <>
@@ -112,6 +114,10 @@ class PredefinedPaymentFinalization extends React.Component {
                         please contact our Customer Service at <b style={{ color: "green" }}>{COMPANY_CUSTOMER_SERVICE_EMAIL}</b>
                     </>
                 );
+                break;
+            default:
+                msgHeader = "Oops, sorry...";
+                msgBody = "Something went wrong on our end. Please try again shortly";
                 break;
         }
 
