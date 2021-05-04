@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import * as actions from '../../actions/checkout';
 import { COMPANY_CUSTOMER_SERVICE_EMAIL } from '../../bs-library/constants/global';
-import Bs from '../../bs-library/helpers/Bs';
 import { getProjectedTotalDeliveryDays } from '../checkout/helper-funcs/HelperFuncsA';
 import { ORDER_STATUSES, PAYMENT_FINALIZATION_NAV_BLOCKER_MSG } from './constants/consts';
 
