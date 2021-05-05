@@ -8,5 +8,7 @@ export const COMPANY_CUSTOMER_SERVICE_EMAIL = 'customerservice@bmd.com'; // BMD-
 
 /** ORDER */
 // Period in business-days.
+// BMD-ON-STAGING
+// NOTE: Whenever you change this, make sure to edit both frontend and backend constant values.
 export const ORDER_PROCESSING_PERIOD = 1;
 export const PAYMENT_TO_FUNDS_PERIOD = 1;
