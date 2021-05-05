@@ -61,7 +61,7 @@ function getPaymentMethodInputFields(props) {
             </div>
 
             <div className="form-group col-md-6">
-                <label>Postal/ZIP Code</label>
+                <label>ZIP / Postal Code</label>
                 <input type="text" className="form-control" {...disabledAttrib} name="postalCode" value={p.postalCode} onChange={props.onPaymentMethodInputChange} />
             </div>
         </div>

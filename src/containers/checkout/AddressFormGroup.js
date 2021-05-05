@@ -58,7 +58,7 @@ export default function AddressFormGroup(props) {
                 </div>
 
                 <div className="form-group col-md-4">
-                    <label htmlFor="province">Province</label>
+                    <label htmlFor="province">State / Province</label>
                     <input type="text" className="form-control" placeholder="" {...disabledAttrib} value={a.province} name="province" onChange={props.onOrderInputChange} />
                 </div>
                 <div className="form-group col-md-4">
@@ -67,7 +67,7 @@ export default function AddressFormGroup(props) {
                 </div>
 
                 <div className="form-group col-md-4">
-                    <label htmlFor="postcode">Postal Code</label>
+                    <label htmlFor="postcode">ZIP / Postal Code</label>
                     <input type="text" className="form-control" placeholder="" {...disabledAttrib} value={a.postalCode} name="postalCode" onChange={props.onOrderInputChange} />
                 </div>
 
