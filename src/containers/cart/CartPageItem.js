@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import BsCore from '../../bs-library/helpers/BsCore';
 import { getSizeComponentLabel } from '../../components/cart/helper-funcs/HelperFuncsA';
+import SpinnerLoader from '../../components/loader/SpinnerLoader/SpinnerLoader';
 
 
 
@@ -15,7 +16,7 @@ function CartPageItem(props) {
     const displayPrice = ((discountPrice != 0 && discountPrice < regularPrice) ? discountPrice : regularPrice);
 
     const quantity = parseInt(props.item.quantity);
-    const itemTotalPrice = displayPrice * quantity;
+    const itemTotalPrice = displayPrice * quantity;    
 
 
     return (
@@ -39,7 +40,7 @@ function CartPageItem(props) {
                 <div className="col-4 col-lg-2 text-center">
                     <div className="counter">
                         <span className="counter-minus icon-minus" field='qty-1' onClick={() => props.onSetCartItemCount(props.item.sellerProductId, props.item.sizeAvailabilityId, quantity - 1, props.index)}></span>
-                        <input type='text' name='qty-1' className="counter-value" value={quantity} min="1" max="" disabled />
+                        {getItemQtyComponent(props, quantity)}
                         <span className="counter-plus icon-plus" field='qty-1' onClick={() => props.onSetCartItemCount(props.item.sellerProductId, props.item.sizeAvailabilityId, quantity + 1, props.index)}></span>
                     </div>
                 </div>
@@ -51,6 +52,18 @@ function CartPageItem(props) {
             </div>
         </div>
     );
+}
+
+
+
+function getItemQtyComponent(props, quantity) {
+    let itemQtyComponent = (<input type='text' name='qty-1' className="counter-value" value={quantity} min="1" max="" disabled />);
+
+    if (props.isSettingCartItemCount && props.currentlyEditingCartItemIndex == props.index) {
+        itemQtyComponent = (<SpinnerLoader size='lg' />);
+    }
+
+    return itemQtyComponent;
 }
 
 

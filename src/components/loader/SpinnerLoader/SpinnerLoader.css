@@ -1,0 +1,26 @@
+.SpinnerLoader {
+    width: 100%;
+    height: 100%;
+    /* background-color: rgb(250, 250, 250); */
+}
+
+.SpinnerLoader-body {
+    /* background-color: white; */
+    margin: auto;
+    /* width: 640px; */
+    text-align: center;
+    border-radius: 5px;
+}
+
+
+.SpinnerLoader .ImgContainer {
+    text-align: center;
+}
+
+
+.SpinnerLoader img {
+    /* display: block; */
+    margin: auto;
+    /* width: 100px; */
+
+}

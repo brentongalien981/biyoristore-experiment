@@ -15,7 +15,8 @@ class CartPage extends React.Component {
     /** PROPS */
     state = { 
         isSettingCartItemCount: false,
-        isDeletingCartItem: false 
+        isDeletingCartItem: false,
+        currentlyEditingCartItemIndex: null
     };
 
 
@@ -25,6 +26,8 @@ class CartPage extends React.Component {
         const itemComponents = items?.map((item, i) => {
             return (
                 <CartPageItem item={item} key={i} index={i} onProductClick={this.onProductClick} onRemoveCartItem={this.onRemoveCartItem}
+                    isSettingCartItemCount={this.state.isSettingCartItemCount}
+                    currentlyEditingCartItemIndex={this.state.currentlyEditingCartItemIndex}
                     onSetCartItemCount={this.onSetCartItemCount} />
             );
         });
@@ -97,11 +100,14 @@ class CartPage extends React.Component {
     };
 
 
-
+    // BMD-ISH
     onSetCartItemCount = (sellerProductId, sizeAvailabilityId, quantity, index) => {
         if (quantity < 1 || quantity > cartWidgetConsts.MAX_CART_ITEM_QUANTITY) { return; }
-        if (this.state.isSettingCartItemCount) { alert("Oops, we're processing your previous input. Please try again shortly."); return; }
-        this.setState({ isSettingCartItemCount: true });
+        if (this.state.isSettingCartItemCount) { return; }
+        this.setState({ 
+            isSettingCartItemCount: true,
+            currentlyEditingCartItemIndex: index
+        });
 
 
         const bmdHttpRequestData = cartWidgetHelperFuncs.prepareCartBmdHttpRequestData();
@@ -116,7 +122,10 @@ class CartPage extends React.Component {
                 index: index
             },
             doCallBackFunc: () => {
-                this.setState({ isSettingCartItemCount: false });
+                this.setState({ 
+                    isSettingCartItemCount: false,
+                    currentlyEditingCartItemIndex: null
+                });
             }
         };
 
