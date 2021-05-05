@@ -24,6 +24,8 @@ function CartItem(props) {
                                 <br />
                                 {/* <span className="media-subtitle">xxx</span> */}
                                 <span className="small">{getSizeComponentLabel(props.item)}</span>
+                                <br />
+                                <span className="small">x{props.item.quantity}</span>
                             </div>
                         </div>
                     </div>
