@@ -124,6 +124,9 @@ function PaymentForm(props) {
         ev.preventDefault();
         if (!doPrePayProcess()) { return; }
 
+        // BMD-TODO: On DEV-ITER-004
+        // Do a check in the backend if the cart is still valid (and not been checked-out yet).
+
 
         // Process the payment.
         const payload = await stripe.confirmCardPayment(clientSecret, {
