@@ -16,10 +16,6 @@ export const onShowOrderReturn = (objs = null) => ({ type: ON_SHOW_ORDER_RETURN,
 /* AJAX FUNCS */
 export const showOrder = (objs) => {
 
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: order, METHOD: showOrder()");
-
-
     return (dispatch) => {
 
         BsCore2.ajaxCrud({

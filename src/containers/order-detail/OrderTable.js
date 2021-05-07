@@ -1,12 +1,12 @@
 import React from 'react';
-import OrderSummary from '../cart/OrderSummary';
+import OrderSummary from './OrderSummary';
 import OrderTableItem from './OrderTableItem';
 
 
 
 function OrderTable(props) {
 
-    const items = props.orderItems?.map((item, i) => {
+    const items = props.order?.orderItems?.map((item, i) => {
         return (
             <OrderTableItem item={item} key={i} />
         );
@@ -38,7 +38,8 @@ function OrderTable(props) {
                         {items}
                     </div>
 
-                    <OrderSummary items={props.orderItems} withNoCheckoutBtn shouldCalculateForOrderPage />
+                    {/* BMD-ISH */}
+                    <OrderSummary order={props.order} />
                 </div>
 
             </div>

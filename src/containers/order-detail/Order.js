@@ -61,7 +61,7 @@ class Order extends React.Component {
                 <div className="container pt-8 pb-2">
                     <h4>Items</h4>
                 </div>
-                <OrderTable orderItems={this.props.order.orderItems} />
+                <OrderTable order={this.props.order} orderItems={this.props.order.orderItems} />
             </>
         );
     }

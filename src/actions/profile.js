@@ -85,7 +85,7 @@ export const saveAccount = (data) => {
 };
 
 
-// BMD-ISH
+
 export const readOrders = (data) => {
 
     const readQuery = 'userOrders?pageNum=' + data.pageNum;

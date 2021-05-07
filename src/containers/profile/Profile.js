@@ -68,7 +68,7 @@ class Profile extends React.Component {
     }
 
 
-    // BMD-ISH
+    
     readOrders(pageNum) {
 
         if (this.state.isReadingOrders) { return; }
