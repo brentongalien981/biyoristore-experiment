@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import BsCore from '../../bs-library/helpers/BsCore';
+import { getSizeComponentLabel } from './helper-funcs/HelperFuncsA';
 
 
 
@@ -10,6 +11,7 @@ function OrderTableItem(props) {
     const itemTotalPrice = parseFloat(props.item.price) * parseInt(props.item.quantity);
     const quantity = parseInt(props.item.quantity);
     const productLink = "/product?productId=" + props.item.product.id;
+    const brandLink = '/products?brands=' + props.item.product.brand.id;
 
     return (
         <div className="cart-item">
@@ -19,7 +21,9 @@ function OrderTableItem(props) {
                         <Link to={productLink}><img src={productPhotoUrl} alt="Image" /></Link>
                         <div className="media-body">
                             <h5 className="media-title"><Link to={productLink} style={{ color: "black" }}>{props.item.product.name}</Link></h5>
-                            <span className="small">{props.item.product.brand.name}</span>
+                            <span className="small"><Link to={brandLink}>{props.item.product.brand.name}</Link></span>
+                            <br />
+                            <span className="small">{getSizeComponentLabel(props.item)}</span>
                         </div>
                     </div>
                 </div>
