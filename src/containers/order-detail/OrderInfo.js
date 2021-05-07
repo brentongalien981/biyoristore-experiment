@@ -1,4 +1,5 @@
 import React from 'react';
+import { getDisplayStatusForOrderStatus } from './helper-funcs/HelperFuncsA';
 
 
 
@@ -28,16 +29,16 @@ function OrderInfo(props) {
                         <div className="col-6 col-md-3 mb-3">
                             <h5 className="eyebrow text-muted">Status</h5>
                             <p className="card-text">
-                                order #: {o.id}<br />
-                                status: {o.status.readable_name}<br />
-                                created: {o.createdAt}
+                                Order-ID: {o.id}<br />
+                                Status: {getDisplayStatusForOrderStatus(o.status).displayMsg}<br />
+                                Placed {o.createdAt}
                             </p>
                         </div>
 
                         <div className="col-6 col-md-3 mb-3">
                             <h5 className="eyebrow text-muted">To</h5>
                             <p className="card-text">
-                                {"BMD-TODO: FirstName LastName"}<br />
+                                {o.firstName + ' ' + o.lastName}<br />
                                 {o.email}<br />
                                 {o.phone}
                             </p>
