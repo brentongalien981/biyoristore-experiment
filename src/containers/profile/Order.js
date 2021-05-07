@@ -87,11 +87,13 @@ function getOrderItems(items) {
         const productLink = "/product?productId=" + item.product.id;
         const firstPhotoUrl = BsCore2.pubPhotoUrl + item.product.productPhotoUrls[0].url;
 
+        const tooltip = item.product.name + ' size: ' + item.sizeAvailability?.size + ' x' + item.quantity;
+
 
         return (
             <li key={i}>
-                <Link to={productLink} title={item.product.name} data-toggle="tooltip" data-placement="top">
-                    <img src={firstPhotoUrl} alt={item.product.name} />
+                <Link to={productLink} title={tooltip} data-toggle="tooltip" data-placement="top">
+                    <img src={firstPhotoUrl} alt={tooltip} />
                 </Link>
             </li>
         );
