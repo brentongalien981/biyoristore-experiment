@@ -20,7 +20,7 @@ function Orders(props) {
             <div className="row">
                 <div className="col-12">
                     <h3 className="mb-0">Orders</h3>
-                    <span className="eyebrow">{props.ordersMetaData?.totalNumOfItems} Items</span>
+                    <span className="eyebrow">{props.ordersMetaData?.totalNumOfItems} Item(s)</span>
                 </div>
             </div>
 

@@ -88,7 +88,7 @@ const onReadOrdersReturn = (state, action) => {
 
         updatedPageOrders = action.callBackData.objs.orders;
         userOrdersMetaData = action.callBackData.objs.ordersMetaData;
-        let lifespanInMin = 2;
+        let lifespanInMin = 1;
     
         if (BsJLS.set(pageOrdersReadQuery, updatedPageOrders)) { BsJLSOLM.updateRefreshDateForSearchQuery(pageOrdersReadQuery, lifespanInMin); }
         BsJLS.set('userOrdersMetaData', userOrdersMetaData);
