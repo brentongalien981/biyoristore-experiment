@@ -9,9 +9,6 @@ function OrderInfo(props) {
     const o = props.order;
     const p = props.paymentInfo;
 
-    // if (!o.id) { return (<h3>Reading order...</h3>); }
-    if (o.id === -1) { return (<h4>Order not found...</h4>); }
-
 
     let mainContent = (
         <div className="row">
@@ -61,7 +58,9 @@ function OrderInfo(props) {
 
     if (props.isDoingShowOrderProcess) {
         mainContent = (<WaitLoader size='lg' />);
-    }
+    } else if (o.id === -1) { 
+        return (<h4>Order not found</h4>);
+     }
 
 
 

@@ -1,4 +1,7 @@
 import * as actions from '../actions/order';
+import { RETRIEVED_DATA_FROM_LOCAL_STORAGE } from '../bs-library/constants/global';
+import BsJLS from '../bs-library/helpers/BsJLS';
+import BsJLSOLM from '../bs-library/helpers/BsJLSOLM';
 
 /** CONSTS */
 const NON_EXISTENT_ORDER_OBJ = { id: -1 };
@@ -24,16 +27,38 @@ const order = (state = initialState, action) => {
 /* NORMAL */
 const onShowOrderReturn = (state, action) => {
 
-    let updatedOrder = state.order;
-    let updatedPaymentInfo = state.paymentInfo;
+    let updatedOrder = {};
+    let updatedPaymentInfo = {};
 
     if (action.callBackData.isResultOk) {
-        updatedOrder = action.callBackData.objs.order;
-        updatedPaymentInfo = action.callBackData.objs.paymentInfo;
+
+        const bsJLSObjQuery = action.callBackData.bsJLSObjQuery;
+        let bsJLSObjData = null;
+
+        if (action.callBackData.retrievedDataFrom == RETRIEVED_DATA_FROM_LOCAL_STORAGE) {
+
+            bsJLSObjData = BsJLS.get(bsJLSObjQuery);
+            updatedOrder = bsJLSObjData.order;
+            updatedPaymentInfo = bsJLSObjData.paymentInfo;
+
+        } else {
+
+            updatedOrder = action.callBackData.objs.order;
+            updatedPaymentInfo = action.callBackData.objs.paymentInfo;
+
+            const bsJLSObjLifespanInMin = 1440;
+            bsJLSObjData = {
+                order: updatedOrder,
+                paymentInfo: updatedPaymentInfo
+            };
+
+
+            if (BsJLS.set(bsJLSObjQuery, bsJLSObjData)) {
+                BsJLSOLM.updateRefreshDateForSearchQuery(bsJLSObjQuery, bsJLSObjLifespanInMin);
+            }
+        }
 
     }
-
-    // BMD-TODO:Use BsJLSOLM & BsJLS.
 
 
     action.callBackData.doCallBackFunc();
@@ -41,7 +66,7 @@ const onShowOrderReturn = (state, action) => {
 
     return {
         ...state,
-        order: updatedOrder ?? {...NON_EXISTENT_ORDER_OBJ},
+        order: updatedOrder.id ? updatedOrder:  { ...NON_EXISTENT_ORDER_OBJ },
         paymentInfo: updatedPaymentInfo ?? {}
     };
 };
