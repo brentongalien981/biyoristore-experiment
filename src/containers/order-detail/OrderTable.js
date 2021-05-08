@@ -38,7 +38,7 @@ function OrderTable(props) {
                         {items}
                     </div>
 
-                    {/* BMD-ISH */}
+                    
                     <OrderSummary order={props.order} />
                 </div>
 

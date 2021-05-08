@@ -18,7 +18,6 @@ export const onShowOrderReturn = (callBackData) => ({ type: ON_SHOW_ORDER_RETURN
 /* AJAX FUNCS */
 export const showOrder = (data) => {
 
-    // BMD-TODO: Use BsJLS.
     const bsJLSObjQuery = 'orderPageData?orderId=' + data.orderId;
     data.bsJLSObjQuery = bsJLSObjQuery;
 

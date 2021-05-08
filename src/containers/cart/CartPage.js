@@ -100,7 +100,7 @@ class CartPage extends React.Component {
     };
 
 
-    // BMD-ISH
+    
     onSetCartItemCount = (sellerProductId, sizeAvailabilityId, quantity, index) => {
         if (quantity < 1 || quantity > cartWidgetConsts.MAX_CART_ITEM_QUANTITY) { return; }
         if (this.state.isSettingCartItemCount) { return; }
