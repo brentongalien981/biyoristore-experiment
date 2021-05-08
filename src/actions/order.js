@@ -9,19 +9,25 @@ export const ON_SHOW_ORDER_RETURN = "ON_SHOW_ORDER_RETURN";
 
 
 /* FUNCS */
-export const onShowOrderReturn = (objs = null) => ({ type: ON_SHOW_ORDER_RETURN, objs: objs });
+export const onShowOrderReturn = (callBackData) => ({ type: ON_SHOW_ORDER_RETURN, callBackData: callBackData });
 
 
 
 /* AJAX FUNCS */
-export const showOrder = (objs) => {
+export const showOrder = (data) => {
 
     return (dispatch) => {
 
         BsCore2.ajaxCrud({
-            url: '/orders/' + objs.orderId,
-            callBackFunc: (requestData, json) => { dispatch(onShowOrderReturn(json.objs)); },
-            errorCallBackFunc: (errors) => { dispatch(onShowOrderReturn()); }
+            url: '/orders/' + data.orderId,
+            callBackFunc: (requestData, json) => {
+                const callBackData = { ...data, ...json };
+                dispatch(onShowOrderReturn(callBackData));
+            },
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode };
+                dispatch(onShowOrderReturn(callBackData));
+            }
         });
     };
 };

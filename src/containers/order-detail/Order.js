@@ -13,6 +13,9 @@ import OrderInfo from './OrderInfo';
 class Order extends React.Component {
 
     /* PROPERTIES */
+    state = {
+        isDoingShowOrderProcess: false
+    };
 
 
 
@@ -22,20 +25,29 @@ class Order extends React.Component {
 
     /* MAIN FUNCS */
     componentDidMount() {
-        const urlParams = this.props.location.search;
-        const acceptedParams = ["id"];
-        const parsedUrlParams = Bs.getParsedQueryParams(urlParams, acceptedParams);
-
-
-        if (parsedUrlParams.id) {
-            const objs = { orderId: parsedUrlParams.id };
-            this.props.showOrder(objs);
-        }
+        this.showOrder();
     }
 
 
 
     render() {
+
+        let orderTableSection = (
+            <>
+                <div className="container pt-8 pb-2">
+                    <h4>Items</h4>
+                </div>
+                <OrderTable order={this.props.order} />
+            </>
+        );
+
+        if (this.state.isDoingShowOrderProcess || this.props.order.id == -1) {
+            orderTableSection = (
+                <div className="container pt-8 pb-2"></div>
+            );
+        }
+
+
         return (
             <>
                 {/* page header */}
@@ -52,16 +64,12 @@ class Order extends React.Component {
 
                 <div className="container">
                     <div className="row justify-content-center">
-                        <OrderInfo order={this.props.order} paymentInfo={this.props.paymentInfo} />
+                        <OrderInfo order={this.props.order} paymentInfo={this.props.paymentInfo} isDoingShowOrderProcess={this.state.isDoingShowOrderProcess} />
                         {/* <PaymentInfo paymentInfo={this.props.paymentInfo} /> */}
                     </div>
                 </div>
 
-                
-                <div className="container pt-8 pb-2">
-                    <h4>Items</h4>
-                </div>
-                <OrderTable order={this.props.order} orderItems={this.props.order.orderItems} />
+                {orderTableSection}
             </>
         );
     }
@@ -69,6 +77,28 @@ class Order extends React.Component {
 
 
     /* EVENT FUNCS */
+    showOrder = () => {
+
+        if (this.state.isDoingShowOrderProcess) { return; }
+
+        const urlParams = this.props.location.search;
+        const acceptedParams = ["id"];
+        const parsedUrlParams = Bs.getParsedQueryParams(urlParams, acceptedParams);
+
+
+        if (parsedUrlParams.id) {
+
+            this.setState({ isDoingShowOrderProcess: true });
+
+            const data = {
+                orderId: parsedUrlParams.id,
+                doCallBackFunc: () => {
+                    this.setState({ isDoingShowOrderProcess: false });
+                }
+            };
+            this.props.showOrder(data);
+        }
+    };
 }
 
 
@@ -85,7 +115,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        showOrder: (objs) => dispatch(actions.showOrder(objs)),
+        showOrder: (data) => dispatch(actions.showOrder(data)),
     };
 };
 
