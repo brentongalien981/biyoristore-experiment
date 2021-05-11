@@ -39,7 +39,6 @@ export const readProducts = (params) => {
     if (BsJLSOLM.shouldObjWithQueryRefresh(params.completeUrlQuery)) {
 
         return (dispatch) => {
-            // BMD-ISH
             BsCore2.ajaxCrud({
                 url: '/listing/read-products',
                 params: { ...params },
@@ -47,7 +46,7 @@ export const readProducts = (params) => {
 
                     const objs = { ...params, ...json.objs }
                     dispatch(onReadProductsOk(objs));
-                    
+
                 },
                 errorCallBackFunc: (errors) => { dispatch(onReadProductsFail()); }
             });
