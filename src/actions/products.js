@@ -36,19 +36,18 @@ export const onBrandFilterChanged = (brandFilterEventData) => {
 
 export const readProducts = (params) => {
 
-    if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.searchQueryObjs[params.completeUrlQuery])) {
+    if (BsJLSOLM.shouldObjWithQueryRefresh(params.completeUrlQuery)) {
 
         return (dispatch) => {
-
+            // BMD-ISH
             BsCore2.ajaxCrud({
                 url: '/listing/read-products',
                 params: { ...params },
                 callBackFunc: (requestData, json) => {
 
-                    BsJLSOLM.updateRefreshDateForSearchQuery(params.completeUrlQuery);
-
                     const objs = { ...params, ...json.objs }
                     dispatch(onReadProductsOk(objs));
+                    
                 },
                 errorCallBackFunc: (errors) => { dispatch(onReadProductsFail()); }
             });
@@ -63,9 +62,11 @@ export const readProducts = (params) => {
 
 export const readFilters = () => {
 
-    if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.products.brands)
-        || BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.products.categories)
-        || BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs.products.teams)) {
+    if (
+        BsJLSOLM.shouldObjWithPathRefresh('products.brands') ||
+        BsJLSOLM.shouldObjWithPathRefresh('products.categories') ||
+        BsJLSOLM.shouldObjWithPathRefresh('products.teams')
+    ) {
 
         return (dispatch) => {
             BsCore2.ajaxCrud({

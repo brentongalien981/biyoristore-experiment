@@ -1,7 +1,8 @@
 import * as productsActions from '../actions/products';
 import Bs from '../bs-library/helpers/Bs';
 import BsJLS from '../bs-library/helpers/BsJLS';
-import { SORT_FILTER_CODES } from '../containers/listing/helpers/constants';
+import BsJLSOLM from '../bs-library/helpers/BsJLSOLM';
+import { LISTING_OBJS_BSJLS_LIFESPAN_IN_MIN, SORT_FILTER_CODES } from '../containers/listing/helpers/constants';
 
 
 /** PROPERTIES */
@@ -12,15 +13,14 @@ const initialState = {
     message: "This is the initial state of products-store.",
     paginationData: { currentPageNum: 1 },
     shouldRefreshProducts: false,
-    // brands: [{ id: 1, name: "Nike" }, { id: 2, name: "Adidas", isSelected: false }, { id: 3, name: "Toyota", isSelected: true }],
     brands: [],
     teams: [],
     selectedCategory: {},
     sortFilterCode: SORT_FILTER_CODES.NAME_ASC,
     currentPageNum: 1,
-    // categories: [{ id: 1, name: "laptop" }, { id: 2, name: "phone" }, { id: 3, name: "tablet" }],
     categories: [],
     products: [],
+
     // FLAGS
     shouldDoPostReadFiltersProcess: false,
     shouldDoPostRefreshProductsProcess: false
@@ -267,7 +267,9 @@ const onReadProductsOk = (state, action) => {
             paginationData: action.objs.paginationData
         };
 
-        BsJLS.set(completeUrlQuery, productListingData);
+        if (BsJLS.set(completeUrlQuery, productListingData)) {
+            BsJLSOLM.updateRefreshDateForSearchQuery(action.objs.completeUrlQuery, LISTING_OBJS_BSJLS_LIFESPAN_IN_MIN);
+        }
     }
 
 

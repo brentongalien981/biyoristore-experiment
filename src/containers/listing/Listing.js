@@ -17,6 +17,7 @@ import BsAppSession from '../../bs-library/helpers/BsAppSession';
 import { onAddToCart } from '../../actions/cart';
 import FilterByTeam from './FilterByTeam';
 import { SORT_FILTER_CODES } from './helpers/constants';
+import WaitLoader from '../../components/loader/WaitLoader';
 
 
 
@@ -27,7 +28,7 @@ class Listing extends React.Component {
         isReadingFilter: false,
         isRefreshingProducts: false,
         isRefreshingProducts: false,
-        shouldRefreshProducts: false,
+        // shouldRefreshProducts: false,
         selectedCategoryIndex: 0
     };
 
@@ -96,7 +97,10 @@ class Listing extends React.Component {
 
 
     doPreRefreshProductsProcess() {
-        if (this.state.isRefreshingProducts) { return false; }
+        if (this.state.isRefreshingProducts) { 
+            Bs.log('wait up');
+            return false; 
+        }
         this.setState({ isRefreshingProducts: true });
         return true;
     }
@@ -200,9 +204,13 @@ class Listing extends React.Component {
     componentDidMount() {
         try {
             if (this.doPreReadFiltersProcess()) { this.doActualReadFiltersProcess(); }
-            this.doActualRefreshProductsProcess();
+            
+            if (this.doPreRefreshProductsProcess()) { 
+                this.doActualRefreshProductsProcess(); 
+            }
+
         } catch (e) {
-            Bs.log("e bro ==> " + e);
+            Bs.log("error bruh ==> " + e);
         }
 
     }
@@ -216,7 +224,9 @@ class Listing extends React.Component {
         }
 
         if (this.props.shouldRefreshProducts) {
-            if (this.doPreRefreshProductsProcess()) { this.doActualRefreshProductsProcess(); }
+            if (this.doPreRefreshProductsProcess()) { 
+                this.doActualRefreshProductsProcess(); 
+            }
         }
 
         if (this.props.shouldDoPostRefreshProductsProcess) {
@@ -413,23 +423,9 @@ class Listing extends React.Component {
 
 
 
-    onAddToCart = (e, product) => {
-        e.preventDefault();
-        e.stopPropagation();
-        return;
-
-        Bs.log("\n####################");
-        Bs.log("CLASS:: Listing, METHOD:: onAddToCart()");
-
-        this.props.onAddToCart(product);
-
-    };
-
-
-
     render() {
 
-        const products = this.props.products.map((p, i) => {
+        let products = this.props.products.map((p, i) => {
             return (
                 <div className="col-6 col-md-4" key={i}>
                     <Product
@@ -439,6 +435,12 @@ class Listing extends React.Component {
                 </div>
             );
         });
+
+
+        if (this.state.isRefreshingProducts) {
+            products = (<WaitLoader size='lg' msg=' ' />);
+        }
+
 
         return (
             <>
@@ -498,7 +500,6 @@ const mapDispatchToProps = (dispatch) => {
         endRefreshProductsProcess: () => dispatch(productsActions.endRefreshProductsProcess()),
         endReadFiltersProcess: () => dispatch(productsActions.endReadFiltersProcess()),
         onUrlChanged: () => dispatch(productsActions.onUrlChanged()),
-        // onAddToCart: (product) => dispatch(onAddToCart(product)),
         readProducts: (params) => dispatch(productsActions.readProducts(params)),
         readFilters: () => dispatch(productsActions.readFilters())
     };

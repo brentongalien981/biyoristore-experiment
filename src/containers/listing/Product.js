@@ -35,7 +35,7 @@ function Product(props) {
 
 
     return (
-        <div className="product" onClick={(e) => props.onProductClicked(e, props.product.id)}>
+        <div className="product animate__animated animate__fadeIn" onClick={(e) => props.onProductClicked(e, props.product.id)}>
             <figure className="product-image">
                 <a href="#!">{productImages}</a>
             </figure>

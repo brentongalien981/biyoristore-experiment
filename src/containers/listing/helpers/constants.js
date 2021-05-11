@@ -4,3 +4,6 @@ export const SORT_FILTER_CODES = {
     PRICE_ASC: { val: 3, description: "Price low to high" },
     PRICE_DESC: { val: 4, description: "Price high to low" },
 };
+
+
+export const LISTING_OBJS_BSJLS_LIFESPAN_IN_MIN = 6 * 60; 
