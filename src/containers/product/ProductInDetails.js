@@ -39,6 +39,7 @@ class ProductInDetails extends React.Component {
 
     /** PROPERTIES */
     state = {
+        isReadingProduct: false,
         isReadingReviews: false,
         isSavingReview: false,
         isAddingItemToCart: false,
@@ -122,6 +123,11 @@ class ProductInDetails extends React.Component {
 
 
     refreshProduct() {
+        // BMD-ISH
+        if (this.state.isReadingProduct) { return; }
+
+        this.setState({ isReadingProduct: true });
+
         const urlParams = this.props.location.search;
         const acceptedParams = ["productId"];
         const parsedUrlParams = Bs.getParsedQueryParams(urlParams, acceptedParams);
@@ -143,7 +149,12 @@ class ProductInDetails extends React.Component {
     componentDidUpdate() {
         if (this.props.shouldResetProduct) { this.refreshProduct(); }
 
-        if (this.props.shouldRelaunchVendorScript) { this.props.relaunchVendorScript(); }
+        if (this.props.shouldRelaunchVendorScript) {
+            // BMD-ISH
+            this.setState({ isReadingProduct: false });
+
+            this.props.relaunchVendorScript();
+        }
 
         if (this.props.shouldDoInitialReadReviews) { this.readReviews({ isInitialBatch: true }); }
 
@@ -161,7 +172,7 @@ class ProductInDetails extends React.Component {
                 {/* <button onClick={this.testReadNewProduct}>TEST READ NEW PRODUCT</button> */}
 
                 <BlankBreadCrumbsSubstitute />
-                <ProductMainSection product={this.props.product} isAddingItemToCart={this.state.isAddingItemToCart} />
+                <ProductMainSection product={this.props.product} isAddingItemToCart={this.state.isAddingItemToCart} isReadingProduct={this.state.isReadingProduct} />
                 <ProductExtraInfo product={this.props.product} avgRating={this.props.avgRating} />
                 <SuggestedProducts relatedProducts={this.props.relatedProducts} onProductClicked={this.onProductClicked} />
 
@@ -221,7 +232,7 @@ class ProductInDetails extends React.Component {
     };
 
 
-    
+
     onAddToCart = (e, product) => {
 
         e.preventDefault();
@@ -232,7 +243,7 @@ class ProductInDetails extends React.Component {
 
         this.setState({ isAddingItemToCart: true });
 
-        
+
         const bmdHttpRequestData = cartWidgetHelperFuncs.prepareCartBmdHttpRequestData();
 
         const data = {

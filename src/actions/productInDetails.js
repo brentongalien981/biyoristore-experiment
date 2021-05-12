@@ -63,7 +63,7 @@ export const readRelatedProducts = (productId) => {
 export const readProduct = (productId) => {
 
     const requestUrlQ = '?productId=' + productId;
-    // if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.searchQueryObjs[requestUrlQ])) {
+    
     if (BsJLSOLM.shouldObjWithQueryRefresh(requestUrlQ)) {
         return (dispatch) => {
 
@@ -92,7 +92,7 @@ export const readProduct = (productId) => {
 };
 
 
-
+// BMD-ISH
 export const readReviews = (params) => {
 
     const productId = params.productId;
@@ -106,7 +106,6 @@ export const readReviews = (params) => {
     params.requestUrlQ = requestUrlQ;
 
 
-    // if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.searchQueryObjs[requestUrlQ])) {
     if (BsJLSOLM.shouldObjWithQueryRefresh(requestUrlQ)) {
         return (dispatch) => {
 

@@ -25,7 +25,7 @@ const initialState = {
     ],
     message: "This is the initial state of STORE: productInDetails.",
     shouldResetProduct: false,
-    shouldRelaunchVendorScript: false,
+    shouldRelaunchVendorScript: false, // BMD-SENSITIVE-INFO: This is the workaround I made to refresh the bought-frontend-framework.
     product: defaultProduct,
     relatedProducts: [],
     avgRating: null,
@@ -176,10 +176,6 @@ const relaunchVendorScript = (state, action) => {
 };
 
 const showProduct = (state, action) => {
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: productInDetails, METHOD: showProduct()");
-    Bs.log('action.objs.retrievedDataFrom ==> ' + action.objs.retrievedDataFrom);
-
 
     const requestUrlQ = action.objs.requestUrlQ;
 
