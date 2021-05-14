@@ -1,4 +1,5 @@
 import React from 'react';
+import SpinnerLoader from '../../components/loader/SpinnerLoader/SpinnerLoader';
 import Product from '../listing/Product';
 
 
@@ -9,7 +10,32 @@ function SuggestedProducts(props) {
         return (<Product product={p} key={i} onProductClicked={props.onProductClicked} />);
     });
 
-    
+
+    let mainSection = (
+        <div className="col">
+            <div className="tab-content" id="myTabContent">
+
+                <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div className="owl-carousel owl-carousel-arrows visible" data-items="[4,4,2,1]" data-margin="10" data-loop="true" data-dots="true" data-nav="true">
+                        {relatedProducts}
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    );
+
+
+    if (props.isReadingProduct) {
+        mainSection = (
+            <div className="row gutter-2 gutter-lg-4 animate__animated animate__fadeIn">
+                <SpinnerLoader size='xl' />
+            </div>
+        );
+    }
+
+
     return (
         <section className="no-overflow">
             <div className="container">
@@ -25,18 +51,7 @@ function SuggestedProducts(props) {
                     </div>
 
 
-                    <div className="col">
-                        <div className="tab-content" id="myTabContent">
-
-
-                            <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                <div className="owl-carousel owl-carousel-arrows visible" data-items="[4,4,2,1]" data-margin="10" data-loop="true" data-dots="true" data-nav="true">
-                                    {relatedProducts}
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {mainSection}
 
                 </div>
             </div>

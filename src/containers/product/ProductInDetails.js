@@ -19,6 +19,7 @@ import BlankBreadCrumbsSubstitute from '../../components/customized-spacers/Blan
 import BsCore2 from '../../bs-library/helpers/BsCore2';
 import BsJLS from '../../bs-library/helpers/BsJLS';
 import * as cartWidgetHelperFuncs from '../../components/cart/helper-funcs/HelperFuncsA';
+import $ from 'jquery';
 
 
 
@@ -122,7 +123,7 @@ class ProductInDetails extends React.Component {
 
 
 
-    refreshProduct() {
+    refreshProduct = () => {
         // BMD-ISH
         if (this.state.isReadingProduct) { return; }
 
@@ -131,8 +132,21 @@ class ProductInDetails extends React.Component {
         const urlParams = this.props.location.search;
         const acceptedParams = ["productId"];
         const parsedUrlParams = Bs.getParsedQueryParams(urlParams, acceptedParams);
-        this.props.readProduct(parsedUrlParams['productId']);
-    }
+
+        const data = {
+            productId: parsedUrlParams['productId'],
+            doCallBackFunc: () => {
+                // This delay is necessary.
+                setTimeout(() => {
+                    this.setState({ isReadingProduct: false });
+                    document.querySelector('#shouldRelaunchVendorScript').click();
+                }, 100);
+
+            }
+        };
+
+        this.props.readProduct(data);
+    };
 
 
 
@@ -145,15 +159,13 @@ class ProductInDetails extends React.Component {
     }
 
 
-
+    // BMD-ISH
     componentDidUpdate() {
-        if (this.props.shouldResetProduct) { this.refreshProduct(); }
-
-        if (this.props.shouldRelaunchVendorScript) {
-            // BMD-ISH
-            this.setState({ isReadingProduct: false });
-
-            this.props.relaunchVendorScript();
+        if (this.props.shouldResetProduct) { 
+            // This is necessary to avoid reducer lag.
+            setTimeout(() => {
+                this.refreshProduct(); 
+            }, 100);
         }
 
         if (this.props.shouldDoInitialReadReviews) { this.readReviews({ isInitialBatch: true }); }
@@ -173,8 +185,8 @@ class ProductInDetails extends React.Component {
 
                 <BlankBreadCrumbsSubstitute />
                 <ProductMainSection product={this.props.product} isAddingItemToCart={this.state.isAddingItemToCart} isReadingProduct={this.state.isReadingProduct} />
-                <ProductExtraInfo product={this.props.product} avgRating={this.props.avgRating} />
-                <SuggestedProducts relatedProducts={this.props.relatedProducts} onProductClicked={this.onProductClicked} />
+                <ProductExtraInfo product={this.props.product} avgRating={this.props.avgRating} isReadingProduct={this.state.isReadingProduct} />
+                <SuggestedProducts relatedProducts={this.props.relatedProducts} onProductClicked={this.onProductClicked} isReadingProduct={this.state.isReadingProduct} />
 
                 <ProductReviews reviews={this.props.reviews} isReadingReviews={this.state.isReadingReviews} readReviews={this.readReviews} />
                 <CreateReview newReview={this.state.newReview} onNewReviewInputChange={this.onNewReviewInputChange} onSaveReview={this.onSaveReview} />
@@ -217,13 +229,10 @@ class ProductInDetails extends React.Component {
     };
 
 
-
+    
     onProductClicked = (e, productId) => {
         e.preventDefault();
         e.stopPropagation();
-
-        Bs.log("\n###############");
-        Bs.log("In CLASS: ProductInDetails, METHOD: onProductClicked()");
 
         this.props.history.push("/product?productId=" + productId);
 
@@ -299,7 +308,7 @@ const mapDispatchToProps = (dispatch) => {
         endReadReviewsProcess: () => dispatch(actions.endReadReviewsProcess()),
         readReviews: (params) => dispatch(actions.readReviews(params)),
         onAddToCart: (data) => dispatch(onAddToCart(data)),
-        readProduct: (productId) => dispatch(actions.readProduct(productId)),
+        readProduct: (data) => dispatch(actions.readProduct(data)),
         readRelatedProducts: (productId) => dispatch(actions.readRelatedProducts(productId)),
         relaunchVendorScript: () => dispatch(actions.relaunchVendorScript()),
         resetProduct: () => dispatch(actions.resetProduct())

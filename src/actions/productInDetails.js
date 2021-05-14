@@ -60,9 +60,9 @@ export const readRelatedProducts = (productId) => {
 
 
 
-export const readProduct = (productId) => {
+export const readProduct = (data) => {
 
-    const requestUrlQ = '?productId=' + productId;
+    const requestUrlQ = '?productId=' + data.productId;
     
     if (BsJLSOLM.shouldObjWithQueryRefresh(requestUrlQ)) {
         return (dispatch) => {
@@ -70,13 +70,13 @@ export const readProduct = (productId) => {
             BsCore2.ajaxCrud({
                 url: '/products/show',
                 params: {
-                    productId: productId,
+                    productId: data.productId,
                     requestUrlQ: requestUrlQ
                 },
                 callBackFunc: (requestData, json) => {
 
                     BsJLSOLM.updateRefreshDateForSearchQuery(requestUrlQ);
-                    const objs = { ...json.objs, requestUrlQ: requestUrlQ };
+                    const objs = { ...data, ...json.objs, requestUrlQ: requestUrlQ };
 
                     dispatch(showProduct(objs));
                 },
@@ -87,7 +87,7 @@ export const readProduct = (productId) => {
         };
     }
 
-    const objs = { retrievedDataFrom: "localStorage", requestUrlQ: requestUrlQ };
+    const objs = { ...data, retrievedDataFrom: "localStorage", requestUrlQ: requestUrlQ };
     return showProduct(objs);
 };
 

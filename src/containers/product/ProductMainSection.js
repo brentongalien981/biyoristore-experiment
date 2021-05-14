@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductGallery from './ProductGallery';
 import ProductDetails from './ProductDetails';
-import WaitLoader from '../../components/loader/WaitLoader';
+import SpinnerLoader from '../../components/loader/SpinnerLoader/SpinnerLoader';
 
 
 
@@ -17,7 +17,7 @@ function ProductMainSection(props) {
 
 
     if (props.isReadingProduct) {
-        mainSection = (<WaitLoader size='md' msg=' ' />);
+        mainSection = (<SpinnerLoader size='xl' />);
     }
 
 

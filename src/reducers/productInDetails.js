@@ -162,10 +162,9 @@ const showRelatedProducts = (state, action) => {
     };
 };
 
-const relaunchVendorScript = (state, action) => {
 
-    Bs.log("\n###############");
-    Bs.log("In REDUCER: productInDetails, METHOD: relaunchVendorScript()");
+
+const relaunchVendorScript = (state, action) => {
 
     $("#shouldRelaunchVendorScript").trigger("click");
 
@@ -174,6 +173,8 @@ const relaunchVendorScript = (state, action) => {
         shouldRelaunchVendorScript: false
     };
 };
+
+
 
 const showProduct = (state, action) => {
 
@@ -194,13 +195,16 @@ const showProduct = (state, action) => {
     }
 
 
+    action.objs.doCallBackFunc();
+
+
 
     return {
         ...state,
         product: BsJLS.get(requestUrlQ)?.product ?? { ...defaultProduct },
         relatedProducts: BsJLS.get(requestUrlQ)?.relatedProducts ?? [],
         shouldResetProduct: false,
-        shouldRelaunchVendorScript: true,
+        // shouldRelaunchVendorScript: true,
         shouldDoInitialReadReviews: true,
     };
 };
