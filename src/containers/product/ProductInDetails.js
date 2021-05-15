@@ -19,7 +19,7 @@ import BlankBreadCrumbsSubstitute from '../../components/customized-spacers/Blan
 import BsCore2 from '../../bs-library/helpers/BsCore2';
 import BsJLS from '../../bs-library/helpers/BsJLS';
 import * as cartWidgetHelperFuncs from '../../components/cart/helper-funcs/HelperFuncsA';
-import $ from 'jquery';
+import { transitionScrollToTop } from './helper-funcs/HelperFuncsA';
 
 
 
@@ -155,6 +155,8 @@ class ProductInDetails extends React.Component {
         // REQUIRED: Initialize contexts.
         this.setMyContext();
 
+        transitionScrollToTop();
+
         this.refreshProduct();
     }
 
@@ -237,6 +239,8 @@ class ProductInDetails extends React.Component {
         this.props.history.push("/product?productId=" + productId);
 
         this.props.resetProduct();
+
+        transitionScrollToTop();
 
     };
 

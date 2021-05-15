@@ -18,6 +18,7 @@ import { onAddToCart } from '../../actions/cart';
 import FilterByTeam from './FilterByTeam';
 import { SORT_FILTER_CODES } from './helpers/constants';
 import WaitLoader from '../../components/loader/WaitLoader';
+import { transitionScrollToTop } from '../product/helper-funcs/HelperFuncsA';
 
 
 
@@ -202,6 +203,9 @@ class Listing extends React.Component {
 
     /* MAIN FUNCS */
     componentDidMount() {
+
+        transitionScrollToTop();
+
         try {
             if (this.doPreReadFiltersProcess()) { this.doActualReadFiltersProcess(); }
             
