@@ -25,7 +25,7 @@ const initialState = {
     ],
     message: "This is the initial state of STORE: productInDetails.",
     shouldResetProduct: false,
-    shouldRelaunchVendorScript: false, // BMD-SENSITIVE-INFO: This is the workaround I made to refresh the bought-frontend-framework.
+    // shouldRelaunchVendorScript: false, // BMD-SENSITIVE-INFO: This is the workaround I made to refresh the bought-frontend-framework.
     product: defaultProduct,
     relatedProducts: [],
     avgRating: null,

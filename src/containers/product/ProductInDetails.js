@@ -20,6 +20,7 @@ import BsCore2 from '../../bs-library/helpers/BsCore2';
 import BsJLS from '../../bs-library/helpers/BsJLS';
 import * as cartWidgetHelperFuncs from '../../components/cart/helper-funcs/HelperFuncsA';
 import { transitionScrollToTop } from './helper-funcs/HelperFuncsA';
+import BmdAuth from '../../bs-library/core/BmdAuth';
 
 
 
@@ -73,9 +74,9 @@ class ProductInDetails extends React.Component {
 
 
     doPreOnSaveReviewProcess() {
-        if (!BsAppSession.isLoggedIn()) { alert("You have to be signed in to make a review..."); return false; }
+        if (!BmdAuth.isLoggedIn()) { alert("You have to be signed in to make a review..."); return false; }
         if (this.state.isSavingReview) { return false; }
-        if (this.props.product.id == 1) { return false; }
+        if (this.props.product.id == 0) { return false; }
 
         const reviewMsg = this.state.newReview.message;
         if (reviewMsg.trim().length == 0) { alert("Message can not be empty..."); return false; }
@@ -85,7 +86,7 @@ class ProductInDetails extends React.Component {
         });
 
         // Show message to user.
-        const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: "Your review is now being saved. It should be posted shortly." });
+        const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: "Your review is pending..." });
         this.props.queueAlert(newAlertObj);
 
         return true;
@@ -215,7 +216,7 @@ class ProductInDetails extends React.Component {
     };
 
 
-
+    // BMD-ISH
     onSaveReview = () => {
         if (this.doPreOnSaveReviewProcess()) {
             this.doActualOnSaveReviewProcess();

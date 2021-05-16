@@ -4,6 +4,9 @@ import BsJLSOLM from "../bs-library/helpers/BsJLSOLM";
 import BsCore2 from "../bs-library/helpers/BsCore2";
 import { param } from "jquery";
 import BsAppSession from "../bs-library/helpers/BsAppSession";
+import BmdAuth from "../bs-library/core/BmdAuth";
+import { queueAlert } from "./temporaryAlerts";
+import TemporaryAlertSystem from "../components/temporary-alert-system/TemporaryAlertSystem";
 
 
 
@@ -63,7 +66,7 @@ export const readRelatedProducts = (productId) => {
 export const readProduct = (data) => {
 
     const requestUrlQ = '?productId=' + data.productId;
-    
+
     if (BsJLSOLM.shouldObjWithQueryRefresh(requestUrlQ)) {
         return (dispatch) => {
 
@@ -133,8 +136,10 @@ export const readReviews = (params) => {
 };
 
 
-
+// BMD-ISH
 export const saveReview = (data) => {
+
+    const bmdAuth = BmdAuth.getInstance();
 
     return (dispatch) => {
 
@@ -142,10 +147,12 @@ export const saveReview = (data) => {
             url: '/reviews/save',
             method: 'post',
             params: {
-                api_token: BsAppSession.get('apiToken'),
+                bmdToken: bmdAuth?.bmdToken,
+                authProviderId: bmdAuth?.authProviderId,
                 ...data
             },
             callBackFunc: (requestData, json) => {
+
                 const objs = { ...json.objs, ...data, isResultOk: json.isResultOk };
 
                 dispatch(onSaveReviewReturn(objs));
