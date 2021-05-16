@@ -125,7 +125,7 @@ class ProductInDetails extends React.Component {
 
 
     refreshProduct = () => {
-        // BMD-ISH
+        
         if (this.state.isReadingProduct) { return; }
 
         this.setState({ isReadingProduct: true });
@@ -137,7 +137,7 @@ class ProductInDetails extends React.Component {
         const data = {
             productId: parsedUrlParams['productId'],
             doCallBackFunc: () => {
-                // This delay is necessary.
+                // This delay is necessary to avoid error from redux.
                 setTimeout(() => {
                     this.setState({ isReadingProduct: false });
                     document.querySelector('#shouldRelaunchVendorScript').click();
@@ -162,10 +162,11 @@ class ProductInDetails extends React.Component {
     }
 
 
-    // BMD-ISH
+    
     componentDidUpdate() {
+
         if (this.props.shouldResetProduct) { 
-            // This is necessary to avoid reducer lag.
+            // This delay is necessary to avoid error from redux.
             setTimeout(() => {
                 this.refreshProduct(); 
             }, 100);
@@ -216,7 +217,7 @@ class ProductInDetails extends React.Component {
     };
 
 
-    // BMD-ISH
+    
     onSaveReview = () => {
         if (this.doPreOnSaveReviewProcess()) {
             this.doActualOnSaveReviewProcess();

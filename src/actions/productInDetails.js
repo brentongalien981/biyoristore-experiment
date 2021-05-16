@@ -95,7 +95,7 @@ export const readProduct = (data) => {
 };
 
 
-// BMD-ISH
+
 export const readReviews = (params) => {
 
     const productId = params.productId;
@@ -136,7 +136,7 @@ export const readReviews = (params) => {
 };
 
 
-// BMD-ISH
+
 export const saveReview = (data) => {
 
     const bmdAuth = BmdAuth.getInstance();
