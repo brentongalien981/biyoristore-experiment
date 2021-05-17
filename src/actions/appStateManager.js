@@ -6,12 +6,18 @@ import BsJLS from "../bs-library/helpers/BsJLS";
 
 
 /* NAMES */
+export const CLEAR_SENSITIVE_DATA_FOR_CHECKOUT_REDUCER = 'CLEAR_SENSITIVE_DATA_FOR_CHECKOUT_REDUCER';
+export const CLEAR_SENSITIVE_DATA_FOR_PROFILE_REDUCER = 'CLEAR_SENSITIVE_DATA_FOR_PROFILE_REDUCER';
+
 export const ON_CHECK_BMD_AUTH_VALIDITY_OK = 'ON_CHECK_BMD_AUTH_VALIDITY_OK';
 export const ON_CHECK_BMD_AUTH_VALIDITY_FAIL = 'ON_CHECK_BMD_AUTH_VALIDITY_FAIL';
 
 
 
 /* FUNCS */
+export const clearSensitiveDataForCheckoutReducer = () => ({ type: CLEAR_SENSITIVE_DATA_FOR_CHECKOUT_REDUCER });
+export const clearSensitiveDataForProfileReducer = () => ({ type: CLEAR_SENSITIVE_DATA_FOR_PROFILE_REDUCER });
+
 export const onCheckBmdAuthValidityOk = (callBackData) => ({ type: ON_CHECK_BMD_AUTH_VALIDITY_OK, callBackData: callBackData });
 export const onCheckBmdAuthValidityFail = (callBackData) => ({ type: ON_CHECK_BMD_AUTH_VALIDITY_FAIL, callBackData: callBackData });
 
@@ -43,5 +49,16 @@ export const checkBmdAuthValidity = (data) => {
 
             },
         });
+    };
+};
+
+
+
+export const clearSensitiveData = (data) => {
+
+    return (dispatch) => {
+
+        dispatch(clearSensitiveDataForProfileReducer());
+        dispatch(clearSensitiveDataForCheckoutReducer());
     };
 };

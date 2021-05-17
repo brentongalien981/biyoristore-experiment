@@ -18,32 +18,32 @@ export default class BsJLSOLM {
 
     static defaultObjs = {
         auth: {
-            currentAccount: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
-            accounts: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
-            temporaryGuestUserId: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false }
+            currentAccount: { dateRefreshed: null, lifespan: 1440, isSensitiveInfo: true, shouldForceReadDb: false },
+            accounts: { dateRefreshed: null, lifespan: 1440, isSensitiveInfo: false, shouldForceReadDb: false },
+            temporaryGuestUserId: { dateRefreshed: null, lifespan: 1440, isSensitiveInfo: false, shouldForceReadDb: false }
         },
         products: {
-            brands: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
-            categories: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false },
-            teams: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false }
+            brands: { dateRefreshed: null, lifespan: 1440, isSensitiveInfo: false, shouldForceReadDb: false },
+            categories: { dateRefreshed: null, lifespan: 1440, isSensitiveInfo: false, shouldForceReadDb: false },
+            teams: { dateRefreshed: null, lifespan: 1440, isSensitiveInfo: false, shouldForceReadDb: false }
         },
         checkout: {},
         cart: {
-            status: { dateRefreshed: null, lifespan: 1440, shouldForceReadDb: false }
+            status: { dateRefreshed: null, lifespan: 1440, isSensitiveInfo: false, shouldForceReadDb: false }
         },
         profile: {
-            personalData: { dateRefreshed: null, lifespan: 1, shouldForceReadDb: false },
-            stripePaymentInfos: { dateRefreshed: null, lifespan: 1, shouldForceReadDb: false },
-            addresses: { dateRefreshed: null, lifespan: 1, shouldForceReadDb: false },
+            personalData: { dateRefreshed: null, lifespan: 1, isSensitiveInfo: true, shouldForceReadDb: false },
+            stripePaymentInfos: { dateRefreshed: null, lifespan: 1, isSensitiveInfo: true, shouldForceReadDb: false },
+            addresses: { dateRefreshed: null, lifespan: 1, isSensitiveInfo: true, shouldForceReadDb: false },
         },
         temporaryAlerts: {
-            alerts: { dateRefreshed: null, lifespan: 10, shouldForceReadDb: false },
+            alerts: { dateRefreshed: null, lifespan: 10, isSensitiveInfo: false, shouldForceReadDb: false },
         },
     };
 
     static defaultSearchQueryObjs = {
-        'query=exampleSearchQuery&isCool=true': { dateRefreshed: null, lifespan: 120, shouldForceReadDb: false },
-        'teamId=8&categoryId=2': { dateRefreshed: null, lifespan: 120, shouldForceReadDb: false },
+        'query=exampleSearchQuery&isCool=true': { dateRefreshed: null, lifespan: 120, isSensitiveInfo: false, shouldForceReadDb: false },
+        'teamId=8&categoryId=2': { dateRefreshed: null, lifespan: 120, isSensitiveInfo: false, shouldForceReadDb: false },
     };
 
 
@@ -64,7 +64,7 @@ export default class BsJLSOLM {
 
 
     
-    static updateRefreshDateForSearchQuery(q, lifespanInMin = BsJLSOLM.DEFAULT_SEARCH_QUERY_LIFESPAN) {
+    static updateRefreshDateForSearchQuery(q, lifespanInMin = BsJLSOLM.DEFAULT_SEARCH_QUERY_LIFESPAN, isSensitiveInfo = false) {
         if (!q) { return; }
 
         const updatedSearchQueryObjs = BsJLSOLM.searchQueryObjs;
@@ -78,6 +78,7 @@ export default class BsJLSOLM {
         updatedSearchQueryObj.readableDateRefreshed = (dateTimeNowObj.getMonth()+1) + "/" + (dateTimeNowObj.getDate()) + "/" + (dateTimeNowObj.getFullYear()) + " " + dateTimeNowObj.getHours() + ":" + dateTimeNowObj.getMinutes() + ":" + dateTimeNowObj.getSeconds();
         updatedSearchQueryObj.shouldForceReadDb = false;
         updatedSearchQueryObj.lifespan = lifespanInMin;
+        updatedSearchQueryObj.isSensitiveInfo = isSensitiveInfo;
 
         updatedSearchQueryObjs[q] = updatedSearchQueryObj;
 

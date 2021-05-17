@@ -44,6 +44,8 @@ class Profile extends React.Component {
             newPassword: '',
             newPasswordCopy: '',
         },
+
+        authProviderId: BmdAuth.getInstance()?.authProviderId
     };
 
 
@@ -331,7 +333,7 @@ class Profile extends React.Component {
     };
 
 
-
+    // BMD-ISH
     onSaveAccount = () => {
         if (this.doOnPreSaveAccountProcess()) { this.doOnActualSaveAccountProcess(); }
     };
@@ -354,6 +356,9 @@ class Profile extends React.Component {
     doOnPostSaveAccountProcess = (callBackData) => {
 
         switch (callBackData.resultCode) {
+            case myConstants.RESULT_CODE_USER_PROVIDER_NOT_ALLOWED.code:
+                alert(myConstants.RESULT_CODE_USER_PROVIDER_NOT_ALLOWED.msg);
+                break;
             case myConstants.RESULT_CODE_OLD_PASSWORD_WRONG.code:
                 alert(myConstants.RESULT_CODE_OLD_PASSWORD_WRONG.msg);
                 break;
@@ -421,7 +426,7 @@ class Profile extends React.Component {
                                             <Orders isReadingOrders={this.state.isReadingOrders} orders={this.props.orders} ordersMetaData={this.props.ordersMetaData} onOrderPageNumClick={this.onOrderPageNumClick} selectedPageNum={this.props.selectedOrderPageNum} />
                                             <Addresses isDeletingAddress={this.state.isDeletingAddress} addresses={this.props.addresses} onAddressFormShown={this.onAddressFormShown} onDelete={this.onAddressDelete} />
                                             <Payments isDeletingPaymentMethod={this.state.isDeletingPaymentMethod} paymentInfos={this.props.paymentInfos} onPaymenFormShown={this.onPaymenFormShown} onPaymentMethodDelete={this.onPaymentMethodDelete} />
-                                            <Account account={this.state.account} onAccountInputChange={this.onAccountInputChange} onSaveAccount={this.onSaveAccount} isSavingAccount={this.state.isSavingAccount} />
+                                            <Account account={this.state.account} onAccountInputChange={this.onAccountInputChange} onSaveAccount={this.onSaveAccount} isSavingAccount={this.state.isSavingAccount} authProviderId={this.state.authProviderId} />
                                         </div>
                                     </div>
                                 </div>

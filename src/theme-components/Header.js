@@ -12,6 +12,7 @@ import TemporaryAlertSystem from '../components/temporary-alert-system/Temporary
 import { queueAlert } from '../actions/temporaryAlerts';
 import * as cartWidgetHelperFuncs from '../components/cart/helper-funcs/HelperFuncsA';
 import { CART_STATUS_AVAILABLE } from '../components/cart/constants/consts';
+import { clearSensitiveData } from '../actions/appStateManager';
 
 
 
@@ -34,6 +35,8 @@ class Header extends React.Component {
     onLogout = (e) => {
         e.preventDefault();
 
+        this.clearSensitiveData();
+
         BmdAuth.clearAuth();
         BmdAuth.resetTemporaryGuestUserId();
         this.initCart();
@@ -44,6 +47,17 @@ class Header extends React.Component {
 
         this.props.history.push("/");
     };
+
+
+    // BMD-TODO:
+    clearSensitiveData() {
+
+        // Clear sensitive data on BsJLS and redux-store.
+        this.props.clearSensitiveData();
+
+        // BMD-TODO: Clear sensitive BsJLS & BsJLSOLM search-queries and JLS-objs ie. userOrders?pageNum=3, etc...
+
+    }
 
 
 
@@ -73,6 +87,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        clearSensitiveData: () => dispatch(clearSensitiveData()),
         queueAlert: (obj) => dispatch(queueAlert(obj)),
         initCart: (data) => dispatch(initCart(data)),
     };

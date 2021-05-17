@@ -1,3 +1,4 @@
+import { CLEAR_SENSITIVE_DATA_FOR_CHECKOUT_REDUCER } from '../actions/appStateManager';
 import * as actions from '../actions/checkout';
 import Bs from '../bs-library/helpers/Bs';
 import BsCore2 from '../bs-library/helpers/BsCore2';
@@ -38,6 +39,10 @@ const initialState = {
 /* REDUCER */
 const checkout = (state = initialState, action) => {
     switch (action.type) {
+
+        case CLEAR_SENSITIVE_DATA_FOR_CHECKOUT_REDUCER: return clearSensitiveDataForCheckoutReducer(state, action);
+
+
         case actions.RESET_CHECKOUT_FINALIZATION_PAGE_FLAGS: return resetCheckoutFinalizationPageFlags(state, action);
         case actions.ON_DO_ORDER_INVENTORY_CHECKS_RETURN: return onDoOrderInventoryChecksReturn(state, action);
 
@@ -144,6 +149,24 @@ const uncheckAllOptions = (options) => {
 
 
 /* NORMAL FUNCS */
+const clearSensitiveDataForCheckoutReducer = (state, action) => {
+
+    // BMD-TODO
+    // const updatedOrdersMetaData = {};
+
+    
+    // BsJLS.set('profile.personalData', updatedProfile);
+    // BsJLS.set('profile.stripePaymentInfos', updatedPaymentInfos);
+    // BsJLS.set('profile.addresses', updatedAddresses);
+
+
+    return {
+        ...state
+    };
+};
+
+
+
 const resetCheckoutFinalizationPageFlags = (state, action) => {
 
     return {

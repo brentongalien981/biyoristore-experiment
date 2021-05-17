@@ -1,29 +1,12 @@
 import React from 'react';
 import WaitLoader from '../../components/loader/WaitLoader';
+import { AUTH_PROVIDER_TYPE_ID_FACEBOOK, AUTH_PROVIDER_TYPE_ID_GOOGLE } from './constants/consts';
 
 
 
 export default function Account(props) {
 
     const email = props.account.email;
-    const oldPassword = props.account.oldPassword;
-    const newPassword = props.account.newPassword;
-    const newPasswordCopy = props.account.newPasswordCopy;
-
-
-    let savePasswordBtnSection = (
-        <WaitLoader size="md" />
-    );
-
-    if (!props.isSavingAccount) {
-        savePasswordBtnSection = (
-            <div className="row">
-                <div className="col">
-                    <button className="btn btn-primary" onClick={props.onSaveAccount}>Save Changes</button>
-                </div>
-            </div>
-        );
-    }
 
 
     return (
@@ -48,10 +31,59 @@ export default function Account(props) {
             </div>
             <br />
 
+            {getPasswordSection(props)}
+
+        </div>
+    );
+}
 
 
 
-            {/* password */}
+function getPasswordSection(props) {
+
+    switch (parseInt(props.authProviderId)) {
+        case AUTH_PROVIDER_TYPE_ID_FACEBOOK:
+            return (
+                <div className="row">
+                    <div className="col">
+                        <h6>Your account is linked to Faceboook.</h6>
+                    </div>
+                </div>
+            );
+
+        case AUTH_PROVIDER_TYPE_ID_GOOGLE:
+            return (
+                <div className="row">
+                    <div className="col">
+                        <h6>Your account is linked to Google.</h6>
+                    </div>
+                </div>
+            );
+    }
+
+
+    const oldPassword = props.account.oldPassword;
+    const newPassword = props.account.newPassword;
+    const newPasswordCopy = props.account.newPasswordCopy;
+
+
+    let savePasswordBtnSection = (
+        <WaitLoader size="md" />
+    );
+
+    if (!props.isSavingAccount) {
+        savePasswordBtnSection = (
+            <div className="row">
+                <div className="col">
+                    <button className="btn btn-primary" onClick={props.onSaveAccount}>Save Changes</button>
+                </div>
+            </div>
+        );
+    }
+
+
+    return (
+        <>
             <div className="row gutter-1">
 
                 <div className="col-md-6">
@@ -78,9 +110,7 @@ export default function Account(props) {
             </div>
 
 
-
-            {savePasswordBtnSection}
-
-        </div>
+            { savePasswordBtnSection}
+        </>
     );
 }

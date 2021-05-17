@@ -68,7 +68,7 @@ export const saveAccount = (data) => {
             url: '/users/update',
             method: 'post',
             params: {
-                bmdToken: bmdAuth.bmdToken, authProviderId: bmdAuth.authProviderId,
+                bmdToken: bmdAuth?.bmdToken, authProviderId: bmdAuth?.authProviderId,
                 oldPassword: data.oldPassword,
                 newPassword: data.newPassword,
             },

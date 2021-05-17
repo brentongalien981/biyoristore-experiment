@@ -1,3 +1,4 @@
+import { CLEAR_SENSITIVE_DATA_FOR_PROFILE_REDUCER } from '../actions/appStateManager';
 import * as actions from '../actions/profile';
 import { RETRIEVED_DATA_FROM_LOCAL_STORAGE } from '../bs-library/constants/global';
 import Bs from '../bs-library/helpers/Bs';
@@ -6,15 +7,19 @@ import BsCore2 from '../bs-library/helpers/BsCore2';
 import BsJLS from '../bs-library/helpers/BsJLS';
 import BsJLSOLM from '../bs-library/helpers/BsJLSOLM';
 
+
+
+/** CONSTS */
+const DEFAULT_ADDRESS = { id: 0, street: "123 My Address", city: "Manhattan", province: "NY", country: "United State", postalCode: "98765" };
+
+
 /** */
 const initialState = {
     profile: {
     },
 
     paymentInfos: [],
-    addresses: [
-        { id: 0, street: "123 My Address", city: "Manhattan", province: "NY", country: "United State", postalCode: "98765" },
-    ],
+    addresses: [{...DEFAULT_ADDRESS}],
     orders: [],
     ordersMetaData: {},
 
@@ -27,6 +32,8 @@ const initialState = {
 /* REDUCER */
 const profile = (state = initialState, action) => {
     switch (action.type) {
+
+        case CLEAR_SENSITIVE_DATA_FOR_PROFILE_REDUCER: return clearSensitiveDataForProfileReducer(state, action);
 
         case actions.ON_SET_PROFILE_FAIL: return onSetProfileFail(state, action);
 
@@ -54,6 +61,32 @@ const profile = (state = initialState, action) => {
 
 
 /* NORMAL */
+const clearSensitiveDataForProfileReducer = (state, action) => {
+
+    const updatedProfile = {};
+    const updatedPaymentInfos = [];
+    const updatedAddresses = [{...DEFAULT_ADDRESS}];
+    const updatedOrders = [];
+    const updatedOrdersMetaData = {};
+
+
+    BsJLS.set('profile.personalData', updatedProfile);
+    BsJLS.set('profile.stripePaymentInfos', updatedPaymentInfos);
+    BsJLS.set('profile.addresses', updatedAddresses);
+
+
+    return {
+        ...state,
+        profile: updatedProfile,
+        paymentInfos: updatedPaymentInfos,
+        addresses: updatedAddresses,
+        orders: updatedOrders,
+        ordersMetaData: updatedOrdersMetaData,
+    };
+};
+
+
+
 const onSaveAccountReturn = (state, action) => {
 
     action.callBackData.doCallBackFunc(action.callBackData);
@@ -89,8 +122,9 @@ const onReadOrdersReturn = (state, action) => {
         updatedPageOrders = action.callBackData.objs.orders;
         userOrdersMetaData = action.callBackData.objs.ordersMetaData;
         let lifespanInMin = 1;
-    
-        if (BsJLS.set(pageOrdersReadQuery, updatedPageOrders)) { BsJLSOLM.updateRefreshDateForSearchQuery(pageOrdersReadQuery, lifespanInMin); }
+        const isSensitiveInfo = true;
+
+        if (BsJLS.set(pageOrdersReadQuery, updatedPageOrders)) { BsJLSOLM.updateRefreshDateForSearchQuery(pageOrdersReadQuery, lifespanInMin, isSensitiveInfo); }
         BsJLS.set('userOrdersMetaData', userOrdersMetaData);
         // Bs.log('has read userOrders from backend');
     }
@@ -162,7 +196,7 @@ const onDeletePaymentMethodReturn = (state, action) => {
     else {
         BsCore2.alertForCallBackDataErrors(action.callBackData);
     }
-    
+
     if (BsJLS.set('profile.stripePaymentInfos', updatedPaymentInfos)) { BsJLSOLM.updateRefreshDate('profile.stripePaymentInfos'); }
 
     action.callBackData.doCallBackFunc();
