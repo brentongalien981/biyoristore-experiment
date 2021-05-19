@@ -13,12 +13,14 @@ import { queueAlert } from '../actions/temporaryAlerts';
 import * as cartWidgetHelperFuncs from '../components/cart/helper-funcs/HelperFuncsA';
 import { CART_STATUS_AVAILABLE } from '../components/cart/constants/consts';
 import { clearSensitiveData } from '../actions/appStateManager';
+import BsJLS from '../bs-library/helpers/BsJLS';
+import BsJLSOLM from '../bs-library/helpers/BsJLSOLM';
 
 
 
 
 class Header extends React.Component {
-    render() {    
+    render() {
         const cartItems = this.props.cart?.cartItems;
         let cartItemsCount = cartItems?.length;
         if (!cartItemsCount) { cartItemsCount = ";)"; }
@@ -26,7 +28,7 @@ class Header extends React.Component {
         if (this.props.location.pathname === "/") {
             return (<HeaderLight onLogout={this.onLogout} cartItemsCount={cartItemsCount} />);
         }
-    
+
         return (<HeaderDark onLogout={this.onLogout} cartItemsCount={cartItemsCount} />);
     }
 
@@ -49,21 +51,54 @@ class Header extends React.Component {
     };
 
 
-    // BMD-TODO:
+    
     clearSensitiveData() {
 
         // Clear sensitive data on BsJLS and redux-store.
         this.props.clearSensitiveData();
 
-        // BMD-TODO: Clear sensitive BsJLS & BsJLSOLM search-queries and JLS-objs ie. userOrders?pageNum=3, etc...
+        this.clearSensitiveBsJLSSearchQueryObjsData();
 
+    }
+
+
+
+    clearSensitiveBsJLSSearchQueryObjsData() {
+
+        for (const k in BsJLSOLM.searchQueryObjs) {
+            const v = BsJLSOLM.searchQueryObjs[k];
+
+            if (v.isSensitiveInfo) {
+
+                const bsJlsObjVal = BsJLS.get(k);
+
+                switch (typeof bsJlsObjVal) {
+                    case 'string':
+                        BsJLS.set(k, '');
+                        break;
+                    case 'object':
+                        if (isNaN(bsJlsObjVal.length)) {
+                            // It's an object.
+                            BsJLS.set(k, {});
+                        } else {
+                            // It's an array.
+                            BsJLS.set(k, []);
+                        }
+                        break;
+
+                    default:
+                        BsJLS.set(k, '');
+                        break;
+                }
+            }
+        }
     }
 
 
 
     initCart() {
         let data = {
-            
+
             bmdHttpRequest: cartWidgetHelperFuncs.prepareCartBmdHttpRequestData(),
             doCallBackFunc: () => {
                 cartWidgetHelperFuncs.setCartStatus(CART_STATUS_AVAILABLE);

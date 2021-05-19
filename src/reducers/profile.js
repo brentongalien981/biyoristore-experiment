@@ -70,11 +70,6 @@ const clearSensitiveDataForProfileReducer = (state, action) => {
     const updatedOrdersMetaData = {};
 
 
-    BsJLS.set('profile.personalData', updatedProfile);
-    BsJLS.set('profile.stripePaymentInfos', updatedPaymentInfos);
-    BsJLS.set('profile.addresses', updatedAddresses);
-
-
     return {
         ...state,
         profile: updatedProfile,
@@ -362,9 +357,9 @@ const setProfile = (state, action) => {
             const addresses = action.callBackData.objs.addresses ?? [];
 
 
-            if (BsJLS.set('profile.personalData', profile)) { BsJLSOLM.updateRefreshDate('profile.personalData'); }
-            if (BsJLS.set('profile.stripePaymentInfos', paymentInfos)) { BsJLSOLM.updateRefreshDate('profile.stripePaymentInfos'); }
-            if (BsJLS.set('profile.addresses', addresses)) { BsJLSOLM.updateRefreshDate('profile.addresses'); }
+            // if (BsJLS.set('profile.personalData', profile)) { BsJLSOLM.updateRefreshDate('profile.personalData'); }
+            // if (BsJLS.set('profile.stripePaymentInfos', paymentInfos)) { BsJLSOLM.updateRefreshDate('profile.stripePaymentInfos'); }
+            // if (BsJLS.set('profile.addresses', addresses)) { BsJLSOLM.updateRefreshDate('profile.addresses'); }
 
             return {
                 ...state,
@@ -374,15 +369,15 @@ const setProfile = (state, action) => {
                 shouldDisplayProfile: true
             };
 
-        case 2: // Read from local-storage.
+        // case 2: // Read from local-storage.
 
-            return {
-                ...state,
-                profile: BsJLS.get('profile.personalData') ?? {},
-                paymentInfos: BsJLS.get('profile.stripePaymentInfos') ?? [],
-                addresses: BsJLS.get('profile.addresses') ?? [],
-                shouldDisplayProfile: true
-            };
+        //     return {
+        //         ...state,
+        //         profile: BsJLS.get('profile.personalData') ?? {},
+        //         paymentInfos: BsJLS.get('profile.stripePaymentInfos') ?? [],
+        //         addresses: BsJLS.get('profile.addresses') ?? [],
+        //         shouldDisplayProfile: true
+        //     };
 
         default:
             return { ...state };

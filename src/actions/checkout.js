@@ -5,6 +5,8 @@ import { resetCart } from "./cart";
 import BsKeys from "../bs-library/helpers/BsKeys";
 import axios from "axios";
 import BmdAuth from "../bs-library/core/BmdAuth";
+import BsJLSOLM from "../bs-library/helpers/BsJLSOLM";
+import { RETRIEVED_DATA_FROM_LOCAL_STORAGE } from "../bs-library/constants/global";
 
 
 
@@ -215,4 +217,5 @@ export const readCheckoutRequiredData = () => {
             }
         });
     };
+
 };

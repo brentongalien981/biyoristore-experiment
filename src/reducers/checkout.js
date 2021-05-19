@@ -1,14 +1,17 @@
 import { CLEAR_SENSITIVE_DATA_FOR_CHECKOUT_REDUCER } from '../actions/appStateManager';
 import * as actions from '../actions/checkout';
+import { RETRIEVED_DATA_FROM_LOCAL_STORAGE } from '../bs-library/constants/global';
 import Bs from '../bs-library/helpers/Bs';
 import BsCore2 from '../bs-library/helpers/BsCore2';
+import BsJLS from '../bs-library/helpers/BsJLS';
+import BsJLSOLM from '../bs-library/helpers/BsJLSOLM';
 import { ORDER_STATUSES } from '../containers/payment/constants/consts';
 
 
 
 /* STATE */
 const initialState = {
-    message: "This is the initial state of STORE: checkout.",
+
     // profile: {},
     addresses: [],
     paymentInfos: [],
@@ -151,17 +154,8 @@ const uncheckAllOptions = (options) => {
 /* NORMAL FUNCS */
 const clearSensitiveDataForCheckoutReducer = (state, action) => {
 
-    // BMD-TODO
-    // const updatedOrdersMetaData = {};
-
-    
-    // BsJLS.set('profile.personalData', updatedProfile);
-    // BsJLS.set('profile.stripePaymentInfos', updatedPaymentInfos);
-    // BsJLS.set('profile.addresses', updatedAddresses);
-
-
     return {
-        ...state
+        ...initialState
     };
 };
 
@@ -441,7 +435,8 @@ const onReadCheckoutRequiredDataFail = (state, action) => {
 const onReadCheckoutRequiredDataSuccess = (state, action) => {
 
     const updatedAddresses = setAddresses(action.objs);
-    const updatedPaymentInfos = setPaymentInfos(action.objs.paymentInfos)
+    const updatedPaymentInfos = setPaymentInfos(action.objs.paymentInfos);
+
 
     return {
         ...state,

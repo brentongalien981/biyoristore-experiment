@@ -27,14 +27,19 @@ export default class BsJLSOLM {
             categories: { dateRefreshed: null, lifespan: 1440, isSensitiveInfo: false, shouldForceReadDb: false },
             teams: { dateRefreshed: null, lifespan: 1440, isSensitiveInfo: false, shouldForceReadDb: false }
         },
-        checkout: {},
+        checkout: {
+            // Sensitive-info should not be kept in local-storage.
+            // addresses: { dateRefreshed: null, lifespan: 1, isSensitiveInfo: true, shouldForceReadDb: false },
+            // paymentInfos: { dateRefreshed: null, lifespan: 1, isSensitiveInfo: true, shouldForceReadDb: false }
+        },
         cart: {
             status: { dateRefreshed: null, lifespan: 1440, isSensitiveInfo: false, shouldForceReadDb: false }
         },
         profile: {
-            personalData: { dateRefreshed: null, lifespan: 1, isSensitiveInfo: true, shouldForceReadDb: false },
-            stripePaymentInfos: { dateRefreshed: null, lifespan: 1, isSensitiveInfo: true, shouldForceReadDb: false },
-            addresses: { dateRefreshed: null, lifespan: 1, isSensitiveInfo: true, shouldForceReadDb: false },
+            // Sensitive-info should not be kept in local-storage.
+            // personalData: { dateRefreshed: null, lifespan: 1, isSensitiveInfo: true, shouldForceReadDb: false },
+            // stripePaymentInfos: { dateRefreshed: null, lifespan: 1, isSensitiveInfo: true, shouldForceReadDb: false },
+            // addresses: { dateRefreshed: null, lifespan: 1, isSensitiveInfo: true, shouldForceReadDb: false },
         },
         temporaryAlerts: {
             alerts: { dateRefreshed: null, lifespan: 10, isSensitiveInfo: false, shouldForceReadDb: false },

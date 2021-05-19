@@ -15,7 +15,7 @@ class TestPageA extends React.Component {
 
     componentDidMount() {
         window.addEventListener("beforeunload", (e) => {
-            BsAppLocalStorage.set('tight-pink', this.state.endSessionMsg);
+            BsAppLocalStorage.set('tpp', this.state.endSessionMsg);
             // e.preventDefault();
             // return e.returnValue = 'Are you sure you want to close?';
         });

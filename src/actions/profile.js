@@ -129,7 +129,7 @@ export const deletePaymentMethod = (data) => {
         BsCore2.ajaxCrud({
             url: '/stripePaymentMethod/delete',
             method: 'post',
-            params: { 
+            params: {
                 bmdToken: bmdAuth?.bmdToken,
                 authProviderId: bmdAuth?.authProviderId,
                 paymentMethodId: data.paymentMethodId
@@ -284,14 +284,15 @@ export const readProfile = () => {
     if (!BmdAuth.isLoggedIn()) { return onSetProfileFail(); }
 
 
-    // Read from local-storage.
-    if (
-        !BsJLSOLM.shouldObjWithPathRefresh('profile.personalData')
-        && !BsJLSOLM.shouldObjWithPathRefresh('profile.stripePaymentInfos')
-        && !BsJLSOLM.shouldObjWithPathRefresh('profile.addresses')
-    ) {
-        return setProfile({ resultCode: 2 });
-    }
+    // // Read from local-storage.
+    // if (
+    //     !BsJLSOLM.shouldObjWithPathRefresh('profile.personalData')
+    //     && !BsJLSOLM.shouldObjWithPathRefresh('profile.stripePaymentInfos')
+    //     && !BsJLSOLM.shouldObjWithPathRefresh('profile.addresses')
+    // ) {
+    //     return setProfile({ resultCode: 2 });
+    // }
+
 
 
     // Read from the backend.
@@ -312,6 +313,9 @@ export const readProfile = () => {
             },
         });
     };
+
+
+
 
 
 

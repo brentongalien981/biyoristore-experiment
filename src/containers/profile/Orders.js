@@ -6,7 +6,7 @@ import Order from './Order';
 
 function Orders(props) {
 
-    const orders = props.orders.map((o, i) => {
+    const orders = props.orders?.map((o, i) => {
         return (<Order key={i} order={o} />);
     });
 
