@@ -180,6 +180,7 @@ class Join extends React.Component {
             }
             const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: msg });
             this.props.queueAlert(newAlertObj);
+            // BMD-ISH
 
             const redirectTo = this.getRedirectToUrl();
             this.props.history.replace(redirectTo);

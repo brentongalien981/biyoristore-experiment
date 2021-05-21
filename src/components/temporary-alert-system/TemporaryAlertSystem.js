@@ -44,7 +44,7 @@ class TemporaryAlertSystem extends React.Component {
             alertComponents.push(
                 <div key={i} id={a.id} className="alert alert-primary alert-dismissible fade show AlertItem" role="alert">
                     {a.msg}
-                    <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={(e) => this.onAlertDismiss(a.id)}>
+                    <button type="button" className="close" aria-label="Close" onClick={(e) => this.onAlertDismiss(a.id)}>
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>

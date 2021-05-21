@@ -43,6 +43,7 @@ class Header extends React.Component {
         BmdAuth.resetTemporaryGuestUserId();
         this.initCart();
 
+        // BMD-ISH
         const msg = 'See yah later!';
         const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: msg });
         this.props.queueAlert(newAlertObj);

@@ -33,6 +33,7 @@ const tryResetSystem = (state, action) => {
 
     if (BsJLSOLM.shouldObjRefresh(BsJLSOLM.objs?.temporaryAlerts?.alerts)) {
         updatedAlerts = [];
+        if (BsJLS.set('temporaryAlerts.alerts', updatedAlerts)) { BsJLSOLM.updateRefreshDate('temporaryAlerts.alerts'); }
     }
 
     return {
@@ -49,7 +50,7 @@ const deleteAlert = (state, action) => {
     let updatedAlerts = [];
     
     oldAlerts.forEach(a => {
-        if (a.id !== action.alertId) {
+        if (a.id != action.alertId) {
             updatedAlerts.push(a);
         }
     });
@@ -58,7 +59,7 @@ const deleteAlert = (state, action) => {
 
     return {
         ...state,
-        alerts: updatedAlerts
+        alerts: [...updatedAlerts]
     };
 };
 
