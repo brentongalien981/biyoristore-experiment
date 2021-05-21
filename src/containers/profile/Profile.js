@@ -333,7 +333,7 @@ class Profile extends React.Component {
     };
 
 
-    // BMD-ISH
+    
     onSaveAccount = () => {
         if (this.doOnPreSaveAccountProcess()) { this.doOnActualSaveAccountProcess(); }
     };
