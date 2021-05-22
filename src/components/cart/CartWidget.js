@@ -91,7 +91,9 @@ class CartWidget extends React.Component {
 
     render() {
 
-        let cartItems = this.props.cart?.cartItems?.map((item, i) => {
+        const sortedCartItems = helperFuncs.sortCartItems(this.props.cart?.cartItems);
+
+        let cartItems = sortedCartItems.map((item, i) => {
             return <CartItem item={item} key={i} index={i} onProductClick={this.onProductClick} onRemoveCartItem={this.onRemoveCartItem} />;
         });
 
