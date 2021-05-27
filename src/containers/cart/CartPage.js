@@ -23,7 +23,10 @@ class CartPage extends React.Component {
 
     /* HELPER FUNCS */
     getCartPageItems = (items) => {
-        const itemComponents = items?.map((item, i) => {
+        
+        const sortedCartItems = cartWidgetHelperFuncs.sortCartItems(items);
+
+        const itemComponents = sortedCartItems?.map((item, i) => {
             return (
                 <CartPageItem item={item} key={i} index={i} onProductClick={this.onProductClick} onRemoveCartItem={this.onRemoveCartItem}
                     isSettingCartItemCount={this.state.isSettingCartItemCount}
