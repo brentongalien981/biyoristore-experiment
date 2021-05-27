@@ -8,7 +8,7 @@ function ProductReviews(props) {
     const loaderComponent = props.isReadingReviews ? <WaitLoader /> : null;
 
     const reviews = props.reviews.map((r, i) => {
-        const userAndDate = r.reviewerName + " (" + r.createdAt + ")";
+        const userAndDate = (r.reviewerName ?? 'Anonymous user') + " (" + r.createdAt + ")";
 
         let ratingStarComponents = [];
 
