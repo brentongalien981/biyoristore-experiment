@@ -85,6 +85,8 @@ class Checkout extends React.Component {
         if (BmdAuth.isLoggedIn()) { this.props.readCheckoutRequiredData(); }
 
         this.props.setCheckoutFinalizationPageEntryCode();
+
+        this.props.getExchangeRates();
     }
 
 
@@ -272,6 +274,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        getExchangeRates: () => dispatch(actions.getExchangeRates()),
         resetReducerInitVars: () => dispatch(actions.resetReducerInitVars()),
         getShippingRates: (data) => dispatch(actions.getShippingRates(data)),
         // onAddressSelectionChange: (e, i) => dispatch(actions.onAddressSelectionChange(e, i)),

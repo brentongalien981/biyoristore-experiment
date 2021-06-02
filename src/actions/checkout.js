@@ -11,6 +11,8 @@ import { RETRIEVED_DATA_FROM_LOCAL_STORAGE } from "../bs-library/constants/globa
 
 
 /* NAMES */
+export const ON_GET_EXCHANGE_RATES_RETURN = "ON_GET_EXCHANGE_RATES_RETURN";
+
 export const RESET_CHECKOUT_FINALIZATION_PAGE_FLAGS = "RESET_CHECKOUT_FINALIZATION_PAGE_FLAGS";
 export const ON_DO_ORDER_INVENTORY_CHECKS_RETURN = "ON_DO_ORDER_INVENTORY_CHECKS_RETURN";
 
@@ -43,6 +45,8 @@ export const ON_READ_CHECKOUT_REQUIRED_DATA_FAIL = "ON_READ_CHECKOUT_REQUIRED_DA
 
 
 /* FUNCS */
+export const onGetExchangeRatesReturn = (callBackData) => ({ type: ON_GET_EXCHANGE_RATES_RETURN, callBackData: callBackData });
+
 export const resetCheckoutFinalizationPageFlags = () => ({ type: RESET_CHECKOUT_FINALIZATION_PAGE_FLAGS });
 export const onDoOrderInventoryChecksReturn = (callBackData) => ({ type: ON_DO_ORDER_INVENTORY_CHECKS_RETURN, callBackData: callBackData });
 
@@ -74,6 +78,39 @@ export const onReadCheckoutRequiredDataFail = (callBackData) => ({ type: ON_READ
 
 
 /* AJAX FUNCS */
+// BMD-ISH
+export const getExchangeRates = () => {
+
+    if (BsJLSOLM.shouldObjWithPathRefresh('checkout.exchangeRates')) {
+
+        return (dispatch) => {
+
+            BsCore2.ajaxCrud({
+                url: '/exchange-rates/getRate',
+                params: {
+                    from: 'CAD',
+                    to: 'USD'
+                },
+                callBackFunc: (requestData, json) => {
+                    const callBackData = { ...json };
+                    dispatch(onGetExchangeRatesReturn(callBackData));
+                },
+                errorCallBackFunc: (errors, errorStatusCode) => {
+                    const callBackData = { errors: errors, errorStatusCode: errorStatusCode };
+                    dispatch(onGetExchangeRatesReturn(callBackData));
+                }
+            });
+    
+        };
+    }
+
+
+    const callBackData = { retrievedDataFrom: RETRIEVED_DATA_FROM_LOCAL_STORAGE };
+    return onGetExchangeRatesReturn(callBackData);
+};
+
+
+
 export const getShippingRates = (data) => {
 
     return (dispatch) => {

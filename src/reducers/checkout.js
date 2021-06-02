@@ -14,6 +14,7 @@ import { ORDER_STATUSES } from '../containers/payment/constants/consts';
 const initialState = {
 
     // profile: {},
+    exchangeRates: {},
     addresses: [],
     paymentInfos: [],
     paymentPageEntryCode: "",
@@ -44,8 +45,9 @@ const initialState = {
 const checkout = (state = initialState, action) => {
     switch (action.type) {
 
-        case CLEAR_SENSITIVE_DATA_FOR_CHECKOUT_REDUCER: return clearSensitiveDataForCheckoutReducer(state, action);
+        case actions.ON_GET_EXCHANGE_RATES_RETURN: return onGetExchangeRatesReturn(state, action);
 
+        case CLEAR_SENSITIVE_DATA_FOR_CHECKOUT_REDUCER: return clearSensitiveDataForCheckoutReducer(state, action);
 
         case actions.RESET_CHECKOUT_FINALIZATION_PAGE_FLAGS: return resetCheckoutFinalizationPageFlags(state, action);
         case actions.ON_DO_ORDER_INVENTORY_CHECKS_RETURN: return onDoOrderInventoryChecksReturn(state, action);
@@ -153,6 +155,15 @@ const uncheckAllOptions = (options) => {
 
 
 /* NORMAL FUNCS */
+const onGetExchangeRatesReturn = (state, action) => {
+
+    return {
+        ...state
+    };
+};
+
+
+
 const clearSensitiveDataForCheckoutReducer = (state, action) => {
 
     return {
