@@ -1,7 +1,7 @@
 import { ORDER_PROCESSING_PERIOD, PAYMENT_TO_FUNDS_PERIOD } from "../../../bs-library/constants/global";
 
 export const getProjectedTotalDeliveryDays = (cartItems, shipmentRateObj) => {
-    
+
     return getNumOfSlowestRestockDay(cartItems) + parseInt(shipmentRateObj.delivery_days) + ORDER_PROCESSING_PERIOD + PAYMENT_TO_FUNDS_PERIOD;
 };
 
@@ -22,4 +22,26 @@ export const getNumOfSlowestRestockDay = (cartItems) => {
     }
 
     return slowestRestockDays;
+};
+
+
+
+export const checkDestinationCountry = (address) => {
+
+    const country = address.country.toLowerCase();
+
+    if (country == 'us' ||
+        country == 'usa' ||
+        country == 'united states' ||
+        country == 'united states of america' ||
+        country == 'united states america' ||
+        country == 'america' ||
+        country == 'ca' ||
+        country == 'canada'
+    ) {
+        return true;
+    }
+
+
+    return false;
 };

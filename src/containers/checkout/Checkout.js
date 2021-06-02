@@ -15,6 +15,8 @@ import OrderDetailsSummaryModal from './OrderDetailsSummaryModal';
 import Loader from '../../components/loader/Loader';
 import NonClosableLoader from '../../components/loader/NonClosableLoader';
 import BmdAuth from '../../bs-library/core/BmdAuth';
+import { checkDestinationCountry } from './helper-funcs/HelperFuncsA';
+import { INVALID_DESTINATION_COUNTRY_ALERT_MSG } from './constants/consts';
 
 
 class Checkout extends React.Component {
@@ -150,6 +152,12 @@ class Checkout extends React.Component {
         if (!returnObj.isObjValid) {
             alert(returnObj.msg);
             return;
+        }
+
+        
+        if (!checkDestinationCountry(this.state.address)) { 
+            alert(INVALID_DESTINATION_COUNTRY_ALERT_MSG);
+            return; 
         }
 
         const items = this.props.cartItems;

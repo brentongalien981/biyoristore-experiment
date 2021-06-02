@@ -1,0 +1,1 @@
+export const INVALID_DESTINATION_COUNTRY_ALERT_MSG = 'We\'re very sorry. We\'re currently only available in the US and Canada.';

@@ -15,6 +15,9 @@ class ContainerTemplate extends React.Component {
 
 
     /** MAIN FUNCS */
+    render() {
+        return null;
+    }
 
 
 

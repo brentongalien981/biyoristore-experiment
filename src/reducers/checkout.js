@@ -5,6 +5,7 @@ import Bs from '../bs-library/helpers/Bs';
 import BsCore2 from '../bs-library/helpers/BsCore2';
 import BsJLS from '../bs-library/helpers/BsJLS';
 import BsJLSOLM from '../bs-library/helpers/BsJLSOLM';
+import { INVALID_DESTINATION_COUNTRY_ALERT_MSG } from '../containers/checkout/constants/consts';
 import { ORDER_STATUSES } from '../containers/payment/constants/consts';
 
 
@@ -275,6 +276,7 @@ const onGetShippingRatesReturn = (state, action) => {
     const COULD_NOT_FIND_SHIPMENT_RATES = -5;
     const NUM_OF_DAILY_ORDERS_LIMIT_REACHED = -6;
     const NUM_OF_DAILY_ORDER_ITEMS_LIMIT_REACHED = -7;
+    const INVALID_DESTINATION_COUNTRY_EXCEPTION = -8;
 
     const ENTIRE_PROCESS_OK = 1;
 
@@ -286,6 +288,9 @@ const onGetShippingRatesReturn = (state, action) => {
     switch (resultCode) {
         case DESTINATION_ADDRESS_EXCEPTION:
             alert("Oops! Please enter a valid address.");
+            break;
+        case INVALID_DESTINATION_COUNTRY_EXCEPTION:
+            alert(INVALID_DESTINATION_COUNTRY_ALERT_MSG);
             break;
         case NULL_PREDEFINED_PACKAGE_EXCEPTION:
             alert("Oops! Our largest package-box couldn't quite carry that many items. Try doing multiple orders or reduce your cart item quantities.");
