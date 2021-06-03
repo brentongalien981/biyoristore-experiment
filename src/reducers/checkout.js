@@ -155,10 +155,25 @@ const uncheckAllOptions = (options) => {
 
 
 /* NORMAL FUNCS */
+// BMD-ISH
 const onGetExchangeRatesReturn = (state, action) => {
 
+    const exchangeRateKey = 'CAD-to-USD';
+    let updatedExchangeRates = state.exchangeRates;
+
+
+    if (action.callBackData.retrievedDataFrom !== RETRIEVED_DATA_FROM_LOCAL_STORAGE) {
+        
+        const conversionRate = action.callBackData.objs.conversionRate;
+        updatedExchangeRates[exchangeRateKey] = conversionRate;
+
+        if (BsJLS.set('checkout.exchangeRates', updatedExchangeRates)) { BsJLSOLM.updateRefreshDate('checkout.exchangeRates'); }
+    }
+
+
     return {
-        ...state
+        ...state,
+        exchangeRates: BsJLS.get('checkout.exchangeRates') ?? {}
     };
 };
 
