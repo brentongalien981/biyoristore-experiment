@@ -7,12 +7,33 @@ import * as consts from "../constants/consts";
 
 
 
+export const getCartItemDisplayPrice = (cartItem) => {
+
+    const mostEfficientSeller = cartItem?.product?.mostEfficientSeller;
+
+    let displayPrice = null;
+
+
+    if (mostEfficientSeller) {
+
+        const discountPrice = parseFloat(mostEfficientSeller.productSeller.discount_sell_price) ?? 0;
+        const regularPrice = parseFloat(mostEfficientSeller.productSeller.sell_price) ?? 0;
+        displayPrice = ((discountPrice != 0 && discountPrice < regularPrice) ? discountPrice : regularPrice);
+
+    }
+
+
+    return displayPrice;
+};
+
+
+
 export const getCartItemSelectedSize = (cartItem) => {
 
     const sizeAvailabilities = cartItem?.product?.mostEfficientSeller?.sizeAvailabilities ?? [];
 
     for (const sa of sizeAvailabilities) {
-        if (cartItem.sizeAvailabilityId == sa.id) { 
+        if (cartItem.sizeAvailabilityId == sa.id) {
             return sa.size;
         }
     }
@@ -40,7 +61,7 @@ export const sortCartItems = (cartItems = []) => {
 
         const ciSelectedSize = getCartItemSelectedSize(ci);
 
-        
+
         let arrangementName = '';
 
         if (ci.product.packageItemTypeId == PACKAGE_ITEM_TYPE_ID_SHOES) {

@@ -6,6 +6,10 @@ export const RETRIEVED_DATA_FROM_LOCAL_STORAGE = 1003;
 export const COMPANY_CUSTOMER_SERVICE_EMAIL = 'customerservice@bmd.com'; // BMD-ON-STAGING: Edit this.
 
 
+
+export const TAX_RATE = 0.13; // BMD-ON-STAGING: Edit this.
+
+
 /** ORDER */
 // Period in business-days.
 // BMD-ON-STAGING
