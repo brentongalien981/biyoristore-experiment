@@ -10,9 +10,9 @@ export default function ShippingOptions(props) {
 
     const options = props.shippingRates?.map((r, i) => {
 
-        const estimatedShippingDays = slowestRestockDays + r.delivery_days;
+        const estimatedShippingDays = slowestRestockDays + parseInt(r.delivery_days);
 
-        const shippingDescription = getShippingDescription(estimatedShippingDays, r);
+        const shippingDescription = getShippingDescription(estimatedShippingDays, r, props.exchangeRates);
 
         return (
             <div key={i} className="custom-control custom-radio mb-2">
@@ -21,6 +21,8 @@ export default function ShippingOptions(props) {
             </div>
         );
     });
+
+
 
     return (
         <>
@@ -50,14 +52,18 @@ export default function ShippingOptions(props) {
 
 
 
-function getShippingDescription(estimatedShippingDays, rate) {
+function getShippingDescription(estimatedShippingDays, rate, exchangeRates) {
     const r = rate;
+
+    let shippingRateFeeInUSD = r.rate * parseFloat(exchangeRates['CAD-to-USD'].rate);
+    shippingRateFeeInUSD = shippingRateFeeInUSD.toFixed(2);
+
 
     let label = r.service + " / ";
     let totalDeliveryDays = estimatedShippingDays + ORDER_PROCESSING_PERIOD + PAYMENT_TO_FUNDS_PERIOD;
 
     label += estimatedShippingDays + '-' + totalDeliveryDays + ' Business Days';
-    label += " / $" + r.rate + " " + r.currency;
+    label += " / $" + shippingRateFeeInUSD;
 
     return label;
 }

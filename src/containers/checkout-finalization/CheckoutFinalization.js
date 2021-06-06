@@ -112,10 +112,10 @@ class CheckoutFinalization extends React.Component {
                     <h4>Items</h4>
                 </div>
 
-                <OrderTable orderItems={this.props.cartItems} shipmentRate={this.props.shipmentRate} onPay={this.onPseudoPay} />
+                <OrderTable exchangeRates={this.props.exchangeRates} orderItems={this.props.cartItems} shipmentRate={this.props.shipmentRate} onPay={this.onPseudoPay} />
 
 
-                <ShippingOptions shippingRates={this.props.efficientShipmentRates} cartItems={this.props.cartItems} onShippingOptionChange={this.onShippingOptionChange} />
+                <ShippingOptions exchangeRates={this.props.exchangeRates} shippingRates={this.props.efficientShipmentRates} cartItems={this.props.cartItems} onShippingOptionChange={this.onShippingOptionChange} />
             </>
         );
     }
@@ -188,6 +188,7 @@ class CheckoutFinalization extends React.Component {
 /* REACT-FUNCS */
 const mapStateToProps = (state) => {
     return {
+        exchangeRates: state.checkout.exchangeRates,
         canGoToPaymentPage: state.checkout.canGoToPaymentPage,
         paymentPageEntryCode: state.checkout.paymentPageEntryCode,
         predefinedPaymentFinalizationPageEntryCode: state.checkout.predefinedPaymentFinalizationPageEntryCode,

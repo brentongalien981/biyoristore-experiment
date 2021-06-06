@@ -50,7 +50,8 @@ function OrderTable(props) {
                         withNoCheckoutBtn
                         withPayBtn
                         onPay={props.onPay}
-                        shouldCalculateForCheckoutFinalizationPage />
+                        shouldCalculateForCheckoutFinalizationPage
+                        exchangeRates={props.exchangeRates} />
                 </div>
 
 
