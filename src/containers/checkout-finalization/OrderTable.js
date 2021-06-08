@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { sortCartItems } from '../../components/cart/helper-funcs/HelperFuncsA';
 import OrderSummary from '../cart/OrderSummary';
 import OrderTableItem from './OrderTableItem';
 
@@ -8,7 +9,10 @@ import OrderTableItem from './OrderTableItem';
 function OrderTable(props) {
 
     const numOrderItems = props.orderItems.length ?? 0;
-    const items = props.orderItems?.map((item, i) => {
+    const sortedOrderItems = sortCartItems(props.orderItems);
+
+
+    const items = sortedOrderItems?.map((item, i) => {
 
         const isLastItemAttrib = (i + 1 === numOrderItems) ? { isLastItem: true } : {};
         return (

@@ -46,7 +46,7 @@ const onShowOrderReturn = (state, action) => {
             updatedOrder = action.callBackData.objs.order;
             updatedPaymentInfo = action.callBackData.objs.paymentInfo;
 
-            const bsJLSObjLifespanInMin = 1440;
+            const bsJLSObjLifespanInMin = 120;
             bsJLSObjData = {
                 order: updatedOrder,
                 paymentInfo: updatedPaymentInfo

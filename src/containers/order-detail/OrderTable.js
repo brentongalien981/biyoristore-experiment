@@ -1,4 +1,5 @@
 import React from 'react';
+import { sortOrderItems } from './helper-funcs/HelperFuncsA';
 import OrderSummary from './OrderSummary';
 import OrderTableItem from './OrderTableItem';
 
@@ -6,7 +7,9 @@ import OrderTableItem from './OrderTableItem';
 
 function OrderTable(props) {
 
-    const items = props.order?.orderItems?.map((item, i) => {
+    const sortedOrderItems = sortOrderItems(props.order?.orderItems);
+
+    const items = sortedOrderItems?.map((item, i) => {
         return (
             <OrderTableItem item={item} key={i} />
         );
