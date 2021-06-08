@@ -78,7 +78,6 @@ export const onReadCheckoutRequiredDataFail = (callBackData) => ({ type: ON_READ
 
 
 /* AJAX FUNCS */
-// BMD-ISH
 export const getExchangeRates = () => {
 
     if (BsJLSOLM.shouldObjWithPathRefresh('checkout.exchangeRates')) {
