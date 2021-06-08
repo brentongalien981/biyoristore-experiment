@@ -104,11 +104,6 @@ function getOrderSummaryValues(items, shouldCalculateForOrderPage, shouldCalcula
             //     itemTotalPrice = parseFloat(i.product.price) * parseInt(i.quantity);
             // }
 
-            // BMD-DELETE
-            // let itemMostEfficientPrice = i.product.mostEfficientSeller.productSeller.discount_sell_price ?? i.product.mostEfficientSeller.productSeller.sell_price;
-            // itemMostEfficientPrice = parseFloat(itemMostEfficientPrice);
-            // itemTotalPrice = itemMostEfficientPrice * parseInt(i.quantity);
-
             const itemTotalPrice = parseFloat(getCartItemDisplayPrice(i)) * parseInt(i.quantity);
 
             vals.subtotal += itemTotalPrice;

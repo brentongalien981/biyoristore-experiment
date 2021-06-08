@@ -155,7 +155,6 @@ const uncheckAllOptions = (options) => {
 
 
 /* NORMAL FUNCS */
-// BMD-ISH
 const onGetExchangeRatesReturn = (state, action) => {
 
     const exchangeRateKey = 'CAD-to-USD';
