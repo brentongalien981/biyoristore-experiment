@@ -15,8 +15,9 @@ import OrderDetailsSummaryModal from './OrderDetailsSummaryModal';
 import Loader from '../../components/loader/Loader';
 import NonClosableLoader from '../../components/loader/NonClosableLoader';
 import BmdAuth from '../../bs-library/core/BmdAuth';
-import { checkDestinationCountry } from './helper-funcs/HelperFuncsA';
+import { checkDestinationCountry, getPseudoSessionInputAddress } from './helper-funcs/HelperFuncsA';
 import { INVALID_DESTINATION_COUNTRY_ALERT_MSG } from './constants/consts';
+import BsJLS from '../../bs-library/helpers/BsJLS';
 
 
 class Checkout extends React.Component {
@@ -25,7 +26,7 @@ class Checkout extends React.Component {
     static BLANK_ADDRESS = { firstName: "", lastName: "", street: "", city: "", province: "", country: "", postalCode: "", email: "", phone: "" };
 
     state = {
-        address: { ...Checkout.BLANK_ADDRESS },
+        address: { ...getPseudoSessionInputAddress() },
         paymentMethod: {},
         shipmentRate: {},
         isPlacingOrder: false,
@@ -223,6 +224,8 @@ class Checkout extends React.Component {
 
         let updatedAddress = this.state.address;
         updatedAddress[name] = value;
+
+        BsJLS.set('checkout.inputAddress', updatedAddress);
 
         this.setState({ address: updatedAddress });
     };

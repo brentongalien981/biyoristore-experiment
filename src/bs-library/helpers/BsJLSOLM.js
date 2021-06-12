@@ -28,7 +28,7 @@ export default class BsJLSOLM {
             teams: { dateRefreshed: null, lifespan: 1440, isSensitiveInfo: false, shouldForceReadDb: false }
         },
         checkout: {
-            exchangeRates: { dateRefreshed: null, lifespan: 480, isSensitiveInfo: false, shouldForceReadDb: false }
+            exchangeRates: { dateRefreshed: null, lifespan: 480, isSensitiveInfo: false, shouldForceReadDb: false },
             // Sensitive-info should not be kept in local-storage.
             // addresses: { dateRefreshed: null, lifespan: 1, isSensitiveInfo: true, shouldForceReadDb: false },
             // paymentInfos: { dateRefreshed: null, lifespan: 1, isSensitiveInfo: true, shouldForceReadDb: false }

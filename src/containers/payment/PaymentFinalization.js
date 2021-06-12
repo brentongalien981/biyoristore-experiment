@@ -5,6 +5,8 @@ import Bs from '../../bs-library/helpers/Bs';
 import { setPaymentFinalizationPageEntryCode, finalizeOrder, resetFinalizationObjs } from '../../actions/checkout';
 import { COMPANY_CUSTOMER_SERVICE_EMAIL } from '../../bs-library/constants/global';
 import { PAYMENT_FINALIZATION_NAV_BLOCKER_MSG } from './constants/consts';
+import BsJLS from '../../bs-library/helpers/BsJLS';
+import { BLANK_ADDRESS } from '../checkout/constants/consts';
 
 
 
@@ -93,6 +95,8 @@ class PaymentFinalization extends React.Component {
     doPostPaymentFinalizationProcess() {
         PaymentFinalization.unblockNavBlocker();
         PaymentFinalization.isPaymentFinalizationProcessing = false;
+
+        BsJLS.set('checkout.inputAddress', BLANK_ADDRESS);
     }
 
 

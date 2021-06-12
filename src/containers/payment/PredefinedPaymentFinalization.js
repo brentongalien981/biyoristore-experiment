@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import * as actions from '../../actions/checkout';
 import { COMPANY_CUSTOMER_SERVICE_EMAIL } from '../../bs-library/constants/global';
+import BsJLS from '../../bs-library/helpers/BsJLS';
+import { BLANK_ADDRESS } from '../checkout/constants/consts';
 import { getProjectedTotalDeliveryDays } from '../checkout/helper-funcs/HelperFuncsA';
 import { ORDER_STATUSES, PAYMENT_FINALIZATION_NAV_BLOCKER_MSG } from './constants/consts';
 
@@ -42,6 +44,8 @@ class PredefinedPaymentFinalization extends React.Component {
             doCallBackFunc: () => {
                 PredefinedPaymentFinalization.unblockNavBlocker();
                 PredefinedPaymentFinalization.isPredefinedPaymentFinalizationProcessing = false;
+
+                BsJLS.set('checkout.inputAddress', BLANK_ADDRESS);
             }
         };
 

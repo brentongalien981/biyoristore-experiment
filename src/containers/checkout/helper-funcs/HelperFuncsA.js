@@ -1,4 +1,27 @@
 import { ORDER_PROCESSING_PERIOD, PAYMENT_TO_FUNDS_PERIOD } from "../../../bs-library/constants/global";
+import BsJLS from "../../../bs-library/helpers/BsJLS";
+import { BLANK_ADDRESS } from "../constants/consts";
+
+
+
+export const getPseudoSessionInputAddress = () => {
+
+    const inputAddress = BsJLS.get('checkout.inputAddress') ?? BLANK_ADDRESS;
+
+    return {
+        firstName: (inputAddress.firstName == null || inputAddress.firstName.trim() == '') ? '' : inputAddress.firstName,
+        lastName: (inputAddress.lastName == null || inputAddress.lastName.trim() == '') ? '' : inputAddress.lastName,
+        street: (inputAddress.street == null || inputAddress.street.trim() == '') ? '' : inputAddress.street,
+        city: (inputAddress.city == null || inputAddress.city.trim() == '') ? '' : inputAddress.city,
+        province: (inputAddress.province == null || inputAddress.province.trim() == '') ? '' : inputAddress.province,
+        country: (inputAddress.country == null || inputAddress.country.trim() == '') ? '' : inputAddress.country,
+        postalCode: (inputAddress.postalCode == null || inputAddress.postalCode.trim() == '') ? '' : inputAddress.postalCode,
+        email: (inputAddress.email == null || inputAddress.email.trim() == '') ? '' : inputAddress.email,
+        phone: (inputAddress.phone == null || inputAddress.phone.trim() == '') ? '' : inputAddress.phone,
+    };
+};
+
+
 
 export const getProjectedTotalDeliveryDays = (cartItems, shipmentRateObj) => {
 
