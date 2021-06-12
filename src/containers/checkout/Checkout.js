@@ -152,7 +152,8 @@ class Checkout extends React.Component {
 
         // check that address fields are filled
         if (!returnObj.isObjValid) {
-            alert(returnObj.msg);
+            alert('Please fill-in all info.');
+            // alert(returnObj.msg);
             return;
         }
 
