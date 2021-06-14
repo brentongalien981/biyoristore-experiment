@@ -8,8 +8,8 @@ import ProductSizeFilter from './ProductSizeFilter';
 function ProductDetails(props) {
 
     const p = props.product;
-    const sellPrice = p.mostEfficientSeller?.productSeller.sell_price;
-    const discountSellPrice = p.mostEfficientSeller?.productSeller.discount_sell_price;
+    const sellPrice = parseFloat(p.mostEfficientSeller?.productSeller.sell_price).toFixed(2);
+    const discountSellPrice = parseFloat(p.mostEfficientSeller?.productSeller.discount_sell_price).toFixed(2);
 
     let priceSectionElement = (<span className="item-price">${sellPrice}</span>);
     if (parseFloat(discountSellPrice)) {
