@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import BsCore from '../../bs-library/helpers/BsCore';
 import { getSizeComponentLabel } from '../../components/cart/helper-funcs/HelperFuncsA';
 import SpinnerLoader from '../../components/loader/SpinnerLoader/SpinnerLoader';
+import SpinnerImgComponent from '../../components/loader/SpinnerLoader/SpinnerLoader';
 
 
 
@@ -16,7 +17,17 @@ function CartPageItem(props) {
     const displayPrice = ((discountPrice != 0 && discountPrice < regularPrice) ? discountPrice : regularPrice);
 
     const quantity = parseInt(props.item.quantity);
-    const itemTotalPrice = displayPrice * quantity;    
+    const itemTotalPrice = displayPrice * quantity;   
+    
+    
+    let deleteBtnSection = (
+        <a href="#!" className="cart-item-close" onClick={(e) => props.onRemoveCartItem(e, props.item.sellerProductId, props.item.sizeAvailabilityId, props.index)}><i className="icon-x"></i></a>
+    );
+
+    if (props.isDeletingCartItem && props.currentlyDeletedCartItemIndex == props.index) {
+        deleteBtnSection = (<SpinnerImgComponent size='lg' />);
+        
+    }
 
 
     return (
@@ -48,7 +59,8 @@ function CartPageItem(props) {
                     <span className="cart-item-price">${itemTotalPrice.toFixed(2)}</span>
                 </div>
 
-                <a href="#!" className="cart-item-close" onClick={(e) => props.onRemoveCartItem(e, props.item.sellerProductId, props.item.sizeAvailabilityId)}><i className="icon-x"></i></a>
+                {deleteBtnSection}
+
             </div>
         </div>
     );

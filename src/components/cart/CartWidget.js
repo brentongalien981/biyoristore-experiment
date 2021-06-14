@@ -19,14 +19,15 @@ class CartWidget extends React.Component {
     /** PROPS */
     state = {
         isReadingCart: false,
-        isDeletingCartItem: false
+        isDeletingCartItem: false,
+        currentlyDeletedCartItemIndex: -1
     };
 
 
 
     /* HELPER FUNCS */
     tryExtendingCartLifespan = () => {
-        
+
         helperFuncs.initCartStatusDetailsBasedOnTime();
 
         switch (helperFuncs.getCartStatus()) {
@@ -84,7 +85,7 @@ class CartWidget extends React.Component {
     /* MAIN FUNCS */
     componentDidMount() {
         this.initCart();
-        setInterval(this.tryExtendingCartLifespan, consts.TRY_EXTENDING_CART_LIFESPAN_INTERVAL_IN_SEC * 1000    );
+        setInterval(this.tryExtendingCartLifespan, consts.TRY_EXTENDING_CART_LIFESPAN_INTERVAL_IN_SEC * 1000);
     }
 
 
@@ -94,7 +95,7 @@ class CartWidget extends React.Component {
         const sortedCartItems = helperFuncs.sortCartItems(this.props.cart?.cartItems);
 
         let cartItems = sortedCartItems.map((item, i) => {
-            return <CartItem item={item} key={i} index={i} onProductClick={this.onProductClick} onRemoveCartItem={this.onRemoveCartItem} />;
+            return <CartItem item={item} key={i} index={i} onProductClick={this.onProductClick} isDeletingCartItem={this.state.isDeletingCartItem} onRemoveCartItem={this.onRemoveCartItem} currentlyDeletedCartItemIndex={this.state.currentlyDeletedCartItemIndex} />;
         });
 
         if (this.state.isReadingCart) {
@@ -168,15 +169,18 @@ class CartWidget extends React.Component {
 
 
 
-    onRemoveCartItem = (e, sellerProductId, sizeAvailabilityId) => {
+    onRemoveCartItem = (e, sellerProductId, sizeAvailabilityId, cartItemIndex) => {
         e.preventDefault();
 
         if (this.state.isDeletingCartItem) {
-            alert('Please wait, we are deleting the previous item.');
+            // alert('Please wait, we are deleting the previous item.');
             return;
         }
 
-        this.setState({ isDeletingCartItem: true });
+        this.setState({
+            isDeletingCartItem: true,
+            currentlyDeletedCartItemIndex: cartItemIndex
+        });
 
 
         const bmdHttpRequestData = helperFuncs.prepareCartBmdHttpRequestData();
@@ -189,7 +193,10 @@ class CartWidget extends React.Component {
                 sizeAvailabilityId: sizeAvailabilityId
             },
             doCallBackFunc: () => {
-                this.setState({ isDeletingCartItem: false });
+                this.setState({
+                    isDeletingCartItem: false,
+                    currentlyDeletedCartItemIndex: -1
+                });
             }
         };
 

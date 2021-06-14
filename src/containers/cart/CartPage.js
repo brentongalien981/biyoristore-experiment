@@ -13,22 +13,26 @@ import * as cartWidgetConsts from '../../components/cart/constants/consts';
 class CartPage extends React.Component {
 
     /** PROPS */
-    state = { 
+    state = {
         isSettingCartItemCount: false,
         isDeletingCartItem: false,
-        currentlyEditingCartItemIndex: null
+        currentlyEditingCartItemIndex: null,
+        currentlyDeletedCartItemIndex: -1
     };
 
 
 
     /* HELPER FUNCS */
     getCartPageItems = (items) => {
-        
+
         const sortedCartItems = cartWidgetHelperFuncs.sortCartItems(items);
 
         const itemComponents = sortedCartItems?.map((item, i) => {
             return (
-                <CartPageItem item={item} key={i} index={i} onProductClick={this.onProductClick} onRemoveCartItem={this.onRemoveCartItem}
+                <CartPageItem item={item} key={i} index={i} onProductClick={this.onProductClick}
+                    isDeletingCartItem={this.state.isDeletingCartItem}
+                    currentlyDeletedCartItemIndex={this.state.currentlyDeletedCartItemIndex}
+                    onRemoveCartItem={this.onRemoveCartItem}
                     isSettingCartItemCount={this.state.isSettingCartItemCount}
                     currentlyEditingCartItemIndex={this.state.currentlyEditingCartItemIndex}
                     onSetCartItemCount={this.onSetCartItemCount} />
@@ -103,11 +107,11 @@ class CartPage extends React.Component {
     };
 
 
-    
+
     onSetCartItemCount = (sellerProductId, sizeAvailabilityId, quantity, index) => {
         if (quantity < 1 || quantity > cartWidgetConsts.MAX_CART_ITEM_QUANTITY) { return; }
         if (this.state.isSettingCartItemCount) { return; }
-        this.setState({ 
+        this.setState({
             isSettingCartItemCount: true,
             currentlyEditingCartItemIndex: index
         });
@@ -125,7 +129,7 @@ class CartPage extends React.Component {
                 index: index
             },
             doCallBackFunc: () => {
-                this.setState({ 
+                this.setState({
                     isSettingCartItemCount: false,
                     currentlyEditingCartItemIndex: null
                 });
@@ -144,16 +148,19 @@ class CartPage extends React.Component {
     };
 
 
-    
-    onRemoveCartItem = (e, sellerProductId, sizeAvailabilityId) => {
+
+    onRemoveCartItem = (e, sellerProductId, sizeAvailabilityId, cartItemIndex) => {
         e.preventDefault();
 
         if (this.state.isDeletingCartItem) {
-            alert('Please wait, we are deleting the previous item.');
+            // alert('Please wait, we are deleting the previous item.');
             return;
         }
 
-        this.setState({ isDeletingCartItem: true });
+        this.setState({ 
+            isDeletingCartItem: true,
+            currentlyDeletedCartItemIndex: cartItemIndex
+        });
 
 
         const bmdHttpRequestData = cartWidgetHelperFuncs.prepareCartBmdHttpRequestData();
@@ -166,7 +173,10 @@ class CartPage extends React.Component {
                 sizeAvailabilityId: sizeAvailabilityId
             },
             doCallBackFunc: () => {
-                this.setState({ isDeletingCartItem: false });
+                this.setState({ 
+                    isDeletingCartItem: false,
+                    currentlyDeletedCartItemIndex: -1
+                });
             }
         };
 
