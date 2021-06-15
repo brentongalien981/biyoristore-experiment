@@ -392,6 +392,9 @@ class Listing extends React.Component {
         // Set the new url.
         const params = { pageNumber: pageNum, categoryId: this.props.selectedCategory.id, sortFilterCode: this.props.sortFilterCode };
         this.changeUrl(params);
+
+        
+        transitionScrollToTop();
     };
 
 
