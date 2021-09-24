@@ -48,6 +48,7 @@ function App() {
 			<TemporaryAlertSystem />
 
 			<Switch>
+				{/* BMD-ON-ITER: Stage: Change the url it requests from to the production url (not biyoristoreexperiment.test) */}
 				<Route path="/" exact component={Home} />
 				<Route path="/products" exact render={() => <Suspense fallback={<div>loading...</div>}><Listing /></Suspense>} />
 				<Route path="/product" exact render={() => <Suspense fallback={<div>loading...</div>}><ProductInDetails /></Suspense>} />

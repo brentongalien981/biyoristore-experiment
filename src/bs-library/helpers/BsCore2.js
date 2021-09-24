@@ -8,6 +8,7 @@ class BsCore2 {
     static appUrl = "";
     static pubPhotoUrl = "https://s3.us-east-2.amazonaws.com/bs.s3.public/photos/";
 
+    // BMD-ON-ITER: Staging:
     // // FOR MAC
     // static appBackendUrl = "http://biyoristoreexperiment.test:8000";
     // static appApiUrl = "http://biyoristoreexperiment.test:8000/api";
@@ -15,6 +16,10 @@ class BsCore2 {
     // FOR WINDOWS
     static appBackendUrl = "http://biyoristoreexperiment.test";
     static appApiUrl = "http://biyoristoreexperiment.test/api";
+
+    // FOR STAGING
+    // static appBackendUrl = "http://192.168.1.116:9002";
+    // static appApiUrl = "http://192.168.1.116:9002/api";
 
 
 
