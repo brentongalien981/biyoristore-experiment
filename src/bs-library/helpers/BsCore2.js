@@ -14,12 +14,12 @@ class BsCore2 {
     // static appApiUrl = "http://biyoristoreexperiment.test:8000/api";
 
     // FOR WINDOWS
-    static appBackendUrl = "http://biyoristoreexperiment.test";
-    static appApiUrl = "http://biyoristoreexperiment.test/api";
+    // static appBackendUrl = "http://biyoristoreexperiment.test";
+    // static appApiUrl = "http://biyoristoreexperiment.test/api";
 
     // FOR STAGING
-    // static appBackendUrl = "http://192.168.1.116:9002";
-    // static appApiUrl = "http://192.168.1.116:9002/api";
+    static appBackendUrl = "http://192.168.1.116:9001";
+    static appApiUrl = "http://192.168.1.116:9001/api";
 
 
 
