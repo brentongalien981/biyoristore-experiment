@@ -32,6 +32,8 @@ const PredefinedPaymentFinalization = React.lazy(() => import('./containers/paym
 const Order = React.lazy(() => import('./containers/order-detail/Order'));
 
 const PrivacyPolicy = React.lazy(() => import('./containers/legals/PrivacyPolicy'));
+const TermsAndConditions = React.lazy(() => import('./containers/legals/TermsAndConditions'));
+const RefundPolicy = React.lazy(() => import('./containers/legals/RefundPolicy'));
 
 
 // BMD-ON-STAGING: Delete this
@@ -74,6 +76,8 @@ function App() {
 				{/* <Route path="/product" exact component={ProductInDetails} /> */}
 				
 				<Route path="/privacy-policy" exact render={() => <Suspense fallback={<div>loading...</div>}><PrivacyPolicy /></Suspense>} />
+				<Route path="/terms-and-conditions" exact render={() => <Suspense fallback={<div>loading...</div>}><TermsAndConditions /></Suspense>} />
+				<Route path="/refund-policy" exact render={() => <Suspense fallback={<div>loading...</div>}><RefundPolicy /></Suspense>} />
 				
 
 				{/* BMD-FOR-DEBUG */}

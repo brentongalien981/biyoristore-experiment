@@ -1,0 +1,24 @@
+.bmd-legal-page-sections h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.bmd-legal-page-sections h5 {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.bmd-legal-page-sections p {
+  font-size: 0.8rem;
+}
+
+b.bmd-inline-h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.bmd-legal-page-sections ul {
+    list-style-type: circle;
+    list-style-position: inside;
+    font-size: 0.8rem;
+}
