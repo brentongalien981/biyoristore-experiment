@@ -31,6 +31,9 @@ const PaymentFinalization = React.lazy(() => import('./containers/payment/Paymen
 const PredefinedPaymentFinalization = React.lazy(() => import('./containers/payment/PredefinedPaymentFinalization'));
 const Order = React.lazy(() => import('./containers/order-detail/Order'));
 
+const PrivacyPolicy = React.lazy(() => import('./containers/legals/PrivacyPolicy'));
+
+
 // BMD-ON-STAGING: Delete this
 const TestPageWithHistoryNavigationBlocker = React.lazy(() => import('./containers/experiment/TestPageWithHistoryNavigationBlocker'));
 
@@ -69,6 +72,9 @@ function App() {
 				<Route path="/order" exact render={() => <Suspense fallback={<div>loading...</div>}><Order /></Suspense>} />
 				<Route path="/test-loader" exact component={TestLoaderContainer} />
 				{/* <Route path="/product" exact component={ProductInDetails} /> */}
+				
+				<Route path="/privacy-policy" exact render={() => <Suspense fallback={<div>loading...</div>}><PrivacyPolicy /></Suspense>} />
+				
 
 				{/* BMD-FOR-DEBUG */}
 				{/* BMD-ON-STAGING: COMMENT-OUT */}
