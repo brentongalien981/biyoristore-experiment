@@ -6,15 +6,9 @@ import BsCore2 from './BsCore2';
 
 class BsCore {
 
-    static appUrl = "";
-    static pubPhotoUrl = "https://s3.us-east-2.amazonaws.com/bs.s3.public/photos/";
-
     // BMD-ON-ITER: Staging, Deployment
-    // // FOR MAC
-    // static appBackendUrl = "http://biyoristoreexperiment.test:8000";
-    // static appApiUrl = "http://biyoristoreexperiment.test:8000/api";
-
-    // FOR WINDOWS
+    static appUrl = BsCore2.appUrl;
+    static pubPhotoUrl = BsCore2.pubPhotoUrl;    
     static appBackendUrl = BsCore2.appBackendUrl;
     static appApiUrl = BsCore2.appApiUrl;
 
