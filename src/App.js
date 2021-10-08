@@ -11,6 +11,7 @@ import AppStateManager from './bs-helper-classes/AppStateManager';
 import TestPageA from './containers/experiment/TestPageA';
 import TestPageB from './containers/experiment/TestPageB';
 import TestPageC from './containers/experiment/TestPageC';
+import PageNotFound from './containers/errors/PageNotFound';
 // import Listing from './containers/listing/Listing';
 // import ProductInDetails from './containers/product/ProductInDetails';
 
@@ -85,6 +86,9 @@ function App() {
 				<Route path="/test-page-a" component={TestPageA} />
 				<Route path="/test-page-b" component={TestPageB} />
 				<Route path="/test-page-c" component={TestPageC} />
+
+
+				<Route path="/" render={() => <PageNotFound />} />
 			</Switch>
 
 			<Switch>
