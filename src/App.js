@@ -4,7 +4,7 @@ import Header from './theme-components/Header';
 import Footer from './theme-components/Footer';
 import Search from './theme-components/Search';
 // import Cart from './theme-components/Cart';
-import Home from './containers/home/Home';
+// import Home from './containers/home/Home';
 import TestLoaderContainer from './containers/experiment/TestLoaderContainer';
 import TemporaryAlertSystem from './components/temporary-alert-system/TemporaryAlertSystem';
 import AppStateManager from './bs-helper-classes/AppStateManager';
@@ -17,6 +17,7 @@ import PageNotFound from './containers/errors/PageNotFound';
 
 
 
+const Home = React.lazy(() => import('./containers/home/Home'));
 const Listing = React.lazy(() => import('./containers/listing/Listing'));
 const ProductInDetails = React.lazy(() => import('./containers/product/ProductInDetails'));
 const Join = React.lazy(() => import('./containers/join/Join'));
@@ -55,7 +56,8 @@ function App() {
 
 			<Switch>
 				{/* BMD-ON-ITER: Stage: Change the url it requests from to the production url (not biyoristoreexperiment.test) */}
-				<Route path="/" exact component={Home} />
+				{/* <Route path="/" exact component={Home} /> */}
+				<Route path="/" exact render={() => <Suspense fallback={<div>loading...</div>}><Home /></Suspense>} />
 				<Route path="/products" exact render={() => <Suspense fallback={<div>loading...</div>}><Listing /></Suspense>} />
 				<Route path="/product" exact render={() => <Suspense fallback={<div>loading...</div>}><ProductInDetails /></Suspense>} />
 				

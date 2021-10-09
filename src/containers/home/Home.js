@@ -1,30 +1,27 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
+import * as actions from '../../actions/home';
+import WaitLoader from '../../components/loader/WaitLoader';
 import Hero from '../../theme-components/Hero';
 import Separator from '../../theme-components/Separator';
-import BsCore from '../../bs-library/helpers/BsCore';
-import Bs from '../../bs-library/helpers/Bs';
-import FeaturedModernProduct from '../../components/product/FeaturedModernProduct';
-import FeaturedProductCategory from '../../components/product-category/FeaturedProductCategory';
+import FeaturedBrand from './FeaturedBrand';
 
 class Home extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            categories: []
-        };
-    }
-
+    state = {
+        isReadingFeaturedBrands: false
+    };
 
     render() {
 
-        const content = "May 15 is a good date...";
-        const featuredProductCategories = this.getFeaturedProductCategories();
+        const featuredBrands = this.getFeaturedBrands();
 
         return (
             <>
-                <Hero content={content} />
-                {featuredProductCategories}
+                {/* <Hero content="Your Favourite Brands" /> */}
+                {featuredBrands}
                 <Separator />
             </>
         );
@@ -33,31 +30,29 @@ class Home extends React.Component {
 
 
     componentDidMount() {
+        this.setState({ isReadingFeaturedBrands: true });
 
-        BsCore.ajaxCrud({
-            url: '/products/featured',
-            params: {},
-            callBackFunc: (requestData, json) => {
-                Bs.log("#####################");
-                Bs.log("json.objs ==> " + json.objs);
-                Bs.log("json.isResultOk ==> " + json.isResultOk);
-                Bs.log("products ==> " + json.objs);
-                this.setState({
-                    categories: [...json.objs]
-                });
+        this.props.readFeaturedProducts({
+            doCallBackFunc: () => {
+                this.setState({ isReadingFeaturedBrands: false });
             }
         });
     }
 
 
 
-    getFeaturedProductCategories() {
+    getFeaturedBrands() {
 
-        const categories = this.state.categories.map((c, i) => {
+        let brands = this.props.featuredBrands.map((b, i) => {
             return (
-                <FeaturedProductCategory key={i} category={c} />
+                <FeaturedBrand key={i} brand={b} />
             );
         });
+
+
+        if (this.state.isReadingFeaturedBrands) {
+            brands = <WaitLoader size="lg" />
+        }
 
 
 
@@ -65,7 +60,12 @@ class Home extends React.Component {
             <div className="hero pb-10">
                 <div className="container">
                     <div className="row gutter-1">
-                        {categories}
+                        {brands}
+                    </div>
+                    <div className="row">
+                        <div className="col text-center">
+                            <Link to="/products" className="btn btn-outline-secondary">VIEW LISTINGS</Link>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -75,4 +75,20 @@ class Home extends React.Component {
 
 
 
-export default Home;
+const mapStateToProps = (state) => {
+    return {
+        featuredBrands: state.home.featuredBrands
+    };
+};
+
+
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        readFeaturedProducts: (data) => dispatch(actions.readFeaturedProducts(data))
+    };
+};
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Home));

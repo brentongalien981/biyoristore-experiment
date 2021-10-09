@@ -7,6 +7,7 @@ import join from './join';
 import profile from './profile';
 import checkout from './checkout';
 import order from './order';
+import home from './home';
 import temporaryAlerts from './temporaryAlerts';
 import appStateManager from './appStateManager';
 import bmdtest from './bmdtest'; // BMD-ON-STAGING: Comment-out on deployment.
@@ -22,5 +23,6 @@ export default combineReducers({
     order,
     temporaryAlerts,
     appStateManager,
-    bmdtest
+    bmdtest,
+    home
 });
