@@ -21,6 +21,7 @@ const Home = React.lazy(() => import('./containers/home/Home'));
 const Listing = React.lazy(() => import('./containers/listing/Listing'));
 const ProductInDetails = React.lazy(() => import('./containers/product/ProductInDetails'));
 const Join = React.lazy(() => import('./containers/join/Join'));
+const ForgotPassword = React.lazy(() => import('./containers/join/ForgotPassword'));
 const BmdSocialiteSignupResult = React.lazy(() => import('./containers/join/BmdSocialiteSignupResult'));
 const BmdSocialiteLoginResult = React.lazy(() => import('./containers/join/BmdSocialiteLoginResult'));
 const Profile = React.lazy(() => import('./containers/profile/Profile'));
@@ -62,6 +63,7 @@ function App() {
 				<Route path="/product" exact render={() => <Suspense fallback={<div>loading...</div>}><ProductInDetails /></Suspense>} />
 				
 				<Route path="/join" exact render={() => <Suspense fallback={<div>loading...</div>}><Join /></Suspense>} />
+				<Route path="/forgot-password" exact render={() => <Suspense fallback={<div>loading...</div>}><ForgotPassword /></Suspense>} />
 				<Route path="/bmd-socialite-signup-result" exact render={() => <Suspense fallback={<div>loading...</div>}><BmdSocialiteSignupResult /></Suspense>} />
 				<Route path="/bmd-socialite-login-result" exact render={() => <Suspense fallback={<div>loading...</div>}><BmdSocialiteLoginResult /></Suspense>} />
 				

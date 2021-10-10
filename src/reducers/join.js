@@ -37,6 +37,7 @@ const join = (state = initialState, action) => {
         case actions.RESET_ERRORS: return resetErrors(state, action);
         case actions.ON_CREATE_ACCOUNT_SUCCESS: return onCreateAccountSuccess(state, action);
         case actions.ON_CREATE_ACCOUNT_FAIL: return onCreateAccountFail(state, action);
+        case actions.ON_EMAIL_USER_RESET_LINK_RETURN: return onEmailUserResetLinkReturn(state, action);        
         default: return state;
     }
 }
@@ -173,6 +174,22 @@ const onLoginSuccess = (state, action) => {
     return {
         ...state,
         shouldDoOnLoginProcessFinalization: shouldDoOnLoginProcessFinalization,
+    };
+};
+
+
+
+const onEmailUserResetLinkReturn = (state, action) => {
+
+    if (action.callBackData.isResultOk) {
+    }
+
+
+    action.callBackData.doCallBackFunc();
+
+
+    return {
+        ...state
     };
 };
 

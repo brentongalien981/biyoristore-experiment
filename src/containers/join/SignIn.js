@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import WaitLoader from '../../components/loader/WaitLoader';
 import SocialMediaOptions from './SocialMediaOptions';
 
@@ -32,6 +33,10 @@ function SignIn(props) {
 
             <div className="col-12 mt-2">
                 <a href="#!" className="btn btn-block btn-primary" onClick={(e) => props.onLogin(e)}>Log In</a>
+            </div>
+
+            <div className="col-12 mt-2">                
+                <Link to="/forgot-password" className="btn btn-block btn-primary">Forgot Password</Link>
             </div>
         </>
     );

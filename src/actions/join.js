@@ -16,6 +16,7 @@ export const RESET_ERRORS = "RESET_ERRORS";
 export const SAVE_USER = "SAVE_USER";
 export const ON_CREATE_ACCOUNT_SUCCESS = "ON_CREATE_ACCOUNT_SUCCESS";
 export const ON_CREATE_ACCOUNT_FAIL = "ON_CREATE_ACCOUNT_FAIL";
+export const ON_EMAIL_USER_RESET_LINK_RETURN = "ON_EMAIL_USER_RESET_LINK_RETURN";
 
 
 
@@ -33,6 +34,7 @@ export const onCreateAccountSuccess = (returnData) => ({
     returnData: returnData
 });
 export const onCreateAccountFail = (objs) => ({ type: ON_CREATE_ACCOUNT_FAIL, objs: objs });
+export const onEmailUserResetLinkReturn = (callBackData) => ({ type: ON_EMAIL_USER_RESET_LINK_RETURN, callBackData: callBackData });
 
 
 
@@ -97,6 +99,28 @@ export const verifyAuthData = (data) => {
                 const objs = { ...data, errors: errors };
                 dispatch(onCreateAccountFail(objs));
             },
+        });
+    };
+};
+
+
+
+export const emailUserResetLink = (data) => {
+
+    return (dispatch) => {
+
+        BsCore2.ajaxCrud({
+            url: '/join/emailUserResetLink',
+            method: 'post',
+            params: { ...data.params },
+            callBackFunc: (requestData, json) => {
+                const callBackData = { ...data, ...json };
+                dispatch(onEmailUserResetLinkReturn(callBackData));
+            },
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode, isResultOk: false };
+                dispatch(onEmailUserResetLinkReturn(callBackData));
+            }
         });
     };
 };
