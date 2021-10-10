@@ -6,6 +6,8 @@ import BsAppLocalStorage from '../../bs-library/helpers/BsAppLocalStorage';
 import Bs from '../../bs-library/helpers/Bs';
 import { connect } from 'react-redux';
 import { emailUserResetLink } from '../../actions/join';
+import BmdAuth from '../../bs-library/core/BmdAuth';
+import { withRouter } from 'react-router';
 
 
 
@@ -16,6 +18,15 @@ class ForgotPassword extends React.Component {
         backgroundImageUrl: BsCore2.pubPhotoUrl + "background-8.jpg",
         isRequestingForResetLinkEmail: false
     };
+
+
+
+    componentDidMount() {
+        if (BmdAuth.isLoggedIn()) {
+            this.props.history.replace("/");
+            return;
+        }
+    }
 
 
     render() {
@@ -98,4 +109,4 @@ const mapDispatchToProps = (dispatch) => {
 
 
 
-export default connect(null, mapDispatchToProps)(ForgotPassword);
+export default connect(null, mapDispatchToProps)(withRouter(ForgotPassword));

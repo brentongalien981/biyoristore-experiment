@@ -183,6 +183,9 @@ const onEmailUserResetLinkReturn = (state, action) => {
 
     if (action.callBackData.isResultOk) {
     }
+    else {
+        BsCore2.tryAlertForBmdResultCodeErrors2(action.callBackData);
+    }
 
 
     action.callBackData.doCallBackFunc();
