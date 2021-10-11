@@ -16,7 +16,8 @@ class ForgotPassword extends React.Component {
     state = {
         email: BsAppLocalStorage.get('email') ?? '',
         backgroundImageUrl: BsCore2.pubPhotoUrl + "background-8.jpg",
-        isRequestingForResetLinkEmail: false
+        isRequestingForResetLinkEmail: false,
+        isPasswordEmailSentSuccessfully: false
     };
 
 
@@ -30,6 +31,22 @@ class ForgotPassword extends React.Component {
 
 
     render() {
+
+        if (this.state.isPasswordEmailSentSuccessfully) {
+            return (
+                <div className="hero pb-10">
+                    <div className="container">
+                        <div className="row align-items-center vh-50">
+                            <div className="col text-center">
+                                <p>We've emaild you the password-reset-link.</p>
+                                <p>Please check your email to complete your password reset process.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
 
         const styleAttribVal = {
             backgroundImage: "url(" + this.state.backgroundImageUrl + ")"
@@ -73,7 +90,10 @@ class ForgotPassword extends React.Component {
             },
 
             doCallBackFunc: (objs) => {
-                this.setState({ isRequestingForResetLinkEmail: false });
+                this.setState({
+                    isRequestingForResetLinkEmail: false,
+                    isPasswordEmailSentSuccessfully: (objs.isResultOk ? true : false)
+                });
             }
         };
 
