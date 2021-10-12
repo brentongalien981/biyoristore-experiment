@@ -37,7 +37,8 @@ const join = (state = initialState, action) => {
         case actions.RESET_ERRORS: return resetErrors(state, action);
         case actions.ON_CREATE_ACCOUNT_SUCCESS: return onCreateAccountSuccess(state, action);
         case actions.ON_CREATE_ACCOUNT_FAIL: return onCreateAccountFail(state, action);
-        case actions.ON_EMAIL_USER_RESET_LINK_RETURN: return onEmailUserResetLinkReturn(state, action);        
+        case actions.ON_EMAIL_USER_RESET_LINK_RETURN: return onEmailUserResetLinkReturn(state, action);
+        case actions.ON_UPDATE_PASSWORD_RETURN: return onUpdatePasswordReturn(state, action);
         default: return state;
     }
 }
@@ -144,7 +145,7 @@ const onLoginSuccess = (state, action) => {
     action.callBackData.doPostProcessCallBack(isProcessSuccessful);
 
     let shouldDoOnLoginProcessFinalization = false;
-    
+
 
     switch (parseInt(action.callBackData.resultCode)) {
         case Join.LOGIN_RESULT_CODE_INVALID_PASSWORD:
@@ -189,6 +190,42 @@ const onEmailUserResetLinkReturn = (state, action) => {
 
     return {
         ...state
+    };
+};
+
+
+
+const onUpdatePasswordReturn = (state, action) => {
+
+    let shouldDoOnLoginProcessFinalization = false;
+
+
+    if (action.callBackData.isResultOk) {
+
+        const currentAuthUserData = {
+            email: action.callBackData.objs.email,
+            bmdToken: action.callBackData.objs.bmdToken,
+            bmdRefreshToken: action.callBackData.objs.bmdRefreshToken,
+            authProviderId: action.callBackData.objs.authProviderId,
+            expiresIn: action.callBackData.objs.expiresIn,
+            stayLoggedIn: action.callBackData.stayLoggedIn,
+        };
+
+        BmdAuth.set(currentAuthUserData);
+
+        shouldDoOnLoginProcessFinalization = true;
+
+    } else {
+        BsCore2.tryAlertForBmdResultCodeErrors2(action.callBackData);
+    }
+
+
+    action.callBackData.doCallBackFunc({ isResultOk: action.callBackData.isResultOk });
+
+
+    return {
+        ...state,
+        shouldDoOnLoginProcessFinalization: shouldDoOnLoginProcessFinalization
     };
 };
 

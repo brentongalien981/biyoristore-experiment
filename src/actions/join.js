@@ -17,6 +17,7 @@ export const SAVE_USER = "SAVE_USER";
 export const ON_CREATE_ACCOUNT_SUCCESS = "ON_CREATE_ACCOUNT_SUCCESS";
 export const ON_CREATE_ACCOUNT_FAIL = "ON_CREATE_ACCOUNT_FAIL";
 export const ON_EMAIL_USER_RESET_LINK_RETURN = "ON_EMAIL_USER_RESET_LINK_RETURN";
+export const ON_UPDATE_PASSWORD_RETURN = "ON_UPDATE_PASSWORD_RETURN";
 
 
 
@@ -35,6 +36,7 @@ export const onCreateAccountSuccess = (returnData) => ({
 });
 export const onCreateAccountFail = (objs) => ({ type: ON_CREATE_ACCOUNT_FAIL, objs: objs });
 export const onEmailUserResetLinkReturn = (callBackData) => ({ type: ON_EMAIL_USER_RESET_LINK_RETURN, callBackData: callBackData });
+export const onUpdatePasswordReturn = (callBackData) => ({ type: ON_UPDATE_PASSWORD_RETURN, callBackData: callBackData });
 
 
 
@@ -120,6 +122,28 @@ export const emailUserResetLink = (data) => {
             errorCallBackFunc: (errors, errorStatusCode) => {
                 const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode, isResultOk: false };
                 dispatch(onEmailUserResetLinkReturn(callBackData));
+            }
+        });
+    };
+};
+
+
+
+export const updatePassword = (data) => {
+
+    return (dispatch) => {
+
+        BsCore2.ajaxCrud({
+            url: '/join/updatePassword',
+            method: 'post',
+            params: { ...data.params },
+            callBackFunc: (requestData, json) => {
+                const callBackData = { ...data, ...json };
+                dispatch(onUpdatePasswordReturn(callBackData));
+            },
+            errorCallBackFunc: (errors, errorStatusCode) => {
+                const callBackData = { ...data, errors: errors, errorStatusCode: errorStatusCode, isResultOk: false };
+                dispatch(onUpdatePasswordReturn(callBackData));
             }
         });
     };
