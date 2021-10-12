@@ -1,4 +1,5 @@
 import React from 'react';
+import MiniImageLoader from '../../components/loader/MiniImageLoader/MiniImageLoader';
 import WaitLoader from '../../components/loader/WaitLoader';
 import { getDisplayStatusForOrderStatus } from './helper-funcs/HelperFuncsA';
 
@@ -17,8 +18,8 @@ function OrderInfo(props) {
                 <h5 className="eyebrow text-muted">Status</h5>
                 <p className="card-text">
                     Order-ID: {o.id}<br />
-                Status: {getDisplayStatusForOrderStatus(o.status).displayMsg}<br />
-                Placed {o.createdAt}
+                    Status: {getDisplayStatusForOrderStatus(o.status).displayMsg}<br />
+                    Placed {o.createdAt}
                 </p>
             </div>
 
@@ -43,7 +44,7 @@ function OrderInfo(props) {
                 <h5 className="eyebrow text-muted">When</h5>
                 <p className="card-text">
                     Arrives in {o.earliestDeliveryDays + '-' + o.latestDeliveryDays} Business Days<br />
-                Latest Delivery Date: {o.latestDeliveryDate}
+                    Latest Delivery Date: {o.latestDeliveryDate}
                 </p>
             </div>
 
@@ -58,9 +59,20 @@ function OrderInfo(props) {
 
     if (props.isDoingShowOrderProcess) {
         mainContent = (<WaitLoader size='lg' />);
-    } else if (o.id === -1) { 
+    } else if (o.id === -1) {
         return (<h4>Order not found</h4>);
-     }
+    }
+
+
+
+    let requestForReturnBtn = <button className="btn btn-light" onClick={props.onRequestForReturn}>Request for Return</button>;
+
+    if (props.isRequestingForReturn) {
+        requestForReturnBtn = (<MiniImageLoader />);
+    }
+
+
+    const cardFooterStyle = { backgroundColor: 'white' };
 
 
 
@@ -78,6 +90,10 @@ function OrderInfo(props) {
 
                 <div className="card-body">
                     {mainContent}
+                </div>
+
+                <div className="card-footer" style={cardFooterStyle}>
+                    {requestForReturnBtn}
                 </div>
 
             </div>

@@ -14,7 +14,8 @@ class Order extends React.Component {
 
     /* PROPERTIES */
     state = {
-        isDoingShowOrderProcess: false
+        isDoingShowOrderProcess: false,
+        isRequestingForReturn: false
     };
 
 
@@ -64,7 +65,13 @@ class Order extends React.Component {
 
                 <div className="container">
                     <div className="row justify-content-center">
-                        <OrderInfo order={this.props.order} paymentInfo={this.props.paymentInfo} isDoingShowOrderProcess={this.state.isDoingShowOrderProcess} />
+                        <OrderInfo 
+                            order={this.props.order} 
+                            paymentInfo={this.props.paymentInfo} 
+                            isDoingShowOrderProcess={this.state.isDoingShowOrderProcess} 
+                            isRequestingForReturn={this.state.isRequestingForReturn}
+                            onRequestForReturn={this.onRequestForReturn}
+                        />
                         {/* <PaymentInfo paymentInfo={this.props.paymentInfo} /> */}
                     </div>
                 </div>
@@ -77,6 +84,32 @@ class Order extends React.Component {
 
 
     /* EVENT FUNCS */
+    onRequestForReturn = () => {
+        
+        if (this.state.isDoingShowOrderProcess) { return; }
+        if (this.state.isRequestingForReturn) { return; }
+
+
+        this.setState({ isRequestingForReturn: true });
+
+
+        const data = {
+            params: {
+                orderId: this.props.order.id
+            },                        
+            doCallBackFunc: () => {
+                this.setState({ isRequestingForReturn: false });
+            }
+        };
+
+
+        this.props.requestForReturn(data);
+
+    };
+
+
+
+
     showOrder = () => {
 
         if (this.state.isDoingShowOrderProcess) { return; }
@@ -116,6 +149,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         showOrder: (data) => dispatch(actions.showOrder(data)),
+        requestForReturn: (data) => dispatch(actions.requestForReturn(data))        
     };
 };
 
