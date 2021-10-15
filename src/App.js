@@ -40,6 +40,8 @@ const PrivacyPolicy = React.lazy(() => import('./containers/legals/PrivacyPolicy
 const TermsAndConditions = React.lazy(() => import('./containers/legals/TermsAndConditions'));
 const RefundPolicy = React.lazy(() => import('./containers/legals/RefundPolicy'));
 
+const SearchPage = React.lazy(() => import('./containers/search-page/SearchPage'));
+
 
 // BMD-ON-STAGING: Delete this
 const TestPageWithHistoryNavigationBlocker = React.lazy(() => import('./containers/experiment/TestPageWithHistoryNavigationBlocker'));
@@ -86,6 +88,8 @@ function App() {
 				<Route path="/privacy-policy" exact render={() => <Suspense fallback={<div>loading...</div>}><PrivacyPolicy /></Suspense>} />
 				<Route path="/terms-and-conditions" exact render={() => <Suspense fallback={<div>loading...</div>}><TermsAndConditions /></Suspense>} />
 				<Route path="/refund-policy" exact render={() => <Suspense fallback={<div>loading...</div>}><RefundPolicy /></Suspense>} />
+
+				<Route path="/search" exact render={() => <Suspense fallback={<div>loading...</div>}><SearchPage /></Suspense>} />				
 				
 
 				{/* BMD-FOR-DEBUG */}

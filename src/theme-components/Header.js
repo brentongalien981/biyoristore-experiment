@@ -20,6 +20,7 @@ import BsJLSOLM from '../bs-library/helpers/BsJLSOLM';
 
 
 class Header extends React.Component {
+
     render() {
         const cartItems = this.props.cart?.cartItems;
         let cartItemsCount = cartItems?.length;

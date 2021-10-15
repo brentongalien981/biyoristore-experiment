@@ -10,6 +10,7 @@ import order from './order';
 import home from './home';
 import temporaryAlerts from './temporaryAlerts';
 import appStateManager from './appStateManager';
+import search from './search';
 import bmdtest from './bmdtest'; // BMD-ON-STAGING: Comment-out on deployment.
 
 export default combineReducers({
@@ -24,5 +25,6 @@ export default combineReducers({
     temporaryAlerts,
     appStateManager,
     bmdtest,
-    home
+    home,
+    search
 });
