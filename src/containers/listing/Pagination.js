@@ -7,7 +7,7 @@ import Bs from '../../bs-library/helpers/Bs';
 function Pagination(props) {
 
     let pageNumElements = [];
-    const numOfPages = props?.roundedNumOfPages;
+    const numOfPages = props?.roundedNumOfPages ?? 1;
     const currentPageNum = props.currentPageNum ? parseInt(props.currentPageNum) : 1;
 
     for (let i = 0; i < numOfPages; i++) {

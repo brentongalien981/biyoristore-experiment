@@ -7,9 +7,9 @@ export const transitionScrollToTop = () => {
         const scrollY = window.scrollY;
         const newScrollY = scrollY - 100;
 
-        Bs.log(scrollY);
+        // Bs.log(scrollY);
         window.scrollTo(0, newScrollY);
-        Bs.log(scrollY);
+        // Bs.log(scrollY);
 
         if (scrollY <= 0) {
             clearInterval(intervalHandler);
