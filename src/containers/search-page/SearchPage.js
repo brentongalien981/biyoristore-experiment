@@ -51,9 +51,7 @@ class SearchPage extends React.Component {
 
 
                     <div className="row gutter-4">
-
-
-                        <div className="col-lg-9">
+                        <div className="col-lg-12">
                             <div className="row gutter-2 gutter-lg-3">{this.getProducts()}</div>
                             <Pagination {...this.props.paginationData} onPageNumClick={this.onPageNumClick} />
                         </div>
