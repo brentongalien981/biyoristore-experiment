@@ -91,7 +91,7 @@ function getOrderSummaryValues(items, shouldCalculateForOrderPage, shouldCalcula
 
         items.forEach(i => {
 
-            // BMD-TODO: On DEV-ITER-004: Refactor to handle multiple scenarios.
+            // BMD-TODO: On DEV-ITER-007: Refactor to handle multiple scenarios.
             // if (shouldCalculateForCheckoutFinalizationPage) {
 
             //     let itemMostEfficientPrice = i.product.mostEfficientSeller.productSeller.discount_sell_price ?? i.product.mostEfficientSeller.productSeller.sell_price;

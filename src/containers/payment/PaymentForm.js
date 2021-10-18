@@ -124,7 +124,7 @@ function PaymentForm(props) {
         ev.preventDefault();
         if (!doPrePayProcess()) { return; }
 
-        // BMD-TODO: On DEV-ITER-004
+        // BMD-TODO: On DEV-ITER-007
         // Do a check in the backend if the cart is still valid (and not been checked-out yet).
 
 
