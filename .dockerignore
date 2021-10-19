@@ -25,5 +25,6 @@ yarn-error.log*
 
 # my stuffs
 /my-envs
+/my-docker-stuffs
 *.env
 .env.*

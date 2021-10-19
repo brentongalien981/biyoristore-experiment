@@ -1,0 +1,9 @@
+// Build TESTING-LOCAL Image
+docker build --file my-docker-stuffs/testing/testing.dockerfile --tag bmdfe:test-1.0 .
+
+
+// Build TESTING-CLOUD Image
+docker build --file my-docker-stuffs/testing/testing.dockerfile --tag odox700/bmdfe:test-1.0 .
+
+
+docker run -itd -p 8001:80 bmdfe:test-1.0
