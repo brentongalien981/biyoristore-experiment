@@ -6,7 +6,7 @@ import Bs from './Bs';
 class BsCore2 {
 
     // BMD-ON-ITER: Staging, Deployment
-    static appUrl = "";
+    static appUrl = "http://localhost:3001/not-found";
     static pubPhotoUrl = "https://s3.us-east-2.amazonaws.com/bs.s3.public/photos/";
     
     // FOR DEVELOPMENT

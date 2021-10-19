@@ -68,6 +68,7 @@ class Order extends React.Component {
                         <OrderInfo 
                             order={this.props.order} 
                             paymentInfo={this.props.paymentInfo} 
+                            shipmentTrackerUrl={this.props.shipmentTrackerUrl}
                             isDoingShowOrderProcess={this.state.isDoingShowOrderProcess} 
                             isRequestingForReturn={this.state.isRequestingForReturn}
                             onRequestForReturn={this.onRequestForReturn}
@@ -141,6 +142,7 @@ const mapStateToProps = (state) => {
     return {
         paymentInfo: state.order.paymentInfo,
         order: state.order.order,
+        shipmentTrackerUrl: state.order.shipmentTrackerUrl        
     };
 };
 
