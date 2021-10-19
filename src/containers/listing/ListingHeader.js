@@ -22,8 +22,8 @@ function ListingHeader(props) {
                             <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <a className="dropdown-item" href="#!" onClick={(e) => props.onSortFilterClick(e, SORT_FILTER_CODES.NAME_ASC)}>{SORT_FILTER_CODES.NAME_ASC.description}</a><br />
                                 <a className="dropdown-item" href="#!" onClick={(e) => props.onSortFilterClick(e, SORT_FILTER_CODES.NAME_DESC)}>{SORT_FILTER_CODES.NAME_DESC.description}</a><br />
-                                <a className="dropdown-item" href="#!" onClick={(e) => props.onSortFilterClick(e, SORT_FILTER_CODES.PRICE_ASC)}>{SORT_FILTER_CODES.PRICE_ASC.description}</a><br />
-                                <a className="dropdown-item" href="#!" onClick={(e) => props.onSortFilterClick(e, SORT_FILTER_CODES.PRICE_DESC)}>{SORT_FILTER_CODES.PRICE_DESC.description}</a><br />
+                                {/* <a className="dropdown-item" href="#!" onClick={(e) => props.onSortFilterClick(e, SORT_FILTER_CODES.PRICE_ASC)}>{SORT_FILTER_CODES.PRICE_ASC.description}</a><br /> */}
+                                {/* <a className="dropdown-item" href="#!" onClick={(e) => props.onSortFilterClick(e, SORT_FILTER_CODES.PRICE_DESC)}>{SORT_FILTER_CODES.PRICE_DESC.description}</a><br /> */}
                             </div>
                         </div>
                     </div>
