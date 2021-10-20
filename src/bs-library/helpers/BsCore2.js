@@ -18,11 +18,11 @@ class BsCore2 {
     static appBackendUrl = "http://biyoristoreexperiment.test";
     static appApiUrl = "http://biyoristoreexperiment.test/api";
 
-    // FOR TESTING-ON-PREMISE
+    // BMD-ON-ITER: PRETESTING
     // static appBackendUrl = "http://192.168.1.116:9001";
     // static appApiUrl = "http://192.168.1.116:9001/api";
 
-    // FOR TESTING-CLOUD
+    // BMD-ON-ITER: PRESTAGING
     // static appBackendUrl = "https://backend.yongestreetproject.com";
     // static appApiUrl = "https://backend.yongestreetproject.com/api";
 
