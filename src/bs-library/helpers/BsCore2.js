@@ -6,7 +6,7 @@ import Bs from './Bs';
 class BsCore2 {
 
     // BMD-ON-ITER: Staging, Deployment
-    static appUrl = "http://localhost:3001/not-found";
+    static appUrl = "https://bmdstore.asbdev.com";
     static pubPhotoUrl = "https://s3.us-east-2.amazonaws.com/bs.s3.public/photos/";
     
     // FOR DEVELOPMENT
@@ -15,16 +15,16 @@ class BsCore2 {
     // static appApiUrl = "http://biyoristoreexperiment.test:8000/api";
 
     // FOR WINDOWS
-    static appBackendUrl = "http://biyoristoreexperiment.test";
-    static appApiUrl = "http://biyoristoreexperiment.test/api";
+    // static appBackendUrl = "http://biyoristoreexperiment.test";
+    // static appApiUrl = "http://biyoristoreexperiment.test/api";
 
     // BMD-ON-ITER: PRETESTING
     // static appBackendUrl = "http://192.168.1.116:9001";
     // static appApiUrl = "http://192.168.1.116:9001/api";
 
     // BMD-ON-ITER: PRESTAGING
-    // static appBackendUrl = "https://backend.yongestreetproject.com";
-    // static appApiUrl = "https://backend.yongestreetproject.com/api";
+    static appBackendUrl = "https://bmdbe.asbdev.com";
+    static appApiUrl = "https://bmdbe.asbdev.com/api";
 
 
 
