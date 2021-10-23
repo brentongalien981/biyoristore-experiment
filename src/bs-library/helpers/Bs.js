@@ -1,6 +1,11 @@
 class Bs {
 
+    // BMD-ON-ITER: Every iteration, edit this.
     static appName = "BS";
+    static detailedAppEnv = 'development';
+    static developmentOs = 'windows';
+
+
 
     static getRandomId(length = 64) {
         var result = '';
@@ -10,6 +15,56 @@ class Bs {
             result += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
         return result;
+    }
+
+
+
+    static getAppUrl() {
+        switch (Bs.detailedAppEnv) {
+            case 'development':
+                return 'http://localhost:3000';
+            case 'pretesting':
+                return 'http://192.168.1.116:7001';
+            case 'prestaging':
+            case 'staging':
+                return "https://bmdstore.asbdev.com";
+            default:
+                return 'http://localhost:3000';
+        }
+    }
+
+
+
+    static getAppBackendUrl() {
+        switch (Bs.detailedAppEnv) {
+            case 'development':
+                if (Bs.developmentOs === 'mac') { return 'http://biyoristoreexperiment.test:8000'; }
+                return 'http://biyoristoreexperiment.test';
+            case 'pretesting':
+                return 'http://192.168.1.116:9001';
+            case 'prestaging':
+            case 'staging':
+                return "https://bmdbe.asbdev.com";
+            default:
+                return 'http://biyoristoreexperiment.test';
+        }
+    }
+
+
+
+    static getAppApidUrl() {
+        switch (Bs.detailedAppEnv) {
+            case 'development':
+                if (Bs.developmentOs === 'mac') { return 'http://biyoristoreexperiment.test:8000/api'; }
+                return 'http://biyoristoreexperiment.test/api';
+            case 'pretesting':
+                return 'http://192.168.1.116:9001/api';
+            case 'prestaging':
+            case 'staging':
+                return "https://bmdbe.asbdev.com/api";
+            default:
+                return 'http://biyoristoreexperiment.test/api';
+        }
     }
 
 

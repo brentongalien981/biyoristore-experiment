@@ -7,10 +7,7 @@ import BsCore2 from './BsCore2';
 class BsCore {
 
     // BMD-ON-ITER: Staging, Deployment
-    static appUrl = BsCore2.appUrl;
-    static pubPhotoUrl = BsCore2.pubPhotoUrl;    
-    static appBackendUrl = BsCore2.appBackendUrl;
-    static appApiUrl = BsCore2.appApiUrl;
+    static pubPhotoUrl = BsCore2.pubPhotoUrl;
 
 
 
@@ -58,7 +55,7 @@ class BsCore {
 
         axios({
             method: defaultCrudData.method,
-            url: BsCore.appApiUrl + defaultCrudData.url,
+            url: Bs.getAppApidUrl() + defaultCrudData.url,
             params: defaultCrudData.params,
         })
             .then(function (response) {
