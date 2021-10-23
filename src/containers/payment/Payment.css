@@ -15,8 +15,8 @@ body {
 #payment-form {
   width: 50vw;
   align-self: center;
-  box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1), 0px 2px 5px 0px rgba(50, 50, 93, 0.1),
-    0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
+  box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
+    0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
   border-radius: 7px;
   padding: 40px;
   margin: auto;
@@ -149,4 +149,37 @@ body {
   form {
     width: 80vw;
   }
+}
+
+
+section#theSection {
+  padding-bottom: 3rem;
+}
+
+#creditCardNumsNotesForDemo {
+  /* border: 1px solid rgb(200, 200, 200); */
+  margin-top: 30px;
+}
+
+p#workingCreditCardSection {
+  /* border: 1px solid green; */
+  border-left: 10px solid #5ca75c;
+  border-radius: 5px;
+  padding: 20px;
+  font-size: 0.9rem;
+  width: 50%;
+  margin: auto;
+  margin-bottom: 20px;
+  box-shadow: 0 0 3px #5ca75c;
+}
+
+p#failingCreditCardSection {
+  /* border: 1px solid red; */
+  border-left: 10px solid #f16767;
+  border-radius: 5px;
+  padding: 20px;
+  font-size: 0.9rem;
+  width: 50%;
+  margin: auto;
+  box-shadow: 0 0 3px #f16767;
 }
