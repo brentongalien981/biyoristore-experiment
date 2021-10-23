@@ -174,10 +174,10 @@ class Join extends React.Component {
             || this.props.shouldDoOnLoginProcessFinalization) {
 
             // Show message to user.
-            let msg = 'Sign-up successful. Welcome ' + this.state.email + '!';
-            if (this.props.shouldDoOnLoginProcessFinalization) {
-                msg = 'Welcome back!';
-            }
+            let msg = 'Welcome ' + this.state.email + '!';
+            // if (this.props.shouldDoOnLoginProcessFinalization) {
+            //     msg = 'Welcome back!';
+            // }
             const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: msg });
             this.props.queueAlert(newAlertObj);
 
