@@ -2,7 +2,7 @@ class Bs {
 
     // BMD-ON-ITER: Every iteration, edit this.
     static appName = "BS";
-    static detailedAppEnv = 'prestaging';
+    static detailedAppEnv = 'development';
     static developmentOs = 'windows';
 
 
