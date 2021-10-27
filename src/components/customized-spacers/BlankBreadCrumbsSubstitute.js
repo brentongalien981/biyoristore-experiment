@@ -8,5 +8,5 @@ export default function BlankBreadCrumbsSubstitute() {
         paddingTop: '1rem',
     };
 
-    return (<section style={style} className="bg-light"></section>);
+    return (<section style={style} className=""></section>);
 }
