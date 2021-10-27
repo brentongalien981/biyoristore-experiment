@@ -1,4 +1,4 @@
-// Build image
+// Build image locally.
 docker build --file my-docker-stuffs/prestaging/bmdfe.prestaging.dockerfile --tag bmdfe:prestaging-1.0 .
 
 
