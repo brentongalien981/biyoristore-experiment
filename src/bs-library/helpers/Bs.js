@@ -2,7 +2,7 @@ class Bs {
 
     // BMD-ON-ITER: Every iteration, edit this.
     static appName = "BS";
-    static detailedAppEnv = 'prestaging';
+    static detailedAppEnv = 'jobportfolio';
     static developmentOs = 'windows';
 
 
@@ -28,6 +28,8 @@ class Bs {
             case 'prestaging':
             case 'staging':
                 return "https://bmdstore.asbdev.com";
+            case 'jobportfolio':
+                return "http://bmdstore2.asbdev.com";
             default:
                 return 'http://localhost:3000';
         }
@@ -45,6 +47,8 @@ class Bs {
             case 'prestaging':
             case 'staging':
                 return "https://bmdbe.asbdev.com";
+            case 'jobportfolio':
+                return "http://bmdbe2.asbdev.com";
             default:
                 return 'http://biyoristoreexperiment.test';
         }
@@ -62,6 +66,8 @@ class Bs {
             case 'prestaging':
             case 'staging':
                 return "https://bmdbe.asbdev.com/api";
+            case 'jobportfolio':
+                return "http://bmdbe2.asbdev.com/api";
             default:
                 return 'http://biyoristoreexperiment.test/api';
         }

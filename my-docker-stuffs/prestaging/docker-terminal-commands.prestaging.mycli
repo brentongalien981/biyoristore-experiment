@@ -1,4 +1,5 @@
 // Build image locally.
+// NOTE: Use --no-cache
 docker build --file my-docker-stuffs/prestaging/bmdfe.prestaging.dockerfile --tag bmdfe:prestaging-1.0 .
 
 
