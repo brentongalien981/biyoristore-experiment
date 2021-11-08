@@ -18,4 +18,4 @@ docker push odox700/bmdfe:jobportfolio-1.0
 docker pull odox700/bmdfe:jobportfolio-1.0
 
 
-docker run -itd -p 7001:80 bmdfe:jobportfolio-1.0
+docker run -itd -p 7001:80 odox700/bmdfe:jobportfolio-1.0
