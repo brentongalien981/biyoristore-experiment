@@ -82,12 +82,21 @@ class TestPageA extends React.Component {
 
 
 
+    testDb = () => {
+        BsCore2.ajaxCrud({
+            url: '/mytest/forMBMDBE',
+        });
+    };
+
+
+
 
     render() {
         return (
             <div style={{ marginTop: '100px' }}>
                 <h2>FILE: TestPageA.js</h2>
                 <div style={{ marginTop: '300px' }}></div>
+                <button onClick={this.testDb}>test-db</button>
                 <button onClick={() => this.goTo('a')}>go-to-A</button>
                 <button onClick={() => this.goTo('b')}>go-to-B</button>
                 <button onClick={() => this.goTo('c')}>go-to-C</button>

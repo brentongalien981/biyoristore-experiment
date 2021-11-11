@@ -1,6 +1,9 @@
 class Bs {
 
     static appName = "BS";
+    static detailedAppEnv = 'development';
+    static developmentOs = 'windows';
+
 
     static getRandomId(length = 64) {
         var result = '';
