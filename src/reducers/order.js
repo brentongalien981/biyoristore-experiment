@@ -10,7 +10,8 @@ const NON_EXISTENT_ORDER_OBJ = { id: -1 };
 /* INITIAL STATE */
 const initialState = {
     order: {},
-    paymentInfo: {}
+    paymentInfo: {},
+    shipmentTrackerUrl: null
 };
 
 
@@ -31,6 +32,7 @@ const onShowOrderReturn = (state, action) => {
 
     let updatedOrder = {};
     let updatedPaymentInfo = {};
+    let updatedShipmentTrackerUrl = state.updatedShipmentTrackerUrl;
 
     if (action.callBackData.isResultOk) {
 
@@ -42,16 +44,19 @@ const onShowOrderReturn = (state, action) => {
             bsJLSObjData = BsJLS.get(bsJLSObjQuery);
             updatedOrder = bsJLSObjData.order;
             updatedPaymentInfo = bsJLSObjData.paymentInfo;
+            updatedShipmentTrackerUrl = bsJLSObjData.shipmentTrackerUrl;
 
         } else {
 
             updatedOrder = action.callBackData.objs.order;
             updatedPaymentInfo = action.callBackData.objs.paymentInfo;
+            updatedShipmentTrackerUrl = action.callBackData.objs.epShipment?.tracker?.public_url;
 
             const bsJLSObjLifespanInMin = 120;
             bsJLSObjData = {
                 order: updatedOrder,
-                paymentInfo: updatedPaymentInfo
+                paymentInfo: updatedPaymentInfo,
+                shipmentTrackerUrl: updatedShipmentTrackerUrl
             };
 
 
@@ -69,7 +74,8 @@ const onShowOrderReturn = (state, action) => {
     return {
         ...state,
         order: updatedOrder.id ? updatedOrder:  { ...NON_EXISTENT_ORDER_OBJ },
-        paymentInfo: updatedPaymentInfo ?? {}
+        paymentInfo: updatedPaymentInfo ?? {},
+        shipmentTrackerUrl: updatedShipmentTrackerUrl
     };
 };
 

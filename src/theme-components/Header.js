@@ -40,6 +40,9 @@ class Header extends React.Component {
 
         this.clearSensitiveData();
 
+        BsAppSession.set('hasChosenToCheckoutAsWho', 0);
+        BsAppSession.set('hasChosenDemoLoginOptions', 0);
+
         BmdAuth.clearAuth();
         BmdAuth.resetTemporaryGuestUserId();
         this.initCart();

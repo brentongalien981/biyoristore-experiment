@@ -150,11 +150,12 @@ class Payment extends React.Component {
 
         return (
             <>
-                <section className="hero">
+                <section className="hero" id="theSection">
                     <div className="container">
                         <div className="row">
                             <div className="col text-center">
-                                <h1>Payment</h1>
+                                <h2>Payment</h2>
+                                {this.getCreditCardNumsNotesForDemo()}
                             </div>
                         </div>
                     </div>
@@ -170,6 +171,26 @@ class Payment extends React.Component {
                         cartItemsData={cartItemsData} />
                 </Elements>
             </>
+        );
+    }
+
+
+
+    getCreditCardNumsNotesForDemo() {
+        return (
+            <div id="creditCardNumsNotesForDemo">
+                <h5>For demo purposes, you can use:</h5>
+                <p id="workingCreditCardSection">
+                    Working Canadian Credit Card #: 4000 0012 4000 0000<br />
+                    Any Valid MM / YY CVC<br />
+                    Any Postal Code
+                </p>
+                <p id="failingCreditCardSection">
+                    Failing US Credit Card #: 4000 0000 0000 9995<br />
+                    Any Valid MM / YY CVC<br />
+                    Any ZIP Code
+                </p>
+            </div>
         );
     }
 

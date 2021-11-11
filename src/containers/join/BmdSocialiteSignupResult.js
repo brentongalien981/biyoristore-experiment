@@ -87,7 +87,7 @@ class BmdSocialiteSignupResult extends React.Component {
     enableNavBlocker() {
         // NOTE: Warn user from moving away from the page when the process has already been dispatched.
         BmdSocialiteSignupResult.unblockNavBlocker = this.props.history.block(() => {
-            alert("Please wait, we're creating your account...");
+            alert("Please wait, we're setting up your account...");
             return false;
         });
     }
@@ -98,7 +98,7 @@ class BmdSocialiteSignupResult extends React.Component {
 
         // Show message to user.
         const email = BsAppLocalStorage.get('email');
-        const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: "Sign-up successful. Welcome " + email + "!" });
+        const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: "Welcome " + email + "!" });
         this.props.queueAlert(newAlertObj);
 
         const redirectTo = this.getRedirectToUrl();
@@ -141,7 +141,7 @@ class BmdSocialiteSignupResult extends React.Component {
     render() {
         return (
             <div className="container" style={{ marginTop: '100px' }}>
-                <h6>Please wait. We're creating your account...</h6>
+                <h6>Please wait. We're setting up your account...</h6>
                 <div style={{ marginTop: '500px' }}></div>
             </div>
         );

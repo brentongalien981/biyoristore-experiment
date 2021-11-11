@@ -1,4 +1,5 @@
 import React from 'react';
+import BsCore2 from '../../bs-library/helpers/BsCore2';
 import MiniImageLoader from '../../components/loader/MiniImageLoader/MiniImageLoader';
 import WaitLoader from '../../components/loader/WaitLoader';
 import { getDisplayStatusForOrderStatus } from './helper-funcs/HelperFuncsA';
@@ -8,7 +9,7 @@ import { getDisplayStatusForOrderStatus } from './helper-funcs/HelperFuncsA';
 function OrderInfo(props) {
 
     const o = props.order;
-    const p = props.paymentInfo;
+    const p = props.paymentInfo;    
 
 
     let mainContent = (
@@ -19,7 +20,8 @@ function OrderInfo(props) {
                 <p className="card-text">
                     Order-ID: {o.id}<br />
                     Status: {getDisplayStatusForOrderStatus(o.status).displayMsg}<br />
-                    Placed {o.createdAt}
+                    Placed: {o.createdAt}<br />
+                    {getShipmentTrackerLink(props)}                    
                 </p>
             </div>
 
@@ -99,6 +101,20 @@ function OrderInfo(props) {
             </div>
         </div>
     );
+}
+
+
+
+function getShipmentTrackerLink(props) {
+
+    if (!props.shipmentTrackerUrl) {
+        return (<>Shipment Tracker: To be updated</>);
+    }
+
+
+    const trackerLinkStyle = { color: 'blue', textDecoration: 'underline' };
+
+    return (<a target="_blank" href={props.shipmentTrackerUrl} style={trackerLinkStyle}>Shipment Tracker: Link</a>);
 }
 
 

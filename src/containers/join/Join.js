@@ -174,10 +174,10 @@ class Join extends React.Component {
             || this.props.shouldDoOnLoginProcessFinalization) {
 
             // Show message to user.
-            let msg = 'Sign-up successful. Welcome ' + this.state.email + '!';
-            if (this.props.shouldDoOnLoginProcessFinalization) {
-                msg = 'Welcome back!';
-            }
+            let msg = 'Welcome ' + this.state.email + '!';
+            // if (this.props.shouldDoOnLoginProcessFinalization) {
+            //     msg = 'Welcome back!';
+            // }
             const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: msg });
             this.props.queueAlert(newAlertObj);
 
@@ -235,13 +235,13 @@ class Join extends React.Component {
         if (this.state.isJoining || this.state.isLoggingIn) { return false; }
 
         // let redirectLink = 'https://asbdev.com/test-socialite/auth-providers';
-        let redirectLink = BsCore2.appBackendUrl + '/bmd-socialite/signup-with-auth-provider';
+        let redirectLink = Bs.getAppBackendUrl() + '/bmd-socialite/signup-with-auth-provider';
 
         if (isForSignup) {
             this.setState({ isJoining: true });
         } else {
             this.setState({ isLoggingIn: true });
-            redirectLink = BsCore2.appBackendUrl + '/bmd-socialite/login-with-auth-provider';
+            redirectLink = Bs.getAppBackendUrl() + '/bmd-socialite/login-with-auth-provider';
         }
 
         switch (provider) {

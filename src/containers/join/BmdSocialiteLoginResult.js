@@ -85,7 +85,7 @@ class BmdSocialiteLoginResult extends React.Component {
     enableNavBlocker() {
         // NOTE: Warn user from moving away from the page when the process has already been dispatched.
         BmdSocialiteLoginResult.unblockNavBlocker = this.props.history.block(() => {
-            alert("Please wait, we're logging you in...");
+            alert("Please wait, we're setting up your account...");
             return false;
         });
     }
@@ -135,7 +135,7 @@ class BmdSocialiteLoginResult extends React.Component {
     render() {
         return (
             <div className="container" style={{ marginTop: '100px' }}>
-                <h6>Logging-in...</h6>
+                <h6>Working on it...</h6>
                 <div style={{ marginTop: '500px' }}></div>
             </div>
         );
