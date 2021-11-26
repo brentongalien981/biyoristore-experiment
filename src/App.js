@@ -42,6 +42,8 @@ const RefundPolicy = React.lazy(() => import('./containers/legals/RefundPolicy')
 
 const SearchPage = React.lazy(() => import('./containers/search-page/SearchPage'));
 
+const CreateOrderReturn = React.lazy(() => import('./containers/order-return/CreateOrderReturn'));
+
 
 // BMD-ON-STAGING: Delete this
 const TestPageWithHistoryNavigationBlocker = React.lazy(() => import('./containers/experiment/TestPageWithHistoryNavigationBlocker'));
@@ -90,6 +92,8 @@ function App() {
 				<Route path="/refund-policy" exact render={() => <Suspense fallback={<div>loading...</div>}><RefundPolicy /></Suspense>} />
 
 				<Route path="/search" exact render={() => <Suspense fallback={<div>loading...</div>}><SearchPage /></Suspense>} />				
+
+				<Route path="/create-order-return" exact render={() => <Suspense fallback={<div>loading...</div>}><CreateOrderReturn /></Suspense>} />
 				
 
 				{/* BMD-FOR-DEBUG */}

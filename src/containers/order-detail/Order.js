@@ -85,26 +85,28 @@ class Order extends React.Component {
 
 
     /* EVENT FUNCS */
+    // BMD-TODO
     onRequestForReturn = () => {
         
         if (this.state.isDoingShowOrderProcess) { return; }
         if (this.state.isRequestingForReturn) { return; }
 
+        this.props.history.push('/create-order-return');
 
-        this.setState({ isRequestingForReturn: true });
-
-
-        const data = {
-            params: {
-                orderId: this.props.order.id
-            },                        
-            doCallBackFunc: () => {
-                this.setState({ isRequestingForReturn: false });
-            }
-        };
+        // this.setState({ isRequestingForReturn: true });
 
 
-        this.props.requestForReturn(data);
+        // const data = {
+        //     params: {
+        //         orderId: this.props.order.id
+        //     },                        
+        //     doCallBackFunc: () => {
+        //         this.setState({ isRequestingForReturn: false });
+        //     }
+        // };
+
+
+        // this.props.requestForReturn(data);
 
     };
 
@@ -151,7 +153,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         showOrder: (data) => dispatch(actions.showOrder(data)),
-        requestForReturn: (data) => dispatch(actions.requestForReturn(data))        
+        // requestForReturn: (data) => dispatch(actions.requestForReturn(data))        
     };
 };
 
