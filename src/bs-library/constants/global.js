@@ -3,7 +3,7 @@ export const RETRIEVED_DATA_FROM_CACHE = 1002;
 export const RETRIEVED_DATA_FROM_LOCAL_STORAGE = 1003;
 
 
-export const COMPANY_CUSTOMER_SERVICE_EMAIL = 'customerservice@bmd.com'; // BMD-ON-STAGING: Edit this.
+export const COMPANY_CUSTOMER_SERVICE_EMAIL = 'customerservice@penguinjam.com'; // BMD-ON-STAGING: Edit this.
 
 
 

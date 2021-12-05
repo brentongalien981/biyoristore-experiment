@@ -29,7 +29,7 @@ class BsCore2 {
         }
 
         if (errorMsg.length > 0) { alert(errorMsg); }
-        else { alert("Oops, there's an error on our end. Please try again."); }
+        else { alert("Oops, there's an error on our end. Please try again later."); }
     }
 
 
@@ -87,7 +87,7 @@ class BsCore2 {
         }
 
         if (errorMsg.length > 0) { alert(errorMsg); }
-        else { alert("Oops, there's an error on our end. Please try again."); }
+        else { alert("Oops, there's an error on our end. Please try again later."); }
     }
 
 

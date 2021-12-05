@@ -71,7 +71,7 @@ export const requestForReturn = (data) => {
             callBackFunc: (requestData, json) => {
 
                 if (json.isResultOk) {
-                    const msg = "Order Return Placed! We'll get back to you through email within 1-4 hrs. Thank you :)";
+                    const msg = "Order-return request eceived! We'll get back to you through email within 2-3 hrs. Thanks :)";
                     const newAlertObj = TemporaryAlertSystem.createAlertObj({ msg: msg });
                     dispatch(queueAlert(newAlertObj));
                 }
