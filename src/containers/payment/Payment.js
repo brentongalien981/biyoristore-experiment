@@ -177,21 +177,22 @@ class Payment extends React.Component {
 
 
     getCreditCardNumsNotesForDemo() {
-        return (
-            <div id="creditCardNumsNotesForDemo">
-                <h5>For demo purposes, you can use:</h5>
-                <p id="workingCreditCardSection">
-                    Working Canadian Credit Card #: 4000 0012 4000 0000<br />
-                    Any Valid MM / YY CVC<br />
-                    Any Postal Code
-                </p>
-                <p id="failingCreditCardSection">
-                    Failing US Credit Card #: 4000 0000 0000 9995<br />
-                    Any Valid MM / YY CVC<br />
-                    Any ZIP Code
-                </p>
-            </div>
-        );
+        return null;
+        // return (
+        //     <div id="creditCardNumsNotesForDemo">
+        //         <h5>For demo purposes, you can use:</h5>
+        //         <p id="workingCreditCardSection">
+        //             Working Canadian Credit Card #: 4000 0012 4000 0000<br />
+        //             Any Valid MM / YY CVC<br />
+        //             Any Postal Code
+        //         </p>
+        //         <p id="failingCreditCardSection">
+        //             Failing US Credit Card #: 4000 0000 0000 9995<br />
+        //             Any Valid MM / YY CVC<br />
+        //             Any ZIP Code
+        //         </p>
+        //     </div>
+        // );
     }
 
 
