@@ -10,9 +10,9 @@ function CreateAccount(props) {
         <>
             <SocialMediaOptions isForSignup="true" onSocialMediaOptionClick={props.onSocialMediaOptionClick} />
 
-            <div className="form-group col-12 mt-2 d-flex justify-content-center">
+            {/* <div className="form-group col-12 mt-2 d-flex justify-content-center">
                 <label>- or -</label>
-            </div>
+            </div> */}
 
             <div className="form-group mt-2 col-12">
                 <label htmlFor="exampleInputEmail2">Email address</label>

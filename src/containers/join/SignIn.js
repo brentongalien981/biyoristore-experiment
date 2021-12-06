@@ -11,9 +11,9 @@ function SignIn(props) {
         <>
             <SocialMediaOptions onSocialMediaOptionClick={props.onSocialMediaOptionClick} />
 
-            <div className="form-group col-12 mt-2 d-flex justify-content-center">
+            {/* <div className="form-group col-12 mt-2 d-flex justify-content-center">
                 <label>- or -</label>
-            </div>
+            </div> */}
 
             <div className="form-group col-12">
                 <label htmlFor="exampleInputEmail1">Email address</label>
