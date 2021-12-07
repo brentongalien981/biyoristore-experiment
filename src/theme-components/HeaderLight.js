@@ -13,7 +13,7 @@ function HeaderLight(props) {
                     <nav className="navbar navbar-expand-lg navbar-light">
 
                         {/* <a href="index.html" className="navbar-brand order-1 order-lg-2"><img src="assets/images/logo-dark.svg" alt="Logo" /></a> */}
-                        <Link to="/" className="navbar-brand order-1 order-lg-2">BMD Store</Link>
+                        <Link to="/" className="navbar-brand order-1 order-lg-2"><img src="assets/images/logos/PenguinJamLogoColored.png" width="60px" alt="Logo" /></Link>
 
 
                         <button className="navbar-toggler order-2" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">

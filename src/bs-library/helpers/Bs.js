@@ -1,8 +1,8 @@
 class Bs {
 
     // BMD-ON-ITER: Every iteration, edit this.
-    static appName = "BS";
-    static detailedAppEnv = 'development';
+    static appName = "PJ";
+    static detailedAppEnv = 'staging';
     static developmentOs = 'windows';
 
     static getRandomId(length = 64) {
@@ -24,8 +24,9 @@ class Bs {
             case 'pretesting':
                 return 'http://192.168.1.116:7001';
             case 'prestaging':
-            case 'staging':
                 return "https://bmdstore.asbdev.com";
+            case 'staging':
+                return "https://penguinjam.com";                
             case 'jobportfolio':
                 return "http://bmdstore2.asbdev.com";
             default:
@@ -43,8 +44,9 @@ class Bs {
             case 'pretesting':
                 return 'http://192.168.1.116:9001';
             case 'prestaging':
-            case 'staging':
                 return "https://bmdbe.asbdev.com";
+            case 'staging':
+                return "https://bmdbe.penguinjam.com";
             case 'jobportfolio':
                 return "http://bmdbe2.asbdev.com";
             default:
@@ -62,8 +64,9 @@ class Bs {
             case 'pretesting':
                 return 'http://192.168.1.116:9001/api';
             case 'prestaging':
-            case 'staging':
                 return "https://bmdbe.asbdev.com/api";
+            case 'staging':
+                return "https://bmdbe.penguinjam.com/api";
             case 'jobportfolio':
                 return "http://bmdbe2.asbdev.com/api";
             default:

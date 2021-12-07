@@ -20,7 +20,7 @@ function PaymentForm(props) {
     
     let unblockNavBlocker = null;
     let navBlockerMsg = 'We are processing your payment. Hold on please...\n';
-    navBlockerMsg += "If you wanna cancel your order, please contact customer service at \n";
+    navBlockerMsg += "If you want to cancel your order, please contact customer service at \n";
     navBlockerMsg += COMPANY_CUSTOMER_SERVICE_EMAIL;
 
 

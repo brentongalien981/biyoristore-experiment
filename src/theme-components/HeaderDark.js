@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import BsAppLocalStorage from '../bs-library/helpers/BsAppLocalStorage';
 import BsAppSession from '../bs-library/helpers/BsAppSession';
 
+
+
 function HeaderDark(props) {
     return (
         <header className="header header-dark bg-dark header-sticky">
@@ -10,7 +12,7 @@ function HeaderDark(props) {
                 <div className="row">
                     <nav className="navbar navbar-expand-lg navbar-dark">
                         {/* <a href="index.html" className="navbar-brand order-1 order-lg-2"><img src="assets/images/logo.svg" alt="Logo" /></a> */}
-                        <Link to="/" className="navbar-brand order-1 order-lg-2">BMD Store</Link>
+                        <Link to="/" className="navbar-brand order-1 order-lg-2"><img src="assets/images/logos/PenguinJamLogoColored.png" width="60px" alt="Logo" /></Link>
                         <button className="navbar-toggler order-2" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>
                         </button>

@@ -25,11 +25,11 @@ class Home extends React.Component {
             <>
                 {/* <Hero content="Your Favourite Brands" /> */}
                 {featuredBrands}
-                <Separator />
-                <DemoLoginOptionsModal
+                {/* <Separator /> */}
+                {/* <DemoLoginOptionsModal
                     onLogin={this.onLoginAsDemoUser}
                     onDismiss={this.onDismiss}
-                />
+                /> */}
             </>
         );
     }
