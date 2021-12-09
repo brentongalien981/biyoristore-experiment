@@ -54,6 +54,7 @@ export default function ShippingOptions(props) {
 
 function getShippingDescription(estimatedShippingDays, rate, exchangeRates) {
     const r = rate;
+    const shippingRateFee = r.rate.toFixed(2);
 
     let shippingRateFeeInUSD = r.rate * parseFloat(exchangeRates['CAD-to-USD'].rate);
     shippingRateFeeInUSD = shippingRateFeeInUSD.toFixed(2);
@@ -63,7 +64,8 @@ function getShippingDescription(estimatedShippingDays, rate, exchangeRates) {
     let totalDeliveryDays = estimatedShippingDays + ORDER_PROCESSING_PERIOD + PAYMENT_TO_FUNDS_PERIOD;
 
     label += estimatedShippingDays + '-' + totalDeliveryDays + ' Business Days';
-    label += " / $" + shippingRateFeeInUSD;
+    // label += " / $" + shippingRateFeeInUSD;
+    label += " / $" + shippingRateFee;    
 
     return label;
 }

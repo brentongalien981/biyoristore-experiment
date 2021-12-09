@@ -76,11 +76,12 @@ function getOrderSummaryValues(items, shouldCalculateForOrderPage, shouldCalcula
 
     let shipmentRateFee = shipmentRate?.rate ?? null;
     shipmentRateFee = shipmentRate?.rate ? parseFloat(shipmentRate?.rate) : null;
+    shipmentRateFee = parseFloat(shipmentRateFee.toFixed(2));
 
-    if (exchangeRates && exchangeRates['CAD-to-USD']) {
-        shipmentRateFee = shipmentRateFee * parseFloat(exchangeRates['CAD-to-USD'].rate);
-        shipmentRateFee = parseFloat(shipmentRateFee.toFixed(2));
-    }
+    // if (exchangeRates && exchangeRates['CAD-to-USD']) {
+    //     shipmentRateFee = shipmentRateFee * parseFloat(exchangeRates['CAD-to-USD'].rate);
+    //     shipmentRateFee = parseFloat(shipmentRateFee.toFixed(2));
+    // }
     
 
     let vals = {

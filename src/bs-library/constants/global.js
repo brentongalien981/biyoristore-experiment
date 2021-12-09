@@ -14,5 +14,5 @@ export const TAX_RATE = 0.13; // BMD-ON-STAGING: Edit this.
 // Period in business-days.
 // BMD-ON-STAGING
 // NOTE: Whenever you change this, make sure to edit both frontend and backend constant values.
-export const ORDER_PROCESSING_PERIOD = 1;
+export const ORDER_PROCESSING_PERIOD = 2;
 export const PAYMENT_TO_FUNDS_PERIOD = 1;
