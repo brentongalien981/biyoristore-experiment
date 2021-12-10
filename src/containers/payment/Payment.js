@@ -119,7 +119,15 @@ class Payment extends React.Component {
          * - Use stripe-production-pk.
          */
         // BMD-SENSITIVE-INFO
-        this.promise = loadStripe("pk_test_51HbnWfBQWOThz1xMxYTQAjuuDdoSsGMtHQi9XN5WCwfgFA66EvZOH5G9NKtDJ2NGR5TxKCdTfGqXotF3Pi1BoNlr00GwZCC38H");
+        let apiKey = 'pk_test_51HbnWfBQWOThz1xMxYTQAjuuDdoSsGMtHQi9XN5WCwfgFA66EvZOH5G9NKtDJ2NGR5TxKCdTfGqXotF3Pi1BoNlr00GwZCC38H';
+
+
+        if (Bs.detailedAppEnv === 'staging' || Bs.detailedAppEnv === 'production') {
+            apiKey = 'pk_live_51K3ob5AGOBRKRxE9dgcWTHXzu9YUtLAF4D8A209crIvNJ6c5P3OwGuX3pqP2uhuf0Q3Lmlm9f9SZaF05VEomxtH600ZWxx6hNd';
+        }
+
+        this.promise = loadStripe(apiKey);
+        
     }
 
 
