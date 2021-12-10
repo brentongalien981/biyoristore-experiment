@@ -54,7 +54,8 @@ export default function ShippingOptions(props) {
 
 function getShippingDescription(estimatedShippingDays, rate, exchangeRates) {
     const r = rate;
-    const shippingRateFee = r.rate.toFixed(2);
+    const theRate = r.rate ? parseFloat(r.rate) : 0.0;
+    const shippingRateFee = theRate.toFixed(2);
 
     let shippingRateFeeInUSD = r.rate * parseFloat(exchangeRates['CAD-to-USD'].rate);
     shippingRateFeeInUSD = shippingRateFeeInUSD.toFixed(2);
