@@ -77,7 +77,7 @@ class Bs {
 
 
     static log(msg) {
-        console.log(msg);
+        // console.log(msg);
     }
 
 
