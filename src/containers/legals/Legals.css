@@ -1,3 +1,7 @@
+.legal-document-title h3 {
+  font-weight: 500;
+}
+
 .bmd-legal-page-sections h4 {
   font-size: 0.9rem;
   font-weight: 700;
@@ -5,7 +9,7 @@
 
 .bmd-legal-page-sections h5 {
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .bmd-legal-page-sections p {
