@@ -26,7 +26,7 @@ class Bs {
             case 'prestaging':
                 return "https://bmdstore.asbdev.com";
             case 'staging':
-                return "https://penguinjam.com";                
+                return "https://penguinjam.com";
             case 'jobportfolio':
                 return "http://bmdstore2.asbdev.com";
             default:
@@ -77,7 +77,15 @@ class Bs {
 
 
     static log(msg) {
-        // console.log(msg);
+        switch (Bs.detailedAppEnv) {
+            case 'staging':
+            case 'production':
+            case 'deployment':
+                return;
+            default:
+                console.log(msg);
+        }
+
     }
 
 
