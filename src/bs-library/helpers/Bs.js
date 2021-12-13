@@ -2,7 +2,7 @@ class Bs {
 
     // BMD-ON-ITER: Every iteration, edit this.
     static appName = "PJ";
-    static detailedAppEnv = 'development';
+    static detailedAppEnv = 'staging';
     static developmentOs = 'windows';
 
     static getRandomId(length = 64) {
