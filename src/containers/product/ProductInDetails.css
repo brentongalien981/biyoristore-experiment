@@ -3,3 +3,7 @@
 #ShownProductDescription {
     overflow-wrap: break-word;
 }
+
+.text-muted {
+    color: orangered !important;
+}

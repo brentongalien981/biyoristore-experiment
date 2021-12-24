@@ -5,6 +5,7 @@ import ProductSizeFilter from './ProductSizeFilter';
 
 
 
+
 function ProductDetails(props) {
 
     const p = props.product;
@@ -13,7 +14,7 @@ function ProductDetails(props) {
 
     let priceSectionElement = (<span className="item-price">${sellPrice}</span>);
     if (parseFloat(discountSellPrice)) {
-        priceSectionElement = (<span className="item-price"><s className="text-muted">${discountSellPrice}</s> ${sellPrice}</span>);
+        priceSectionElement = (<span className="item-price"><s className="text-muted">${sellPrice}</s> ${discountSellPrice}</span>);
     }
 
     let outOfStockComponent = null;
