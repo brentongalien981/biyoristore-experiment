@@ -89,6 +89,9 @@ class Home extends React.Component {
 
         return (
             <div className="hero pb-10">
+
+                {this.getPageHeader()}
+
                 <div className="container">
                     <div className="row gutter-1">
                         {brands}
@@ -97,6 +100,22 @@ class Home extends React.Component {
                         <div className="col text-center">
                             <Link to="/products" className="btn btn-outline-secondary">VIEW LISTINGS</Link>
                         </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+
+
+    getPageHeader() {
+        return (
+            <div className="container pb-6">
+                <div className="row">
+                    <div className="col">
+                        <h3 className="">All Authentic</h3>
+                        <h3 className="">All Verified</h3>
+                        <h3 className="">Never Fake</h3>
                     </div>
                 </div>
             </div>

@@ -26,7 +26,7 @@ class Bs {
             case 'prestaging':
                 return "https://bmdstore.asbdev.com";
             case 'staging':
-                return "https://penguinjam.com";
+                return "https://penguinjam.ca";
             case 'jobportfolio':
                 return "http://bmdstore2.asbdev.com";
             default:
@@ -46,7 +46,7 @@ class Bs {
             case 'prestaging':
                 return "https://bmdbe.asbdev.com";
             case 'staging':
-                return "https://bmdbe.penguinjam.com";
+                return "https://bmdbe.penguinjam.ca";
             case 'jobportfolio':
                 return "http://bmdbe2.asbdev.com";
             default:
@@ -66,7 +66,7 @@ class Bs {
             case 'prestaging':
                 return "https://bmdbe.asbdev.com/api";
             case 'staging':
-                return "https://bmdbe.penguinjam.com/api";
+                return "https://bmdbe.penguinjam.ca/api";
             case 'jobportfolio':
                 return "http://bmdbe2.asbdev.com/api";
             default:
