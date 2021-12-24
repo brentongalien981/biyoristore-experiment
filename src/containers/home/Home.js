@@ -113,9 +113,9 @@ class Home extends React.Component {
             <div className="container pb-6">
                 <div className="row">
                     <div className="col">
-                        <h3 className="">All Authentic</h3>
-                        <h3 className="">All Verified</h3>
-                        <h3 className="">Never Fake</h3>
+                        <h3 className="">All Authentic.</h3>
+                        <h3 className="">All Verified.</h3>
+                        <h3 className="">Never Fake.</h3>
                     </div>
                 </div>
             </div>
